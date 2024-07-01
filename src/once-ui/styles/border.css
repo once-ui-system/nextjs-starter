@@ -1,0 +1,189 @@
+  /****************************/
+ /*           RADIUS         */
+/****************************/
+
+.radius-xl {
+    border-radius: var(--radius-xl);
+}
+
+.radius-xl-4 {
+    border-radius: var(--radius-xl-nest-4);
+}
+
+.radius-xl-8 {
+    border-radius: var(--radius-xl-nest-8);
+}
+
+.radius-l {
+    border-radius: var(--radius-l);
+}
+
+.radius-l-4 {
+    border-radius: var(--radius-l-nest-4);
+}
+
+.radius-l-8 {
+    border-radius: var(--radius-l-nest-8);
+}
+
+.radius-m {
+    border-radius: var(--radius-m);
+}
+
+.radius-m-4 {
+    border-radius: var(--radius-m-nest-4);
+}
+
+.radius-m-8 {
+    border-radius: var(--radius-m-nest-8);
+}
+
+.radius-s {
+    border-radius: var(--radius-s);
+}
+
+.radius-s-4 {
+    border-radius: var(--radius-s-nest-4);
+}
+
+.radius-s-8 {
+    border-radius: var(--radius-s-nest-8);
+}
+
+.radius-xs {
+    border-radius: var(--radius-xs);
+}
+
+.radius-xs-4 {
+    border-radius: var(--radius-xs-nest-4);
+}
+
+.radius-xs-8 {
+    border-radius: var(--radius-xs-nest-8);
+}
+
+.radius-full {
+    border-radius: var(--radius-999);
+}
+
+
+
+
+
+  /****************************/
+ /*           STYLE          */
+/****************************/
+
+.border-solid-1 {
+    border-style: solid;
+    border-width: 1px;
+}
+
+.border-solid-2 {
+    border-style: solid;
+    border-width: 2px;
+}
+
+
+
+
+
+  /****************************/
+ /*           COLOR          */
+/****************************/
+
+/* PAGE */
+.border-surface {
+    border-color: var(--page-surface-border);
+}
+
+/* NEUTRAL */
+.border-neutral-weak {
+    border-color: var(--neutral-border-weak);
+}
+
+.border-neutral-medium {
+    border-color: var(--neutral-border-medium);
+}
+
+.border-neutral-strong {
+    border-color: var(--neutral-border-strong);
+}
+
+/* BRAND */
+.border-brand-weak {
+    border-color: var(--brand-border-weak);
+}
+
+.border-brand-medium {
+    border-color: var(--brand-border-medium);
+}
+
+.border-brand-strong {
+    border-color: var(--brand-border-strong);
+}
+
+/* ACCENT */
+.border-accent-weak {
+    border-color: var(--accent-border-weak);
+}
+
+.border-accent-medium {
+    border-color: var(--accent-border-medium);
+}
+
+.border-accent-strong {
+    border-color: var(--accent-border-strong);
+}
+
+/* INFO */
+.border-info-weak {
+    border-color: var(--info-border-weak);
+}
+
+.border-info-medium {
+    border-color: var(--info-border-medium);
+}
+
+.border-info-strong {
+    border-color: var(--info-border-strong);
+}
+
+/* DANGER */
+.border-danger-weak {
+    border-color: var(--danger-border-weak);
+}
+
+.border-danger-medium {
+    border-color: var(--danger-border-medium);
+}
+
+.border-danger-strong {
+    border-color: var(--danger-border-strong);
+}
+
+/* WARNING */
+.border-warning-weak {
+    border-color: var(--warning-border-weak);
+}
+
+.border-warning-medium {
+    border-color: var(--warning-border-medium);
+}
+
+.border-warning-strong {
+    border-color: var(--warning-border-strong);
+}
+
+/* SUCCESS */
+.border-success-weak {
+    border-color: var(--success-border-weak);
+}
+
+.border-success-medium {
+    border-color: var(--success-border-medium);
+}
+
+.border-success-strong {
+    border-color: var(--success-border-strong);
+}

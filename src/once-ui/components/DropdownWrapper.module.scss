@@ -1,0 +1,17 @@
+.dropdown {
+    position: absolute;
+    top: calc(100% + var(--static-space-4));
+    z-index: 1;
+    width: 100%;
+}
+
+@media (max-width: 560px) {
+    .dropdown {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        border-top: 1px solid var(--neutral-border-medium);
+        border-radius: var(--radius-m-nest-4) var(--radius-m-nest-4) 0 0;
+        z-index: 1;
+    }
+}

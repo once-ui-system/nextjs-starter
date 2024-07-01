@@ -1,0 +1,40 @@
+.dropdown {
+    overflow-y: auto;
+    outline: none;
+    z-index: 1;
+}
+
+.option {
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        background-color: var(--neutral-background-strong);
+    }
+    
+    &.selected {
+        background-color: var(--neutral-background-strong);
+        border: 1px solid var(--neutral-border-strong);
+    }
+
+    &.danger {
+        color: var(--danger-on-background-weak);
+
+        &:hover,
+        &:focus {
+            background-color: var(--danger-background-strong);
+            color: var(--danger-on-background-medium);
+        }
+    }
+}
+
+.focused {
+    background-color: var(--neutral-background-strong);
+}
+
+.divider {
+    min-height: 1px;
+    width: 100%;
+    background-color: var(--neutral-border-medium);
+    margin: var(--static-space-4) 0;
+}

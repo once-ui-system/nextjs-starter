@@ -1,0 +1,22 @@
+.icon {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--neutral-on-background-weak);
+}
+
+.dropdown {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+}
+
+.top {
+    &.fixed {
+        top: calc(var(--static-space-56) + var(--static-space-4));
+    }
+
+    &.auto {
+        top: calc(100% + var(--static-space-4));
+    }
+}

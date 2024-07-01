@@ -1,0 +1,62 @@
+.container {
+    position: relative;
+    width: 100%;
+    border-radius: var(--radius-m-nest-4);
+    border: 1px solid var(--neutral-border-medium);
+}
+
+.control {
+    display: flex;
+    padding: var(--static-space-4);
+    gap: var(--static-space-4);
+    overflow-x: auto;
+    scrollbar-width: none;
+    width: 100%;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.scrollButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    z-index: 2;
+}
+
+.scrollButtonLeft {
+    left: var(--static-space-4);
+}
+
+.scrollButtonRight {
+    right: var(--static-space-4);
+}
+
+.scrollMaskContainer {
+	position: absolute;
+    top: 1px;
+    bottom: 1px;
+    width: var(--static-space-64);
+	height: calc(100% - 2px);
+    z-index: 0;
+}
+
+.scrollMask {
+	position: relative;
+    width: 100%;
+	height: 100%;
+}
+
+.scrollMaskLeft {
+	border-radius: calc(var(--radius-m-nest-4) - 2px);
+    left: 1px;
+    background: linear-gradient(to right, var(--page-surface-background), transparent);
+}
+
+.scrollMaskRight {
+	border-radius: calc(var(--radius-m-nest-4) - 2px);
+    right: 1px;
+    background: linear-gradient(to left, var(--page-surface-background), transparent);
+}

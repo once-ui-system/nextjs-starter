@@ -1,0 +1,211 @@
+  /****************************/
+ /*     BACKGROUND-COLOR     */
+/****************************/
+
+/* PAGE */
+.background-page {
+    background-color: var(--page-background);
+}
+
+.background-surface {
+    background-color: var(--page-surface-background);
+}
+
+/* NEUTRAL */
+.background-neutral-weak {
+    background-color: var(--neutral-background-weak);
+}
+
+.background-neutral-medium {
+    background-color: var(--neutral-background-medium);
+}
+
+.background-neutral-strong {
+    background-color: var(--neutral-background-strong);
+}
+
+.solid-neutral-weak {
+    background-color: var(--neutral-solid-weak);
+}
+
+.solid-neutral-medium {
+    background-color: var(--neutral-solid-medium);
+}
+
+.solid-neutral-strong {
+    background-color: var(--neutral-solid-strong);
+}
+
+.alpha-neutral-weak {
+    background-color: var(--neutral-alpha-weak);
+}
+
+.alpha-neutral-medium {
+    background-color: var(--neutral-alpha-medium);
+}
+
+.alpha-neutral-strong {
+    background-color: var(--neutral-alpha-strong);
+}
+
+/* BRAND */
+.background-brand-weak {
+    background-color: var(--brand-background-weak);
+}
+
+.background-brand-medium {
+    background-color: var(--brand-background-medium);
+}
+
+.background-brand-strong {
+    background-color: var(--brand-background-strong);
+}
+
+.solid-brand-weak {
+    background-color: var(--brand-solid-weak);
+}
+
+.solid-brand-medium {
+    background-color: var(--brand-solid-medium);
+}
+
+.solid-brand-strong {
+    background-color: var(--brand-solid-strong);
+}
+
+.alpha-brand-weak {
+    background-color: var(--brand-alpha-weak);
+}
+
+.alpha-brand-medium {
+    background-color: var(--brand-alpha-medium);
+}
+
+.alpha-brand-strong {
+    background-color: var(--brand-alpha-strong);
+}
+
+/* ACCENT */
+.background-accent-weak {
+    background-color: var(--accent-background-weak);
+}
+
+.background-accent-medium {
+    background-color: var(--accent-background-medium);
+}
+
+.background-accent-strong {
+    background-color: var(--accent-background-strong);
+}
+
+.solid-accent-weak {
+    background-color: var(--accent-solid-weak);
+}
+
+.solid-accent-medium {
+    background-color: var(--accent-solid-medium);
+}
+
+.solid-accent-strong {
+    background-color: var(--accent-solid-strong);
+}
+
+/* INFO */
+.background-info-weak {
+    background-color: var(--info-background-weak);
+}
+
+.background-info-medium {
+    background-color: var(--info-background-medium);
+}
+
+.background-info-strong {
+    background-color: var(--info-background-strong);
+}
+
+.solid-info-weak {
+    background-color: var(--info-solid-weak);
+}
+
+.solid-info-medium {
+    background-color: var(--info-solid-medium);
+}
+
+.solid-info-strong {
+    background-color: var(--info-solid-strong);
+}
+
+/* DANGER */
+.background-danger-weak {
+    background-color: var(--danger-background-weak);
+}
+
+.background-danger-medium {
+    background-color: var(--danger-background-medium);
+}
+
+.background-danger-strong {
+    background-color: var(--danger-background-strong);
+}
+
+.solid-danger-weak {
+    background-color: var(--danger-solid-weak);
+}
+
+.solid-danger-medium {
+    background-color: var(--danger-solid-medium);
+}
+
+.solid-danger-strong {
+    background-color: var(--danger-solid-strong);
+}
+
+/* WARNING */
+.background-warning-weak {
+    background-color: var(--warning-background-weak);
+}
+
+.background-warning-medium {
+    background-color: var(--warning-background-medium);
+}
+
+.background-warning-strong {
+    background-color: var(--warning-background-strong);
+}
+
+.solid-warning-weak {
+    background-color: var(--warning-solid-weak);
+}
+
+.solid-warning-medium {
+    background-color: var(--warning-solid-medium);
+}
+
+.solid-warning-strong {
+    background-color: var(--warning-solid-strong);
+}
+
+/* SUCCESS */
+.background-success-weak {
+    background-color: var(--success-background-weak);
+}
+
+.background-success-medium {
+    background-color: var(--success-background-medium);
+}
+
+.background-success-strong {
+    background-color: var(--success-background-strong);
+}
+
+.solid-success-weak {
+    background-color: var(--success-solid-weak);
+}
+
+.solid-success-medium {
+    background-color: var(--success-solid-medium);
+}
+
+.solid-success-strong {
+    background-color: var(--success-solid-strong);
+}
