@@ -2,84 +2,61 @@
 
 import React from 'react';
 
-import { Heading, Text, Flex, Button, Grid, Icon } from '@/once-ui/components';
+import { Heading, Text, Flex, Button, Grid, Icon, InlineCode, Logo } from '@/once-ui/components';
 import Link from 'next/link';
 
 export default function Home() {
+	const links = [
+		{
+			href: "https://once-ui.com/docs/theming",
+			title: "Themes",
+			description: "Style your app in minutes.",
+		},
+		{
+			href: "https://once-ui.com/docs/flexComponent",
+			title: "Layout",
+			description: "Build responsive layouts.",
+		},
+		{
+			href: "https://once-ui.com/docs/typography",
+			title: "Typography",
+			description: "Scale text automatically.",
+		},
+	];
+
 	return (
-		<Flex
-			fillWidth
-			flex={1}
-			direction="column"
-			alignItems="center"
-			paddingTop="l"
-			paddingX="l">
+		<Flex style={{ backgroundImage: 'radial-gradient(ellipse at top left, var(--brand-background-strong) 0%, rgba(0,0,0,0) 50%)' }}
+			fillWidth paddingTop="l" paddingX="l"
+			direction="column" alignItems="center" flex={1}>
 			<Flex
-				style={{ overflow: 'hidden' }}
-				fillWidth
-				direction="column"
-				alignItems="center"
-				minHeight={1}
-				flex={1}
-				as="section"
-				maxWidth={64}>
+				as="section" overflow="hidden"
+				fillWidth minHeight="0" maxWidth={64}
+				direction="column" alignItems="center" flex={1}>
 				<Flex
-					style={{zIndex: '1'}}
-					position="relative"
-					background="surface"
-					border="neutral-medium"
-					borderStyle="solid-1"
-					radius="l"
-					paddingX="24"
-					paddingY="16"
-					marginBottom="xl">
-					<Text
-						onBackground="neutral-medium">
-						Start by editing <span className="font-strong">app/page.tsx</span>
-					</Text>
-				</Flex>
-				<Flex
-					fillWidth
-					fillHeight
 					as="main"
-					padding="l"
-					direction="column"
-					gap="l">
+					direction="column" justifyContent="center"
+					fillWidth fillHeight padding="l" gap="l">
 					<Flex
-						fillWidth
 						mobileDirection="column"
-						gap="24">
+						fillWidth gap="24">
 						<Flex
 							position="relative"
-							fillWidth
-							paddingY="xs"
-							paddingX="xl">
-							<Flex
-								style={{ top: '15%', left: '50%', transform: 'translateX(-50%) translateY(-50%) rotate(30deg)', backgroundImage: 'radial-gradient(ellipse, var(--brand-background-strong) 0%, rgba(0,0,0,0) 75%' }}
-								position="absolute"
-								width={20}
-								height={12}></Flex>
-							<Flex
-								style={{ top: '15%', left: '38%', transform: 'translateX(-50%) translateY(-50%) rotate(60deg)', backgroundImage: 'radial-gradient(ellipse, var(--brand-background-strong) 0%, rgba(0,0,0,0) 50%)' }}
-								position="absolute"
-								width={24}
-								height={42}></Flex>
-							<img
-								style={{ height:'4rem', position:'relative' }}
-								src="images/logo.svg" />
+							fillWidth paddingTop="56" paddingX="xl">
+							<Logo size="xl" icon={false} style={{zIndex: '1'}}/>
 						</Flex>
 						<Flex
 							position="relative"
-							fillWidth
-							direction="column"
-							gap="24">
+							fillWidth gap="24" marginBottom="104"
+							direction="column">
+							<InlineCode className="shadow-m" style={{width: 'fit-content', padding: 'var(--static-space-8) var(--static-space-16)'}}>
+								Start by editing <span className="brand-on-background-medium">app/page.tsx</span>
+							</InlineCode>
 							<Heading
-								variant="display-strong-s"
-								onBackground="neutral-strong">
+								variant="display-strong-s">
 								Comprehensive.<br/> Responsive.<br/>Accessible.
 							</Heading>
 							<Button
-								style={{ marginBottom: 'var(--static-space-104)' }}
+								href="https://once-ui.com/docs"
 								suffixIcon="chevronRight"
 								variant="secondary">
 								Read docs
@@ -87,123 +64,59 @@ export default function Home() {
 						</Flex>
 					</Flex>
 					<Grid
-						style={{ border: '1px solid var(--neutral-border-medium)' }}
+						radius="l"
+						border="neutral-medium"
+						borderStyle="solid-1"
 						columns="repeat(3, 1fr)"
 						tabletColumns="1col"
 						mobileColumns="1col"
 						fillWidth>
-						<Link
-							style={{ padding: 'var(--responsive-space-l)' }}
-							href="https://once-ui.com/docs/theming">
-							<Flex
-								fillWidth
-								direction="column"
-								paddingY="8"
-								gap="8">
+						{links.map((link) => (
+							<Link
+								target="_blank"
+								style={{ padding: 'var(--responsive-space-l)' }}
+								key={link.href}
+								href={link.href}>
 								<Flex
-									fillWidth
-									alignItems="center"
-									gap="12">
+									fillWidth paddingY="8" gap="8"
+									direction="column">
+									<Flex
+										fillWidth gap="12"
+										alignItems="center">
+										<Text
+											variant="body-strong-m" onBackground="neutral-strong">
+											{link.title}
+										</Text>
+										<Icon size="s" name="arrowUpRight" />
+									</Flex>
 									<Text
-										onBackground="neutral-strong"
-										variant="body-strong-m">
-										Themes
+										variant="body-default-s" onBackground="neutral-weak">
+										{link.description}
 									</Text>
-									<Icon
-										size="s"
-										name="arrowUpRight"/>
 								</Flex>
-								<Text
-									onBackground="neutral-weak"
-									variant="body-default-s">
-									Style your app in minutes.
-								</Text>
-							</Flex>
-						</Link>
-						<Link
-							style={{ padding: 'var(--responsive-space-l)' }}
-							href="https://once-ui.com/docs/layout">
-							<Flex
-								fillWidth
-								direction="column"
-								paddingY="8"
-								gap="8">
-								<Flex
-									fillWidth
-									alignItems="center"
-									gap="12">
-									<Text
-										onBackground="neutral-strong"
-										variant="body-strong-m">
-										Layout
-									</Text>
-									<Icon
-										size="s"
-										name="arrowUpRight"/>
-								</Flex>
-								<Text
-									onBackground="neutral-weak"
-									variant="body-default-s">
-									Build responsive layouts.
-								</Text>
-							</Flex>
-						</Link>
-						<Link
-							style={{ padding: 'var(--responsive-space-l)' }}
-							href="https://once-ui.com/docs/typography">
-							<Flex
-								fillWidth
-								direction="column"
-								paddingY="8"
-								gap="8">
-								<Flex
-									fillWidth
-									alignItems="center"
-									gap="12">
-									<Text
-										onBackground="neutral-strong"
-										variant="body-strong-m">
-										Typography
-									</Text>
-									<Icon
-										size="s"
-										name="arrowUpRight"/>
-								</Flex>
-								<Text
-									onBackground="neutral-weak"
-									variant="body-default-s">
-									Scale text automatically.
-								</Text>
-							</Flex>
-						</Link>
+							</Link>
+						))}
 					</Grid>
 				</Flex>
 			</Flex>
 			<Flex
-				fillWidth
-				justifyContent="space-between"
-				style={{ borderTop: '1px solid var(--neutral-border-medium)' }}
 				as="footer"
-				paddingX="l"
-				paddingY="m">
+				fillWidth paddingX="l" paddingY="m"
+				justifyContent="space-between">
 				<Text
-					onBackground="neutral-weak">
-					© 2024 Once UI, MIT License
+					variant="body-default-s" onBackground="neutral-weak">
+					© 2024 Once UI, <Link href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">MIT License</Link>
 				</Text>
 				<Flex
 					gap="12">
 					<Button
 						href="https://github.com/once-ui-system/nextjs-starter"
-						prefixIcon="github"
-						size="s"
-						variant="tertiary">
+						prefixIcon="github" size="s" variant="tertiary">
 						GitHub
 					</Button>
 					<Button
 						href="https://discord.com/invite/5EyAQ4eNdS"
-						prefixIcon="discord"
-						size="s"
-						variant="tertiary">
+						prefixIcon="discord" size="s" variant="tertiary">
 						Discord
 					</Button>
 				</Flex>

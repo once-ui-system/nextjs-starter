@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useRef, useEffect, KeyboardEvent, ReactNode, forwardRef, HTMLAttributes } from 'react';
+import React, { useState, useRef, useEffect, KeyboardEvent, ReactNode, forwardRef, HTMLAttributes, useImperativeHandle } from 'react';
 import classNames from 'classnames';
-
 import { Flex, Text } from '.';
 import styles from './Dropdown.module.scss';
 
@@ -32,12 +31,14 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(({
     className,
     children,
     onEscape,
-    ...props },
-    ref) => {
+    ...props
+}, ref) => {
     const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
     const [typedChars, setTypedChars] = useState<string>('');
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const internalRef = useRef<HTMLDivElement>(null);
     const typingTimeoutRef = useRef<number | null>(null);
+
+    useImperativeHandle(ref, () => internalRef.current as HTMLDivElement);
 
     const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         if (focusedIndex === null) {
@@ -70,8 +71,8 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(({
     };
 
     useEffect(() => {
-        if (dropdownRef.current && focusedIndex !== null) {
-            const focusedOption = dropdownRef.current.querySelectorAll<HTMLElement>('.' + styles.option)[focusedIndex];
+        if (internalRef.current && focusedIndex !== null) {
+            const focusedOption = internalRef.current.querySelectorAll<HTMLElement>('.' + styles.option)[focusedIndex];
             if (focusedOption) {
                 focusedOption.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 focusedOption.focus();
@@ -95,11 +96,11 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(({
     }, [typedChars, options]);
 
     useEffect(() => {
-        if (dropdownRef.current && selectedOption !== undefined) {
+        if (internalRef.current && selectedOption !== undefined) {
             const selectedIndex = options.findIndex(option => option.label === selectedOption);
             if (selectedIndex !== -1) {
                 setFocusedIndex(selectedIndex);
-                const selectedOptionElement = dropdownRef.current.querySelectorAll<HTMLElement>('.' + styles.option)[selectedIndex];
+                const selectedOptionElement = internalRef.current.querySelectorAll<HTMLElement>('.' + styles.option)[selectedIndex];
                 if (selectedOptionElement) {
                     selectedOptionElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
@@ -120,7 +121,8 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(({
             className={classNames(styles.dropdown, className)}
             tabIndex={0}
             onKeyDown={handleKeyDown}
-            ref={ref || dropdownRef}
+            ref={internalRef}
+            role="listbox"
             {...props}>
             {children}
             {options.map((option, index) => (
@@ -131,13 +133,16 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(({
                         paddingY="8"
                         gap="12"
                         radius="m"
+                        role="option"
+                        aria-selected={selectedOption === option.label}
                         className={classNames(styles.option, {
                             [styles.focused]: focusedIndex === index,
                             [styles.selected]: selectedOption === option.label,
                             [styles.danger]: option.danger,
                         })}
                         onClick={() => handleOptionClick(option)}
-                        onMouseEnter={() => handleOptionMouseEnter(index)}>
+                        onMouseEnter={() => handleOptionMouseEnter(index)}
+                        tabIndex={-1}>
                         {option.hasPrefix && <Flex className={styles.prefix}>{option.hasPrefix}</Flex>}
                         <Flex style={{ whiteSpace: "nowrap" }}
                             direction="column"

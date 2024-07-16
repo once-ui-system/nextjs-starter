@@ -1,7 +1,7 @@
 "use client";
 
-import React, { ReactNode, HTMLAttributes, MouseEventHandler } from 'react';
-
+import React, { ReactNode, HTMLAttributes, MouseEventHandler, forwardRef } from 'react';
+import classNames from 'classnames';
 import { Text, Icon, IconButton, IconButtonProps, Flex } from '.';
 import styles from './Chip.module.scss';
 
@@ -17,7 +17,7 @@ interface ChipProps extends HTMLAttributes<HTMLDivElement> {
     className?: string;
 }
 
-const Chip: React.FC<ChipProps> = ({
+const Chip: React.FC<ChipProps> = forwardRef<HTMLDivElement, ChipProps>(({
     label,
     selected = true,
     prefixIcon,
@@ -28,7 +28,7 @@ const Chip: React.FC<ChipProps> = ({
     style,
     className,
     ...props
-}) => {
+}, ref) => {
     const defaultIconButtonProps: IconButtonProps = {
         icon: "close",
         variant: "ghost",
@@ -49,14 +49,29 @@ const Chip: React.FC<ChipProps> = ({
         }
     };
 
+    const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (onClick) onClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+        }
+    };
+
     return (
         <Flex
+            ref={ref}
             alignItems="center"
             radius="full"
             paddingX="8"
             paddingY="4"
-            className={`${styles.chip} ${selected ? styles.selected : styles.unselected} ${className || ''}`}
+            role="button"
+            tabIndex={0}
+            aria-pressed={selected}
+            className={classNames(styles.chip, className, {
+                [styles.selected]: selected,
+                [styles.unselected]: !selected,
+            })}
             onClick={onClick}
+            onKeyDown={handleKeyDown}
             style={style}
             {...props}>
             {prefixIcon && 
@@ -71,12 +86,12 @@ const Chip: React.FC<ChipProps> = ({
                 </Text>
             </Flex>
             {onRemove && (
-                <IconButton
+                <IconButton style={{color: 'inherit'}}
                     {...combinedIconButtonProps}/>
             )}
         </Flex>
     );
-};
+});
 
 Chip.displayName = "Chip";
 

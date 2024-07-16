@@ -1,7 +1,8 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import { IconButton, Icon, Flex, Text } from '.';
+import classNames from 'classnames';
 import styles from './Toast.module.scss';
 
 interface ToastProps {
@@ -18,13 +19,14 @@ const iconMap = {
     danger: 'errorCircle'
 };
 
-const Toast: React.FC<ToastProps> = ({
-        variant,
-        className,
-        icon = true,
-        onClose,
-        action, 
-        children }) => {
+const Toast = forwardRef<HTMLDivElement, ToastProps>(({
+    variant,
+    className,
+    icon = true,
+    onClose,
+    action, 
+    children
+}, ref) => {
     const [visible, setVisible] = useState(true);
 
     useEffect(() => {
@@ -40,6 +42,7 @@ const Toast: React.FC<ToastProps> = ({
 
     return (
         <Flex
+            ref={ref}
             fillWidth
             background='surface'
             radius="l"
@@ -47,28 +50,33 @@ const Toast: React.FC<ToastProps> = ({
             paddingX="20"
             border="neutral-medium"
             borderStyle="solid-1"
-            className={`${className || ''} ${styles.toast} ${styles[variant]} ${visible ? styles.visible : styles.hidden}`}>
+            role="alert"
+            aria-live="assertive"
+            className={classNames(className, styles.toast, styles[variant], {
+                [styles.visible]: visible,
+                [styles.hidden]: !visible,
+            })}>
             <Flex
                 fillWidth
                 alignItems="center"
                 gap="8">
-                {icon &&
+                {icon && (
                     <Icon
                         size="l"
                         onBackground={`${variant}-medium`}
                         name={iconMap[variant]}/>
-                }
+                )}
                 <Text
                     variant="body-default-s"
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     as="div">
                     {children}
                 </Text>
-                {action &&
+                {action && (
                     <div>
                         {action}
                     </div>
-                }
+                )}
                 {onClose && (
                     <IconButton
                         variant="ghost"
@@ -81,6 +89,8 @@ const Toast: React.FC<ToastProps> = ({
             </Flex>
         </Flex>
     );
-};
+});
+
+Toast.displayName = "Toast";
 
 export { Toast };

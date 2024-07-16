@@ -1,26 +1,22 @@
-import { Flex, Text } from '@/once-ui/components'
-import { Inter } from 'next/font/google'
+import "@/once-ui/styles/index.scss";
+import "@/once-ui/tokens/index.scss";
 
-const inter = Inter({
-	variable: '--font-inter',
+import { Flex } from '@/once-ui/components'
+import classNames from 'classnames';
+import { Inter } from 'next/font/google'
+import { Source_Code_Pro } from 'next/font/google';
+
+const primary = Inter({
+	variable: '--font-primary',
 	subsets: ['latin'],
 	display: 'swap',
 })
 
-import "@/once-ui/tokens/scheme.css";
-import "@/once-ui/tokens/theme.css";
-import "@/once-ui/tokens/layout.css";
-import "@/once-ui/tokens/border.css";
-import "@/once-ui/tokens/elevation.css";
-import "@/once-ui/tokens/typography.css";
-
-import "@/once-ui/styles/spacing.css";
-import "@/once-ui/styles/border.css";
-import "@/once-ui/styles/color.css";
-import "@/once-ui/styles/background.css";
-import "@/once-ui/styles/typography.scss";
-import "@/once-ui/styles/global.scss";
-import "@/once-ui/styles/layout.css";
+const code = Source_Code_Pro({
+	variable: '--font-code',
+	subsets: ['latin'],
+	display: 'swap',
+});
 
 export default function RootLayout({
   	children,
@@ -28,23 +24,19 @@ export default function RootLayout({
   	children: React.ReactNode;
 }>) {
 	return (
-		<html
-			style={{ height: '100%', background: 'var(--page-background)' }}
-			data-border="playful"
-			data-theme="dark"
-			data-neutral="gray"
-			data-brand="cyan"
-			data-accent="violet"
-			lang="en"
-			className={`${inter.variable}`}>
-			<body
-				style={{ display: 'flex', height: '100%', width: '100%', margin: "0", padding: "0" }}>
+		<Flex
+			as="html" lang="en"
+			data-border="playful" data-theme="dark" data-neutral="gray" data-brand="cyan" data-accent="violet"
+			fillHeight background="page"
+			className={classNames(primary.variable, code.variable)}>
+			<Flex
+				as="body"
+				fillWidth fillHeight margin="0" padding="0">
 				<Flex
-					flex={1}
-					direction="column">
+					flex={1} direction="column">
 					{children}
 				</Flex>
-			</body>
-		</html>
+			</Flex>
+		</Flex>
 	);
 }

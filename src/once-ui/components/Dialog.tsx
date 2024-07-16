@@ -1,14 +1,14 @@
 "use client";
 
-import React, { ReactNode, useEffect, useCallback, useRef, MouseEventHandler } from 'react';
+import React, { ReactNode, useEffect, useCallback, useRef, forwardRef } from 'react';
 import ReactDOM from 'react-dom';
-
+import classNames from 'classnames';
 import { Flex, Heading, IconButton, Button, ButtonProps } from '.';
 import styles from './Dialog.module.scss';
 
 interface DialogButtonProps extends Partial<ButtonProps> {
     label: string;
-    onClick?: MouseEventHandler<HTMLButtonElement>;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 interface DialogProps {
@@ -16,14 +16,14 @@ interface DialogProps {
     onClose: () => void;
     title: string;
     children: ReactNode;
-    primaryButtonProps: DialogButtonProps;
+    primaryButtonProps?: DialogButtonProps;
     secondaryButtonProps?: DialogButtonProps;
     dangerButtonProps?: DialogButtonProps;
     style?: React.CSSProperties;
     className?: string;
 }
 
-const Dialog: React.FC<DialogProps> = ({
+const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(({
     isOpen,
     onClose,
     title,
@@ -33,7 +33,7 @@ const Dialog: React.FC<DialogProps> = ({
     dangerButtonProps,
     style,
     className
-}) => {
+}, ref) => {
     const dialogRef = useRef<HTMLDivElement>(null);
 
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -88,11 +88,15 @@ const Dialog: React.FC<DialogProps> = ({
 
     return ReactDOM.createPortal(
         <Flex
-            className={`${styles.overlay} ${className || ''}`}
+            ref={ref}
+            className={classNames(styles.overlay, className)}
             style={style}
             justifyContent="center"
             alignItems="center"
-            alpha="neutral-medium">
+            alpha="neutral-medium"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dialog-title">
             <Flex
                 className={styles.dialog}
                 ref={dialogRef}
@@ -109,6 +113,7 @@ const Dialog: React.FC<DialogProps> = ({
                     alignItems="center"
                     padding="24">
                     <Heading
+                        id="dialog-title"
                         variant="heading-strong-l">
                         {title}
                     </Heading>
@@ -124,35 +129,38 @@ const Dialog: React.FC<DialogProps> = ({
                     padding="24">
                     {children}
                 </Flex>
-                <Flex
-                    as="footer"
-                    justifyContent="space-between"
-                    padding="24">
-                    {dangerButtonProps && (
-                        <Button
-                            {...dangerButtonProps}
-                            variant='danger'
-                            size='m'/>
-                    )}
+                {(primaryButtonProps || secondaryButtonProps || dangerButtonProps) && (
                     <Flex
-                        gap="8">
-                        {secondaryButtonProps && (
+                        as="footer"
+                        justifyContent="space-between"
+                        padding="24">
+                        {dangerButtonProps && (
                             <Button
-                                {...secondaryButtonProps}
-                                variant='secondary'
+                                {...dangerButtonProps}
+                                variant='danger'
                                 size='m'/>
                         )}
-                        <Button
-                            {...primaryButtonProps}
-                            variant='primary'
-                            size='m'/>
+                        <Flex gap="8">
+                            {secondaryButtonProps && (
+                                <Button
+                                    {...secondaryButtonProps}
+                                    variant='secondary'
+                                    size='m'/>
+                            )}
+                            {primaryButtonProps && (
+                                <Button
+                                    {...primaryButtonProps}
+                                    variant='primary'
+                                    size='m'/>
+                            )}
+                        </Flex>
                     </Flex>
-                </Flex>
+                )}
             </Flex>
         </Flex>,
         document.body
     );
-};
+});
 
 Dialog.displayName = "Dialog";
 

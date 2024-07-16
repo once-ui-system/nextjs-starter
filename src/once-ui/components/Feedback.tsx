@@ -1,5 +1,6 @@
-import React, { forwardRef, ReactNode } from 'react';
+"use client";
 
+import React, { forwardRef, ReactNode } from 'react';
 import { IconButton, Button, Icon, Flex, Text } from '.';
 
 interface FeedbackProps {
@@ -44,6 +45,8 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(({
             borderStyle="solid-1"
             border={`${variant}-medium`}
             background={`${variant}-medium`}
+            role="alert"
+            aria-live="assertive"
             className={className}
             style={style}
             {...props}>
@@ -53,7 +56,8 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(({
                     paddingLeft="16">
                     <Icon
                         onBackground={`${variant}-medium`}
-                        name={variantIconMap[variant]}/>
+                        name={variantIconMap[variant]}
+                        aria-hidden="true"/>
                 </Flex>
             }
             <Flex
@@ -75,7 +79,9 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(({
                                 paddingY="4">
                                 <Text
                                     variant="heading-strong-m"
-                                    onBackground={`${variant}-medium`}>
+                                    onBackground={`${variant}-medium`}
+                                    role="heading"
+                                    aria-level={2}>
                                     {title}
                                 </Text>
                             </Flex>
@@ -86,7 +92,8 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(({
                                     size="m"
                                     tooltip="Hide"
                                     tooltipPosition="top"
-                                    variant="ghost"/>
+                                    variant="ghost"
+                                    aria-label="Close alert"/>
                             )}
                         </Flex>
                     )}

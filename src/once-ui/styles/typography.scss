@@ -2,15 +2,16 @@ html {
     font-size:   var(--font-scaling-desktop);
     font-family: var(--font-family-body);
     font-weight: var(--font-weight-default);
+    color: var(--neutral-on-background-strong);
 }
 
-@media (max-width: 1280px) {
+@media (--m) {
     html {
         font-size: var(--font-scaling-tablet);
     }
 }
 
-@media (max-width: 560px) {
+@media (--s) {
     html {
         font-size: var(--font-scaling-mobile);
     }
@@ -18,6 +19,14 @@ html {
 
 h1, h2, h3, h4, h5, h6, p {
     margin: 0;
+}
+
+.font-size-inherit {
+    font-size: inherit;
+}
+
+.font-weight-inherit {
+    font-weight: inherit;
 }
 
 .font-display {

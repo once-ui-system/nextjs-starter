@@ -1,72 +1,33 @@
 "use client";
 
-import React, { CSSProperties, ReactNode, ElementType, HTMLAttributes, forwardRef } from 'react';
+import React, { CSSProperties, forwardRef } from 'react';
 import classNames from 'classnames';
 
-import { SpacingToken } from '../types';
+import { FlexProps, SpacingProps, SizeProps, StyleProps, CommonProps, DisplayProps, ConditionalProps } from '../interfaces';
+import { TextVariant, SpacingToken, ColorScheme, ColorWeight } from '../types';
 
-type Position = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
+interface ComponentProps extends 
+    FlexProps, 
+    SpacingProps, 
+    SizeProps, 
+    StyleProps, 
+    CommonProps, 
+    DisplayProps, 
+    ConditionalProps {}
 
-type Scheme = 'neutral' | 'brand' | 'accent' | 'info' | 'danger' | 'warning' | 'success';
-type Weight = 'weak' | 'medium' | 'strong';
-
-type RadiusSize = 'xs' | 's' | 'm' | 'l' | 'xl' | 'full';
-type RadiusNest = '4' | '8';
-
-interface FlexProps extends HTMLAttributes<HTMLDivElement> {
-    as?: ElementType;
-    direction?: 'row' | 'column';
-    justifyContent?: CSSProperties['justifyContent'];
-    alignItems?: CSSProperties['alignItems'];
-    padding?: SpacingToken;
-    paddingLeft?: SpacingToken;
-    paddingRight?: SpacingToken;
-    paddingTop?: SpacingToken;
-    paddingBottom?: SpacingToken;
-    paddingX?: SpacingToken;
-    paddingY?: SpacingToken;
-    margin?: SpacingToken;
-    marginLeft?: SpacingToken;
-    marginRight?: SpacingToken;
-    marginTop?: SpacingToken;
-    marginBottom?: SpacingToken;
-    marginX?: SpacingToken;
-    marginY?: SpacingToken;
-    gap?: SpacingToken;
-    wrap?: boolean;
-    flex?: number;
-    position?: Position;
-    width?: number;
-    height?: number;
-    maxWidth?: number;
-    minWidth?: number;
-    minHeight?: number;
-    maxHeight?: number;
-    fillWidth?: boolean;
-    fillHeight?: boolean;
-    hide?: 's' | 'm';
-    show?: 's' | 'm';
-    tabletDirection?: 'row' | 'column';
-    mobileDirection?: 'row' | 'column';
-    background?: `${Scheme}-${Weight}` | 'surface' | 'page' | 'transparent';
-    alpha?: `${Scheme}-${Weight}`;
-    solid?: `${Scheme}-${Weight}`;
-    border?: `${Scheme}-${Weight}` | 'surface' | 'transparent';
-    borderStyle?: 'solid-1' | 'solid-2';
-    radius?: RadiusSize | `${RadiusSize}-${RadiusNest}`;
-    overflowX?: CSSProperties['overflowX'];
-    overflowY?: CSSProperties['overflowY'];
-    zIndex?: CSSProperties['zIndex'];
-    className?: string;
-    children?: ReactNode;
-    style?: React.CSSProperties;
-}
-
-const Flex = forwardRef<HTMLDivElement, FlexProps>(({
+const Flex = forwardRef<HTMLDivElement, ComponentProps>(({
     as: Component = 'div',
     direction,
     justifyContent,
     alignItems,
+    wrap = false,
+    flex,
+    textVariant,
+    textSize,
+    textWeight,
+    onBackground,
+    onSolid,
+    align,
     padding,
     paddingLeft,
     paddingRight,
@@ -82,8 +43,6 @@ const Flex = forwardRef<HTMLDivElement, FlexProps>(({
     marginX,
     marginY,
     gap,
-    wrap = false,
-    flex,
     position,
     width,
     height,
@@ -106,6 +65,7 @@ const Flex = forwardRef<HTMLDivElement, FlexProps>(({
     overflowX,
     overflowY,
     zIndex,
+    shadow,
     className,
     style,
     children,
@@ -115,13 +75,44 @@ const Flex = forwardRef<HTMLDivElement, FlexProps>(({
         return token ? `${prefix}-${token}` : undefined;
     };
 
+    if (onBackground && onSolid) {
+        console.warn("You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied.");
+    }
+
     if (background && solid) {
         console.warn("You cannot use both 'background' and 'solid' props simultaneously. Only one will be applied.");
     }
 
+    const getVariantClasses = (variant: TextVariant) => {
+        const [fontType, weight, size] = variant.split('-');
+        return [`font-${fontType}`, `font-${weight}`, `font-${size}`];
+    };
+
+    const sizeClass = textSize ? `font-${textSize}` : '';
+    const weightClass = textWeight ? `font-${textWeight}` : '';
+
+    const variantClasses = textVariant ? getVariantClasses(textVariant) : [sizeClass, weightClass];
+
+    let colorClass = '';
+    if (onBackground) {
+        const [scheme, weight] = onBackground.split('-') as [ColorScheme, ColorWeight];
+        colorClass = `${scheme}-on-background-${weight}`;
+    } else if (onSolid) {
+        const [scheme, weight] = onSolid.split('-') as [ColorScheme, ColorWeight];
+        colorClass = `${scheme}-on-solid-${weight}`;
+    }
+
+    const generateDynamicClass = (type: string, value: string | undefined) => {
+        if (!value) return undefined;
+        if (value === 'surface' || value === 'page' || value === 'transparent') {
+            return `${value}-${type}`;
+        }
+        const [scheme, weight] = value.split('-') as [ColorScheme, ColorWeight];
+        return `${scheme}-${type}-${weight}`;
+    };
+
     const classes = classNames(
         'flex',
-        className,
         generateClassName('p', padding),
         generateClassName('pl', paddingLeft),
         generateClassName('pr', paddingRight),
@@ -137,40 +128,56 @@ const Flex = forwardRef<HTMLDivElement, FlexProps>(({
         generateClassName('mx', marginX),
         generateClassName('my', marginY),
         generateClassName('g', gap),
+        generateDynamicClass('background', background),
+        generateDynamicClass('alpha', alpha),
+        generateDynamicClass('solid', solid),
+        generateDynamicClass('border', border),
         direction === 'column' && 'flex-column',
         direction === 'row' && 'flex-row',
-        tabletDirection === 'column' && 'm-flex-direction-column',
-        tabletDirection === 'row' && 'm-flex-direction-row',
-        mobileDirection === 'column' && 's-flex-direction-column',
-        mobileDirection === 'row' && 's-flex-direction-row',
-        background && !solid && `background-${background}`,
-        alpha && `alpha-${alpha}`,
-        solid && `solid-${solid}`,
-        border && `border-${border}`,
+        tabletDirection === 'column' && 'm-flex-column',
+        tabletDirection === 'row' && 'm-flex-row',
+        mobileDirection === 'column' && 's-flex-column',
+        mobileDirection === 'row' && 's-flex-row',
         borderStyle && `border-${borderStyle}`,
         radius === 'full' ? 'radius-full' : radius && `radius-${radius}`,
         hide === 's' && 's-flex-hide',
         hide === 'm' && 'm-flex-hide',
         show === 's' && 's-flex-show',
         show === 'm' && 'm-flex-show',
+        shadow && `shadow-${shadow}`,
+        colorClass,
+        className,
+        ...variantClasses,
     );
 
+    const parseDimension = (value: number | SpacingToken | undefined, type: 'width' | 'height'): string | undefined => {
+        if (value === undefined) return undefined;
+        if (typeof value === 'number') return `${value}rem`;
+        if (['0', '1', '2', '4', '8', '12', '16', '20', '24', '32', '40', '48', '56', '64', '80', '104', '128', '160'].includes(value)) {
+            return `var(--static-space-${value})`;
+        }
+        if (['xs', 's', 'm', 'l', 'xl'].includes(value)) {
+            return `var(--responsive-${type}-${value})`;
+        }
+        return undefined;
+    };
+
     const combinedStyle: CSSProperties = {
-        flexDirection: direction,
         justifyContent,
         alignItems,
         flexWrap: wrap ? 'wrap' : undefined,
         flex: flex !== undefined ? flex.toString() : undefined,
-        maxWidth: maxWidth ? `${maxWidth}rem` : undefined,
-        minWidth: minWidth ? `${minWidth}rem` : undefined,
-        minHeight: minHeight ? `${minHeight}rem` : undefined,
-        maxHeight: maxHeight ? `${maxHeight}rem` : undefined,
-        width: fillWidth ? '100%' : width ? `${width}rem` : undefined,
-        height: fillHeight ? '100%' : height ? `${height}rem` : undefined,
+        maxWidth: parseDimension(maxWidth, 'width'),
+        minWidth: parseDimension(minWidth, 'width'),
+        minHeight: parseDimension(minHeight, 'height'),
+        maxHeight: parseDimension(maxHeight, 'height'),
+        width: fillWidth ? '100%' : parseDimension(width, 'width'),
+        height: fillHeight ? '100%' : parseDimension(height, 'height'),
         position,
         overflowX,
         overflowY,
         zIndex,
+        textAlign: align,
         ...style,
     };
 

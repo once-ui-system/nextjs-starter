@@ -18,7 +18,7 @@
     display: none;
 }
 
-@media (max-width: 1024px) {
+@media (--m) {
     .m-flex-hide {
         display: none !important;
     }
@@ -27,16 +27,16 @@
         display: flex !important;
     }
 
-    .m-flex-direction-column {
+    .m-flex-column {
         flex-direction: column !important;
     }
 
-    .m-flex-direction-row {
+    .m-flex-row {
         flex-direction: row !important;
     }
 }
 
-@media (max-width: 768px) {
+@media (--s) {
     .s-flex-hide {
         display: none !important;
     }
@@ -45,11 +45,11 @@
         display: flex !important;
     }
 
-    .s-flex-direction-column {
+    .s-flex-column {
         flex-direction: column !important;
     }
 
-    .s-flex-direction-row {
+    .s-flex-row {
         flex-direction: row !important;
     }
 }

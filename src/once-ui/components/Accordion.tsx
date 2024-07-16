@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, CSSProperties } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 
 import { Flex, Icon, Heading } from '.';
 
@@ -12,12 +12,13 @@ interface AccordionProps {
     open?: boolean;
 }
 
-const Accordion: React.FC<AccordionProps> = ({
+const Accordion: React.FC<AccordionProps> = forwardRef(({
     title,
     children,
     style,
     className,
-    open = false }) => {
+    open = false
+}, ref) => {
     const [isOpen, setIsOpen] = useState(open);
 
     useEffect(() => {
@@ -28,19 +29,28 @@ const Accordion: React.FC<AccordionProps> = ({
         setIsOpen(!isOpen);
     };
 
+    useImperativeHandle(ref, () => ({
+        toggle: toggleAccordion,
+        open: () => setIsOpen(true),
+        close: () => setIsOpen(false)
+    }));
+
     return (
         <Flex
             fillWidth
             direction="column"
             style={style}
             className={className}>
-            <Flex style={{borderTop: "1px solid var(--neutral-border-medium)", cursor: 'pointer'}}
+            <Flex 
+                style={{ borderTop: "1px solid var(--neutral-border-medium)", cursor: 'pointer' }}
                 paddingY="16"
                 paddingLeft="12"
                 paddingRight="24"
                 alignItems="center"
                 justifyContent="space-between"
-                onClick={toggleAccordion}>
+                onClick={toggleAccordion}
+                aria-expanded={isOpen}
+                aria-controls="accordion-content">
                 <Heading
                     as="h3"
                     variant="heading-strong-l">
@@ -48,11 +58,12 @@ const Accordion: React.FC<AccordionProps> = ({
                 </Heading>
                 <Icon
                     name="chevronDown"
-                    size="m" 
-                    style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}/>
+                    size="m"
+                    style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }} />
             </Flex>
             {isOpen && (
                 <Flex
+                    id="accordion-content"
                     paddingX="12"
                     paddingBottom="32"
                     direction="column">
@@ -61,7 +72,7 @@ const Accordion: React.FC<AccordionProps> = ({
             )}
         </Flex>
     );
-};
+});
 
 Accordion.displayName = "Accordion";
 

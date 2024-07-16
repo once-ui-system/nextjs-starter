@@ -1,11 +1,11 @@
 .inlineCode {
     display: inline;
-    padding: var(--static-space-2) var(--static-space-4);
+    padding: var(--static-space-1) var(--static-space-4);
     border-radius: var(--radius-s);
     background: var(--neutral-background-strong);
     border: 1px solid var(--neutral-border-strong);
-    font-family: 'Courier New', Courier, monospace;
-    font-size: var(--font-size-body-s);
+    font-family: var(--font-family-code);
+    font-size: 80%;
     margin: 0 var(--static-space-2);
     vertical-align: middle;
 }

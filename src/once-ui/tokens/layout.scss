@@ -1,9 +1,6 @@
 :root {
-    --static-breakpoint-l: 1920px;
-    --static-breakpoint-m: 1024px;
-    --static-breakpoint-s: 560px;
-
-    --static-space-1:   0.0875rem;
+    --static-space-0:   0;
+    --static-space-1:   0.0625rem;
     --static-space-2:   0.125rem;
     --static-space-4:   0.25rem;
     --static-space-8:   0.5rem;
@@ -61,7 +58,7 @@
     --responsive-space-xs: var(--static-space-12);
 }
 
-@media (max-width: 1280px) {
+@media (--m) {
     :root {
         --responsive-width-xl: var(--static-width-1024);
         --responsive-width-l:  var(--static-width-1024);
@@ -83,7 +80,7 @@
     }
 }
 
-@media (max-width: 560px) {
+@media (--s) {
     :root {
         --responsive-width-xl: var(--static-width-1024);
         --responsive-width-l:  var(--static-width-1024);

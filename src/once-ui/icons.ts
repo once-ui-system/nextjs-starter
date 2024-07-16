@@ -1,9 +1,11 @@
 import { IconType } from 'react-icons';
 
 import {
+	HiChevronUp,
 	HiChevronDown,
 	HiChevronRight,
 	HiChevronLeft,
+	HiArrowUpRight,
 	HiOutlineArrowPath,
 	HiCheck,
 	HiMiniQuestionMarkCircle,
@@ -14,19 +16,20 @@ import {
 	HiInformationCircle,
 	HiExclamationCircle,
 	HiCheckCircle,
-	HiArrowUpRight,
 } from "react-icons/hi2";
 
 import {
 	FaDiscord,
-	FaGithub,
+	FaGithub
 } from "react-icons/fa6";
 
 export const iconLibrary: Record<string, IconType> = {
+	chevronUp: HiChevronUp,
     chevronDown: HiChevronDown,
 	chevronRight: HiChevronRight,
 	chevronLeft: HiChevronLeft,
 	refresh: HiOutlineArrowPath,
+	arrowUpRight: HiArrowUpRight,
 	check: HiCheck,
 	helpCircle: HiMiniQuestionMarkCircle,
 	infoCircle: HiInformationCircle,
@@ -36,7 +39,6 @@ export const iconLibrary: Record<string, IconType> = {
 	person: HiMiniUser,
 	close: HiMiniXMark,
 	openLink: HiOutlineLink,
-	arrowUpRight: HiArrowUpRight,
 	discord: FaDiscord,
-	github: FaGithub
+	github: FaGithub,
 };

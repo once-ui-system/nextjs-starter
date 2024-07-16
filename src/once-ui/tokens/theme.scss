@@ -1,21 +1,84 @@
+[data-theme="dark"][data-solid="color"],
+[data-theme="dark"] [data-solid="color"] {
+    --brand-solid-strong:         var(--function-brand-500);
+    --brand-solid-medium:         var(--function-brand-400);
+    --brand-solid-weak:           var(--function-brand-300);
+
+    --brand-on-solid-strong:      var(--static-white);      
+    --brand-on-solid-weak:        var(--function-brand-900);
+
+    --solid-border-width:         1px;
+
+    --solid-inset-color-brand:    var(--brand-alpha-strong);
+    --solid-inset-color-neutral:  var(--static-transparent);
+    --solid-inset-color-danger:   var(--danger-alpha-strong);
+}
+
+[data-theme="light"][data-solid="color"],
+[data-theme="light"] [data-solid="color"] {
+    --brand-solid-strong:         var(--function-brand-600);
+    --brand-solid-medium:         var(--function-brand-500);
+    --brand-solid-weak:           var(--function-brand-400);
+  
+    --brand-on-solid-strong:      var(--static-white);      
+    --brand-on-solid-weak:        var(--function-brand-1000);
+
+    --solid-border-width:         1px;
+
+    --solid-inset-color-brand:    var(--brand-alpha-strong);
+    --solid-inset-color-neutral:  var(--static-transparent);
+    --solid-inset-color-danger:   var(--danger-alpha-strong);
+}
+
+[data-theme="dark"][data-solid="contrast"],
+[data-theme="dark"] [data-solid="contrast"] {
+    --brand-solid-strong:         var(--function-neutral-1000);
+    --brand-solid-medium:         var(--static-white);
+    --brand-solid-weak:           var(--function-neutral-900);
+
+    --brand-on-solid-strong:      var(--static-black);
+    --brand-on-solid-weak:        var(--function-neutral-200);
+
+    --solid-border-width:         0;
+    --solid-border-color-brand:   var(--neutral-alpha-strong);
+
+    --solid-inset-color-brand:    var(--static-transparent);
+    --solid-inset-color-neutral:  var(--static-transparent);
+    --solid-inset-color-danger:   var(--danger-alpha-strong);
+}
+
+[data-theme="light"][data-solid="contrast"],
+[data-theme="light"] [data-solid="contrast"] {
+    --brand-solid-strong:         var(--function-neutral-300);
+    --brand-solid-medium:         var(--static-black);
+    --brand-solid-weak:           var(--function-neutral-400);
+  
+    --brand-on-solid-strong:      var(--static-white);      
+    --brand-on-solid-weak:        var(--function-neutral-1000);
+
+    --solid-border-width:         0;
+    --solid-border-color-brand:   var(--neutral-alpha-strong);
+
+    --solid-inset-color-brand:    var(--static-transparent);
+    --solid-inset-color-neutral:  var(--static-transparent);
+    --solid-inset-color-danger:   var(--danger-alpha-strong);
+}
+
 [data-theme="dark"] {
-    --brandType: url('/graphics/trademark/brandType-dark.svg');
+    --icon: url('/trademark/icon-dark.svg');
+    --type: url('/trademark/type-dark.svg');
 
     --page-background:            var(--neutral-background-weak);
-    --page-surface-background:    var(--neutral-background-medium);
-    --page-surface-border:        var(--static-transparent);
+    --surface-background:    var(--neutral-background-medium);
+    --surface-border:        var(--static-transparent);
 
-    --solid-border-width: 1px;
+    
+    --solid-inset-distance:      -1rem;
+    --solid-inset-size:           1rem;
+
     --solid-border-color-brand:   var(--brand-alpha-strong);
     --solid-border-color-neutral: var(--neutral-alpha-strong);
     --solid-border-color-danger:  var(--danger-alpha-strong);
-
-    --solid-inset-distance: -1rem;
-    --solid-inset-size: 1rem;
-    --solid-inset-color-brand:   var(--brand-alpha-strong);
-    --solid-inset-color-neutral: var(--static-transparent);
-    --solid-inset-color-danger:  var(--danger-alpha-strong);
-
 
     /* code */
     --code-moss:    var(--scheme-moss-800);
@@ -34,13 +97,6 @@
     --brand-on-background-strong: var(--static-white);
     --brand-on-background-medium: var(--function-brand-1000);
     --brand-on-background-weak:   var(--function-brand-800);
-  
-    --brand-solid-strong:         var(--function-brand-500);
-    --brand-solid-medium:         var(--function-brand-400);
-    --brand-solid-weak:           var(--function-brand-300);
-  
-    --brand-on-solid-strong:      var(--static-white);      
-    --brand-on-solid-weak:        var(--function-brand-900);
 
     --brand-border-strong:        var(--function-brand-400);
     --brand-border-medium:        var(--function-brand-300);
@@ -196,22 +252,20 @@
 }
 
 [data-theme="light"] {
-    --brandType: url('/graphics/trademark/brandType-light.svg');
+    --icon: url('/trademark/icon-light.svg');
+    --type: url('/trademark/type-light.svg');
 
     --page-background:            var(--neutral-background-weak);
-    --page-surface-background:    var(--neutral-background-weak);
-    --page-surface-border:        var(--neutral-border-medium);
+    --surface-background:    var(--neutral-background-weak);
+    --surface-border:        var(--neutral-border-medium);
+    
+    --solid-border-width:         1px;
+    --solid-inset-distance:      -1rem;
+    --solid-inset-size:           1rem;
 
-    --solid-border-width: 1px;
     --solid-border-color-brand:   var(--brand-alpha-strong);
     --solid-border-color-neutral: var(--neutral-alpha-strong);
     --solid-border-color-danger:  var(--danger-alpha-strong);
-
-    --solid-inset-distance: -1rem;
-    --solid-inset-size: 1rem;
-    --solid-inset-color-brand:   var(--brand-alpha-strong);
-    --solid-inset-color-neutral: var(--static-transparent);
-    --solid-inset-color-danger:  var(--danger-alpha-strong);
 
     /* code */
     --code-moss:    var(--scheme-moss-600);
@@ -230,13 +284,6 @@
     --brand-on-background-strong: var(--function-brand-100);
     --brand-on-background-medium: var(--function-brand-300);
     --brand-on-background-weak:   var(--function-brand-500);
-  
-    --brand-solid-strong:         var(--function-brand-600);
-    --brand-solid-medium:         var(--function-brand-500);
-    --brand-solid-weak:           var(--function-brand-400);
-  
-    --brand-on-solid-strong:      var(--static-white);      
-    --brand-on-solid-weak:        var(--function-brand-1000);
 
     --brand-border-strong:        var(--function-brand-800);
     --brand-border-medium:        var(--function-brand-900);
@@ -300,7 +347,7 @@
     --info-background-weak:      var(--static-white);
 
     --info-on-background-strong: var(--function-info-100);
-    --info-on-background-medium: var(--function-info-3000);
+    --info-on-background-medium: var(--function-info-300);
     --info-on-background-weak:   var(--function-info-500);
   
     --info-solid-strong:         var(--function-info-600);

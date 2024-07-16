@@ -1,21 +1,12 @@
 "use client";
 
-import React, { ElementType, ComponentPropsWithoutRef } from 'react';
+import React, { ElementType, ComponentPropsWithoutRef, CSSProperties } from 'react';
 import classNames from 'classnames';
 
-import { ColorScheme, ColorWeight, TextVariant, TextSize, TextWeight } from '../types';
+import { TextProps, CommonProps, SpacingProps } from '../interfaces'
+import { ColorScheme, ColorWeight, TextVariant, SpacingToken } from '../types';
 
-type HeadingProps<T extends ElementType> = {
-    as?: T;
-    variant?: TextVariant;
-    size?: TextSize;
-    weight?: TextWeight;
-    onBackground?: `${ColorScheme}-${ColorWeight}`;
-    onSolid?: `${ColorScheme}-${ColorWeight}`;
-    align?: 'left' | 'center' | 'right' | 'justify';
-    children: React.ReactNode;
-    className?: string;
-} & ComponentPropsWithoutRef<T>;
+type HeadingProps<T extends ElementType> = TextProps<T> & CommonProps & SpacingProps & ComponentPropsWithoutRef<T>;
 
 const Heading = <T extends ElementType = 'h1'>({
     as,
@@ -25,6 +16,20 @@ const Heading = <T extends ElementType = 'h1'>({
     onBackground,
     onSolid,
     align,
+    padding,
+    paddingLeft,
+    paddingRight,
+    paddingTop,
+    paddingBottom,
+    paddingX,
+    paddingY,
+    margin,
+    marginLeft,
+    marginRight,
+    marginTop,
+    marginBottom,
+    marginX,
+    marginY,
     children,
     className,
     ...props
@@ -51,7 +56,7 @@ const Heading = <T extends ElementType = 'h1'>({
         ? getVariantClasses(variant)
         : [sizeClass, weightClass];
 
-    let colorClass = 'color-inherit';
+    let colorClass = 'neutral-on-background-strong';
     if (onBackground) {
         const [scheme, weight] = onBackground.split('-') as [ColorScheme, ColorWeight];
         colorClass = `${scheme}-on-background-${weight}`;
@@ -60,13 +65,37 @@ const Heading = <T extends ElementType = 'h1'>({
         colorClass = `${scheme}-on-solid-${weight}`;
     }
 
-    const style = {
+    const generateClassName = (prefix: string, token: SpacingToken | undefined) => {
+        return token ? `${prefix}-${token}` : undefined;
+    };
+
+    const combinedClasses = classNames(
+        ...classes,
+        colorClass,
+        className,
+        generateClassName('p', padding),
+        generateClassName('pl', paddingLeft),
+        generateClassName('pr', paddingRight),
+        generateClassName('pt', paddingTop),
+        generateClassName('pb', paddingBottom),
+        generateClassName('px', paddingX),
+        generateClassName('py', paddingY),
+        generateClassName('m', margin),
+        generateClassName('ml', marginLeft),
+        generateClassName('mr', marginRight),
+        generateClassName('mt', marginTop),
+        generateClassName('mb', marginBottom),
+        generateClassName('mx', marginX),
+        generateClassName('my', marginY),
+    );
+
+    const style: CSSProperties = {
         textAlign: align,
     };
 
     return (
         <Component
-            className={classNames(...classes, colorClass, className)}
+            className={combinedClasses}
             style={style}
             {...props}>
             {children}

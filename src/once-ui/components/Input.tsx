@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, InputHTMLAttributes } from 'react';
+import React, { useState, useEffect, forwardRef, InputHTMLAttributes } from 'react';
 import classNames from 'classnames';
-
 import { Flex, Text } from '.';
 import styles from './Input.module.scss';
 
@@ -16,7 +15,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     labelAsPlaceholder?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({
+const Input = forwardRef<HTMLInputElement, InputProps>(({
     id,
     label,
     error,
@@ -28,7 +27,7 @@ const Input: React.FC<InputProps> = ({
     onFocus,
     onBlur,
     ...props
-}) => {
+}, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!props.value);
 
@@ -53,7 +52,7 @@ const Input: React.FC<InputProps> = ({
         }
     }, [props.value]);
 
-    const inputClassNames = classNames(styles.input, 'body-default-s', {
+    const inputClassNames = classNames(styles.input, 'font-body', 'font-default', 'font-m', {
         [styles.filled]: isFilled,
         [styles.focused]: isFocused,
         [styles.withPrefix]: hasPrefix,
@@ -65,18 +64,26 @@ const Input: React.FC<InputProps> = ({
     return (
         <div className={classNames(styles.wrapper, className, { [styles.error]: error })}>
             <div className={styles.base}>
-                {hasPrefix && <Flex paddingLeft="12" className={styles.prefix}>{hasPrefix}</Flex>}
+                { hasPrefix && (
+                    <Flex
+                        paddingLeft="12"
+                        className={styles.prefix}>
+                        {hasPrefix}
+                    </Flex>
+                )}
                 <div className={styles.content}>
                     <input
                         {...props}
+                        ref={ref}
                         id={id}
                         placeholder={labelAsPlaceholder ? label : props.placeholder}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         className={inputClassNames}
                         aria-describedby={error ? `${id}-error` : undefined}
+                        aria-invalid={!!error}
                     />
-                    {!labelAsPlaceholder && (
+                    { !labelAsPlaceholder && (
                         <Text
                             as="label"
                             variant="label-default-m"
@@ -87,11 +94,21 @@ const Input: React.FC<InputProps> = ({
                             {label}
                         </Text>
                     )}
-                    {children && <div className={styles.children}>{children}</div>}
+                    { children && (
+                        <div className={styles.children}>
+                            {children}
+                        </div>
+                    )}
                 </div>
-                {hasSuffix && <Flex paddingRight="12" className={styles.suffix}>{hasSuffix}</Flex>}
+                { hasSuffix && (
+                    <Flex
+                        paddingRight="12"
+                        className={styles.suffix}>
+                        {hasSuffix}
+                    </Flex>
+                )}
             </div>
-            {error && (
+            { error && (
                 <Flex paddingX="16">
                     <Text
                         as="span"
@@ -104,7 +121,7 @@ const Input: React.FC<InputProps> = ({
             )}
         </div>
     );
-};
+});
 
 Input.displayName = "Input";
 

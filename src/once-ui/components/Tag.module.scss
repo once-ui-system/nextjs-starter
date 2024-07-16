@@ -1,10 +1,6 @@
 .tag {
-    display: flex;
-    align-items: center;
-    border-radius: var(--radius-l);
     border-width: 1px;
     border-style: solid;
-    gap: var(--static-space-4);
     white-space: nowrap;
     user-select: none;
     width: fit-content;
@@ -22,8 +18,8 @@
     }
 
     &.neutral {
-        border-color: var(--neutral-border-strong);
-        background-color: var(--neutral-background-strong);
+        border-color: var(--neutral-border-medium);
+        background-color: var(--surface-background);
         color: var(--neutral-on-background-medium);
     }
 

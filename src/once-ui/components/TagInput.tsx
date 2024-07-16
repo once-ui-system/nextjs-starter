@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, KeyboardEventHandler, ChangeEventHandler, FocusEventHandler } from 'react';
+import React, { useState, KeyboardEventHandler, ChangeEventHandler, FocusEventHandler, forwardRef } from 'react';
 
 import { Flex, Chip, Input, InputProps } from '.';
 
@@ -9,7 +9,13 @@ interface TagInputProps extends Omit<InputProps, 'onChange' | 'value'> {
     onChange: (value: string[]) => void;
 }
 
-const TagInput: React.FC<TagInputProps> = ({ value, onChange, label, placeholder, ...inputProps }) => {
+const TagInput = forwardRef<HTMLInputElement, TagInputProps>(({
+    value,
+    onChange,
+    label,
+    placeholder,
+    ...inputProps
+}, ref) => {
     const [inputValue, setInputValue] = useState('');
     const [isFocused, setIsFocused] = useState(false);
 
@@ -41,7 +47,9 @@ const TagInput: React.FC<TagInputProps> = ({ value, onChange, label, placeholder
     };
 
     return (
-        <Input style={{height: 'var(--static-space-48)', paddingTop: 'var(--static-space-4)'}}
+        <Input
+            ref={ref}
+            style={{height: 'var(--static-space-48)', paddingTop: 'var(--static-space-4)'}}
             label={label}
             placeholder={placeholder}
             labelAsPlaceholder
@@ -50,6 +58,8 @@ const TagInput: React.FC<TagInputProps> = ({ value, onChange, label, placeholder
             onKeyDown={handleKeyDown}
             onFocus={handleFocus}
             onBlur={handleBlur}
+            aria-haspopup="listbox"
+            aria-expanded={isFocused}
             {...inputProps}>
             {value.length > 0 && (
                 <Flex
@@ -63,12 +73,16 @@ const TagInput: React.FC<TagInputProps> = ({ value, onChange, label, placeholder
                         <Chip
                             key={index}
                             label={tag}
-                            onRemove={() => handleRemoveTag(index)}/>
+                            onRemove={() => handleRemoveTag(index)}
+                            aria-label={`Remove tag ${tag}`}/>
                     ))}
                 </Flex>
             )}
         </Input>
     );
-};
+});
+
+TagInput.displayName = "TagInput";
 
 export { TagInput };
+export type { TagInputProps };

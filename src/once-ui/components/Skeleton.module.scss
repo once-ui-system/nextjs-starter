@@ -14,6 +14,11 @@
     animation: skeleton-loading 1.5s infinite;
     border-radius: var(--radius-l);
 
+    &.block {
+        width: 100%;
+        height: 100%;
+    }
+
     &.line {
         &.h-xs {
             height: var(--static-space-8);

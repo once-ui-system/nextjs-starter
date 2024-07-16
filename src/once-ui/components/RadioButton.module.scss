@@ -1,5 +1,7 @@
 .container {
     cursor: pointer;
+    isolation: isolate;
+    z-index: 1;
 
     &:hover, &:focus {
         .checkbox.checked .checkbox::before {
@@ -12,7 +14,7 @@
     box-shadow: inset 0 0 0 var(--solid-inset-color-brand);
     border-color: var(--solid-border-color-neutral);
     border-style: solid;
-    border-width: var(--solid-border-width);
+    border-width: 1px;
     width: var(--static-space-20);
     height: var(--static-space-20);
     min-width: var(--static-space-20);
@@ -27,8 +29,8 @@
     }
 }
 
-.container:hover .checkbox::before,
-.checkbox:focus-within::before {
+.container:hover .radioButton::before,
+.radioButton:focus-within::before {
     content: '';
     position: absolute;
     top: 50%;

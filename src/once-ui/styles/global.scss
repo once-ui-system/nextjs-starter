@@ -3,6 +3,23 @@
     box-sizing: border-box;
 }
 
+ul {
+    margin: 0;
+    padding: 0 0 0 var(--static-space-12);
+}
+
+li {
+    padding: 0;
+    list-style-position: inside;
+    font-size: inherit;
+    color: inherit;
+
+    &::marker {
+        margin-right: var(--static-space-4);
+        color: var(--brand-on-background-weak);
+    }
+}
+
 img {
     user-select: none;
 }

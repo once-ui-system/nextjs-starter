@@ -1,4 +1,5 @@
-export type SpacingToken =
+export type StaticSpacingToken = 
+| '0'
 | '1'
 | '2'
 | '4'
@@ -14,67 +15,56 @@ export type SpacingToken =
 | '64'
 | '80'
 | '104'
-| '120'
-| '160'
+| '128'
+| '160';
+
+export type TShirtSizes = 
 | 'xs'
 | 's'
 | 'm'
 | 'l'
 | 'xl';
 
-export type ColorScheme = 'neutral' | 'brand' | 'accent' | 'info' | 'danger' | 'warning' | 'success';
-export type ColorCategory = 'on-solid' | 'on-background';
-export type ColorWeight = 'weak' | 'medium' | 'strong';
+export type ResponsiveSpacingToken = TShirtSizes;
 
-export type TextVariant =
-| 'body-default-xs'
-| 'body-default-s'
-| 'body-default-m'
-| 'body-default-l'
-| 'body-default-xl'
-| 'body-strong-xs'
-| 'body-strong-s'
-| 'body-strong-m'
-| 'body-strong-l'
-| 'body-strong-xl'
-| 'heading-default-xs'
-| 'heading-default-s'
-| 'heading-default-m'
-| 'heading-default-l'
-| 'heading-default-xl'
-| 'heading-strong-xs'
-| 'heading-strong-s'
-| 'heading-strong-m'
-| 'heading-strong-l'
-| 'heading-strong-xl'
-| 'display-default-xs'
-| 'display-default-s'
-| 'display-default-m'
-| 'display-default-l'
-| 'display-default-xl'
-| 'display-strong-xs'
-| 'display-strong-s'
-| 'display-strong-m'
-| 'display-strong-l'
-| 'display-strong-xl'
-| 'label-default-xs'
-| 'label-default-s'
-| 'label-default-m'
-| 'label-default-l'
-| 'label-default-xl'
-| 'label-strong-xs'
-| 'label-strong-s'
-| 'label-strong-m'
-| 'label-strong-l'
-| 'label-strong-xl';
+export type ShadowSize = TShirtSizes;
 
-export type TextSize =
-| 'xs'
-| 's'
-| 'm'
-| 'l'
-| 'xl'
+export type SpacingToken = StaticSpacingToken | ResponsiveSpacingToken;
+
+export type ColorScheme = 
+| 'neutral'
+| 'brand'
+| 'accent'
+| 'info'
+| 'danger'
+| 'warning'
+| 'success';
+
+export type ColorCategory =
+| 'on-solid'
+| 'on-background';
+
+export type ColorWeight = 
+| 'weak'
+| 'medium'
+| 'strong';
+
+export type RadiusSize = TShirtSizes | 'full';
+
+export type RadiusNest = 
+| '4'
+| '8';
+
+export type TextType = 
+| 'body' 
+| 'heading' 
+| 'display' 
+| 'label';
 
 export type TextWeight =
 | 'default'
-| 'strong'
+| 'strong';
+
+export type TextSize = TShirtSizes
+
+export type TextVariant = `${TextType}-${TextWeight}-${TextSize}`

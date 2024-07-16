@@ -10,7 +10,7 @@
 .dialog {
     box-shadow: var(--shadow-xl);
 
-    @media (max-width: 768px) {
+    @media (--m) {
         position: fixed;
         bottom: 0;
         left: 0;

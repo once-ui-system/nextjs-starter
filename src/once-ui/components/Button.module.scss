@@ -11,7 +11,7 @@
     -webkit-tap-highlight-color: transparent;
 
     &:disabled {
-        box-shadow: inset 0 var(--solid-inset-distance) var(--solid-inset-size) var(--solid-inset-color-neutral);
+        box-shadow: none;
         background: var(--neutral-solid-weak);
         color: var(--neutral-on-solid-weak);
         border: none;
@@ -37,22 +37,19 @@
     box-shadow: inset 0 var(--solid-inset-distance) var(--solid-inset-size) var(--solid-inset-color-neutral);
     background: var(--neutral-background-medium);
     border-style: solid;
-    border-width: var(--solid-border-width);
-    border-color: var(--solid-border-color-neutral);
+    border: 1px solid var(--neutral-border-medium);
     color: var(--neutral-on-background-strong);
 
     &:hover, &:focus {
         background: var(--neutral-background-strong);
-        border-color: var(--neutral-alpha-strong);
+        border-color: var(--neutral-border-strong);
     }
 }
 
 .tertiary {
     box-shadow: inset 0 var(--solid-inset-distance) var(--solid-inset-size) var(--solid-inset-color-neutral);
     background: var(--static-transparent);
-    border-style: solid;
-    border-width: var(--solid-border-width);
-    border-color: var(--solid-border-color-neutral);
+    border: 1px solid var(--neutral-border-medium);
     color: var(--neutral-on-background-strong);
 
     &:hover, &:focus {

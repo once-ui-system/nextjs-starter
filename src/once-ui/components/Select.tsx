@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import classNames from 'classnames';
 
 import { Icon, Dropdown, Input, InputProps } from '.';
@@ -16,14 +16,14 @@ interface SelectProps extends Omit<InputProps, 'onSelect' | 'value'> {
     renderCustomDropdownContent?: () => React.ReactNode;
 }
 
-const Select: React.FC<SelectProps> = ({
+const Select = forwardRef<HTMLDivElement, SelectProps>(({
     options,
     value,
     onSelect,
     renderDropdownOptions,
     renderCustomDropdownContent,
     ...inputProps
-}) => {
+}, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -89,7 +89,10 @@ const Select: React.FC<SelectProps> = ({
                 className={classNames({
                     [inputStyles.filled]: isFilled,
                     [inputStyles.focused]: isFocused,
-                })}/>
+                })}
+                aria-haspopup="listbox"
+                aria-expanded={isDropdownOpen}
+            />
             {isDropdownOpen && (
                 <Dropdown
                     style={{ maxHeight: '24rem' }}
@@ -98,14 +101,16 @@ const Select: React.FC<SelectProps> = ({
                     className={`${styles.dropdown} ${styles.top} ${styles.fixed}`}
                     selectedOption={value || undefined}
                     ref={dropdownRef}
-                    onEscape={handleEscape}>
+                    onEscape={handleEscape}
+                    aria-labelledby={inputProps.id}>
                     {renderCustomDropdownContent && renderCustomDropdownContent()}
                 </Dropdown>
             )}
         </div>
     );
-};
+});
 
 Select.displayName = "Select";
 
 export { Select };
+export type { SelectProps };

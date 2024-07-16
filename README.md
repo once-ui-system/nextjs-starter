@@ -7,7 +7,7 @@ Once UI is a lightweight, versatile design system intended to cover 80% of the n
 * **Interactive documentation** to apply your branding and set component properties.
 
 ## Documentation
-The documentation is available at [once-ui.com/docs](https://once-ui.com/docs/getStarted).
+The documentation is available at [once-ui.com/docs](https://once-ui.com/docs).
 
 ## Releases
 v0.1 - Initial release

@@ -1,13 +1,13 @@
 :root {
     /* FONT FAMILY */
-    --font-family-heading:  var(--font-inter);
-    --font-family-body:     var(--font-inter);
-    --font-family-label:    var(--font-inter);
-    --font-family-code:     'monospace';
+    --font-family-heading:  var(--font-primary);
+    --font-family-body:     var(--font-primary);
+    --font-family-label:    var(--font-primary);
+    --font-family-code:     var(--font-code);
 
-    --font-size-heading-multiplier: 1;
-    --font-size-body-multiplier:    1;
-    --font-size-label-multiplier:   1;
+    --font-size-heading-multiplier:   1;
+    --font-size-body-multiplier:      1;
+    --font-size-label-multiplier:     1;
 
     --line-height-heading-multiplier: 1;
     --line-height-body-multiplier:    1;
@@ -41,10 +41,10 @@
     --font-size-display-xs:   2rem;
 
     --font-size-heading-xl:   1.5rem;
-    --font-size-heading-l:    1.25rem;
-    --font-size-heading-m:    1.125rem;
-    --font-size-heading-s:    1rem;
-    --font-size-heading-xs:   0.875rem;
+    --font-size-heading-l:    1.33rem;
+    --font-size-heading-m:    1.25rem;
+    --font-size-heading-s:    1.125rem;
+    --font-size-heading-xs:   1rem;
 
     --font-size-body-xl:      1.25rem;
     --font-size-body-l:       1.125rem;
@@ -80,7 +80,7 @@
     --line-height-label-s:    1rem;
 }
 
-@media (max-width: 1280px) {
+@media (--m) {
     :root {
         /* FONT SIZE */
         --font-size-display-xl:   3.5rem;
@@ -89,10 +89,9 @@
         --font-size-display-s:    2.25rem;
         --font-size-display-xs:   1.75rem;
     
-        --font-size-heading-xl:   1.25rem;
-        --font-size-heading-l:    1.125rem;
-        --font-size-heading-m:    1rem;
-        --font-size-heading-s:    0.875rem;
+        --font-size-heading-xl:   1.33rem;
+        --font-size-heading-l:    1.25rem;
+        --font-size-heading-m:    1.125rem;
     
         /* LINE HEIGHT */
         --line-height-display-xl: 3.75rem;
@@ -103,12 +102,11 @@
     
         --line-height-heading-xl: 1.75rem;
         --line-height-heading-l:  1.5rem;
-        --line-height-heading-m:  1.5rem;
-        --line-height-heading-s:  1.25rem;
+        --line-height-heading-m:  1.25rem;
     }
 }
 
-@media (max-width: 560px) {
+@media (--s) {
     :root {
         /* FONT SIZE */
         --font-size-display-xl:   2.75rem;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, ButtonHTMLAttributes, AnchorHTMLAttributes } from 'react';
+import React, { forwardRef, ReactNode, ButtonHTMLAttributes, AnchorHTMLAttributes } from 'react';
 import Link from 'next/link';
 
 import { Icon } from '.';
@@ -9,10 +9,11 @@ import styles from './ToggleButton.module.scss';
 interface CommonProps {
     label?: string;
     selected: boolean;
-    size?: 'm' | 'l';
+    size?: 's' | 'm' | 'l';
     align?: 'start' | 'center';
     width?: 'fit' | 'fill';
     weight?: 'default' | 'strong';
+    truncate?: boolean;
     prefixIcon?: string;
     suffixIcon?: string;
     className?: string;
@@ -26,13 +27,14 @@ type AnchorProps = CommonProps & AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const isExternalLink = (url: string) => /^https?:\/\//.test(url);
 
-const ToggleButton: React.FC<ButtonProps | AnchorProps> = ({
+const ToggleButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps | AnchorProps>(({
     label,
     selected,
     size = 'm',
     align = 'center',
     width = 'fit',
     weight = 'default',
+    truncate = false,
     prefixIcon,
     suffixIcon,
     className,
@@ -40,7 +42,7 @@ const ToggleButton: React.FC<ButtonProps | AnchorProps> = ({
     children,
     href,
     ...props
-}) => {
+}, ref) => {
     const iconSize = size === 'l' ? 'm' : 's';
 
     const content = (
@@ -48,7 +50,7 @@ const ToggleButton: React.FC<ButtonProps | AnchorProps> = ({
             <div className={styles.labelWrapper}>
                 {prefixIcon && <Icon name={prefixIcon} size={iconSize} />}
                 {label && (
-                    <div className={`font-s font-label ${styles.label} ${weight === 'strong' ? 'font-strong' : 'font-default'}`}>
+                    <div className={`font-s font-label ${styles.label} ${weight === 'strong' ? 'font-strong' : 'font-default'} ${truncate ? styles.truncate : ''}`}>
                         {label}
                     </div>
                 )}
@@ -69,10 +71,11 @@ const ToggleButton: React.FC<ButtonProps | AnchorProps> = ({
         if (isExternal) {
             return (
                 <a
-                    {...commonProps}
                     href={href}
+                    ref={ref as React.Ref<HTMLAnchorElement>}
                     target="_blank"
                     rel="noreferrer"
+                    {...commonProps}
                     {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}>
                     {content}
                 </a>
@@ -96,7 +99,7 @@ const ToggleButton: React.FC<ButtonProps | AnchorProps> = ({
             {content}
         </button>
     );
-};
+});
 
 ToggleButton.displayName = "ToggleButton";
 

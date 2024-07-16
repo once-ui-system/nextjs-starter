@@ -1,5 +1,7 @@
 .container {
     cursor: pointer;
+    isolation: isolate;
+    z-index: 1;
 
     &:hover, &:focus {
         .checkbox.checked .checkbox::before {
@@ -10,9 +12,10 @@
 
 .checkbox {
     box-shadow: inset 0 0 0 var(--solid-inset-color-brand);
-    border-color: var(--solid-border-color-neutral);
+    border-color: var(--neutral-border-medium);
     border-style: solid;
-    border-width: var(--solid-border-width);
+    border-width: 1px;
+    border-radius: min(var(--static-space-4), var(--radius-xs));
     width: var(--static-space-20);
     height: var(--static-space-20);
     min-width: var(--static-space-20);

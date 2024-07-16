@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import classNames from 'classnames';
-
 import { Flex, Icon, InteractiveDetails, InteractiveDetailsProps } from '.';
 import styles from './Checkbox.module.scss';
 
@@ -11,18 +10,21 @@ interface CheckboxProps extends Omit<InteractiveDetailsProps, 'onClick'> {
     className?: string;
     isChecked?: boolean;
     isIndeterminate?: boolean;
-    onToggle?: () => void;
+    handleToggle?: () => void;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({
+const generateId = () => `checkbox-${Math.random().toString(36).substring(2, 9)}`;
+
+const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLDivElement, CheckboxProps>(({
     style,
     className,
     isChecked: controlledIsChecked,
     isIndeterminate = false,
-    onToggle,
+    handleToggle,
     ...interactiveDetailsProps
-}) => {
+}, ref) => {
     const [isChecked, setIsChecked] = useState(controlledIsChecked || false);
+    const [checkboxId] = useState(generateId());
 
     useEffect(() => {
         if (controlledIsChecked !== undefined) {
@@ -30,32 +32,36 @@ const Checkbox: React.FC<CheckboxProps> = ({
         }
     }, [controlledIsChecked]);
 
-    const handleToggle = () => {
-        if (onToggle) {
-            onToggle();
+    const toggleItem = () => {
+        if (handleToggle) {
+            handleToggle();
         } else {
             setIsChecked(!isChecked);
         }
     };
 
     const handleKeyDown = (event: React.KeyboardEvent) => {
-        if (event.key === 'Enter') {
-            handleToggle();
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleItem();
         }
     };
 
     return (
         <Flex
+            ref={ref}
             alignItems="center"
             gap="16"
             style={style}
             className={classNames(styles.container, className)}
-            onClick={handleToggle}>
+            onClick={toggleItem}>
             <Flex
+                role="checkbox"
+                aria-checked={isIndeterminate ? 'mixed' : (controlledIsChecked !== undefined ? controlledIsChecked : isChecked)}
+                aria-labelledby={checkboxId}
                 position="relative"
                 justifyContent="center"
                 alignItems="center"
-                radius="xs"
                 background="surface"
                 onKeyDown={handleKeyDown}
                 tabIndex={0}
@@ -76,11 +82,12 @@ const Checkbox: React.FC<CheckboxProps> = ({
                 )}
             </Flex>
             <InteractiveDetails
+                id={checkboxId}
                 {...interactiveDetailsProps}
-                onClick={() => {}}/>
+                onClick={toggleItem}/>
         </Flex>
     );
-};
+});
 
 Checkbox.displayName = "Checkbox";
 

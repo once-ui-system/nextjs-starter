@@ -40,13 +40,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(({
     ...props
 }, ref) => {
     const labelSize = size === 'l' ? 'font-l' : size === 'm' ? 'font-m' : 'font-s';
-    const iconSize = size === 'l' ? 'm' : 's';
+    const iconSize = size === 'l' ? 'm' : size === 'm' ? 's' : 'xs';
 
     const content = (
         <>
             {prefixIcon && !loading && <Icon name={prefixIcon} size={iconSize} />}
             {loading && <Spinner size={size} />}
-            <div className={`font-label font-strong ${styles.label} ${labelSize} ${fillWidth ? styles.fillWidth : ''}`}>{label || children}</div>
+            <div className={`font-label font-strong ${styles.label} ${labelSize}`}>{label || children}</div>
             {suffixIcon && <Icon name={suffixIcon} size={iconSize} />}
         </>
     );
@@ -62,10 +62,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(({
         if (isExternal) {
             return (
                 <a
-                    {...commonProps}
                     href={href}
+                    ref={ref as React.Ref<HTMLAnchorElement>}
                     target="_blank"
                     rel="noreferrer"
+                    {...commonProps}
                     {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
                     {content}
                 </a>
@@ -75,6 +76,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(({
         return (
             <Link
                 href={href}
+                ref={ref as React.Ref<HTMLAnchorElement>}
                 {...commonProps}
                 {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
                 {content}
@@ -84,7 +86,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(({
 
     return (
         <button
-            ref={ref}
+            ref={ref as React.Ref<HTMLButtonElement>}
             {...commonProps}
             {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
             {content}

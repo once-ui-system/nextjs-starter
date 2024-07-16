@@ -1,21 +1,13 @@
 "use client";
 
-import React, { ElementType, ComponentPropsWithoutRef } from 'react';
+import React, { ElementType, ComponentPropsWithoutRef, CSSProperties } from 'react';
 import classNames from 'classnames';
 
-import { ColorScheme, ColorWeight, TextVariant, TextSize, TextWeight } from '../types';
 
-type TextProps<T extends ElementType> = {
-    as?: T;
-    variant?: TextVariant;
-    size?: TextSize;
-    weight?: TextWeight;
-    onBackground?: `${ColorScheme}-${ColorWeight}`;
-    onSolid?: `${ColorScheme}-${ColorWeight}`;
-    align?: 'left' | 'center' | 'right' | 'justify';
-    children: React.ReactNode;
-    className?: string;
-} & ComponentPropsWithoutRef<T>;
+import { TextProps, CommonProps, SpacingProps } from '../interfaces'
+import { ColorScheme, ColorWeight, TextVariant, SpacingToken } from '../types';
+
+type TypeProps<T extends ElementType> = TextProps<T> & CommonProps & SpacingProps & ComponentPropsWithoutRef<T>;
 
 const Text = <T extends ElementType = 'span'>({
     as,
@@ -25,10 +17,24 @@ const Text = <T extends ElementType = 'span'>({
     onBackground,
     onSolid,
     align,
+    padding,
+    paddingLeft,
+    paddingRight,
+    paddingTop,
+    paddingBottom,
+    paddingX,
+    paddingY,
+    margin,
+    marginLeft,
+    marginRight,
+    marginTop,
+    marginBottom,
+    marginX,
+    marginY,
     children,
     className,
     ...props
-}: TextProps<T>) => {
+}: TypeProps<T>) => {
     const Component = as || 'span';
 
     if (variant && (size || weight)) {
@@ -44,14 +50,14 @@ const Text = <T extends ElementType = 'span'>({
         return [`font-${fontType}`, `font-${weight}`, `font-${size}`];
     };
 
-    const sizeClass = size ? `font-${size}` : 'font-m';
-    const weightClass = weight ? `font-${weight}` : 'font-strong';
+    const sizeClass = size ? `font-${size}` : '';
+    const weightClass = weight ? `font-${weight}` : '';
 
     const classes = variant
         ? getVariantClasses(variant)
         : [sizeClass, weightClass];
 
-    let colorClass = 'color-inherit';
+    let colorClass = '';
     if (onBackground) {
         const [scheme, weight] = onBackground.split('-') as [ColorScheme, ColorWeight];
         colorClass = `${scheme}-on-background-${weight}`;
@@ -60,13 +66,37 @@ const Text = <T extends ElementType = 'span'>({
         colorClass = `${scheme}-on-solid-${weight}`;
     }
 
-    const style = {
+    const generateClassName = (prefix: string, token: SpacingToken | undefined) => {
+        return token ? `${prefix}-${token}` : undefined;
+    };
+
+    const combinedClasses = classNames(
+        ...classes,
+        colorClass,
+        className,
+        generateClassName('p', padding),
+        generateClassName('pl', paddingLeft),
+        generateClassName('pr', paddingRight),
+        generateClassName('pt', paddingTop),
+        generateClassName('pb', paddingBottom),
+        generateClassName('px', paddingX),
+        generateClassName('py', paddingY),
+        generateClassName('m', margin),
+        generateClassName('ml', marginLeft),
+        generateClassName('mr', marginRight),
+        generateClassName('mt', marginTop),
+        generateClassName('mb', marginBottom),
+        generateClassName('mx', marginX),
+        generateClassName('my', marginY),
+    );
+
+    const style: CSSProperties = {
         textAlign: align,
     };
 
     return (
         <Component
-            className={classNames(...classes, colorClass, className)}
+            className={combinedClasses}
             style={style}
             {...props}>
             {children}

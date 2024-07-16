@@ -3,6 +3,7 @@
     white-space: nowrap;
     user-select: none;
     height: fit-content;
+    width: fit-content;
 
     &.selected {
         background: var(--brand-alpha-medium);

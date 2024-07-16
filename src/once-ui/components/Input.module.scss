@@ -70,7 +70,7 @@
     &:autofill, &:-webkit-autofill {
         background-color: var(--neutral-background-strong) !important;
         border-radius: var(--radius-m);
-        -webkit-box-shadow: 0 0 0 var(--static-space-32) var(--neutral-solid-medium) inset !important;
+        -webkit-box-shadow: 0 0 0 var(--static-space-32) var(--neutral-background-strong) inset !important;
         -webkit-text-fill-color: var(--neutral-on-background-strong) !important;
     }
 }
@@ -86,8 +86,8 @@
     transform-origin: left;
 
     &.floating {
-        top: var(--static-space-8);
-        transform: scale(0.9);
+        top: calc(var(--static-space-8) - var(--static-space-2));
+        transform: scale(0.75);
     }
 }
 

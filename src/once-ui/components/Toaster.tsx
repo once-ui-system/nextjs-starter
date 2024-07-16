@@ -21,6 +21,7 @@ const Toaster: React.FC<ToasterProps> = ({
     removeToast }) => {
     return createPortal(
         <Flex
+            zIndex={11}
             fillWidth
             direction="column"
             maxWidth={32}
