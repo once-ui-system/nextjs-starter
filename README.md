@@ -1,6 +1,8 @@
 ![Once UI (Light)](public/images/cover-light.png#gh-light-mode-only)
 ![Once UI (Dark)](public/images/cover-dark.png#gh-dark-mode-only)
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fnextjs-starter&redirect-url=https%3A%2F%2Fonce-ui.com%2Fdocs%2F)
+
 Once UI is a lightweight, versatile design system intended to cover 80% of the needs of all applications. Start building your Next.js app in minutes with: 
 * **A robust token and style system** that simplifies customization and ensures consistency. 
 * **A copy-and-paste component library** that integrates seamlessly into your project.
@@ -8,9 +10,6 @@ Once UI is a lightweight, versatile design system intended to cover 80% of the n
 
 ## Documentation
 The documentation is available at [once-ui.com/docs](https://once-ui.com/docs).
-
-## Releases
-v0.1 - Initial release
 
 ## Authors
 Connect with us on X or LinkedIn.
