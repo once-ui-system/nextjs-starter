@@ -48,7 +48,11 @@ const ToggleButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPro
     const content = (
         <>
             <div className={styles.labelWrapper}>
-                {prefixIcon && <Icon name={prefixIcon} size={iconSize} />}
+                {prefixIcon && (
+                    <Icon
+                        name={prefixIcon}
+                        size={iconSize}/>
+                )}
                 {label && (
                     <div className={`font-s font-label ${styles.label} ${weight === 'strong' ? 'font-strong' : 'font-default'} ${truncate ? styles.truncate : ''}`}>
                         {label}
@@ -56,13 +60,19 @@ const ToggleButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPro
                 )}
                 {children}
             </div>
-            {suffixIcon && <Icon name={suffixIcon} size={iconSize} />}
+            {suffixIcon && (
+                <Icon
+                    name={suffixIcon}
+                    size={iconSize} />
+            )}
         </>
     );
 
     const commonProps = {
         className: `${styles.button} ${selected ? styles.selected : ''} ${styles[size]} ${styles[align]} ${styles[width]} ${className || ''}`,
         style: { ...style, textDecoration: 'none' },
+        'aria-pressed': selected,
+        tabIndex: 0,
     };
 
     if (href) {
