@@ -10,7 +10,7 @@ interface SwitchProps extends Omit<InteractiveDetailsProps, 'onClick'> {
     className?: string;
     isChecked: boolean;
     reverse?: boolean;
-    handleToggle: () => void;
+    onToggle: () => void;
     ariaLabel?: string;
 }
 
@@ -18,14 +18,14 @@ const Switch = forwardRef<HTMLDivElement, SwitchProps>(({
     className,
     isChecked,
     reverse = false,
-    handleToggle,
+    onToggle,
     ariaLabel = 'Toggle switch',
     ...interactiveDetailsProps
 }, ref) => {
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
-            handleToggle();
+            onToggle();
         }
     };
 
@@ -39,7 +39,7 @@ const Switch = forwardRef<HTMLDivElement, SwitchProps>(({
             className={classNames(styles.container, className, {
                 [styles.reverse]: reverse,
             })}
-            onClick={handleToggle}
+            onClick={onToggle}
             role="switch"
             aria-checked={isChecked}
             aria-label={ariaLabel}

@@ -10,7 +10,7 @@ interface CheckboxProps extends Omit<InteractiveDetailsProps, 'onClick'> {
     className?: string;
     isChecked?: boolean;
     isIndeterminate?: boolean;
-    handleToggle?: () => void;
+    onToggle?: () => void;
 }
 
 const generateId = () => `checkbox-${Math.random().toString(36).substring(2, 9)}`;
@@ -20,7 +20,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLDivElement, CheckboxPro
     className,
     isChecked: controlledIsChecked,
     isIndeterminate = false,
-    handleToggle,
+    onToggle,
     ...interactiveDetailsProps
 }, ref) => {
     const [isChecked, setIsChecked] = useState(controlledIsChecked || false);
@@ -33,8 +33,8 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLDivElement, CheckboxPro
     }, [controlledIsChecked]);
 
     const toggleItem = () => {
-        if (handleToggle) {
-            handleToggle();
+        if (onToggle) {
+            onToggle();
         } else {
             setIsChecked(!isChecked);
         }

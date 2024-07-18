@@ -9,7 +9,7 @@ interface RadioButtonProps extends Omit<InteractiveDetailsProps, 'onClick'> {
     style?: React.CSSProperties;
     className?: string;
     isChecked?: boolean;
-    handleToggle?: () => void;
+    onToggle?: () => void;
 }
 
 const generateId = () => `radio-${Math.random().toString(36).substring(2, 9)}`;
@@ -18,7 +18,7 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLDivElement, Radio
     style,
     className,
     isChecked: controlledIsChecked,
-    handleToggle,
+    onToggle,
     ...interactiveDetailsProps
 }, ref) => {
     const [isChecked, setIsChecked] = useState(controlledIsChecked || false);
@@ -31,8 +31,8 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLDivElement, Radio
     }, [controlledIsChecked]);
 
     const toggleItem = () => {
-        if (handleToggle) {
-            handleToggle();
+        if (onToggle) {
+            onToggle();
         } else {
             setIsChecked(!isChecked);
         }
@@ -52,7 +52,7 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLDivElement, Radio
             gap="16"
             style={style}
             className={classNames(styles.container, className)}
-            onClick={handleToggle}>
+            onClick={onToggle}>
             <Flex
                 role="radio"
                 aria-checked={controlledIsChecked !== undefined ? controlledIsChecked : isChecked}

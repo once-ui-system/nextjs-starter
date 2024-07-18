@@ -5,9 +5,9 @@ import styles from './Spinner.module.scss';
 
 interface SpinnerProps {
     size?: 'xs' | 's' | 'm' | 'l' | 'xl';
+    ariaLabel?: string;
     className?: string;
     style?: React.CSSProperties;
-    ariaLabel?: string;
 }
 
 const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(({

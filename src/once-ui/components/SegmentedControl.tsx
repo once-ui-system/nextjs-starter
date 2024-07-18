@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import classNames from 'classnames';
 import { Flex, ToggleButton, Scroller } from '.';
 
 interface ButtonOption {
@@ -14,7 +13,7 @@ interface ButtonOption {
 
 interface SegmentedControlProps {
     buttons: ButtonOption[];
-    handleToggle: (selected: string) => void;
+    onToggle: (selected: string) => void;
     defaultSelected?: string;
     className?: string;
     style?: React.CSSProperties;
@@ -22,7 +21,7 @@ interface SegmentedControlProps {
 
 const SegmentedControl: React.FC<SegmentedControlProps> = ({
     buttons,
-    handleToggle,
+    onToggle,
     defaultSelected,
     className,
     style,
@@ -32,14 +31,14 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
 
     useEffect(() => {
         if (buttons[selectedIndex]) {
-            handleToggle(buttons[selectedIndex].value || buttons[selectedIndex].label || '');
+            onToggle(buttons[selectedIndex].value || buttons[selectedIndex].label || '');
         }
-    }, [selectedIndex, buttons, handleToggle]);
+    }, [selectedIndex, buttons, onToggle]);
 
     const handleButtonClick = (index: number) => {
         setSelectedIndex(index);
         if (buttons[index]) {
-            handleToggle(buttons[index].value || buttons[index].label || '');
+            onToggle(buttons[index].value || buttons[index].label || '');
         }
     };
 
