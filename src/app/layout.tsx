@@ -26,7 +26,7 @@ export default function RootLayout({
 	return (
 		<Flex
 			as="html" lang="en"
-			data-border="playful" data-theme="dark" data-neutral="gray" data-brand="cyan" data-accent="violet"
+			data-border="playful" data-theme="dark" data-neutral="gray" data-brand="cyan" data-accent="violet" data-solid="color"
 			fillHeight background="page"
 			className={classNames(primary.variable, code.variable)}>
 			<Flex
