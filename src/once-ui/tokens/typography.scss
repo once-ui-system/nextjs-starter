@@ -1,8 +1,8 @@
 :root {
     /* FONT FAMILY */
-    --font-family-heading:  var(--font-primary);
     --font-family-body:     var(--font-primary);
-    --font-family-label:    var(--font-primary);
+    --font-family-heading:  var(--font-secondary);
+    --font-family-label:    var(--font-tertiary);
     --font-family-code:     var(--font-code);
 
     --font-size-heading-multiplier:   1;
