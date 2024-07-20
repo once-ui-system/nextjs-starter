@@ -14,7 +14,7 @@ The documentation is available at [once-ui.com/docs](https://once-ui.com/docs).
 ## Authors
 Connect with us on X or LinkedIn.
 
-Lorant Toth - [X](https://twitter.com/_lorant_), [LinkedIn](https://www.linkedin.com/in/tothlorant/)  
+Lorant Toth - [X](https://twitter.com/lorant_one), [LinkedIn](https://www.linkedin.com/in/tothlorant/)  
 Zsofia Komaromi - [LinkedIn](https://www.linkedin.com/in/zsofiakomaromi/)
 
 ## Get involved
