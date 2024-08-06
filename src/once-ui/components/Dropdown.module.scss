@@ -1,28 +1,29 @@
 .dropdown {
-    overflow-y: auto;
     outline: none;
-    z-index: 1;
 }
 
 .option {
     cursor: pointer;
+    border-color: var(--static-transparent);
+    border-width: 1px;
+    border-style: solid;
+    transition: var(--transition-property) var(--transition-duration-micro-medium) var(--transition-timing-function);
 
-    &:hover,
-    &:focus {
-        background-color: var(--neutral-background-strong);
+    &:hover, &:focus {
+        background: var(--neutral-alpha-weak);
+        border-color: var(--neutral-alpha-medium);
     }
     
     &.selected {
-        background-color: var(--neutral-background-strong);
-        border: 1px solid var(--neutral-border-strong);
+        background-color: var(--neutral-alpha-medium);
+        border-color: var(--neutral-alpha-medium);
     }
 
     &.danger {
-        color: var(--danger-on-background-weak);
+        color: var(--danger-alpha-weak);
 
-        &:hover,
-        &:focus {
-            background-color: var(--danger-background-strong);
+        &:hover, &:focus {
+            background-color: var(--danger-alpha-medium);
             color: var(--danger-on-background-medium);
         }
     }
