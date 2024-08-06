@@ -8,7 +8,9 @@ import styles from './Input.module.scss';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     id: string;
     label: string;
+    height?: 's' | 'm';
     error?: string;
+    radius?: string;
     className?: string;
     hasPrefix?: React.ReactNode;
     hasSuffix?: React.ReactNode;
@@ -18,7 +20,9 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input = forwardRef<HTMLInputElement, InputProps>(({
     id,
     label,
+    height = 'm',
     error,
+    radius,
     className,
     hasPrefix,
     hasSuffix,
@@ -38,7 +42,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
 
     const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
         setIsFocused(false);
-        if (props.value || event.target.value) {
+        if (event.target.value) {
             setIsFilled(true);
         } else {
             setIsFilled(false);
@@ -47,9 +51,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
     };
 
     useEffect(() => {
-        if (props.value) {
-            setIsFilled(true);
-        }
+        setIsFilled(!!props.value);
     }, [props.value]);
 
     const inputClassNames = classNames(styles.input, 'font-body', 'font-default', 'font-m', {
@@ -63,7 +65,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
 
     return (
         <div className={classNames(styles.wrapper, className, { [styles.error]: error })}>
-            <div className={styles.base}>
+            <div className={classNames(styles.base, { [styles.s]: height === 's'}, { [styles.m]: height === 'm'})}
+                style={{borderRadius: radius}}>
                 { hasPrefix && (
                     <Flex
                         paddingLeft="12"

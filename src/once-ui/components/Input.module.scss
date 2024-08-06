@@ -31,6 +31,43 @@
     }
 }
 
+.label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: var(--static-space-16);
+    transition: transform 0.3s, top 0.3s, left 0.3s;
+    color: var(--neutral-on-background-weak);
+    pointer-events: none;
+    transform-origin: left;
+
+    &.floating {
+        transform: scale(0.75);
+    }
+}
+
+.s {
+    min-height: var(--static-space-48);
+
+    &:has(.labelAsPlaceholder) {
+        min-height: var(--static-space-40);
+    }
+
+    .label {
+        &.floating {
+            top: var(--static-space-4);
+        }
+    }
+}
+
+.m {
+    .label {
+        &.floating {
+            top: calc(var(--static-space-8) - var(--static-space-2));
+        }
+    }
+}
+
 .content {
     position: relative;
     display: flex;
@@ -76,22 +113,6 @@
     }
 }
 
-.label {
-    position: absolute;
-    left: var(--static-space-16);
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.3s, top 0.3s, left 0.3s;
-    color: var(--neutral-on-background-weak);
-    pointer-events: none;
-    transform-origin: left;
-
-    &.floating {
-        top: calc(var(--static-space-8) - var(--static-space-2));
-        transform: scale(0.75);
-    }
-}
-
 .error {
     .base {
         background-color: var(--danger-background-medium);
@@ -109,4 +130,8 @@
 
 .prefix, .suffix {
     align-self: center;
+}
+
+.input[type="color"] {
+    opacity: 0;
 }
