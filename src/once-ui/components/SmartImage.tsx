@@ -1,3 +1,5 @@
+"use client";
+
 import React, { CSSProperties } from 'react';
 import Image, { ImageProps } from 'next/image';
 import classNames from 'classnames';
@@ -11,7 +13,7 @@ type SmartImageProps = ImageProps & {
     height?: number;
     radius?: string;
     alt?: string;
-    loading?: boolean;
+    isLoading?: boolean;
     objectFit?: CSSProperties['objectFit'];
 };
 
@@ -22,23 +24,22 @@ const SmartImage: React.FC<SmartImageProps> = ({
     height,
     radius,
     alt = '',
-    loading = false,
+    isLoading = false,
     objectFit = 'cover',
     ...props
 }) => {
     return (
         <Flex
             fillWidth
-            fillHeight
             position="relative"
             background="neutral-medium"
-            style={{ outline: 'none', overflow: 'hidden', ...style, aspectRatio }}
+            style={{ outline: 'none', overflow: 'hidden', ...style, height: height ? `${height}rem` : '100%', aspectRatio }}
             className={classNames(className, { [`radius-${radius}`]: radius })}>
-            { loading && (
+            { isLoading && (
                 <Skeleton
                     shape="block"/>
             )}
-            { !loading && (
+            { !isLoading && (
                 <Image
                     {...props}
                     alt={alt}
