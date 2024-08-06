@@ -15,6 +15,7 @@ interface SegmentedControlProps {
     buttons: ButtonOption[];
     onToggle: (selected: string) => void;
     defaultSelected?: string;
+    selected?: string;
     className?: string;
     style?: React.CSSProperties;
 }
@@ -23,24 +24,31 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
     buttons,
     onToggle,
     defaultSelected,
+    selected,
     className,
     style,
 }) => {
-    const defaultIndex = buttons.findIndex(button => (button.value || button.label) === defaultSelected);
-    const [selectedIndex, setSelectedIndex] = useState<number>(defaultIndex !== -1 ? defaultIndex : 0);
+    const [internalSelected, setInternalSelected] = useState<string>(() => {
+        if (selected !== undefined) return selected;
+        if (defaultSelected !== undefined) return defaultSelected;
+        return buttons[0]?.value || buttons[0]?.label || '';
+    });
 
     useEffect(() => {
-        if (buttons[selectedIndex]) {
-            onToggle(buttons[selectedIndex].value || buttons[selectedIndex].label || '');
+        if (selected !== undefined) {
+            setInternalSelected(selected);
         }
-    }, [selectedIndex, buttons, onToggle]);
+    }, [selected]);
 
-    const handleButtonClick = (index: number) => {
-        setSelectedIndex(index);
-        if (buttons[index]) {
-            onToggle(buttons[index].value || buttons[index].label || '');
-        }
+    const handleButtonClick = (clickedButton: ButtonOption) => {
+        const newSelected = clickedButton.value || clickedButton.label || '';
+        setInternalSelected(newSelected);
+        onToggle(newSelected);
     };
+
+    const selectedIndex = buttons.findIndex(
+        button => (button.value || button.label) === internalSelected
+    );
 
     return (
         <Flex
@@ -65,12 +73,12 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
                                 key={button.value || button.label}
                                 label={button.label}
                                 value={button.value || button.label}
-                                selected={selectedIndex === index}
-                                onClick={() => handleButtonClick(index)}
+                                selected={index === selectedIndex}
+                                onClick={() => handleButtonClick(button)}
                                 prefixIcon={button.prefixIcon}
                                 suffixIcon={button.suffixIcon}
                                 width="fill"
-                                aria-pressed={selectedIndex === index}/>
+                                aria-pressed={index === selectedIndex}/>
                         ))}
                     </Flex>
                 </Scroller>
