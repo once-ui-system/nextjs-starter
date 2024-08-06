@@ -26,7 +26,6 @@ const UserMenu: React.FC<UserMenuProps> = ({
     return (
         <DropdownWrapper
             dropdownOptions={dropdownOptions}
-            dropdownAlignment={dropdownAlignment}
             dropdownProps={dropdownProps}>
             <Flex
                 direction="column"

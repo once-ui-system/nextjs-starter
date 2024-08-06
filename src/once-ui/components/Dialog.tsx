@@ -1,9 +1,9 @@
 "use client";
 
-import React, { ReactNode, useEffect, useCallback, useRef, forwardRef } from 'react';
+import React, { ReactNode, useEffect, useCallback, useRef, forwardRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-import { Flex, Heading, IconButton, Button, ButtonProps } from '.';
+import { Flex, Heading, IconButton, Button, ButtonProps, Text } from '.';
 import styles from './Dialog.module.scss';
 
 interface DialogButtonProps extends Partial<ButtonProps> {
@@ -14,7 +14,8 @@ interface DialogButtonProps extends Partial<ButtonProps> {
 interface DialogProps {
     isOpen: boolean;
     onClose: () => void;
-    title: string;
+    title: ReactNode;
+    description?: ReactNode;
     children: ReactNode;
     primaryButtonProps?: DialogButtonProps;
     secondaryButtonProps?: DialogButtonProps;
@@ -27,6 +28,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(({
     isOpen,
     onClose,
     title,
+    description,
     children,
     primaryButtonProps,
     secondaryButtonProps,
@@ -35,6 +37,19 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(({
     className
 }, ref) => {
     const dialogRef = useRef<HTMLDivElement>(null);
+    const [isVisible, setIsVisible] = useState(isOpen);
+    const [isAnimating, setIsAnimating] = useState(false);
+
+    useEffect(() => {
+        if (isOpen) {
+            setIsVisible(true);
+            setTimeout(() => setIsAnimating(true), 10);
+        } else {
+            setIsAnimating(false);
+            const timeout = setTimeout(() => setIsVisible(false), 300);
+            return () => clearTimeout(timeout);
+        }
+    }, [isOpen]);
 
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
         if (event.key === 'Escape') {
@@ -84,74 +99,93 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(({
         }
     }, [isOpen]);
 
-    if (!isOpen) return null;
+    if (!isVisible) return null;
 
     return ReactDOM.createPortal(
         <Flex
             ref={ref}
-            className={classNames(styles.overlay, className)}
+            className={classNames(styles.overlay, className, { [styles.open]: isAnimating })}
             style={style}
             justifyContent="center"
             alignItems="center"
-            alpha="neutral-medium"
+            padding="l"
             role="dialog"
             aria-modal="true"
             aria-labelledby="dialog-title">
             <Flex
-                className={styles.dialog}
+                style={{ maxHeight: '100%' }}
+                className={classNames(styles.dialog, { [styles.open]: isAnimating })}
                 ref={dialogRef}
                 fillWidth
-                maxWidth={40}
-                radius="l"
+                radius="xl"
                 border="neutral-medium"
                 borderStyle="solid-1"
                 background="neutral-weak"
                 direction="column">
                 <Flex
                     as="header"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    padding="24">
-                    <Heading
-                        id="dialog-title"
-                        variant="heading-strong-l">
-                        {title}
-                    </Heading>
-                    <IconButton
-                        icon="close"
-                        size="m"
-                        variant="tertiary"
-                        tooltip="Close"
-                        onClick={onClose}/>
+                    direction="column"
+                    paddingX="m"
+                    paddingTop="m"
+                    paddingBottom="s"
+                    gap="4">
+                    <Flex
+                        fillWidth
+                        justifyContent="space-between"
+                        gap="8">
+                        <Heading
+                            id="dialog-title"
+                            variant="heading-strong-l">
+                            {title}
+                        </Heading>
+                        <IconButton
+                            icon="close"
+                            size="m"
+                            variant="tertiary"
+                            tooltip="Close"
+                            onClick={onClose} />
+                    </Flex>
+                    {description && (
+                        <Text
+                            variant="body-default-s"
+                            onBackground="neutral-weak">
+                            {description}
+                        </Text>
+                    )}
                 </Flex>
                 <Flex
                     as="section"
-                    padding="24">
+                    paddingX="m"
+                    paddingY="s"
+                    overflowY="auto"
+                    direction="column">
                     {children}
                 </Flex>
                 {(primaryButtonProps || secondaryButtonProps || dangerButtonProps) && (
                     <Flex
                         as="footer"
                         justifyContent="space-between"
-                        padding="24">
+                        paddingTop="s"
+                        paddingX="m"
+                        paddingBottom="m">
                         {dangerButtonProps && (
                             <Button
                                 {...dangerButtonProps}
                                 variant='danger'
-                                size='m'/>
+                                size='m' />
                         )}
                         <Flex gap="8">
                             {secondaryButtonProps && (
                                 <Button
                                     {...secondaryButtonProps}
                                     variant='secondary'
-                                    size='m'/>
+                                    size='m' />
                             )}
                             {primaryButtonProps && (
                                 <Button
                                     {...primaryButtonProps}
                                     variant='primary'
-                                    size='m'/>
+                                    size='m' />
                             )}
                         </Flex>
                     </Flex>

@@ -5,18 +5,18 @@
     color: var(--neutral-on-background-weak);
 }
 
-.dropdown {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
-.top {
-    &.fixed {
-        top: calc(var(--static-space-56) + var(--static-space-4));
-    }
-
-    &.auto {
-        top: calc(100% + var(--static-space-4));
-    }
+.fadeIn {
+    transform-origin: top right;
+    animation: fadeIn var(--transition-duration-micro-medium) var(--transition-timing-function);
 }

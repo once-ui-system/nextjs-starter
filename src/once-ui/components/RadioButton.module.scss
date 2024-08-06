@@ -19,7 +19,7 @@
     height: var(--static-space-20);
     min-width: var(--static-space-20);
     min-height: var(--static-space-20);
-    transition: border-color 0.3s;
+    transition: var(--transition-property) var(--transition-duration-micro-medium) var(--transition-timing-function);
     outline: none;
 
     &.checked {

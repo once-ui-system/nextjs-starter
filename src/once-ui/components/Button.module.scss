@@ -9,6 +9,7 @@
     white-space: nowrap;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
+    transition: var(--transition-property) var(--transition-duration-micro-medium) var(--transition-timing-function);
 
     &:disabled {
         box-shadow: none;

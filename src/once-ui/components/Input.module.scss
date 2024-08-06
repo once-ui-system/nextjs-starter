@@ -15,6 +15,7 @@
     background-color: var(--static-transparent);
     border-radius: var(--radius-l);
     min-height: var(--static-space-56);
+    transition: var(--transition-property) var(--transition-duration-micro-medium) var(--transition-timing-function);
 
     &.focused, &.filled {
         background-color: var(--neutral-background-strong);
