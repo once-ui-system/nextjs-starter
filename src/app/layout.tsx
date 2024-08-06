@@ -12,6 +12,19 @@ const primary = Inter({
 	display: 'swap',
 })
 
+type FontConfig = {
+    variable: string;
+};
+
+/*
+	Replace with code for secondary and tertiary fonts
+	from https://once-ui.com/customize
+*/
+const secondary: FontConfig | undefined = undefined;
+const tertiary: FontConfig | undefined = undefined;
+/*
+*/
+
 const code = Source_Code_Pro({
 	variable: '--font-code',
 	subsets: ['latin'],
@@ -26,9 +39,19 @@ export default function RootLayout({
 	return (
 		<Flex
 			as="html" lang="en"
-			data-border="playful" data-theme="dark" data-neutral="gray" data-brand="cyan" data-accent="violet" data-solid="color"
 			fillHeight background="page"
-			className={classNames(primary.variable, code.variable)}>
+			data-neutral="gray" data-brand="blue" data-accent="violet"
+			data-solid="color" data-solid-style="flat"
+			data-theme="dark"
+			data-border="playful"
+			data-surface="filled"
+			data-transition="all"
+			className={classNames(
+				primary.variable,
+				secondary ? secondary.variable : '',
+				tertiary ? tertiary.variable : '',
+				code.variable,
+				'root')}>
 			<Flex
 				as="body"
 				fillWidth fillHeight margin="0" padding="0">

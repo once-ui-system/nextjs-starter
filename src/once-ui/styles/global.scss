@@ -30,11 +30,6 @@ img {
     color: var(--neutral-background-strong);
 }
 
-::-moz-selection {
-    background: var(--neutral-on-background-medium);
-    color: var(--neutral-background-strong);
-}
-
 /* LINK */
 a {
     color: var(--brand-on-background-medium);
@@ -60,10 +55,11 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--neutral-alpha-weak);
+    background: var(--neutral-alpha-medium);
     border-radius: var(--radius-999);
+    transition: var(--transition-property) var(--transition-duration-micro-medium) var(--transition-timing-function);
 
     &:hover {
-        background: var(--neutral-background-strong);
+        background: var(--neutral-alpha-strong);
     }
 }
