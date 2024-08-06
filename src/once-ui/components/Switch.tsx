@@ -55,9 +55,11 @@ const Switch = forwardRef<HTMLDivElement, SwitchProps>(({
                         [styles.checked]: isChecked,
                     })}/>
             </div>
+            { interactiveDetailsProps.label && (
             <InteractiveDetails
                 {...interactiveDetailsProps}
                 onClick={() => {}}/>
+            )}
         </Flex>
     );
 });

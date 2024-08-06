@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react';
 import { Text, Flex, IconButton, IconButtonProps } from '.';
 
 interface InteractiveDetailsProps {
-    label: string;
+    label?: string;
     description?: string;
     iconButtonProps?: IconButtonProps;
     onClick: () => void;

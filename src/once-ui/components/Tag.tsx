@@ -37,7 +37,7 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(({
             className={classNames(styles.tag, styles[variant], styles[size], className)}
             {...props}>
             {prefixIcon && <Icon name={prefixIcon} size="xs" />}
-            <Flex
+            <Flex style={{userSelect: 'none'}}
                 paddingX={paddingSize}
                 alignItems="center">
                 <Text
