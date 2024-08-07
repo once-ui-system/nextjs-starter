@@ -12,8 +12,8 @@ The documentation is available at [once-ui.com/docs](https://once-ui.com/docs).
 ## Authors
 Connect with us on X or LinkedIn.
 
-Lorant Toth - [X](https://twitter.com/lorant_one), [LinkedIn](https://www.linkedin.com/in/tothlorant/)  
-Zsofia Komaromi - [LinkedIn](https://www.linkedin.com/in/zsofiakomaromi/)
+Lorant Toth - [X](https://x.com/lorant_one), [LinkedIn](https://www.linkedin.com/in/tothlorant/)  
+Zsofia Komaromi - [X](https://x.com/zsofiakomaromi), [LinkedIn](https://www.linkedin.com/in/zsofiakomaromi/)
 
 ## Get involved
 - Join the [Once UI Discord server](https://discord.com/invite/5EyAQ4eNdS) to connect with designers, developers and share your projects.
@@ -32,5 +32,7 @@ Design and prototype entire products from scratch in hours. Use the same tokens 
 Grab a copy from the [Figma Community](https://figma.com/).
 
 ## Deploy your project
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/76DR9Q?referralCode=QW2HBC)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fnextjs-starter&redirect-url=https%3A%2F%2Fonce-ui.com%2Fdocs%2F)
