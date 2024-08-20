@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Heading, Text, Flex, Button, Grid, Icon, InlineCode, Logo } from '@/once-ui/components';
+import { Heading, Text, Flex, Button, Grid, Icon, InlineCode, Logo, Background } from '@/once-ui/components';
 import Link from 'next/link';
 
 export default function Home() {
@@ -25,10 +25,13 @@ export default function Home() {
 	];
 
 	return (
-		<Flex style={{ backgroundImage: 'radial-gradient(ellipse at top left, var(--brand-background-strong) 0%, rgba(0,0,0,0) 50%)' }}
+		<Flex
 			fillWidth paddingTop="l" paddingX="l"
 			direction="column" alignItems="center" flex={1}>
+			<Background
+				dots={false}/>
 			<Flex
+				position="relative"
 				as="section" overflow="hidden"
 				fillWidth minHeight="0" maxWidth={64}
 				direction="column" alignItems="center" flex={1}>
@@ -48,7 +51,12 @@ export default function Home() {
 							position="relative"
 							fillWidth gap="24" marginBottom="104"
 							direction="column">
-							<InlineCode className="shadow-m" style={{width: 'fit-content', padding: 'var(--static-space-8) var(--static-space-16)'}}>
+							<InlineCode
+								className="shadow-m"
+								style={{
+									width: 'fit-content',
+									padding: 'var(--static-space-8) var(--static-space-16)',
+									backdropFilter: 'blur(var(--static-space-1))'}}>
 								Start by editing <span className="brand-on-background-medium">app/page.tsx</span>
 							</InlineCode>
 							<Heading
@@ -101,6 +109,7 @@ export default function Home() {
 			</Flex>
 			<Flex
 				as="footer"
+				position="relative"
 				fillWidth paddingX="l" paddingY="m"
 				justifyContent="space-between">
 				<Text

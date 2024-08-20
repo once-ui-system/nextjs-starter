@@ -4,6 +4,7 @@ export type { AvatarProps } from './Avatar';
 export { AvatarGroup } from './AvatarGroup';
 export type { AvatarGroupProps } from './AvatarGroup';
 export { Button } from './Button';
+export { Background } from './Background';
 export type { ButtonProps } from './Button';
 export type { AnchorProps } from './Button';
 export { Checkbox } from './Checkbox';
