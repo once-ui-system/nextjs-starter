@@ -1,6 +1,6 @@
 # **Once UI for Next.js**
 
-<span style="font-size: 22px;">Once UI is a lightweight, versatile design system intended to cover 80% of the needs of all applications.</style>
+<span style="font-size: 22px;">Once UI is a lightweight, versatile design system intended to cover 80% of the needs of all applications.
 <br>
 
 ![Once UI](public/images/cover.png)
