@@ -23,6 +23,7 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
 export interface TextProps<T extends ElementType = 'span'> extends HTMLAttributes<T> {
     as?: T;
     variant?: TextVariant;
+    wrap?: CSSProperties['textWrap'];
     size?: TextSize;
     weight?: TextWeight;
 }

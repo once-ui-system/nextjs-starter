@@ -1,8 +1,7 @@
 "use client";
 
-import React, { ElementType, ComponentPropsWithoutRef, CSSProperties } from 'react';
+import React, { ElementType, ComponentPropsWithoutRef } from 'react';
 import classNames from 'classnames';
-
 
 import { TextProps, CommonProps, SpacingProps } from '../interfaces'
 import { ColorScheme, ColorWeight, TextVariant, SpacingToken } from '../types';
@@ -17,6 +16,7 @@ const Text = <T extends ElementType = 'span'>({
     onBackground,
     onSolid,
     align,
+    wrap,
     padding,
     paddingLeft,
     paddingRight,
@@ -32,6 +32,7 @@ const Text = <T extends ElementType = 'span'>({
     marginX,
     marginY,
     children,
+    style,
     className,
     ...props
 }: TypeProps<T>) => {
@@ -90,14 +91,10 @@ const Text = <T extends ElementType = 'span'>({
         generateClassName('my', marginY),
     );
 
-    const style: CSSProperties = {
-        textAlign: align,
-    };
-
     return (
         <Component
             className={combinedClasses}
-            style={style}
+            style={{ textAlign: align, textWrap: wrap, ...style }}
             {...props}>
             {children}
         </Component>

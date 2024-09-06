@@ -12,6 +12,7 @@ interface SmartLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
     iconSize?: 'xs' | 's' | 'm' | 'l' | 'xl';
     style?: React.CSSProperties;
     className?: string;
+    selected? : boolean;
     children: ReactNode;
 }
 
@@ -22,6 +23,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({
         iconSize='xs',
         style,
         className,
+        selected,
         children,
         ...props
     }, ref) => {
@@ -41,8 +43,9 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({
             style: {
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 'var(--static-space-4)',
+                gap: 'var(--static-space-8)',
                 borderRadius: 'var(--radius-s)',
+                ...(selected && {textDecoration: 'underline'}),
                 ...style
             },
             ...props

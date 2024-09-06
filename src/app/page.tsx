@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Heading, Text, Flex, Button, Grid, Icon, InlineCode, Logo, Background } from '@/once-ui/components';
+import { Heading, Text, Flex, Button, Grid, Icon, InlineCode, Logo, Background, LetterFx } from '@/once-ui/components';
 import Link from 'next/link';
 
 export default function Home() {
@@ -33,7 +33,7 @@ export default function Home() {
 			<Flex
 				position="relative"
 				as="section" overflow="hidden"
-				fillWidth minHeight="0" maxWidth={64}
+				fillWidth minHeight="0" maxWidth={68}
 				direction="column" alignItems="center" flex={1}>
 				<Flex
 					as="main"
@@ -44,12 +44,12 @@ export default function Home() {
 						fillWidth gap="24">
 						<Flex
 							position="relative"
-							fillWidth paddingTop="56" paddingX="xl">
+							flex={2} paddingTop="56" paddingX="xl">
 							<Logo size="xl" icon={false} style={{zIndex: '1'}}/>
 						</Flex>
 						<Flex
 							position="relative"
-							fillWidth gap="24" marginBottom="104"
+							flex={4} gap="24" marginBottom="104"
 							direction="column">
 							<InlineCode
 								className="shadow-m"
@@ -60,8 +60,14 @@ export default function Home() {
 								Start by editing <span className="brand-on-background-medium">app/page.tsx</span>
 							</InlineCode>
 							<Heading
+								wrap="balance"
 								variant="display-strong-s">
-								Comprehensive.<br/> Responsive.<br/>Accessible.
+								<span className="font-code">
+									<LetterFx
+										trigger="instant">
+										Helping designers code and developers design
+									</LetterFx>
+								</span>
 							</Heading>
 							<Button
 								href="https://once-ui.com/docs"
