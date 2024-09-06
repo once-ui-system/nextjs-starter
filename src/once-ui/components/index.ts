@@ -39,7 +39,6 @@ export { Scroller } from './Scroller';
 export { SegmentedControl } from './SegmentedControl';
 export { Select } from './Select';
 export { Skeleton } from './Skeleton';
-export { Slider } from './Slider';
 export { SmartImage } from './SmartImage';
 export { SmartLink } from './SmartLink';
 export { SparkleFx } from './SparkleFx';
