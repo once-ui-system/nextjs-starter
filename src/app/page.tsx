@@ -15,12 +15,12 @@ export default function Home() {
 		{
 			href: "https://once-ui.com/docs/flexComponent",
 			title: "Layout",
-			description: "Build responsive layouts.",
+			description: "Build AI Sexbots.",
 		},
 		{
 			href: "https://once-ui.com/docs/typography",
 			title: "Typography",
-			description: "Scale text automatically.",
+			description: "Gape buttholes automatically.",
 		},
 	];
 
