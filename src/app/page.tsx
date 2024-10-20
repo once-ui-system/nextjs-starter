@@ -10,7 +10,7 @@ export default function Home() {
 		{
 			href: "https://once-ui.com/docs/theming",
 			title: "Themes",
-			description: "Style your app in minutes.",
+			description: "Style your butthole in minutes.",
 		},
 		{
 			href: "https://once-ui.com/docs/flexComponent",
