@@ -1,6 +1,6 @@
 # **Once UI for Next.js**
 
-<span style="font-size: 22px;">Once UI is a lightweight, versatile design system intended to cover 80% of the needs of all applications.
+<span style="font-size: 22px;">Once UI is a lightweight, versatile design system with easy customization and practical components.
 <br>
 
 ![Once UI](public/images/cover.png)
@@ -16,14 +16,14 @@ The documentation is available at [once-ui.com/docs](https://once-ui.com/docs).
 <br><br>
 
 # **Authors**
-Connect with us on X or LinkedIn.
+Connect with us on Threads or LinkedIn.
 
-Lorant Toth: [X](https://x.com/lorant_one), [LinkedIn](https://www.linkedin.com/in/lorant-one/)  
-Zsofia Komaromi: [X](https://x.com/zsofiakomaromi), [LinkedIn](https://www.linkedin.com/in/zsofiakomaromi/)
+Lorant Toth: [Threads](https://www.threads.net/@lorant.one), [LinkedIn](https://www.linkedin.com/in/lorant-one/)  
+Zsofia Komaromi: [Threads](https://www.threads.net/@zsofia_kom), [LinkedIn](https://www.linkedin.com/in/zsofiakomaromi/)
 <br><br>
 
 # **Get involved**
-- Join the [Once UI Discord server](https://discord.com/invite/5EyAQ4eNdS) to connect with designers, developers and share your projects.
+- Join the [Design Engineers Club](https://discord.com/invite/5EyAQ4eNdS) on Discord to connect with designers, developers and share your projects.
 - Report a [bug](https://github.com/once-ui-system/nextjs-starter/issues/new?labels=bug&template=bug_report.md).
 - Submit a [feature request](https://github.com/once-ui-system/nextjs-starter/issues/new?labels=feature%20request&template=feature_request.md).
 <br><br>
