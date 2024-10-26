@@ -19,6 +19,7 @@ export { Grid } from './Grid';
 export type { GridProps } from './Grid';
 export { Feedback } from './Feedback';
 export { Flex } from './Flex';
+export { GlitchFx } from './GlitchFx';
 export { Heading } from './Heading';
 export { Icon } from './Icon';
 export { IconButton } from './IconButton';
