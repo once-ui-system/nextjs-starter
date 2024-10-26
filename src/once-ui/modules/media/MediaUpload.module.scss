@@ -1,0 +1,35 @@
+.container {
+    cursor: pointer;
+    overflow: hidden;
+    transition: var(--transition-micro-medium);
+
+
+    &:hover, &:focus {
+        background-color: var(--neutral-background-strong);
+    }
+}
+
+.container.drag-active {
+    border-color: #00f;
+}
+
+.text {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.upload {
+    transition: var(--transition-micro-medium);
+
+    &:hover {
+        background: var(--backdrop);
+        backdrop-filter: blur(0.25rem);
+
+        .text {
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+}

@@ -11,6 +11,7 @@
 	"dependencies": {
 		"@floating-ui/react-dom": "^2.1.1",
 		"classnames": "^2.5.1",
+		"compressorjs": "^1.2.1",
 		"next": "^14.2.4",
 		"postcss": "^8.4.39",
 		"postcss-preset-env": "^9.5.15",
