@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { forwardRef, ReactNode } from 'react';
 import classNames from 'classnames';
@@ -74,6 +74,6 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(({
     }
 );
 
-SmartLink.displayName = "SmartLink";
+SmartLink.displayName = 'SmartLink';
 
 export { SmartLink };

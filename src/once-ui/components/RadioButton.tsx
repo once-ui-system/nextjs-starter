@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, forwardRef } from 'react';
 import classNames from 'classnames';
@@ -81,7 +81,7 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLDivElement, Radio
     );
 });
 
-RadioButton.displayName = "RadioButton";
+RadioButton.displayName = 'RadioButton';
 
 export { RadioButton };
 export type { RadioButtonProps };

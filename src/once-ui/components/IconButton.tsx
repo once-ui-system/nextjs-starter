@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { forwardRef, useState, useEffect, ReactNode } from 'react';
 import Link from 'next/link';
@@ -115,6 +115,6 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
     );
 });
 
-IconButton.displayName = "IconButton";
+IconButton.displayName = 'IconButton';
 
 export { IconButton };

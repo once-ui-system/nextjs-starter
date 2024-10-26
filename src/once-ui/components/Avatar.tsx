@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { forwardRef } from 'react';
 
@@ -125,7 +125,7 @@ const Avatar: React.FC<AvatarProps> = forwardRef<HTMLDivElement, AvatarProps>(({
     );
 });
 
-Avatar.displayName = "Avatar";
+Avatar.displayName = 'Avatar';
 
 export { Avatar };
 export type { AvatarProps };

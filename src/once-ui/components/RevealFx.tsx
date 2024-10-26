@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, forwardRef } from 'react';
 import { SpacingToken } from '../types';
@@ -84,5 +84,5 @@ const RevealFx = forwardRef<HTMLSpanElement, RevealFxProps>(({
 	);
 });
 
-RevealFx.displayName = "RevealFx";
+RevealFx.displayName = 'RevealFx';
 export { RevealFx };

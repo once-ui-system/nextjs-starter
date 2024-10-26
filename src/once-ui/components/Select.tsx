@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import classNames from 'classnames';
@@ -95,7 +95,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(({
     );
 });
 
-Select.displayName = "Select";
+Select.displayName = 'Select';
 
 export { Select };
 export type { SelectProps };

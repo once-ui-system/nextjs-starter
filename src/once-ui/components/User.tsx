@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { forwardRef } from 'react';
 import classNames from 'classnames';
@@ -94,7 +94,7 @@ const User = forwardRef<HTMLDivElement, UserProps>(({
     );
 });
 
-User.displayName = "User";
+User.displayName = 'User';
 
 export { User };
 export type { UserProps };

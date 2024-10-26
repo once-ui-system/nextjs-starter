@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useRef, useEffect, ReactNode, forwardRef, useImperativeHandle } from 'react';
 import { useFloating, shift, offset, flip, size, autoUpdate } from '@floating-ui/react-dom';
@@ -145,6 +145,6 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(({
     );
 });
 
-DropdownWrapper.displayName = "DropdownWrapper";
+DropdownWrapper.displayName = 'DropdownWrapper';
 
 export { DropdownWrapper };

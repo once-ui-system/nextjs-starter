@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, forwardRef } from 'react';
 import classNames from 'classnames';
@@ -89,7 +89,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLDivElement, CheckboxPro
     );
 });
 
-Checkbox.displayName = "Checkbox";
+Checkbox.displayName = 'Checkbox';
 
 export { Checkbox };
 export type { CheckboxProps };

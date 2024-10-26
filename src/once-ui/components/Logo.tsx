@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
@@ -59,6 +59,4 @@ const Logo: React.FC<LogoProps> = ({
     );
 };
 
-Logo.displayName = "Logo";
-
-export { Logo };
+Logo.displayName = 'Logo';export { Logo };

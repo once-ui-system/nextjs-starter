@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { ReactNode, useEffect, useCallback, useRef, forwardRef, useState } from 'react';
 import ReactDOM from 'react-dom';
@@ -196,6 +196,6 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(({
     );
 });
 
-Dialog.displayName = "Dialog";
+Dialog.displayName = 'Dialog';
 
 export { Dialog };

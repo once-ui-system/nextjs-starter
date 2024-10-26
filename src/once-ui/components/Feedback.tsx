@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { forwardRef, ReactNode } from 'react';
 import { IconButton, Button, Icon, Flex, Text } from '.';
@@ -123,5 +123,4 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(({
 });
 
 Feedback.displayName = 'Feedback';
-
 export { Feedback };

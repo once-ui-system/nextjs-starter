@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Flex, Icon, Heading } from '.';
@@ -120,6 +120,6 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
     );
 });
 
-Accordion.displayName = "Accordion";
+Accordion.displayName = 'Accordion';
 
 export { Accordion };
