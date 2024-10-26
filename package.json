@@ -1,6 +1,6 @@
 {
 	"name": "@once-ui-system/nextjs-starter",
-	"version": "0.3.1",
+	"version": "0.4",
 	"scripts": {
 		"dev": "next dev",
 		"export": "next export",
