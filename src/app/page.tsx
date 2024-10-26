@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Heading, Text, Flex, Button, Grid, Icon, InlineCode, Logo, Background, LetterFx } from '@/once-ui/components';
+import { Heading, Text, Flex, Button, Grid, Icon, InlineCode, Logo, Background, LetterFx, Arrow } from '@/once-ui/components';
 import Link from 'next/link';
 
 export default function Home() {
@@ -28,8 +28,6 @@ export default function Home() {
 		<Flex
 			fillWidth paddingTop="l" paddingX="l"
 			direction="column" alignItems="center" flex={1}>
-			<Background
-				dots={false}/>
 			<Flex
 				position="relative"
 				as="section" overflow="hidden"
@@ -70,10 +68,13 @@ export default function Home() {
 								</span>
 							</Heading>
 							<Button
+								id="readDocs"
 								href="https://once-ui.com/docs"
-								suffixIcon="chevronRight"
 								variant="secondary">
-								Read docs
+								<Flex alignItems="center">
+									Read docs
+									<Arrow trigger="#readDocs"/>
+								</Flex>
 							</Button>
 						</Flex>
 					</Flex>

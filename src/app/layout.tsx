@@ -105,6 +105,19 @@ export default function RootLayout({
 			<Flex
 				as="body"
 				fillWidth fillHeight margin="0" padding="0">
+				<Background
+					style={{zIndex: '-1'}}
+					position="fixed"
+					mask="cursor"
+					dots={{
+						display: true,
+						opacity: 0.4,
+						size: '20'
+					}}
+					gradient={{
+						display: true,
+						opacity: 0.4,
+					}}/>
 				<Flex
 					flex={1} direction="column">
 					{children}
