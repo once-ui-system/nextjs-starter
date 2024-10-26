@@ -63,6 +63,7 @@ const Badge = forwardRef<HTMLDivElement | HTMLAnchorElement, BadgeProps>(({
         return (
             <SmartLink
                 unstyled
+                style={{borderRadius: 'var(--radius-full)'}}
                 href={href}
                 ref={ref as React.Ref<HTMLAnchorElement>}
                 {...props as React.AnchorHTMLAttributes<HTMLAnchorElement>}>
