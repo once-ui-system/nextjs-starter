@@ -14,19 +14,25 @@
 }
 
 [data-transition="all"],[data-transition="micro"] {
-    --transition-timing-function: ease-in-out;
-    --transition-property: all;
-    --transition-duration-micro-short: 0.1s;
-    --transition-duration-micro-medium: 0.2s;
-    --transition-duration-micro-long: 0.4s;
+    --transition-eased:                  ease-in-out;
+    --transition-property-all:           all;
+    --transition-duration-micro-short:   0.1s;
+    --transition-duration-micro-medium:  0.2s;
+    --transition-duration-micro-long:    0.4s;
+    --transition-micro-short:            var(--transition-property-all) var(--transition-duration-micro-short) var(--transition-eased);
+    --transition-micro-medium:           var(--transition-property-all) var(--transition-duration-micro-medium) var(--transition-eased);
+    --transition-micro-long:             var(--transition-property-all) var(--transition-duration-micro-long) var(--transition-eased);
 }
 
 [data-transition="all"],[data-transition="macro"] {
-    --transition-timing-function: ease-in-out;
-    --transition-property: all;
-    --transition-duration-macro-short: 0.15s;
-    --transition-duration-macro-medium: 0.3s;
-    --transition-duration-macro-long: 0.6s;
+    --transition-eased:                  ease-in-out;
+    --transition-property-all:           all;
+    --transition-duration-macro-short:   0.15s;
+    --transition-duration-macro-medium:  0.3s;
+    --transition-duration-macro-long:    0.6s;
+    --transition-macro-short:            var(--transition-property-all) var(--transition-duration-macro-short) var(--transition-eased);
+    --transition-macro-medium:           var(--transition-property-all) var(--transition-duration-macro-medium) var(--transition-eased);
+    --transition-macro-long:             var(--transition-property-all) var(--transition-duration-macro-long) var(--transition-eased);
 }
 
 [data-surface="translucent"] {

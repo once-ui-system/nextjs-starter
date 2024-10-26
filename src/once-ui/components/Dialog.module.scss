@@ -8,7 +8,7 @@
     z-index: 9;
     background-color: var(--backdrop);
     visibility: hidden;
-    transition: var(--transition-property) var(--transition-duration-macro-medium) var(--transition-timing-function);
+    transition: var(--transition-macro-medium);
 
     &.open {
         opacity: 1;
@@ -21,7 +21,7 @@
     opacity: 0;
     box-shadow: var(--shadow-xl);
     max-width: 40rem;
-    transition: var(--transition-property) var(--transition-duration-macro-medium) var(--transition-timing-function);
+    transition: var(--transition-macro-medium);
 
     &.open {
         transform: scale(1);

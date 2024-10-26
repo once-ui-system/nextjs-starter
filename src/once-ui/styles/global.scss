@@ -56,8 +56,8 @@ a {
 
 ::-webkit-scrollbar-thumb {
     background: var(--neutral-alpha-medium);
-    transition: var(--transition-property) var(--transition-duration-micro-medium) var(--transition-timing-function);
     border-radius: var(--radius-full);
+    transition: var(--transition-micro-medium);
 
     &:hover {
         background: var(--neutral-alpha-strong);

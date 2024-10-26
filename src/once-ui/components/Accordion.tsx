@@ -97,7 +97,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
                 <Icon
                     name="chevronDown"
                     size="m"
-                    style={{ display: 'flex', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform var(--transition-duration-micro-medium)' }} />
+                    style={{ display: 'flex', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'var(--transition-micro-medium)' }} />
             </Flex>
             <div
                 id="accordion-content"
@@ -105,8 +105,8 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
                 style={{
                     maxHeight,
                     overflow: 'hidden',
-                    transition: 'max-height var(--transition-duration-macro-long) var(--transition-timing-function)',
-                    visibility: isOpen ? 'visible' : 'hidden'
+                    transition: 'max-height var(--transition-duration-macro-long) var(--transition-eased)',
+                    visibility: isVisible ? 'visible' : 'hidden',
                 }}
                 aria-hidden={!isOpen}>
                 <Flex
