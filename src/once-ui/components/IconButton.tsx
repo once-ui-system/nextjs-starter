@@ -52,14 +52,12 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
         return () => clearTimeout(timer);
     }, [isHover]);
 
-    const iconSize = size === 's' ? 's' : 'm';
-
     const content = (
         <>
             {children ? (
                 children
             ) : (
-                <Icon name={icon} size={iconSize} />
+                <Icon name={icon} size="s" />
             )}
             {tooltip && isTooltipVisible && (
                 <div style={{ position: "absolute" }} className={iconStyles[tooltipPosition]}>
