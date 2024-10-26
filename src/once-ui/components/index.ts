@@ -50,6 +50,7 @@ export { Tag } from './Tag';
 export type { TagProps } from './Tag';
 export { TagInput } from './TagInput';
 export { Text } from './Text';
+export { Textarea } from './Textarea';
 export { Toast } from './Toast';
 export { Toaster } from './Toaster';
 export { ToggleButton } from './ToggleButton';
