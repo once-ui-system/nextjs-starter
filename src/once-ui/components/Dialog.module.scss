@@ -29,12 +29,11 @@
         visibility: visible;
     }
 
-    @media (--m) {
+    @media (--s) {
         position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        max-width: 100%;
-        border-radius: var(--radius-l) var(--radius-l) 0 0;
+        bottom: var(--static-space-8);
+        top: var(--static-space-8);
+        left: var(--static-space-8);
+        max-width: calc(100% - (2 * var(--static-space-8)));
     }
 }
