@@ -1,12 +1,15 @@
 export { Accordion } from './Accordion';
+export { Arrow } from './Arrow';
 export { Avatar } from './Avatar';
 export type { AvatarProps } from './Avatar';
 export { AvatarGroup } from './AvatarGroup';
 export type { AvatarGroupProps } from './AvatarGroup';
+export { Badge } from './Badge';
 export { Background } from './Background';
 export { Button } from './Button';
 export type { ButtonProps } from './Button';
 export type { AnchorProps } from './Button';
+export { Carousel } from './Carousel';
 export { Checkbox } from './Checkbox';
 export { Chip } from './Chip';
 export { ColorInput } from './ColorInput';
