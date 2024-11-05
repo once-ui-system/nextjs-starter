@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Flex, Toast } from '.';
@@ -19,6 +19,17 @@ interface ToasterProps {
 const Toaster: React.FC<ToasterProps> = ({
     toasts,
     removeToast }) => {
+    
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    if (!isClient) {
+        return null; // Don't render anything on the server
+    }
+
     return createPortal(
         <Flex
             zIndex={11}
