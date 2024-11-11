@@ -9,6 +9,7 @@ interface RevealFxProps extends React.HTMLAttributes<HTMLDivElement> {
 	children: React.ReactNode;
 	speed?: 'slow' | 'medium' | 'fast';
 	delay?: number;
+	revealedByDefault?: boolean;
 	translateY?: number | SpacingToken;
 	trigger?: boolean;
 	style?: React.CSSProperties;
@@ -19,13 +20,14 @@ const RevealFx = forwardRef<HTMLDivElement, RevealFxProps>(({
 	children,
 	speed = 'medium',
 	delay = 0,
+	revealedByDefault = false,
 	translateY,
 	trigger,
 	style,
 	className,
 	...rest
 }, ref) => {
-	const [isRevealed, setIsRevealed] = useState(true);
+	const [isRevealed, setIsRevealed] = useState(revealedByDefault);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
