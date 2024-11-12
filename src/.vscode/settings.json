@@ -1,0 +1,6 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.fontSize": 16,
+    "editor.fontFamily": "noto, 'Courier New', monospace",
+    "editor.wordWrap": "on"
+}

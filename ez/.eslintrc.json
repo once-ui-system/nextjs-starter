@@ -1,0 +1,12 @@
+{
+  "extends": ["next", "prettier"],
+  "rules": {          "react/no-unescaped-entities": "off",
+        "@next/next/no-page-custom-font": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "react/jsx-no-undef": ["off", { "allowGlobals": true }],
+        "react-hooks/rules-of-hooks":"off",
+        "jsx-a11y/role-supports-aria-props":"off",
+        "react/display-name":"off",
+        "@next/next/no-img-element":"off"
+  }
+}

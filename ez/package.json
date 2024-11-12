@@ -1,0 +1,68 @@
+{
+    "name": "@dsv911/ez",
+    "exports": {
+        ".": "./index.ts",
+        "./src": "./src/* .ts,tsx",
+        "./style.css": "./src/style.css",
+        "./style": "./style.css",
+        "./package.json": "./package.json",
+        "./tailwindcss-config.ts": "./tailwindcss-config.ts",
+        "./*.css": "./src/**.css"
+    },
+    "version": "0.8.21",
+    "description": "EzLibForDSV",
+    "author": "DSV Darkside",
+    "license": "ISC",
+    "scripts": {
+        "b": "next build",
+        "ru": "pnpm up",
+        "li": "next lint",
+        "p": "pnpm up && git push && pnpm publish --no-git-checks"
+    },
+    "type": "module",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/dsv911/ez"
+    },
+    "devDependencies": {
+        "@next/third-parties": "latest",
+        "@tailwindcss/forms": "latest",
+        "@types/bcryptjs": "latest",
+        "@types/jsonwebtoken": "latest",
+        "@types/node": "latest",
+        "@types/react": "npm:types-react@rc",
+        "@types/react-dom": "npm:types-react-dom@rc",
+        "@types/web-push": "latest",
+        "@vercel/edge-config": "latest",
+        "autoprefixer": "latest",
+        "axios": "latest",
+        "crc": "latest",
+        "typescript": "latest",
+        "web-push": "latest",
+        "@headlessui/react": "^1.7.19",
+        "aws4": "latest",
+        "bcryptjs": "latest",
+        "eslint": "latest",
+        "eslint-config-next": "latest",
+        "eslint-config-prettier": "latest",
+        "fast-glob": "latest",
+        "jsonwebtoken": "latest",
+        "mongodb": "latest",
+        "next": "latest",
+        "postcss": "latest",
+        "postcss-import": "latest",
+        "react": "rc",
+        "react-dom": "rc",
+        "socket.io-client": "latest",
+        "tailwindcss": "latest"
+    },
+    "main": "./src/index.ts",
+    "types": "./types/index.d.ts",
+    "style": "./src/style.css",
+    "files": [
+        "./src/css/style.css",
+        "./tailwindcss-config.ts",
+        "./index.ts",
+        "./style.css",
+        "./src/*"
+    ]
+}
