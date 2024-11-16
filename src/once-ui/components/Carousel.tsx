@@ -1,7 +1,7 @@
 'use client';
 
 import { Flex, RevealFx, Scroller, SmartImage } from "@/once-ui/components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface Image {
     src: string;
@@ -22,34 +22,49 @@ export const Carousel: React.FC<CarouselProps> = ({
     sizes,
 }) => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
-    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [isTransitioning, setIsTransitioning] = useState(true);
+    const nextImageRef = useRef<HTMLImageElement | null>(null);
+    const transitionTimeoutRef = useRef<NodeJS.Timeout>();
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsTransitioning(true);
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    }, []);
+    const preloadNextImage = (nextIndex: number) => {
+        if (nextIndex >= 0 && nextIndex < images.length) {
+            nextImageRef.current = new Image();
+            nextImageRef.current.src = images[nextIndex].src;
+        }
+    };
 
     const handleImageClick = () => {
-        if(images.length > 1) {
-            setIsTransitioning(false);
+        if (images.length > 1) {
             const nextIndex = (activeIndex + 1) % images.length;
             handleControlClick(nextIndex);
-
         }
     };
 
-    const handleControlClick = (index: number) => {
-        if (index !== activeIndex) {
+    const handleControlClick = (nextIndex: number) => {
+        if (nextIndex !== activeIndex && !transitionTimeoutRef.current) {
+            preloadNextImage(nextIndex);
+            
             setIsTransitioning(false);
-            setTimeout(() => {
-                setActiveIndex(index);
-                setIsTransitioning(true);
-            }, 500);
+            
+            transitionTimeoutRef.current = setTimeout(() => {
+                setActiveIndex(nextIndex);
+                
+                setTimeout(() => {
+                    setIsTransitioning(true);
+                    transitionTimeoutRef.current = undefined;
+                }, 200);
+                
+            }, 630);
         }
     };
+
+    useEffect(() => {
+        return () => {
+            if (transitionTimeoutRef.current) {
+                clearTimeout(transitionTimeoutRef.current);
+            }
+        };
+    }, []);
 
     if (images.length === 0) {
         return null;
@@ -105,18 +120,19 @@ export const Carousel: React.FC<CarouselProps> = ({
                             ))}
                         </Flex>
                     ) : (
-                        <Scroller fillWidth gap="4">
+                        <Scroller 
+                            fillWidth 
+                            gap="4"
+                            onItemClick={handleControlClick}>
                             {images.map((image, index) => (
                                 <Flex
                                     key={index}
                                     style={{
-                                        border:
-                                            activeIndex === index
-                                                ? '2px solid var(--brand-solid-strong)'
-                                                : 'none',
+                                        border: activeIndex === index
+                                            ? '2px solid var(--brand-solid-strong)'
+                                            : 'none',
                                         cursor: 'pointer',
-                                        borderRadius:
-                                            'var(--radius-m-nest-4)',
+                                        borderRadius: 'var(--radius-m-nest-4)',
                                         transition: 'border 0.3s ease',
                                     }}
                                     padding="4"
@@ -127,7 +143,6 @@ export const Carousel: React.FC<CarouselProps> = ({
                                         aspectRatio="1 / 1"
                                         sizes="120px"
                                         src={image.src}
-                                        onClick={() => handleControlClick(index)}
                                         style={{
                                             cursor: 'pointer',
                                             borderRadius: 'var(--radius-m)',
