@@ -25,7 +25,7 @@ const code = Roboto_Mono({
 });
 
 type FontConfig = {
-    variable: string;
+	variable: string;
 };
 
 /*
@@ -78,9 +78,9 @@ const schemaData = {
 };
 
 export default function RootLayout({
-  	children,
+	children,
 }: Readonly<{
-  	children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
 	return (
 		<Flex
@@ -106,7 +106,7 @@ export default function RootLayout({
 				as="body"
 				fillWidth fillHeight margin="0" padding="0">
 				<Background
-					style={{zIndex: '-1'}}
+					style={{ zIndex: '-1' }}
 					position="fixed"
 					mask="cursor"
 					dots={{
@@ -117,7 +117,7 @@ export default function RootLayout({
 					gradient={{
 						display: true,
 						opacity: 0.4,
-					}}/>
+					}} />
 				<Flex
 					flex={1} direction="column">
 					{children}
