@@ -13,16 +13,19 @@ interface CarouselProps {
     indicator?: 'line' | 'thumbnail';
     aspectRatio?: string;
     sizes?: string;
+    revealedByDefault?: boolean;
 }
 
-export const Carousel: React.FC<CarouselProps> = ({
+const Carousel: React.FC<CarouselProps> = ({
     images = [],
     indicator = 'line',
     aspectRatio = '16 / 9',
     sizes,
+    revealedByDefault = false,
 }) => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
-    const [isTransitioning, setIsTransitioning] = useState(true);
+    const [isTransitioning, setIsTransitioning] = useState(revealedByDefault);
+    const [initialTransition, setInitialTransition] = useState(revealedByDefault);
     const nextImageRef = useRef<HTMLImageElement | null>(null);
     const transitionTimeoutRef = useRef<NodeJS.Timeout>();
 
@@ -52,19 +55,23 @@ export const Carousel: React.FC<CarouselProps> = ({
                 setTimeout(() => {
                     setIsTransitioning(true);
                     transitionTimeoutRef.current = undefined;
-                }, 200);
+                }, 300);
                 
-            }, 630);
+            }, 800);
         }
     };
 
     useEffect(() => {
+        if (!revealedByDefault && !initialTransition) {
+            setIsTransitioning(true);
+            setInitialTransition(true);
+        }
         return () => {
             if (transitionTimeoutRef.current) {
                 clearTimeout(transitionTimeoutRef.current);
             }
         };
-    }, []);
+    }, [revealedByDefault, initialTransition]);
 
     if (images.length === 0) {
         return null;
@@ -157,3 +164,6 @@ export const Carousel: React.FC<CarouselProps> = ({
         </Flex>
     );
 };
+
+Carousel.displayName = 'Carousel';
+export { Carousel };
