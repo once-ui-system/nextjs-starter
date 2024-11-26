@@ -85,9 +85,15 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       return () => clearTimeout(timer);
     }, [isHover]);
 
-    //  wrap the element with the div to stick the tooltip to the parent
     return (
-      <div>
+      <div
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: 'fit-content',
+          height: 'fit-content'
+        }}
+      >
         <span
           ref={ref}
           className={classNames(colorClass, className)}
@@ -95,7 +101,6 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
             display: "inline-flex",
             alignItems: "center",
             fontSize: sizeMap[size],
-            position: "relative",
             ...style,
           }}
           role={decorative ? "presentation" : undefined}
@@ -105,15 +110,20 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
           onMouseLeave={() => setIsHover(false)}
         >
           <IconComponent />
-          {tooltip && isTooltipVisible && (
-            <span
-              style={{ position: "absolute" }}
-              className={iconStyles[tooltipPosition]}
-            >
-              <Tooltip label={tooltip} />
-            </span>
-          )}
         </span>
+        {tooltip && isTooltipVisible && (
+          <div
+            style={{
+              position: "absolute",
+              pointerEvents: "none",
+              whiteSpace: "nowrap",
+              zIndex: 1000
+            }}
+            className={iconStyles[tooltipPosition]}
+          >
+            <Tooltip label={tooltip} />
+          </div>
+        )}
       </div>
     );
   }
