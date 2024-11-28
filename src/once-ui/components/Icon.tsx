@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef, useState, useEffect } from "react";
+import React, { forwardRef, useState, useEffect, ReactNode } from "react";
 import classNames from "classnames";
 import { IconType } from "react-icons";
 import { iconLibrary } from "../icons";
@@ -24,7 +24,7 @@ type IconProps = {
 	decorative?: boolean;
 	className?: string;
 	style?: React.CSSProperties;
-	tooltip?: string;
+	tooltip?: ReactNode;
 	tooltipPosition?: "top" | "bottom" | "left" | "right";
 };
 
@@ -116,9 +116,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
 					<div
 						style={{
 							position: "absolute",
-							pointerEvents: "none",
-							whiteSpace: "nowrap",
-							zIndex: 1000
+                            zIndex: "1",
 						}}
 						className={iconStyles[tooltipPosition]}
 					>
