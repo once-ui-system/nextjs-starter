@@ -68,7 +68,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
                 style={{
                     display: "grid",
                     gridTemplateRows: isOpen ? '1fr' : '0fr',
-                    transition: 'grid-template-rows var(--transition-duration-macro-long) var(--transition-eased)',
+                    transition: 'grid-template-rows var(--transition-duration-macro-medium) var(--transition-eased)',
                 }}
                 aria-hidden={!isOpen}>
                 <Flex
