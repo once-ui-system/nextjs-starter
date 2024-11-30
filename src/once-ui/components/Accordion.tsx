@@ -46,7 +46,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
                 tabIndex={0}
                 className={styles.accordion}
                 paddingY="16"
-                paddingLeft="m" paddingRight="m"
+                paddingX="20"
                 alignItems="center" justifyContent="space-between"
                 onClick={toggleAccordion}
                 aria-expanded={isOpen}
@@ -64,7 +64,6 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
             <Flex
                 id="accordion-content"
                 fillWidth
-                paddingX="16" paddingTop="8" paddingBottom="16"
                 style={{
                     display: "grid",
                     gridTemplateRows: isOpen ? '1fr' : '0fr',
@@ -76,7 +75,9 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
                     minHeight={0}
                     style={{overflow: "hidden"}}
                     direction="column">
+                    <Flex fillWidth paddingX="20" paddingTop="8" paddingBottom="16">
                     {children}
+                    </Flex>
                 </Flex>
             </Flex>
         </Flex>
