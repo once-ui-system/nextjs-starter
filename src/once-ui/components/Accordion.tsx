@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { Flex, Icon, Heading } from '.';
 import styles from './Accordion.module.scss';
 import classNames from 'classnames';
@@ -21,43 +21,8 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
     open = false
 }, ref) => {
     const [isOpen, setIsOpen] = useState(open);
-    const [maxHeight, setMaxHeight] = useState('0px');
-    const [isVisible, setIsVisible] = useState(open);
-    const contentRef = useRef<HTMLDivElement>(null);
-    const innerContentRef = useRef<HTMLDivElement>(null);
-
-    const calculateMaxHeight = () => {
-        if (innerContentRef.current) {
-            const contentHeight = innerContentRef.current.scrollHeight;
-            const paddingTop = parseFloat(window.getComputedStyle(innerContentRef.current).paddingTop);
-            const paddingBottom = parseFloat(window.getComputedStyle(innerContentRef.current).paddingBottom);
-            
-            const totalHeight = contentHeight + paddingTop + paddingBottom;
-            return `${totalHeight}px`;
-        }
-        return '0px';
-    };
-
-    useEffect(() => {
-        if (contentRef.current) {
-            setMaxHeight(open ? calculateMaxHeight() : '0px');
-            if (open) {
-                setIsVisible(true);
-            }
-        }
-    }, [open]);
 
     const toggleAccordion = () => {
-        if (isOpen) {
-            setMaxHeight(`${contentRef.current?.scrollHeight}px`);
-            setTimeout(() => setMaxHeight('0px'), 10);
-        } else {
-            setMaxHeight('0px');
-            setTimeout(() => {
-                setMaxHeight(calculateMaxHeight());
-                setIsVisible(true);
-            }, 10);
-        }
         setIsOpen(!isOpen);
     };
 
@@ -65,33 +30,11 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
         toggle: toggleAccordion,
         open: () => {
             setIsOpen(true);
-            setMaxHeight(calculateMaxHeight());
-            setIsVisible(true);
         },
         close: () => {
             setIsOpen(false);
-            setMaxHeight('0px');
         }
     }));
-
-    useEffect(() => {
-        const handleTransitionEnd = () => {
-            if (!isOpen) {
-                setIsVisible(false);
-            }
-        };
-
-        const contentElement = contentRef.current;
-        if (contentElement) {
-            contentElement.addEventListener('transitionend', handleTransitionEnd);
-        }
-
-        return () => {
-            if (contentElement) {
-                contentElement.removeEventListener('transitionend', handleTransitionEnd);
-            }
-        };
-    }, [isOpen]);
 
     return (
         <Flex
@@ -103,7 +46,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
                 tabIndex={0}
                 className={styles.accordion}
                 paddingY="16"
-                paddingLeft="m" paddingRight="m"
+                paddingX="20"
                 alignItems="center" justifyContent="space-between"
                 onClick={toggleAccordion}
                 aria-expanded={isOpen}
@@ -120,21 +63,21 @@ const Accordion: React.FC<AccordionProps> = forwardRef(({
             </Flex>
             <Flex
                 id="accordion-content"
-                ref={contentRef}
                 fillWidth
                 style={{
-                    maxHeight,
-                    overflow: 'hidden',
-                    transition: 'max-height var(--transition-duration-macro-long) var(--transition-eased)',
-                    visibility: isVisible ? 'visible' : 'hidden',
+                    display: "grid",
+                    gridTemplateRows: isOpen ? '1fr' : '0fr',
+                    transition: 'grid-template-rows var(--transition-duration-macro-medium) var(--transition-eased)',
                 }}
                 aria-hidden={!isOpen}>
                 <Flex
-                    ref={innerContentRef}
                     fillWidth
-                    paddingX="16" paddingTop="8" paddingBottom="16"
+                    minHeight={0}
+                    style={{overflow: "hidden"}}
                     direction="column">
+                    <Flex fillWidth paddingX="20" paddingTop="8" paddingBottom="16">
                     {children}
+                    </Flex>
                 </Flex>
             </Flex>
         </Flex>
