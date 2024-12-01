@@ -1,24 +1,21 @@
-'use client';
-
-import React, { useState, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import styles from './NavIcon.module.scss';
 import { Flex } from '.';
+import classNames from 'classnames';
 
 interface NavIconProps {
     className?: string;
     style?: React.CSSProperties;
     onClick?: () => void;
+    isActive: boolean;
 }
 
-const NavIcon = forwardRef<HTMLDivElement, NavIconProps>(({ className, style, onClick }, ref) => {
-    const [isActive, setIsActive] = useState(false);
-
-    const handleClick = () => {
-        setIsActive(!isActive);
-        if (onClick) {
-            onClick();
-        }
-    };
+const NavIcon = forwardRef<HTMLDivElement, Partial<NavIconProps>>(({
+    className,
+    isActive,
+    style,
+    onClick
+}, ref) => {
 
     return (
         <Flex
@@ -26,11 +23,11 @@ const NavIcon = forwardRef<HTMLDivElement, NavIconProps>(({ className, style, on
             tabIndex={0}
             radius="m"
             position="relative"
-            className={`${styles.button} ${className || ''}`}
+            className={classNames(styles.button, className || '')}
             style={{ ...style }}
-            onClick={handleClick}>
-            <div className={`${styles.line} ${isActive ? `${styles.active}` : ''}`} />
-            <div className={`${styles.line} ${isActive ? `${styles.active}` : ''}`} />
+            onClick={onClick}>
+            <div className={classNames(styles.line, isActive && styles.active)} />
+            <div className={classNames(styles.line, isActive && styles.active)} />
         </Flex>
     );
 });
