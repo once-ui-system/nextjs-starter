@@ -11,6 +11,7 @@ interface ScrollerProps {
     contained?: boolean;
     className?: string;
     style?: React.CSSProperties;
+    onItemClick?: (index: number) => void;
     [key: string]: any;
 }
 
@@ -20,6 +21,7 @@ const Scroller: React.FC<ScrollerProps> = ({
     contained = false,
     className,
     style,
+    onItemClick,
     ...props
 }) => {
     const scrollerRef = useRef<HTMLDivElement>(null);
@@ -62,6 +64,22 @@ const Scroller: React.FC<ScrollerProps> = ({
         }
     };
 
+    const wrappedChildren = React.Children.map(children, (child, index) => {
+        if (React.isValidElement(child)) {
+            return React.cloneElement<any>(child, {
+                onClick: (e: React.MouseEvent) => {
+                    if ('onClick' in child.props && typeof child.props.onClick === 'function') {
+                        child.props.onClick(e);
+                    }
+                    if (onItemClick) {
+                        onItemClick(index);
+                    }
+                },
+            });
+        }
+        return child;
+    });
+
     return (
         <Flex
             fillWidth
@@ -97,7 +115,7 @@ const Scroller: React.FC<ScrollerProps> = ({
                     [styles.column]: direction === 'column',
                 })}
                 {...props}>
-                {children}
+                {wrappedChildren}
             </Flex>
             {showNextButton && (
                 <div className={classNames(styles.scrollMaskContainer, styles.scrollMaskNext)}>

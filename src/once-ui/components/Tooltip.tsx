@@ -1,12 +1,12 @@
 'use client';
 
-import React, { forwardRef } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { Flex, Text, Icon } from '.';
 
 type TooltipProps = {
-    label: string;
+    label: ReactNode;
     prefixIcon?: string;
     suffixIcon?: string;
     className?: string;
@@ -30,17 +30,15 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(({
             radius="s"
             border="neutral-medium"
             borderStyle="solid-1"
-            alignItems="center"
             role="tooltip"
             className={classNames(className)}>
             {prefixIcon && <Icon name={prefixIcon} size="xs" />}
-            <Flex paddingX="2">
-                <Text
-                    as="span"
-                    variant="body-default-xs"
-                    onBackground="neutral-strong">
-                    {label}
-                </Text>
+            <Flex
+                paddingX="2"
+                alignItems="center"
+                textVariant="body-default-xs"
+                onBackground="neutral-strong">
+                {label}
             </Flex>
             {suffixIcon && <Icon name={suffixIcon} size="xs" />}
         </Flex>
