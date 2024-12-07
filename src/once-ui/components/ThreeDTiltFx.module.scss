@@ -1,0 +1,6 @@
+.tiltFX {
+    transform-style: preserve-3d;
+    display: inline-block; /* Ensures the transform affects the element correctly */
+    backface-visibility: hidden; /* Optional: Improves performance */
+    /* Added any additional styles you need */
+  }

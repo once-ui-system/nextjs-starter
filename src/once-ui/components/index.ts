@@ -1,3 +1,4 @@
+import { ThreeDTiltFx } from './ThreeDTiltFx';
 export { Accordion } from './Accordion';
 export { Arrow } from './Arrow';
 export { Avatar } from './Avatar';
@@ -58,6 +59,7 @@ export { Toast } from './Toast';
 export { Toaster } from './Toaster';
 export { ToggleButton } from './ToggleButton';
 export { Tooltip } from './Tooltip';
+export { ThreeDTiltFx } from './ThreeDTiltFx';
 export { User } from './User';
 export type { UserProps } from './User';
 export { UserMenu } from './UserMenu';
