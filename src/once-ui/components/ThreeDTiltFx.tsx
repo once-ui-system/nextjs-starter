@@ -19,6 +19,7 @@ interface TiltProps {
   bufferZone?: number;
   edgeThreshold?: number;
   maxVelocity?: number;
+  scale?: number;
 }
 
 interface TiltFXProps {
@@ -30,6 +31,7 @@ interface TiltFXProps {
   bufferZone?: number;
   edgeThreshold?: number;
   maxVelocity?: number;
+  scale?: number;
   style?: CSSProperties;
   className?: string;
 }
@@ -43,11 +45,12 @@ export const ThreeDTiltFx: React.FC<TiltFXProps> = ({
   bufferZone = 0.15,
   edgeThreshold = 0.05,
   maxVelocity = 2,
+  scale = 1, // Default scale to 1
   style,
   className,
 }) => {
   const [transform, setTransform] = useState(
-    "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)"
+    `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(${scale})`
   );
 
   const targetRotation = useRef({ x: 0, y: 0 });
@@ -86,9 +89,9 @@ export const ThreeDTiltFx: React.FC<TiltFXProps> = ({
       maxTilt
     );
 
-    // Update the transform
+    // Update the transform without scaling
     setTransform(
-      `perspective(1000px) rotateX(${currentRotation.current.x}deg) rotateY(${currentRotation.current.y}deg) scale(1.05)`
+      `perspective(1000px) rotateX(${currentRotation.current.x}deg) rotateY(${currentRotation.current.y}deg) scale(${scale})`
     );
 
     // Continue the animation if not yet at the target
@@ -97,7 +100,7 @@ export const ThreeDTiltFx: React.FC<TiltFXProps> = ({
     } else {
       requestRef.current = null;
     }
-  }, [dampening, threshold, maxVelocity, maxTilt]);
+  }, [dampening, threshold, maxVelocity, maxTilt, scale]);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
