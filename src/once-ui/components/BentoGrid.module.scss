@@ -21,50 +21,49 @@
 }
 
 .gap-xs {
-    grid-gap: var(--static-space-4);
-  }
-  
-  .gap-s {
-    grid-gap: var(--static-space-12);
-  }
-  
-  .gap-m {
-    grid-gap: var(--static-space-24);
-  }
-  
-  .gap-l {
-    grid-gap: var(--static-space-48);
-  }
-  
-  .gap-xl {
-    grid-gap: var(--static-space-64);
-  }
-  
-  /* Padding Sizes */
-  .padding-xs {
-    padding: var(--static-space-4);
-  }
-  
-  .padding-s {
-    padding: var(--static-space-12);
-  }
-  
-  .padding-m {
-    padding: var(--static-space-24);
-  }
-  
-  .padding-l {
-    padding: var(--static-space-48);
-  }
-  
-  .padding-xl {
-    padding: var(--static-space-64);
-  }
-  
+  gap: var(--static-space-4);
+}
+
+.gap-s {
+  gap: var(--static-space-12);
+}
+
+.gap-m {
+  gap: var(--static-space-24);
+}
+
+.gap-l {
+  gap: var(--static-space-48);
+}
+
+.gap-xl {
+  gap: var(--static-space-64);
+}
+
+/* Padding Sizes */
+.padding-xs {
+  padding: var(--static-space-4);
+}
+
+.padding-s {
+  padding: var(--static-space-12);
+}
+
+.padding-m {
+  padding: var(--static-space-24);
+}
+
+.padding-l {
+  padding: var(--static-space-48);
+}
+
+.padding-xl {
+  padding: var(--static-space-64);
+}
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .bentoGrid {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }

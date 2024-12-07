@@ -2,7 +2,6 @@ import React, { ReactNode, forwardRef } from "react";
 import classNames from "classnames";
 import { GridProps } from "./Grid";
 import styles from "./BentoGrid.module.scss";
-import { Flex } from "./Flex";
 
 interface BentoGridProps extends GridProps {
   layout: GridLayout[];
@@ -12,7 +11,6 @@ interface BentoGridProps extends GridProps {
 }
 
 interface GridLayout {
-  area?: string;
   columnSpan?: number;
   rowSpan?: number;
 }
@@ -34,7 +32,7 @@ const BentoGrid = forwardRef<HTMLDivElement, BentoGridProps>(
     };
 
     return (
-      <Flex
+      <div
         ref={ref}
         className={combinedClassName}
         style={combinedStyle}
@@ -52,17 +50,16 @@ const BentoGrid = forwardRef<HTMLDivElement, BentoGridProps>(
           };
 
           return (
-            <Flex
-              flex={1}
+            <div
               key={index}
               className={classNames(styles.gridItem)}
               style={gridStyle}
             >
               {child}
-            </Flex>
+            </div>
           );
         })}
-      </Flex>
+      </div>
     );
   },
 );
