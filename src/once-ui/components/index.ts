@@ -20,6 +20,7 @@ export type { DropdownOptions } from './Dropdown';
 export { DropdownWrapper } from './DropdownWrapper';
 export { Grid } from './Grid';
 export type { GridProps } from './Grid';
+export { BentoGrid } from "./BentoGrid";
 export { Feedback } from './Feedback';
 export { Flex } from './Flex';
 export { GlitchFx } from './GlitchFx';
