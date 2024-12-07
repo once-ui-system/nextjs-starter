@@ -7,6 +7,8 @@ import { Flex } from "./Flex";
 interface BentoGridProps extends GridProps {
   layout: GridLayout[];
   children: ReactNode[];
+  gap?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  padding?: 'xs' | 's' | 'm' | 'l' | 'xl';
 }
 
 interface GridLayout {
@@ -16,12 +18,16 @@ interface GridLayout {
 }
 
 const BentoGrid = forwardRef<HTMLDivElement, BentoGridProps>(
-  ({ layout, children, className, style, ...rest }, ref) => {
+  ({ layout, children, className, style, gap = 'm', padding = 'm', ...rest }, ref) => {
+    const combinedClassName = classNames(
+      styles.bentoGrid,
+      styles[`gap-${gap}`],
+      styles[`padding-${padding}`],
+      className
+    );
+
     const combinedStyle = {
       ...style,
-      display: "grid",
-      gridGap: "var(--static-space-24)",
-      padding: "var(--static-space-24)",
       animation:
         "fadeIn var(--transition-duration-micro-medium) var(--transition-eased)",
       backgroundColor: "var(--background-surface)",
@@ -30,7 +36,7 @@ const BentoGrid = forwardRef<HTMLDivElement, BentoGridProps>(
     return (
       <Flex
         ref={ref}
-        className={classNames(styles.bentoGrid, className)}
+        className={combinedClassName}
         style={combinedStyle}
         {...rest}
       >
@@ -39,10 +45,10 @@ const BentoGrid = forwardRef<HTMLDivElement, BentoGridProps>(
           const gridStyle: React.CSSProperties = {
             gridColumn: itemLayout.columnSpan
               ? `span ${itemLayout.columnSpan}`
-              : undefined,
+              : "span 1",
             gridRow: itemLayout.rowSpan
               ? `span ${itemLayout.rowSpan}`
-              : undefined,
+              : "span 1",
           };
 
           return (
