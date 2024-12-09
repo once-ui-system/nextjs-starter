@@ -1,4 +1,5 @@
 export { Accordion } from './Accordion';
+export { InputOTP } from './InputOTP';
 export { Arrow } from './Arrow';
 export { Avatar } from './Avatar';
 export type { AvatarProps } from './Avatar';
