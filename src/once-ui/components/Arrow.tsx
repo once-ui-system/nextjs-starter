@@ -20,18 +20,18 @@ const Arrow: React.FC<ArrowProps> = ({
   style,
   className,
 }) => {
-  const arrowContainerRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const triggerElement = document.querySelector(trigger);
 
-    if (triggerElement && arrowContainerRef.current) {
+    if (triggerElement && ref.current) {
       const handleMouseOver = () => {
-        arrowContainerRef.current?.classList.add(styles.active);
+        ref.current?.classList.add(styles.active);
       };
 
       const handleMouseOut = () => {
-        arrowContainerRef.current?.classList.remove(styles.active);
+        ref.current?.classList.remove(styles.active);
       };
 
       triggerElement.addEventListener("mouseenter", handleMouseOver);
@@ -45,29 +45,26 @@ const Arrow: React.FC<ArrowProps> = ({
   }, [trigger]);
 
   return (
-    <Flex>
+    <Flex
+      ref={ref}
+      position="relative"
+      alignItems="center"
+      justifyContent="flex-end"
+      className={classNames(styles.arrowContainer, className)}
+      style={{ transform: `scale(${scale})`, ...style }}
+    >
       <Flex
-        ref={arrowContainerRef}
-        position="relative"
-        marginLeft="4"
-        alignItems="center"
-        justifyContent="flex-end"
-        className={classNames(styles.arrowContainer, className)}
-        style={{ transform: `scale(${scale})`, ...style }}
-      >
-        <Flex
-          className={classNames(styles.arrow, styles[color])}
-          height={0.1}
-        />
-        <Flex
-          className={classNames(styles.arrowHead, styles[color])}
-          height={0.0875}
-        />
-        <Flex
-          className={classNames(styles.arrowHead, styles[color])}
-          height={0.0875}
-        />
-      </Flex>
+        className={classNames(styles.arrow, styles[color])}
+        height={0.1}
+      />
+      <Flex
+        className={classNames(styles.arrowHead, styles[color])}
+        height={0.0875}
+      />
+      <Flex
+        className={classNames(styles.arrowHead, styles[color])}
+        height={0.0875}
+      />
     </Flex>
   );
 };
