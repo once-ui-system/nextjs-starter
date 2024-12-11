@@ -54,7 +54,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       <>
         {prefixIcon && !loading && <Icon name={prefixIcon} size={iconSize} />}
         {loading && <Spinner size={size} />}
-        <Flex paddingX="4" paddingY="0" textWeight="strong" textSize={size} textFont="label" className="font-label">
+        <Flex paddingX="4" paddingY="0" textWeight="strong" textSize={size} className="font-label">
           {label || children}
         </Flex>
         {arrowIcon && <Arrow style={{ marginLeft: "calc(-1 * var(--static-space-4))" }} trigger={'#' + id} scale={size === "s" ? 0.8 : size === "m" ? 0.9 : 1} />}

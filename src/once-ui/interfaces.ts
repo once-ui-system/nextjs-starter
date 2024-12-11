@@ -7,6 +7,7 @@ import {
   ShadowSize,
   SpacingToken,
   TextSize,
+  TextType,
   TextVariant,
   TextWeight,
 } from "./types";
@@ -71,6 +72,7 @@ export interface SpacingProps extends HTMLAttributes<HTMLDivElement> {
 export interface StyleProps extends HTMLAttributes<HTMLDivElement> {
   textVariant?: TextVariant;
   textSize?: TextSize;
+  textType?: TextType;
   textWeight?: TextWeight;
   background?:
     | `${ColorScheme}-${ColorWeight}`

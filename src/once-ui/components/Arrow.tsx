@@ -51,7 +51,10 @@ const Arrow: React.FC<ArrowProps> = ({
       alignItems="center"
       justifyContent="flex-end"
       className={classNames(styles.arrowContainer, className)}
-      style={{ transform: `scale(${scale})`, ...style }}
+      style={{
+        transform: `scale(${scale})`,
+        ...style
+      }}
     >
       <Flex
         className={classNames(styles.arrow, styles[color])}
