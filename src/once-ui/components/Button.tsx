@@ -48,17 +48,16 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
     },
     ref,
   ) => {
-    const labelSize =
-      size === "l" ? "font-l" : size === "m" ? "font-m" : "font-s";
     const iconSize = size === "l" ? "m" : size === "m" ? "s" : "xs";
 
     const content = (
       <>
         {prefixIcon && !loading && <Icon name={prefixIcon} size={iconSize} />}
         {loading && <Spinner size={size} />}
-        <div className={`font-label font-strong ${styles.label} ${labelSize}`}>
+        <Flex paddingX="4" paddingY="0" textWeight="strong" textSize={size} textFont="label" className="font-label">
           {label || children}
-        </div>
+        </Flex>
+        {arrowIcon && <Arrow style={{ marginLeft: "calc(-1 * var(--static-space-4))" }} trigger={'#' + id} scale={size === "s" ? 0.8 : size === "m" ? 0.9 : 1} />}
         {suffixIcon && <Icon name={suffixIcon} size={iconSize} />}
       </>
     );
@@ -75,10 +74,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
         style={{ ...style, textDecoration: "none" }}
         {...props}
       >
-        <Flex alignItems="center">
-          {content}
-          {arrowIcon && <Arrow trigger={'#' + id} />}
-        </Flex>
+        {content}
       </ElementType>
     );
   },
