@@ -1,0 +1,30 @@
+.option {
+  cursor: pointer;
+  border-color: var(--static-transparent);
+  border-width: 1px;
+  border-style: solid;
+  transition: var(--transition-micro-medium);
+
+  &:hover, &:focus {
+      background: var(--neutral-alpha-weak);
+      border-color: var(--neutral-alpha-medium);
+  }
+  
+  &.selected {
+      background-color: var(--neutral-alpha-medium);
+      border-color: var(--neutral-alpha-medium);
+  }
+
+  &.danger {
+      color: var(--danger-alpha-weak);
+
+      &:hover, &:focus {
+          background-color: var(--danger-alpha-medium);
+          color: var(--danger-on-background-medium);
+      }
+  }
+}
+
+.focused {
+  background-color: var(--neutral-background-strong);
+}

@@ -1,37 +1,28 @@
 "use client";
 
-import React, { useState, useRef, useEffect, forwardRef } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  forwardRef,
+} from "react";
 import classNames from "classnames";
 import { DropdownWrapper, Input, InputProps } from ".";
-import { DropdownOptions } from ".";
 import inputStyles from "./Input.module.scss";
 
 interface SelectProps extends Omit<InputProps, "onSelect" | "value"> {
-  options: DropdownOptions[];
+  options: React.ReactNode;
   value: string;
   style?: React.CSSProperties;
-  onSelect: (option: DropdownOptions) => void;
-  renderDropdownOptions?: (option: DropdownOptions) => React.ReactNode;
-  renderCustomDropdownContent?: () => React.ReactNode;
+  onSelect?: (value: string) => void;
 }
 
 const Select = forwardRef<HTMLDivElement, SelectProps>(
-  (
-    {
-      options,
-      value,
-      style,
-      onSelect,
-      renderDropdownOptions,
-      renderCustomDropdownContent,
-      ...inputProps
-    },
-    ref,
-  ) => {
+  ({ options, value, style, onSelect, ...inputProps }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const selectRef = useRef<HTMLDivElement>(null);
+    const selectRef = useRef<HTMLDivElement | null>(null);
 
     const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(true);
@@ -41,19 +32,12 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
 
     const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(false);
-      if (!selectRef.current?.contains(event.relatedTarget as Node)) {
-        setIsDropdownOpen(false);
-      }
-      if (value || event.target.value) {
-        setIsFilled(true);
-      } else {
-        setIsFilled(false);
-      }
+      setIsDropdownOpen(false);
       if (inputProps.onBlur) inputProps.onBlur(event);
     };
 
-    const handleSelect = (option: DropdownOptions) => {
-      onSelect(option);
+    const handleSelect = (value: string) => {
+      if (onSelect) onSelect(value);
       setIsDropdownOpen(false);
       setIsFilled(true);
     };
@@ -72,37 +56,37 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
       };
-    }, [isDropdownOpen]);
+    }, []);
 
     return (
       <DropdownWrapper
-        ref={selectRef}
-        dropdownOptions={options}
-        dropdownProps={{
-          onOptionSelect: handleSelect,
+        ref={(node) => {
+          selectRef.current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) ref.current = node;
         }}
-        renderCustomDropdownContent={renderCustomDropdownContent}
-      >
-        <Input
-          {...inputProps}
-          style={{ cursor: "pointer", textOverflow: "ellipsis", ...style }}
-          value={value}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          readOnly
-          className={classNames({
-            [inputStyles.filled]: isFilled,
-            [inputStyles.focused]: isFocused,
-          })}
-          aria-haspopup="listbox"
-          aria-expanded={isDropdownOpen}
-        />
-      </DropdownWrapper>
+        trigger={
+          <Input
+            {...inputProps}
+            style={{ cursor: "pointer", textOverflow: "ellipsis", ...style }}
+            value={value}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            readOnly
+            className={classNames({
+              [inputStyles.filled]: isFilled,
+              [inputStyles.focused]: isFocused,
+            })}
+            aria-haspopup="listbox"
+            aria-expanded={isDropdownOpen}
+          />
+        }
+        dropdown={options}
+      />
     );
-  },
+  }
 );
 
 Select.displayName = "Select";
 
 export { Select };
-export type { SelectProps };

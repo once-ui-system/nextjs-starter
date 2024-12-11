@@ -16,32 +16,28 @@ import {
   size,
   autoUpdate,
 } from "@floating-ui/react-dom";
-import { Flex, Dropdown, DropdownProps, DropdownOptions } from ".";
+import { Flex, Dropdown } from ".";
 import styles from "./Select.module.scss";
 import classNames from "classnames";
 
 interface DropdownWrapperProps {
-  children: ReactNode;
-  dropdownOptions: DropdownOptions[];
-  dropdownProps?: Omit<DropdownProps, "options"> & {
-    onOptionSelect?: (option: DropdownOptions) => void;
-  };
+  trigger: ReactNode;
+  dropdown: ReactNode;
   selectedOption?: string;
   style?: React.CSSProperties;
   className?: string;
-  renderCustomDropdownContent?: () => ReactNode;
+  onSelect?: (value: string) => void;
 }
 
 const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
   (
     {
-      children,
-      dropdownOptions,
-      dropdownProps = {},
+      trigger,
+      dropdown,
       selectedOption,
       style,
       className,
-      renderCustomDropdownContent,
+      onSelect,
     },
     ref,
   ) => {
@@ -59,6 +55,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
           apply({ availableWidth, availableHeight, elements }) {
             Object.assign(elements.floating.style, {
               maxWidth: `${availableWidth}px`,
+              minHeight: `${availableHeight}px`,
               maxHeight: `${availableHeight}px`,
             });
           },
@@ -93,11 +90,6 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       }
     }, [isDropdownOpen, update, selectedOption]);
 
-    const setDropdownRef = (node: HTMLDivElement | null) => {
-      dropdownRef.current = node;
-      refs.setFloating(node);
-    };
-
     const handleClickOutside = (event: MouseEvent) => {
       if (
         wrapperRef.current &&
@@ -120,12 +112,6 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       }
     };
 
-    const stopPropagation = (e: React.MouseEvent | React.KeyboardEvent) => {
-      e.stopPropagation();
-    };
-
-    const { onOptionSelect = () => {}, ...restDropdownProps } = dropdownProps;
-
     return (
       <Flex
         style={{
@@ -142,12 +128,12 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         aria-haspopup="listbox"
         aria-expanded={isDropdownOpen}
       >
-        {children}
+        {trigger}
         {isDropdownOpen && (
           <Flex
             zIndex={1}
             className={classNames(styles.dropdown, styles.fadeIn)}
-            ref={setDropdownRef}
+            ref={dropdownRef}
             style={{
               minWidth: "100%",
               position: strategy,
@@ -156,19 +142,11 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
             }}
           >
             <Dropdown
-              options={dropdownOptions}
-              onOptionSelect={(option) => {
-                onOptionSelect(option);
-                setDropdownOpen(false);
-              }}
-              {...restDropdownProps}
+              ref={dropdownRef}
               selectedOption={selectedOption}
+              onSelect={onSelect}
             >
-              {renderCustomDropdownContent && (
-                <div onClick={stopPropagation} onKeyDown={stopPropagation}>
-                  {renderCustomDropdownContent()}
-                </div>
-              )}
+              {dropdown}
             </Dropdown>
           </Flex>
         )}
