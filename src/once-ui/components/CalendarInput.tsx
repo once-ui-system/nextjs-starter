@@ -58,6 +58,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
   return (
     <div ref={wrapperRef} className={styles.wrapper}>
       <Input
+        readOnly
         id={id}
         label={label}
         value={inputValue}
