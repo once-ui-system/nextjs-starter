@@ -1,9 +1,9 @@
 // CalendarInput.tsx
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Input, Calendar, IconButton, Flex } from '.';
-import styles from './CalendarInput.module.scss';
+import React, { useState, useRef, useEffect } from "react";
+import { Input, Calendar, IconButton, Flex } from ".";
+import styles from "./CalendarInput.module.scss";
 
 interface CalendarInputProps {
   id: string;
@@ -18,7 +18,7 @@ interface CalendarInputProps {
 const formatDate = (date: Date, showTime: boolean) => {
   const dateStr = date.toLocaleDateString();
   if (!showTime) return dateStr;
-  return `${dateStr} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  return `${dateStr} ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
 };
 
 export const CalendarInput: React.FC<CalendarInputProps> = ({
@@ -31,18 +31,23 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
   showTime = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(value ? formatDate(value, showTime) : '');
+  const [inputValue, setInputValue] = useState(
+    value ? formatDate(value, showTime) : "",
+  );
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleDateChange = (date: Date) => {

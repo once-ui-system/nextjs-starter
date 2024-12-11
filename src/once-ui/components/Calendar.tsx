@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, forwardRef, useEffect } from "react";
+import React, { useState, forwardRef } from "react";
 import classNames from "classnames";
 import { Flex, Text, Button, Grid, SegmentedControl, IconButton } from ".";
 import styles from "./Calendar.module.scss";
@@ -12,26 +12,43 @@ interface CalendarProps {
   minDate?: Date;
   maxDate?: Date;
   showTime?: boolean;
-  size?: "xs" | "s" | "m" | "l" | "xl";
+  size?: "s" | "m" | "l";
   className?: string;
   style?: React.CSSProperties;
 }
 
 const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
-  ({ id, value, onChange, minDate, maxDate, showTime = false, size = "m", className, style }, ref) => {
+  (
+    { value, onChange, showTime = false, size = "m", className, style },
+    ref,
+  ) => {
     const [selectedDate, setSelectedDate] = useState<Date>(value || new Date());
-    const [selectedTime, setSelectedTime] = useState<{hours: number, minutes: number}>({
+    const [selectedTime, setSelectedTime] = useState<{
+      hours: number;
+      minutes: number;
+    }>({
       hours: selectedDate.getHours(),
-      minutes: selectedDate.getMinutes()
+      minutes: selectedDate.getMinutes(),
     });
     const [isPM, setIsPM] = useState(selectedDate.getHours() >= 12);
     const [currentMonth, setCurrentMonth] = useState(selectedDate.getMonth());
     const [currentYear, setCurrentYear] = useState(selectedDate.getFullYear());
-    const [view, setView] = useState<'date' | 'month' | 'year'>('date');
 
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                       'July', 'August', 'September', 'October', 'November', 'December'];
-    const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const dayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
     const getDaysInMonth = (month: number, year: number) => {
       return new Date(year, month + 1, 0).getDate();
@@ -56,10 +73,14 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
       return hour24;
     };
 
-    const handleTimeChange = (newHours: number, newMinutes: number, newIsPM?: boolean) => {
+    const handleTimeChange = (
+      newHours: number,
+      newMinutes: number,
+      newIsPM?: boolean,
+    ) => {
       const pmState = newIsPM ?? isPM;
       let hour24 = newHours;
-      
+
       if (pmState && newHours < 12) {
         hour24 = newHours + 12;
       } else if (!pmState && newHours === 12) {
@@ -71,7 +92,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
       // Update time state separately
       setSelectedTime({
         hours: hour24,
-        minutes: newMinutes
+        minutes: newMinutes,
       });
       setIsPM(pmState);
 
@@ -92,20 +113,16 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
       }
 
       for (let day = 1; day <= daysInMonth; day++) {
-        const isSelected = 
-          selectedDate.getDate() === day && 
-          selectedDate.getMonth() === currentMonth && 
-          selectedDate.getFullYear() === currentYear;
-
         days.push(
           <Button
+            style={{ width: "var(--static-space-32)" }}
+            variant={selectedDate.getDate() === day ? "primary" : "secondary"}
             key={day}
             size="s"
             onClick={() => handleDateSelect(day)}
-            className={styles.dayButton}
           >
             {day}
-          </Button>
+          </Button>,
         );
       }
 
@@ -136,12 +153,14 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
           className={styles.timeInput}
           aria-label="Hours"
         />
-        <Text variant="label-default-m" onBackground="neutral-medium">:</Text>
+        <Text variant="label-default-m" onBackground="neutral-medium">
+          :
+        </Text>
         <input
           type="number"
           min={0}
           max={59}
-          value={selectedTime.minutes.toString().padStart(2, '0')}
+          value={selectedTime.minutes.toString().padStart(2, "0")}
           onChange={(e) => {
             const value = parseInt(e.target.value);
             if (!isNaN(value) && value >= 0 && value <= 59) {
@@ -161,11 +180,17 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         />
         <SegmentedControl
           buttons={[
-            { value: 'AM', label: 'AM' },
-            { value: 'PM', label: 'PM' }
+            { value: "AM", label: "AM" },
+            { value: "PM", label: "PM" },
           ]}
-          selected={isPM ? 'PM' : 'AM'}
-          onToggle={(value) => handleTimeChange(selectedTime.hours, selectedTime.minutes, value === 'PM')}
+          selected={isPM ? "PM" : "AM"}
+          onToggle={(value) =>
+            handleTimeChange(
+              selectedTime.hours,
+              selectedTime.minutes,
+              value === "PM",
+            )
+          }
           className={styles.ampmSelector}
         />
       </Flex>
@@ -177,8 +202,8 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         direction="column"
         className={classNames(styles.calendar, styles[size], className)}
         style={style}
-        gap={size} // Using Once UI's responsive gap system
-        padding={size} // Using Once UI's responsive padding system
+        gap={size}
+        padding={size}
         background="surface"
         border="neutral-medium"
         borderStyle="solid-1"
@@ -186,9 +211,10 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
       >
         <Flex justifyContent="space-between" alignItems="center">
           <IconButton
-           className={styles.monthButton}
             variant="ghost"
-            size={size === "xl" ? "l" : size === "l" ? "m" : "s"}
+            tooltip="Previous"
+            tooltipPosition="bottom"
+            size={size === "l" ? "l" : "m"}
             icon="chevronLeft"
             onClick={() => {
               if (currentMonth === 0) {
@@ -199,16 +225,14 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
               }
             }}
           />
-          <Text 
-            variant={`label-default-${size}`}
-            onBackground="neutral-strong"
-          >
+          <Text variant={`label-default-${size}`} onBackground="neutral-strong">
             {monthNames[currentMonth]} {currentYear}
           </Text>
           <IconButton
-          className={styles.monthButton}
             variant="ghost"
-            size={size === "xl" ? "l" : size === "l" ? "m" : "s"}
+            tooltip="Next"
+            tooltipPosition="bottom"
+            size={size === "l" ? "l" : "m"}
             icon="chevronRight"
             onClick={() => {
               if (currentMonth === 11) {
@@ -221,13 +245,13 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
           />
         </Flex>
 
-        <Grid columns="repeat(7, 1fr)" gap={size === "xl" ? "12" : size === "l" ? "8" : "4"}>
-          {dayNames.map(day => (
+        <Grid columns="repeat(7, 1fr)" gap={size === "l" ? "8" : "4"}>
+          {dayNames.map((day) => (
             <Text
               key={day}
-              variant={`label-default-${size === "xl" || size === "l" ? "m" : "s"}`}
+              variant="label-default-m"
               onBackground="neutral-weak"
-              style={{ textAlign: 'center' }}
+              align="center"
             >
               {day}
             </Text>
@@ -237,8 +261,8 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
 
         {showTime && (
           <Flex direction="column" gap="4">
-            <Text 
-              variant={`label-default-${size}`} 
+            <Text
+              variant="label-default-m"
               onBackground="neutral-weak"
               paddingLeft="2"
             >
@@ -249,7 +273,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         )}
       </Flex>
     );
-  }
+  },
 );
 
 Calendar.displayName = "Calendar";
