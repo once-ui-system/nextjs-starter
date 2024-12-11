@@ -1,6 +1,5 @@
 .button {
     display: flex;
-    justify-content: center;
     align-items: center;
     position: relative;
     cursor: pointer;
@@ -101,16 +100,4 @@
     border-radius: var(--radius-l);
     min-height: var(--static-space-48);
     gap: var(--static-space-8);
-}
-
-.label {
-    padding: 0 var(--static-space-4);
-}
-
-.fillWidth {
-    width: 100%;
-}
-
-.fitContent {
-    width: fit-content;
 }

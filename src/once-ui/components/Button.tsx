@@ -15,6 +15,7 @@ interface CommonProps {
   suffixIcon?: string;
   loading?: boolean;
   fillWidth?: boolean;
+  justifyContent?: "flex-start" | "center" | "flex-end" | "space-between";
   children?: ReactNode;
   href?: string;
   className?: string;
@@ -39,6 +40,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       suffixIcon,
       loading = false,
       fillWidth = false,
+      justifyContent = "center",
       href,
       id,
       arrowIcon = false,
@@ -67,11 +69,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
         id={id}
         href={href}
         ref={ref}
-        className={classNames(styles.button, styles[variant], styles[size], {
-          [styles.fillWidth]: fillWidth,
-          [styles.fitContent]: !fillWidth,
+        className={classNames(styles.button, styles[variant], styles[size], 'text-decoration-none', 'button', {
+          ['fill-width']: fillWidth,
+          ['fit-width']: !fillWidth,
+          ['justify-' + justifyContent]: justifyContent
         }, className)}
-        style={{ ...style, textDecoration: "none" }}
+        style={{ ...style }}
         {...props}
       >
         {content}
