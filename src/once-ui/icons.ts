@@ -13,6 +13,7 @@ import {
   HiMiniUser,
   HiMiniXMark,
   HiEyeDropper,
+  HiCalendar,
   HiOutlineLink,
   HiExclamationTriangle,
   HiArrowUpRight,
@@ -44,4 +45,5 @@ export const iconLibrary: Record<string, IconType> = {
   arrowUpRight: HiArrowUpRight,
   minus: HiMiniMinus,
   plus: HiMiniPlus,
+  calendar: HiCalendar,
 };
