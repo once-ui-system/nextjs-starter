@@ -1,9 +1,10 @@
 "use client";
 
 import React, { ReactNode, forwardRef } from "react";
-import Link from "next/link";
+import { ElementType } from './ElementType';
+import classNames from 'classnames';
 
-import { Spinner, Icon } from ".";
+import { Spinner, Icon, Arrow, Flex } from ".";
 import styles from "./Button.module.scss";
 
 interface CommonProps {
@@ -18,14 +19,14 @@ interface CommonProps {
   href?: string;
   className?: string;
   style?: React.CSSProperties;
+  id?: string;
+  arrowIcon?: boolean;
 }
 
 export type ButtonProps = CommonProps &
   React.ButtonHTMLAttributes<HTMLButtonElement>;
 export type AnchorProps = CommonProps &
   React.AnchorHTMLAttributes<HTMLAnchorElement>;
-
-const isExternalLink = (url: string) => /^https?:\/\//.test(url);
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
   (
@@ -39,6 +40,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       loading = false,
       fillWidth = false,
       href,
+      id,
+      arrowIcon = false,
       className,
       style,
       ...props
@@ -60,53 +63,26 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       </>
     );
 
-    const commonProps = {
-      className: `${styles.button} ${styles[variant]} ${styles[size]} ${fillWidth ? styles.fillWidth : styles.fitContent} ${className || ""}`,
-      style: { ...style, textDecoration: "none" },
-    };
-
-    if (href) {
-      const isExternal = isExternalLink(href);
-
-      if (isExternal) {
-        return (
-          <a
-            href={href}
-            ref={ref as React.Ref<HTMLAnchorElement>}
-            target="_blank"
-            rel="noreferrer"
-            {...commonProps}
-            {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-          >
-            {content}
-          </a>
-        );
-      }
-
-      return (
-        <Link
-          href={href}
-          ref={ref as React.Ref<HTMLAnchorElement>}
-          {...commonProps}
-          {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-        >
-          {content}
-        </Link>
-      );
-    }
-
     return (
-      <button
-        ref={ref as React.Ref<HTMLButtonElement>}
-        {...commonProps}
-        {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+      <ElementType
+        id={id}
+        href={href}
+        ref={ref}
+        className={classNames(styles.button, styles[variant], styles[size], {
+          [styles.fillWidth]: fillWidth,
+          [styles.fitContent]: !fillWidth,
+        }, className)}
+        style={{ ...style, textDecoration: "none" }}
+        {...props}
       >
-        {content}
-      </button>
+        <Flex alignItems="center">
+          {content}
+          {arrowIcon && <Arrow trigger={'#' + id} />}
+        </Flex>
+      </ElementType>
     );
   },
 );
 
 Button.displayName = "Button";
-
 export { Button };
