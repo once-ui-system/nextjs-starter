@@ -12,6 +12,7 @@ interface CommonProps {
   size?: "s" | "m" | "l";
   radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left"
   label?: string;
+  weight?: "default" | "strong";
   prefixIcon?: string;
   suffixIcon?: string;
   loading?: boolean;
@@ -37,6 +38,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       size = "m",
       radius,
       label,
+      weight = "strong",
       children,
       prefixIcon,
       suffixIcon,
@@ -58,7 +60,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       <>
         {prefixIcon && !loading && <Icon name={prefixIcon} size={iconSize} />}
         {loading && <Spinner size={size} />}
-        <Flex paddingX="4" paddingY="0" textWeight="strong" textSize={size} className="font-label">
+        <Flex paddingX="4" paddingY="0" textWeight={weight} textSize={size} className="font-label">
           {label || children}
         </Flex>
         {arrowIcon && <Arrow style={{ marginLeft: "calc(-1 * var(--static-space-4))" }} trigger={'#' + id} scale={size === "s" ? 0.8 : size === "m" ? 0.9 : 1} />}
