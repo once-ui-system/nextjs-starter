@@ -120,20 +120,19 @@ export default function RootLayout({
       </head>
       <Flex as="body" fill margin="0" padding="0">
         <Background
-          style={{ zIndex: "-1" }}
           position="fixed"
           mask="cursor"
           dots={{
             display: true,
-            opacity: 0.4,
+            opacity: 40,
             size: "40",
           }}
           gradient={{
             display: true,
-            opacity: 0.4,
+            opacity: 40,
           }}
         />
-        <Flex flex={1} direction="column">
+        <Flex flex={1} direction="column" position="relative">
           {children}
         </Flex>
       </Flex>

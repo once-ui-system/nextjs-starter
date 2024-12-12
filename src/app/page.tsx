@@ -217,6 +217,11 @@ export default function Home() {
               <Button size="m" data-solid="contrast" data-border="rounded" data-solid-style="plastic" data-brand="indigo">Button</Button>
               <Button size="s" data-solid="contrast" data-border="rounded" data-solid-style="plastic" data-brand="violet">Button</Button>
             </Flex>
+            <Flex fillWidth negativeGap="1">
+              <Button weight="default" radius="left" fillWidth data-solid="color" data-border="rounded" data-solid-style="plastic" data-brand="indigo">Button</Button>
+              <Button weight="default" radius="none" fillWidth data-solid="color" data-border="rounded" data-solid-style="plastic" data-brand="indigo">Button</Button>
+              <Button weight="default" radius="right" fillWidth data-solid="color" data-border="rounded" data-solid-style="plastic" data-brand="indigo">Button</Button>
+            </Flex>
           </Flex>
 
           <Flex fillWidth padding="48" topRadius="xl" bottomRightRadius="xl" background="page" data-theme="light" direction="column" gap="48">
