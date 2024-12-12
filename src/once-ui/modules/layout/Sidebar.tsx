@@ -30,7 +30,7 @@ const Sidebar: React.FC = ({}) => {
       alignItems="flex-start"
       direction="column"
     >
-      <Flex fillHeight fillWidth paddingX="xs" gap="m" direction="column">
+      <Flex fillpaddingX="xs" gap="m" direction="column">
         <Flex fillWidth gap="4" direction="column">
           <Text
             variant="body-default-xs"
@@ -170,7 +170,7 @@ const Sidebar: React.FC = ({}) => {
 
         <Flex fillWidth height="1" background="neutral-strong"></Flex>
 
-        <Flex fillWidth fillHeight gap="4" direction="column">
+        <Flex fill gap="4" direction="column">
           <Flex
             fillWidth
             justifyContent="space-between"

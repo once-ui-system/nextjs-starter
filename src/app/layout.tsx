@@ -118,7 +118,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </head>
-      <Flex as="body" fillWidth fillHeight margin="0" padding="0">
+      <Flex as="body" fill margin="0" padding="0">
         <Background
           style={{ zIndex: "-1" }}
           position="fixed"
