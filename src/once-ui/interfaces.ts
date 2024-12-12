@@ -47,8 +47,12 @@ export interface SizeProps extends HTMLAttributes<HTMLDivElement> {
   minWidth?: number | SpacingToken;
   minHeight?: number | SpacingToken;
   maxHeight?: number | SpacingToken;
-  fillWidth?: boolean;
-  fillHeight?: boolean;
+  fit?: boolean,
+  fitWidth?: boolean,
+  fitHeight?: boolean,
+  fill?: boolean,
+  fillWidth?: boolean,
+  fillHeight?: boolean,
 }
 
 export interface SpacingProps extends HTMLAttributes<HTMLDivElement> {
@@ -67,6 +71,10 @@ export interface SpacingProps extends HTMLAttributes<HTMLDivElement> {
   marginX?: SpacingToken;
   marginY?: SpacingToken;
   gap?: SpacingToken;
+  top?: SpacingToken;
+  right?: SpacingToken;
+  bottom?: SpacingToken;
+  left?: SpacingToken;
 }
 
 export interface StyleProps extends HTMLAttributes<HTMLDivElement> {
@@ -98,7 +106,7 @@ export interface DisplayProps extends HTMLAttributes<HTMLDivElement> {
   overflow?: CSSProperties["overflow"];
   overflowX?: CSSProperties["overflowX"];
   overflowY?: CSSProperties["overflowY"];
-  zIndex?: CSSProperties["zIndex"];
+  zIndex?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 
 export interface CommonProps extends HTMLAttributes<HTMLDivElement> {
