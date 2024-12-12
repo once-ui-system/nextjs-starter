@@ -1356,6 +1356,18 @@
  /*            GAP           */
 /****************************/
 
+// Negative gap: collapse stacked borders
+
+.gap-horizontal--1 > *:not(:last-child) {
+    margin-right: -1px;
+}
+  
+.gap-vertical--1 > *:not(:last-child) {
+    margin-top: -1px;
+}
+
+// Regular gap
+
 .g-0 {
     gap: var(--static-space-0);
 }
