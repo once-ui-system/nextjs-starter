@@ -57,6 +57,7 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       marginX,
       marginY,
       gap,
+      negativeGap,
       position,
       width,
       height,
@@ -80,6 +81,14 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       border,
       borderStyle,
       radius,
+      topRadius,
+      rightRadius,
+      bottomRadius,
+      leftRadius,
+      topLeftRadius,
+      topRightRadius,
+      bottomLeftRadius,
+      bottomRightRadius,
       overflow,
       overflowX,
       overflowY,
@@ -137,12 +146,20 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
 
     const generateDynamicClass = (type: string, value: string | undefined) => {
       if (!value) return undefined;
-      if (value === "surface" || value === "page" || value === "transparent") {
+    
+      if (["surface", "page", "overlay", "transparent"].includes(value)) {
         return `${value}-${type}`;
       }
+    
+      const parts = value.split("-");
+      if (parts.includes("alpha")) {
+        const [scheme, , weight] = parts;
+        return `${scheme}-${type}-alpha-${weight}`;
+      }
+    
       const [scheme, weight] = value.split("-") as [ColorScheme, ColorWeight];
       return `${scheme}-${type}-${weight}`;
-    };
+    };       
 
     const classes = classNames(
       "flex",
@@ -169,6 +186,7 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       generateDynamicClass("alpha", alpha),
       generateDynamicClass("solid", solid),
       generateDynamicClass("border", border),
+      negativeGap && `gap-${direction === 'column' ? 'vertical' : 'horizontal'}--${negativeGap}`,
       direction === "column" && "flex-column",
       direction === "row" && "flex-row",
       tabletDirection === "column" && "m-flex-column",
@@ -178,11 +196,19 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       border && !borderStyle && `border-solid-1`,
       borderStyle && `border-${borderStyle}`,
       radius === "full" ? "radius-full" : radius && `radius-${radius}`,
+      topRadius && `radius-${topRadius}-top`,
+      rightRadius && `radius-${rightRadius}-right`,
+      bottomRadius && `radius-${bottomRadius}-bottom`,
+      leftRadius && `radius-${leftRadius}-left`,
+      topLeftRadius && `radius-${topLeftRadius}-top-left`,
+      topRightRadius && `radius-${topRightRadius}-top-right`,
+      bottomLeftRadius && `radius-${bottomLeftRadius}-bottom-left`,
+      bottomRightRadius && `radius-${bottomRightRadius}-bottom-right`,
       hide === "s" && "s-flex-hide",
       hide === "m" && "m-flex-hide",
       show === "s" && "s-flex-show",
       show === "m" && "m-flex-show",
-      wrap && `flex-${wrap}`,
+      wrap && `flex-wrap`,
       overflow && `overflow-${overflow}`,
       overflowX && `overflow-${overflowX}`,
       overflowY && `overflow-${overflowY}`,

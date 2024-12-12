@@ -71,6 +71,7 @@ export interface SpacingProps extends HTMLAttributes<HTMLDivElement> {
   marginX?: SpacingToken;
   marginY?: SpacingToken;
   gap?: SpacingToken;
+  negativeGap?: '1' | '2';
   top?: SpacingToken;
   right?: SpacingToken;
   bottom?: SpacingToken;
@@ -84,13 +85,27 @@ export interface StyleProps extends HTMLAttributes<HTMLDivElement> {
   textWeight?: TextWeight;
   background?:
     | `${ColorScheme}-${ColorWeight}`
+    | `${ColorScheme}-alpha-${ColorWeight}`
     | "surface"
+    | "overlay"
     | "page"
     | "transparent";
   alpha?: `${ColorScheme}-${ColorWeight}`;
   solid?: `${ColorScheme}-${ColorWeight}`;
-  border?: `${ColorScheme}-${ColorWeight}` | "surface" | "transparent";
+  border?: 
+    | `${ColorScheme}-${ColorWeight}`
+    | `${ColorScheme}-alpha-${ColorWeight}`
+    | "surface"
+    | "transparent";
   borderStyle?: "solid-1" | "solid-2";
+  topRadius?: RadiusSize,
+  rightRadius?: RadiusSize,
+  bottomRadius?: RadiusSize,
+  leftRadius?: RadiusSize,
+  topLeftRadius?: RadiusSize,
+  topRightRadius?: RadiusSize,
+  bottomLeftRadius?: RadiusSize,
+  bottomRightRadius?: RadiusSize,
   radius?: RadiusSize | `${RadiusSize}-${RadiusNest}`;
   shadow?: ShadowSize;
 }
