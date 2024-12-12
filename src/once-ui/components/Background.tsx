@@ -8,6 +8,8 @@ import React, {
   useState,
 } from "react";
 import { SpacingToken } from "../types";
+import { Flex } from "./Flex";
+import { DisplayProps } from "../interfaces";
 
 function setRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
   if (typeof ref === "function") {
@@ -40,19 +42,19 @@ interface BackgroundProps {
 
 interface GradientProps {
   display?: boolean;
-  opacity?: number;
+  opacity?: DisplayProps["opacity"];
 }
 
 interface DotsProps {
   display?: boolean;
-  opacity?: number;
+  opacity?: DisplayProps["opacity"];
   color?: string;
   size?: SpacingToken;
 }
 
 interface LinesProps {
   display?: boolean;
-  opacity?: number;
+  opacity?: DisplayProps["opacity"];
   size?: SpacingToken;
 }
 
@@ -126,12 +128,6 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
     }, [cursorPosition, mask]);
 
     const commonStyles: CSSProperties = {
-      position,
-      top: "0",
-      left: "0",
-      zIndex: "0",
-      width: "100%",
-      height: "100%",
       pointerEvents: "none",
       ...style,
     };
@@ -173,12 +169,17 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
     return (
       <>
         {gradient.display && (
-          <div
+          <Flex
+            position={position}
             ref={backgroundRef}
             className={className}
+            top="0"
+            left="0"
+            opacity={gradient.opacity}
+            zIndex={0}
+            fill
             style={{
               ...commonStyles,
-              opacity: gradient.opacity,
               background:
                 "radial-gradient(100% 100% at 49.99% 0%, var(--static-transparent) 0%, var(--page-background) 100%), radial-gradient(87.4% 84.04% at 6.82% 16.24%, var(--brand-background-medium) 0%, var(--static-transparent) 100%), radial-gradient(217.89% 126.62% at 48.04% 0%, var(--accent-solid-medium) 0%, var(--static-transparent) 100%)",
               ...maskStyle(),
@@ -186,12 +187,17 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
           />
         )}
         {dots.display && (
-          <div
+          <Flex
+            position={position}
             ref={backgroundRef}
             className={className}
+            top="0"
+            left="0"
+            opacity={dots.opacity}
+            zIndex={0}
+            fill
             style={{
               ...commonStyles,
-              opacity: dots.opacity,
               backgroundImage: `radial-gradient(var(--${dotsColor}) 0.5px, var(--static-transparent) 0.5px)`,
               backgroundSize: `var(--static-space-${dotsSize}) var(--static-space-${dotsSize})`,
               ...maskStyle(),
@@ -199,12 +205,17 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
           />
         )}
         {lines.display && (
-          <div
+          <Flex
+            position={position}
             ref={backgroundRef}
             className={className}
+            top="0"
+            left="0"
+            opacity={lines.opacity}
+            zIndex={0}
+            fill
             style={{
               ...commonStyles,
-              opacity: lines.opacity,
               backgroundImage: `repeating-linear-gradient(45deg, var(--brand-on-background-weak) 0, var(--brand-on-background-weak) 0.5px, var(--static-transparent) 0.5px, var(--static-transparent) ${dots.size})`,
               ...maskStyle(),
             }}
