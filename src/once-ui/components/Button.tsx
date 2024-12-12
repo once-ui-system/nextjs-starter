@@ -10,6 +10,7 @@ import styles from "./Button.module.scss";
 interface CommonProps {
   variant?: "primary" | "secondary" | "tertiary" | "danger";
   size?: "s" | "m" | "l";
+  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left"
   label?: string;
   prefixIcon?: string;
   suffixIcon?: string;
@@ -34,6 +35,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
     {
       variant = "primary",
       size = "m",
+      radius,
       label,
       children,
       prefixIcon,
@@ -64,16 +66,29 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       </>
     );
 
+    const radiusSize = size === 's' || size === 'm' ? 'm' : 'l';
+
     return (
       <ElementType
         id={id}
         href={href}
         ref={ref}
-        className={classNames(styles.button, styles[variant], styles[size], 'text-decoration-none', 'button', {
-          ['fill-width']: fillWidth,
-          ['fit-width']: !fillWidth,
-          ['justify-' + justifyContent]: justifyContent
-        }, className)}
+        className={classNames(
+          styles.button,
+          styles[variant],
+          styles[size],
+          radius === 'none'
+            ? 'radius-none'
+            : radius
+            ? `radius-${radiusSize}-${radius}`
+            : `radius-${radiusSize}`,
+          'text-decoration-none',
+          'button',
+          {
+            ['fill-width']: fillWidth,
+            ['fit-width']: !fillWidth,
+            ['justify-' + justifyContent]: justifyContent
+          }, className)}
         style={{ ...style }}
         {...props}
       >

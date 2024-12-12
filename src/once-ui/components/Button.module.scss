@@ -10,6 +10,10 @@
     -webkit-tap-highlight-color: transparent;
     transition: var(--transition-micro-medium);
 
+    &:hover, &:focus {
+        z-index: 1;
+    }
+
     &:disabled {
         box-shadow: none;
         background: var(--neutral-solid-weak);
@@ -83,21 +87,21 @@
 
 .s {
     padding: var(--static-space-4) var(--static-space-8);
-    border-radius: var(--radius-m);
     min-height: var(--static-space-32);
+    height: var(--static-space-32);
     gap: var(--static-space-4);
 }
 
 .m {
     padding: var(--static-space-8) var(--static-space-12);
-    border-radius: var(--radius-m);
     min-height: var(--static-space-40);
+    height: var(--static-space-40);
     gap: var(--static-space-4);
 }
 
 .l {
     padding: var(--static-space-12) var(--static-space-20);
-    border-radius: var(--radius-l);
     min-height: var(--static-space-48);
+    height: var(--static-space-48);
     gap: var(--static-space-8);
 }
