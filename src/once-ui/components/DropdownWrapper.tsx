@@ -17,7 +17,7 @@ import {
   autoUpdate,
 } from "@floating-ui/react-dom";
 import { Flex, Dropdown } from ".";
-import styles from "./Select.module.scss";
+import styles from "./DropdownWrapper.module.scss";
 import classNames from "classnames";
 
 interface DropdownWrapperProps {
@@ -30,17 +30,7 @@ interface DropdownWrapperProps {
 }
 
 const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
-  (
-    {
-      trigger,
-      dropdown,
-      selectedOption,
-      style,
-      className,
-      onSelect,
-    },
-    ref,
-  ) => {
+  ({ trigger, dropdown, selectedOption, style, className, onSelect }, ref) => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -99,16 +89,61 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       }
     };
 
+    const handleFocusOut = (event: FocusEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.relatedTarget as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+
     useEffect(() => {
       document.addEventListener("mousedown", handleClickOutside);
+      wrapperRef.current?.addEventListener("focusout", handleFocusOut);
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
+        wrapperRef.current?.removeEventListener("focusout", handleFocusOut);
       };
     }, []);
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.key === "Escape") {
-        setDropdownOpen(false);
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+      switch (event.key) {
+        case "Escape":
+          setDropdownOpen(false);
+          break;
+        case "Enter":
+          if (dropdownRef.current) {
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.getAttribute('role') === 'option') {
+              const value = activeElement.getAttribute('data-value');
+              if (value && onSelect) {
+                event.preventDefault();
+                onSelect(value);
+                setDropdownOpen(false);
+              }
+            } else {
+              setDropdownOpen((prev) => !prev);
+            }
+          }
+          break;
+        case "ArrowDown":
+        case "ArrowUp":
+          event.preventDefault();
+          if (dropdownRef.current) {
+            const items = Array.from(
+              dropdownRef.current.querySelectorAll('[role="option"]'),
+            );
+            const currentIndex = items.findIndex((item) =>
+              item === document.activeElement,
+            );
+            const nextIndex =
+              event.key === "ArrowDown"
+                ? (currentIndex + 1) % items.length
+                : (currentIndex - 1 + items.length) % items.length;
+            (items[nextIndex] as HTMLElement)?.focus();
+          }
+          break;
       }
     };
 
@@ -123,7 +158,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         ref={wrapperRef}
         onClick={() => setDropdownOpen(!isDropdownOpen)}
         onKeyDown={handleKeyDown}
-        tabIndex={0}
+        tabIndex={-1}
         role="button"
         aria-haspopup="listbox"
         aria-expanded={isDropdownOpen}
@@ -140,6 +175,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
               top: Math.round(y) + "px",
               left: Math.round(x) + "px",
             }}
+            role="listbox"
           >
             <Dropdown
               ref={dropdownRef}
@@ -156,5 +192,4 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
 );
 
 DropdownWrapper.displayName = "DropdownWrapper";
-
 export { DropdownWrapper };

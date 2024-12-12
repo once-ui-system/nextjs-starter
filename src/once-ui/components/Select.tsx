@@ -22,24 +22,92 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
     const selectRef = useRef<HTMLDivElement | null>(null);
+    const optionRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const optionsArray = React.Children.toArray(options);
 
-    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = () => {
       setIsFocused(true);
       setIsDropdownOpen(true);
-      if (inputProps.onFocus) inputProps.onFocus(event);
     };
 
-    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = (event: FocusEvent) => {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.relatedTarget as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
       setIsFocused(false);
-      setIsDropdownOpen(false);
-      if (inputProps.onBlur) inputProps.onBlur(event);
     };
 
     const handleSelect = (value: string) => {
       if (onSelect) onSelect(value);
       setIsDropdownOpen(false);
       setIsFilled(true);
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (!isFocused && event.key !== "Enter") return;
+
+      switch (event.key) {
+        case "ArrowDown":
+          if (!isDropdownOpen) {
+            setIsDropdownOpen(true);
+            break;
+          }
+          event.preventDefault();
+          setHighlightedIndex((prevIndex) => {
+            const newIndex =
+              prevIndex === null || prevIndex === optionsArray.length - 1
+                ? 0
+                : prevIndex + 1;
+            optionRefs.current[newIndex]?.focus();
+            optionRefs.current[newIndex]?.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+            });
+            return newIndex;
+          });
+          break;
+
+        case "ArrowUp":
+          event.preventDefault();
+          setHighlightedIndex((prevIndex) => {
+            const newIndex =
+              prevIndex === null || prevIndex === 0
+                ? optionsArray.length - 1
+                : prevIndex - 1;
+            optionRefs.current[newIndex]?.focus();
+            optionRefs.current[newIndex]?.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+            });
+            return newIndex;
+          });
+          break;
+
+        case "Enter":
+          event.preventDefault();
+          if (highlightedIndex !== null && isDropdownOpen) {
+            const selectedOption = optionsArray[highlightedIndex] as React.ReactElement;
+            if (selectedOption?.props?.value) {
+              handleSelect(selectedOption.props.value);
+            }
+          } else {
+            setIsDropdownOpen(true);
+          }
+          break;
+
+        case "Escape":
+          event.preventDefault();
+          setIsDropdownOpen(false);
+          break;
+
+        default:
+          break;
+      }
     };
 
     useEffect(() => {
@@ -52,9 +120,16 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         }
       };
 
+      const handleFocusOut = (event: FocusEvent) => {
+        handleBlur(event);
+      };
+
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("focusout", handleFocusOut);
+
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("focusout", handleFocusOut);
       };
     }, []);
 
@@ -71,7 +146,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
             style={{ cursor: "pointer", textOverflow: "ellipsis", ...style }}
             value={value}
             onFocus={handleFocus}
-            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
             readOnly
             className={classNames({
               [inputStyles.filled]: isFilled,
@@ -81,7 +156,23 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
             aria-expanded={isDropdownOpen}
           />
         }
-        dropdown={options}
+        dropdown={
+          optionsArray.map((child, index) => {
+            if (!React.isValidElement(child)) return null;
+
+            return React.cloneElement(child as React.ReactElement, {
+              ref: (el: HTMLDivElement | null) => (optionRefs.current[index] = el),
+              tabIndex: highlightedIndex === index ? 0 : -1,
+              role: "option",
+              "aria-selected": highlightedIndex === index,
+              style: {
+                background: highlightedIndex === index ? "var(--neutral-alpha-weak)" : "transparent",
+              },
+              onClick: () => handleSelect(child.props.value),
+              onMouseEnter: () => setHighlightedIndex(index),
+            });
+          })
+        }
       />
     );
   }

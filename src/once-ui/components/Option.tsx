@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { Flex, Text } from ".";
 import styles from "./option.module.scss";
 import { ElementType } from "./ElementType";
+import React, { forwardRef } from "react";
 
 interface OptionProps {
   label: React.ReactNode;
@@ -12,10 +13,10 @@ interface OptionProps {
   description?: React.ReactNode;
   danger?: boolean;
   selected?: boolean;
-  onClick?: () => void;
+  onClick?: (value: string) => void;
 }
 
-const Option: React.FC<OptionProps> = ({
+const Option = forwardRef<HTMLDivElement, OptionProps>(({
   label,
   value,
   href,
@@ -24,11 +25,18 @@ const Option: React.FC<OptionProps> = ({
   description,
   danger,
   selected,
-  onClick
-}) => {
+  onClick,
+  ...props
+}, ref) => {
+  if (href && onClick) {
+    console.warn("Option should not have both `href` and `onClick` props.");
+  }
+  
   return (
-    <ElementType href={href} className="resetButtonStyles" onClick={onClick}>
+    <ElementType href={href} className="reset-button-styles" onClick={onClick}>
       <Flex
+        {...props}
+        ref={ref}
         fillWidth
         alignItems="center"
         paddingX="12"
@@ -36,11 +44,15 @@ const Option: React.FC<OptionProps> = ({
         gap="12"
         radius="m"
         role="option"
-        data-value={value}
+        aria-selected={selected}
+        tabIndex={-1}
+        onClick={() => onClick?.(value)}
         className={classNames(styles.option, {
+          [styles.danger]: danger,
           [styles.selected]: selected,
-          [styles.danger]: danger
-        })}>
+        })}
+        data-value={value}
+      >
         {hasPrefix && <Flex className={styles.prefix}>{hasPrefix}</Flex>}
         <Flex
           alignItems="flex-start"
@@ -63,7 +75,7 @@ const Option: React.FC<OptionProps> = ({
       </Flex>
     </ElementType>
   );
-};
+});
 
 Option.displayName = "Option";
 export { Option };
