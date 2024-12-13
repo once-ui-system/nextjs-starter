@@ -12,10 +12,12 @@ import {
   InlineCode,
   Logo,
   LetterFx,
-  Arrow,
   Calendar,
   CalendarInput,
-  Dropdown,
+  Accordion,
+  Avatar,
+  AvatarGroup,
+  Skeleton,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select } from "@/once-ui/components/Select";
@@ -93,15 +95,13 @@ export default function Home() {
               direction="column"
             >
               <InlineCode
-                className="shadow-m"
-                style={{
-                  width: "fit-content",
-                  padding: "var(--static-space-8) var(--static-space-16)",
-                  backdropFilter: "blur(var(--static-space-1))",
-                }}
+                shadow="m"
+                fit
+                paddingX="16"
+                paddingY="8"
               >
-                Start by editing{" "}
-                <span className="brand-on-background-medium">app/page.tsx</span>
+                Start by editing
+                <Text onBackground="brand-medium">app/page.tsx</Text>
               </InlineCode>
               <Heading wrap="balance" variant="display-strong-s">
                 <span className="font-code">
@@ -151,6 +151,19 @@ export default function Home() {
             ))}
           </Grid>
           Work in progress
+          <Skeleton marginTop="40" shape="line" width="l" height="l"/>
+          <Flex fillWidth direction="column" radius="xl" overflow="hidden" border="neutral-medium">
+            <Accordion title="Accordion title 1">Accordion content</Accordion>
+            <Accordion title="Accordion title 1">Accordion content</Accordion>
+          </Flex>
+          <Flex gap="8">
+            <Avatar size="s"/>
+            <Avatar size="m"/>
+            <Avatar size="l"/>
+          </Flex>
+          <AvatarGroup avatars={[{ src: "/images/cover.png" }, { src: "/images/cover.png" }, { src: "/images/cover.png" }]}></AvatarGroup>
+          <Flex alignItems="center" gap="8">Hey man <Icon name="check" tooltip="Check and check" tooltipPosition="right"/></Flex>
+          <Flex fillWidth textVariant="body-default-xl">We've reworked the <InlineCode marginX="8" gap="4"><Icon name="check" size="s"/>InlineCode</InlineCode> component.</Flex>
           <Flex fillWidth padding="48" radius="xl" background="surface" data-theme="dark" direction="column" gap="48">
             <Flex fillWidth wrap gap="12">
               <Button data-solid="inverse" data-brand="blue">Button</Button>
