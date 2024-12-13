@@ -27,7 +27,7 @@ const Carousel: React.FC<CarouselProps> = ({
     const [isTransitioning, setIsTransitioning] = useState(revealedByDefault);
     const [initialTransition, setInitialTransition] = useState(revealedByDefault);
     const nextImageRef = useRef<HTMLImageElement | null>(null);
-    const transitionTimeoutRef = useRef<NodeJS.Timeout>();
+    const transitionTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
     const preloadNextImage = (nextIndex: number) => {
         if (nextIndex >= 0 && nextIndex < images.length) {
