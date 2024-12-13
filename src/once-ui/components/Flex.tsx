@@ -27,6 +27,7 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
   (
     {
       as: Component = "div",
+      inline,
       direction,
       justifyContent,
       alignItems,
@@ -35,6 +36,7 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       textVariant,
       textSize,
       textWeight,
+      textType,
       onBackground,
       onSolid,
       align,
@@ -96,6 +98,7 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       overflowY,
       zIndex,
       shadow,
+      cursor,
       className,
       style,
       children,
@@ -164,7 +167,7 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
     };       
 
     const classes = classNames(
-      "flex",
+      inline ? "display-inline-flex" : "display-flex",
       generateClassName("p", padding),
       generateClassName("pl", paddingLeft),
       generateClassName("pr", paddingRight),
@@ -228,6 +231,8 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       shadow && `shadow-${shadow}`,
       position && `position-${position}`,
       zIndex && `z-index-${zIndex}`,
+      textType && `font-${textType}`,
+      cursor && `cursor-${cursor}`,
       colorClass,
       className,
       ...variantClasses,

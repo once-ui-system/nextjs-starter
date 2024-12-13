@@ -25,6 +25,7 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   direction?: "row" | "column";
   justifyContent?: CSSProperties["justifyContent"];
   alignItems?: CSSProperties["alignItems"];
+  inline?: boolean;
   wrap?: boolean;
   flex?: number;
   tabletDirection?: "row" | "column";
@@ -108,6 +109,7 @@ export interface StyleProps extends HTMLAttributes<HTMLDivElement> {
   bottomRightRadius?: RadiusSize,
   radius?: RadiusSize | `${RadiusSize}-${RadiusNest}`;
   shadow?: ShadowSize;
+  cursor?: CSSProperties["cursor"];
 }
 
 export interface ConditionalProps extends HTMLAttributes<HTMLDivElement> {
