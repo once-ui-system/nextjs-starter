@@ -1,6 +1,9 @@
-import * as sass from "sass";
-
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    sassOptions: {
+        compiler: "modern",
+        silenceDeprecations: ["legacy-js-api"],
+      },
+};
 
 export default nextConfig;
