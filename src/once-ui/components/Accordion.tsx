@@ -41,6 +41,8 @@ const Accordion: React.FC<AccordionProps> = forwardRef(
         <Flex
           tabIndex={0}
           className={styles.accordion}
+          cursor="pointer"
+          transition="macro-medium"
           paddingY="16"
           paddingX="20"
           alignItems="center"
@@ -76,7 +78,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(
           <Flex
             fillWidth
             minHeight={0}
-            style={{ overflow: "hidden" }}
+            overflow="hidden"
             direction="column"
           >
             <Flex fillWidth paddingX="20" paddingTop="8" paddingBottom="16">

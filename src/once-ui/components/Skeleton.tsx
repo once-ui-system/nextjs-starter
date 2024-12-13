@@ -4,8 +4,9 @@ import React, { forwardRef } from "react";
 import classNames from "classnames";
 
 import styles from "./Skeleton.module.scss";
+import { Flex } from "./Flex";
 
-interface SkeletonProps {
+interface SkeletonProps extends React.ComponentProps<typeof Flex> {
   shape: "line" | "circle" | "block";
   width?: "xl" | "l" | "m" | "s" | "xs";
   height?: "xl" | "l" | "m" | "s" | "xs";
@@ -17,11 +18,14 @@ interface SkeletonProps {
 const Skeleton: React.FC<SkeletonProps> = forwardRef<
   HTMLDivElement,
   SkeletonProps
->(({ shape = "line", width, height, delay, style, className }, ref) => {
+>(({ shape = "line", width, height, delay, style, className, ...props }, ref) => {
   return (
-    <div
+    <Flex
+      {...props}
       ref={ref}
       style={style}
+      radius="full"
+      inline
       className={classNames(
         styles.skeleton,
         styles[shape],

@@ -1,8 +1,4 @@
 .accordion {
-    cursor: pointer;
-    transition: var(--transition-micro-medium);
-    background: var(--static-transparent);
-
     &:hover {
         background: var(--neutral-alpha-weak);
     }

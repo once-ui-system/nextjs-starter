@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { IconType } from "react-icons";
 import { iconLibrary } from "../icons";
 import { ColorScheme, ColorWeight } from "../types";
-import { Tooltip } from ".";
+import { Flex, Tooltip } from ".";
 import iconStyles from "./IconButton.module.scss";
 
 const sizeMap: Record<string, string> = {
@@ -86,21 +86,20 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
     }, [isHover]);
 
     return (
-      <div
+      <Flex
+        inline
+        position="relative"
+        fit
         style={{
-          position: "relative",
-          display: "inline-block",
-          width: "fit-content",
-          height: "fit-content",
           lineHeight: "0",
         }}
       >
-        <span
+        <Flex
           ref={ref}
+          inline
+          alignItems="center"
           className={classNames(colorClass, className)}
           style={{
-            display: "inline-flex",
-            alignItems: "center",
             fontSize: sizeMap[size],
             ...style,
           }}
@@ -111,19 +110,17 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
           onMouseLeave={() => setIsHover(false)}
         >
           <IconComponent />
-        </span>
+        </Flex>
         {tooltip && isTooltipVisible && (
-          <div
-            style={{
-              position: "absolute",
-              zIndex: "1",
-            }}
+          <Flex
+            position="absolute"
+            zIndex={1}
             className={iconStyles[tooltipPosition]}
           >
             <Tooltip label={tooltip} />
-          </div>
+          </Flex>
         )}
-      </div>
+      </Flex>
     );
   },
 );
