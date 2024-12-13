@@ -291,6 +291,30 @@
   z-index: 10;
 }
 
+.transition-micro-short {
+  transition: var(--transition-micro-short);
+}
+
+.transition-micro-medium {
+  transition: var(--transition-micro-medium);
+}
+
+.transition-micro-long {
+  transition: var(--transition-micro-long);
+}
+
+.transition-macro-short {
+  transition: var(--transition-macro-short);
+}
+
+.transition-macro-medium {
+  transition: var(--transition-macro-medium);
+}
+
+.transition-macro-long {
+  transition: var(--transition-macro-long);
+}
+
 .top-0 { top: 0; }
 .left-0 { left: 0; }
 .bottom-0 { bottom: 0; }
