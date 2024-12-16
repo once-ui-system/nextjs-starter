@@ -16,7 +16,7 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   lines?: number;
   error?: React.ReactNode;
   description?: React.ReactNode;
-  radius?: string;
+  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
   className?: string;
   hasPrefix?: React.ReactNode;
   hasSuffix?: React.ReactNode;
@@ -84,21 +84,46 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     );
 
     return (
-      <div
-        className={classNames(styles.wrapper, className, {
-          [styles.error]: error,
-        })}
+      <Flex
+        position="relative"
+        direction="column"
+        gap="8"
+        fillWidth
+        fitHeight
+        className={classNames(
+          className,
+          {
+            [styles.error]: error,
+          }
+        )}
       >
-        <div
-          className={classNames(styles.base, styles.textareaBase)}
-          style={{ borderRadius: radius }}
+        <Flex
+          minHeight="56"
+          transition="micro-medium"
+          border="neutral-medium"
+          background="neutral-alpha-weak"
+          position="relative"
+          overflow="hidden"
+          alignItems="stretch"
+          className={classNames(
+            styles.base,
+            styles.textareaBase,
+            radius === 'none'
+              ? 'radius-none'
+              : radius
+              ? `radius-l-${radius}`
+              : "radius-l",
+          )}
         >
           {hasPrefix && (
             <Flex paddingLeft="12" className={styles.prefix}>
               {hasPrefix}
             </Flex>
           )}
-          <div className={styles.content}>
+          <Flex
+            fillWidth
+            direction="column"
+            position="relative">
             <textarea
               {...props}
               ref={ref}
@@ -128,14 +153,14 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                 {label}
               </Text>
             )}
-            {children && <div className={styles.children}>{children}</div>}
-          </div>
+            {children && children}
+          </Flex>
           {hasSuffix && (
             <Flex paddingRight="12" className={styles.suffix}>
               {hasSuffix}
             </Flex>
           )}
-        </div>
+        </Flex>
         {error && (
           <Flex paddingX="16">
             <Text
@@ -160,7 +185,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             </Text>
           </Flex>
         )}
-      </div>
+      </Flex>
     );
   },
 );

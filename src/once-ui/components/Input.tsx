@@ -16,7 +16,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   height?: "s" | "m";
   error?: React.ReactNode;
   description?: React.ReactNode;
-  radius?: string;
+  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
   className?: string;
   hasPrefix?: React.ReactNode;
   hasSuffix?: React.ReactNode;
@@ -81,25 +81,47 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     );
 
     return (
-      <div
-        className={classNames(styles.wrapper, className, {
-          [styles.error]: error,
-        })}
+      <Flex
+        position="relative"
+        direction="column"
+        gap="8"
+        fillWidth
+        fitHeight
+        className={classNames(
+          className,
+          {
+            [styles.error]: error,
+          }
+        )}
       >
-        <div
+        <Flex
+          minHeight="56"
+          transition="micro-medium"
+          border="neutral-medium"
+          background="neutral-alpha-weak"
+          position="relative"
+          overflow="hidden"
+          alignItems="stretch"
           className={classNames(
             styles.base,
             { [styles.s]: height === "s" },
             { [styles.m]: height === "m" },
+            radius === 'none'
+              ? 'radius-none'
+              : radius
+              ? `radius-l-${radius}`
+              : "radius-l",
           )}
-          style={{ borderRadius: radius }}
         >
           {hasPrefix && (
             <Flex paddingLeft="12" className={styles.prefix}>
               {hasPrefix}
             </Flex>
           )}
-          <div className={styles.content}>
+          <Flex
+            fillWidth
+            direction="column"
+            position="relative">
             <input
               {...props}
               ref={ref}
@@ -123,14 +145,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 {label}
               </Text>
             )}
-            {children && <div className={styles.children}>{children}</div>}
-          </div>
+            {children && children}
+          </Flex>
           {hasSuffix && (
             <Flex paddingRight="12" className={styles.suffix}>
               {hasSuffix}
             </Flex>
           )}
-        </div>
+        </Flex>
         {error && (
           <Flex paddingX="16">
             <Text
@@ -155,7 +177,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             </Text>
           </Flex>
         )}
-      </div>
+      </Flex>
     );
   },
 );
