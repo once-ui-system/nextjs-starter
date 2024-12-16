@@ -1,0 +1,18 @@
+.gradient {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  background: radial-gradient(
+    var(--gradient-radius) at var(--gradient-position-x) var(--gradient-position-y),
+    var(--gradient-color-start) 0%,
+    var(--gradient-color-end) 100%
+  );
+}
+
+.mask {
+  mask-size: 100% 100%;
+  mask-image: radial-gradient(
+    var(--mask-radius) at var(--mask-position-x) var(--mask-position-y),
+    black 0%,
+    transparent 100%
+  );
+}

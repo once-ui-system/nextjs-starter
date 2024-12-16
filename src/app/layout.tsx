@@ -121,7 +121,10 @@ export default function RootLayout({
       <Flex as="body" fill margin="0" padding="0">
         <Background
           position="fixed"
-          mask="cursor"
+          mask={{
+            cursor: true,
+            radius: 100
+          }}
           dots={{
             display: true,
             opacity: 40,
@@ -129,7 +132,12 @@ export default function RootLayout({
           }}
           gradient={{
             display: true,
-            opacity: 40,
+            x: 80,
+            y: 20,
+            radius: 50,
+            opacity: 90,
+            colorStart: "brand-background-strong",
+            colorEnd: "accent-background-medium"
           }}
         />
         <Flex flex={1} direction="column" position="relative">

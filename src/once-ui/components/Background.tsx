@@ -10,6 +10,8 @@ import React, {
 import { SpacingToken } from "../types";
 import { Flex } from "./Flex";
 import { DisplayProps } from "../interfaces";
+import styles from "./Background.module.scss";
+import classNames from "classnames";
 
 function setRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
   if (typeof ref === "function") {
@@ -19,30 +21,21 @@ function setRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
   }
 }
 
-interface MaskOptions {
-  none: "none";
-  cursor: "cursor";
-  topLeft: "topLeft";
-  topRight: "topRight";
-  bottomLeft: "bottomLeft";
-  bottomRight: "bottomRight";
-}
-
-type MaskType = keyof MaskOptions;
-
-interface BackgroundProps {
-  position?: CSSProperties["position"];
-  gradient?: GradientProps;
-  dots?: DotsProps;
-  lines?: LinesProps;
-  mask?: MaskType;
-  className?: string;
-  style?: React.CSSProperties;
+interface MaskProps {
+  cursor?: boolean;
+  x?: number;
+  y?: number;
+  radius?: number;
 }
 
 interface GradientProps {
   display?: boolean;
   opacity?: DisplayProps["opacity"];
+  x?: number;
+  y?: number;
+  radius?: number;
+  colorStart?: string;
+  colorEnd?: string;
 }
 
 interface DotsProps {
@@ -58,6 +51,16 @@ interface LinesProps {
   size?: SpacingToken;
 }
 
+interface BackgroundProps {
+  position?: CSSProperties["position"];
+  gradient?: GradientProps;
+  dots?: DotsProps;
+  lines?: LinesProps;
+  mask?: MaskProps;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
 const Background = forwardRef<HTMLDivElement, BackgroundProps>(
   (
     {
@@ -65,18 +68,17 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       gradient = {},
       dots = {},
       lines = {},
-      mask = "none",
+      mask = {},
       className,
       style,
     },
     forwardedRef,
   ) => {
     const dotsColor = dots.color ?? "brand-on-background-weak";
-    const dotsSize = dots.size ?? "16";
+    const dotsSize = dots.size ?? "24";
 
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
-    const maskSize = 1200;
     const backgroundRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -118,7 +120,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         animationFrameId = requestAnimationFrame(updateSmoothPosition);
       };
 
-      if (mask === "cursor") {
+      if (mask.cursor) {
         animationFrameId = requestAnimationFrame(updateSmoothPosition);
       }
 
@@ -133,87 +135,84 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
     };
 
     const maskStyle = (): CSSProperties => {
-      switch (mask) {
-        case "none":
-          return { maskImage: "none" };
-        case "cursor":
-          return {
-            maskImage: `radial-gradient(circle ${maskSize / 2}px at ${smoothPosition.x}px ${smoothPosition.y}px, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-            maskSize: "100% 100%",
-          };
-        case "topLeft":
-          return {
-            maskImage: `radial-gradient(circle ${maskSize / 2}px at 0% 0%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-            maskSize: "100% 100%",
-          };
-        case "topRight":
-          return {
-            maskImage: `radial-gradient(circle ${maskSize / 2}px at 100% 0%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-            maskSize: "100% 100%",
-          };
-        case "bottomLeft":
-          return {
-            maskImage: `radial-gradient(circle ${maskSize / 2}px at 0% 100%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-            maskSize: "100% 100%",
-          };
-        case "bottomRight":
-          return {
-            maskImage: `radial-gradient(circle ${maskSize / 2}px at 100% 100%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-            maskSize: "100% 100%",
-          };
-        default:
-          return {};
+      if (!mask) return {};
+
+      if (mask.cursor) {
+        return {
+          "--mask-position-x": `${smoothPosition.x}px`,
+          "--mask-position-y": `${smoothPosition.y}px`,
+          "--mask-radius": `${mask.radius || 50}vh`,
+        } as CSSProperties;
       }
+
+      if (mask.x != null && mask.y != null) {
+        return {
+          "--mask-position-x": `${mask.x}%`,
+          "--mask-position-y": `${mask.y}%`,
+          "--mask-radius": `${mask.radius || 50}vh`,
+        } as CSSProperties;
+      }
+
+      return {};
+    };
+
+    const commonFlexProps = {
+      position,
+      top: "0" as SpacingToken,
+      left: "0" as SpacingToken,
+      zIndex: 0 as DisplayProps["zIndex"],
+      fill: true,
+      ref: backgroundRef,
     };
 
     return (
       <>
         {gradient.display && (
           <Flex
-            position={position}
-            ref={backgroundRef}
-            className={className}
-            top="0"
-            left="0"
+            {...commonFlexProps}
+            className={classNames(
+              styles.gradient,
+              mask && styles.mask,
+              className
+            )}
             opacity={gradient.opacity}
-            zIndex={0}
-            fill
             style={{
               ...commonStyles,
-              background:
-                "radial-gradient(100% 100% at 49.99% 0%, var(--static-transparent) 0%, var(--page-background) 100%), radial-gradient(87.4% 84.04% at 6.82% 16.24%, var(--brand-background-medium) 0%, var(--static-transparent) 100%), radial-gradient(217.89% 126.62% at 48.04% 0%, var(--accent-solid-medium) 0%, var(--static-transparent) 100%)",
               ...maskStyle(),
+              ["--gradient-position-x" as string]: gradient.x != null ? `${gradient.x}%` : "50%",
+              ["--gradient-position-y" as string]: gradient.y != null ? `${gradient.y}%` : "50%",
+              ["--gradient-radius" as string]: gradient.radius != null ? `${gradient.radius}% ${gradient.radius}%` : "100% 100%",
+              ["--gradient-color-start" as string]: gradient.colorStart ? `var(--${gradient.colorStart})` : "var(--brand-alpha-strong)",
+              ["--gradient-color-end" as string]: gradient.colorEnd ? `var(--${gradient.colorEnd})` : "var(--brand-alpha-weak)",
             }}
           />
         )}
         {dots.display && (
           <Flex
-            position={position}
-            ref={backgroundRef}
-            className={className}
-            top="0"
-            left="0"
+            {...commonFlexProps}
+            className={classNames(
+              styles.dots,
+              mask && styles.mask,
+              className
+            )}
             opacity={dots.opacity}
-            zIndex={0}
-            fill
             style={{
               ...commonStyles,
               backgroundImage: `radial-gradient(var(--${dotsColor}) 0.5px, var(--static-transparent) 0.5px)`,
-              backgroundSize: `var(--static-space-${dotsSize}) var(--static-space-${dotsSize})`,
+              backgroundSize: `${dotsSize} ${dotsSize}`,
               ...maskStyle(),
             }}
           />
         )}
         {lines.display && (
           <Flex
-            position={position}
-            ref={backgroundRef}
-            className={className}
-            top="0"
-            left="0"
+            {...commonFlexProps}
+            className={classNames(
+              styles.lines,
+              mask && styles.mask,
+              className
+            )}
             opacity={lines.opacity}
-            zIndex={0}
-            fill
             style={{
               ...commonStyles,
               backgroundImage: `repeating-linear-gradient(45deg, var(--brand-on-background-weak) 0, var(--brand-on-background-weak) 0.5px, var(--static-transparent) 0.5px, var(--static-transparent) ${dots.size})`,
