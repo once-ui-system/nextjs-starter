@@ -191,6 +191,10 @@
   opacity: 1;
 }
 
+.cursor-interactive {
+  cursor: var(--cursor-interactive);
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
