@@ -1,11 +1,11 @@
 "use client";
 
 import React, { forwardRef, useState, useEffect, ReactNode } from "react";
-import Link from "next/link";
-
-import { Icon, Tooltip } from ".";
+import { ElementType } from './ElementType';
+import { Flex, Icon, Tooltip } from ".";
 import buttonStyles from "./Button.module.scss";
 import iconStyles from "./IconButton.module.scss";
+import classNames from "classnames";
 
 interface CommonProps {
   icon?: string;
@@ -24,8 +24,6 @@ export type IconButtonProps = CommonProps &
 export type AnchorProps = CommonProps &
   React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const isExternalLink = (url: string) => /^https?:\/\//.test(url);
-
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
   (
     {
@@ -40,7 +38,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
       children,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isTooltipVisible, setTooltipVisible] = useState(false);
     const [isHover, setIsHover] = useState(false);
@@ -57,6 +55,13 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
 
       return () => clearTimeout(timer);
     }, [isHover]);
+
+    const buttonClasses = classNames(
+      buttonStyles.button,
+      buttonStyles[variant],
+      iconStyles[size],
+      className
+    );
 
     const content = (
       <>
@@ -76,53 +81,20 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
     );
 
     const commonProps = {
-      className: `${buttonStyles.button} ${buttonStyles[variant]} ${iconStyles[size]} ${className || ""}`,
-      style: { ...style },
+      className: buttonClasses,
+      style,
       onMouseEnter: () => setIsHover(true),
       onMouseLeave: () => setIsHover(false),
       "aria-label": tooltip || icon,
+      ...props
     };
 
-    if (href) {
-      const isExternal = isExternalLink(href);
-
-      if (isExternal) {
-        return (
-          <a
-            href={href}
-            ref={ref as React.Ref<HTMLAnchorElement>}
-            target="_blank"
-            rel="noreferrer"
-            {...commonProps}
-            {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-          >
-            {content}
-          </a>
-        );
-      }
-
-      return (
-        <Link
-          href={href}
-          ref={ref as React.Ref<HTMLAnchorElement>}
-          {...commonProps}
-          {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-        >
-          {content}
-        </Link>
-      );
-    }
-
     return (
-      <button
-        ref={ref as React.Ref<HTMLButtonElement>}
-        {...commonProps}
-        {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
-      >
-        {content}
-      </button>
+      <ElementType href={href} {...commonProps} ref={ref}>
+        <Flex fill justifyContent="center" alignItems="center">{content}</Flex>
+      </ElementType>
     );
-  },
+  }
 );
 
 IconButton.displayName = "IconButton";
