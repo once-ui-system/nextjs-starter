@@ -23,20 +23,30 @@ import classNames from "classnames";
 interface DropdownWrapperProps {
   trigger: ReactNode;
   dropdown: ReactNode;
+  minHeight?: number;
   selectedOption?: string;
   style?: React.CSSProperties;
   className?: string;
   onSelect?: (value: string) => void;
+  isOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
 const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
-  ({ trigger, dropdown, selectedOption, style, className, onSelect }, ref) => {
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
+  ({ trigger, dropdown, selectedOption, style, minHeight, className, onSelect, isOpen = false, onOpenChange }, ref) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
+    const [mounted, setMounted] = useState(false);
 
-    const { x, y, strategy, refs, update } = useFloating({
+    const {
+      x,
+      y,
+      strategy,
+      refs,
+      update,
+    } = useFloating({
       placement: "bottom-start",
+      open: isOpen,
       middleware: [
         offset(4),
         flip(),
@@ -45,7 +55,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
           apply({ availableWidth, availableHeight, elements }) {
             Object.assign(elements.floating.style, {
               maxWidth: `${availableWidth}px`,
-              minHeight: `${availableHeight}px`,
+              minHeight: `${Math.min(minHeight || 0, availableHeight)}px`,
               maxHeight: `${availableHeight}px`,
             });
           },
@@ -63,29 +73,28 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
     }, [refs]);
 
     useEffect(() => {
-      if (isDropdownOpen) {
-        update();
-
-        if (dropdownRef.current && selectedOption) {
-          const selectedElement = dropdownRef.current.querySelector(
-            `[data-value="${selectedOption}"]`,
-          );
-          if (selectedElement) {
-            selectedElement.scrollIntoView({
-              block: "nearest",
-              behavior: "smooth",
-            });
-          }
-        }
+      if (!mounted) {
+        setMounted(true);
       }
-    }, [isDropdownOpen, update, selectedOption]);
+    }, []);
+
+    useEffect(() => {
+      if (isOpen && mounted) {
+        requestAnimationFrame(() => {
+          if (dropdownRef.current) {
+            refs.setFloating(dropdownRef.current);
+            update();
+          }
+        });
+      }
+    }, [isOpen, mounted, refs, update]);
 
     const handleClickOutside = (event: MouseEvent) => {
       if (
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target as Node)
       ) {
-        setDropdownOpen(false);
+        onOpenChange?.(false);
       }
     };
 
@@ -94,7 +103,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         wrapperRef.current &&
         !wrapperRef.current.contains(event.relatedTarget as Node)
       ) {
-        setDropdownOpen(false);
+        onOpenChange?.(false);
       }
     };
 
@@ -107,46 +116,6 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       };
     }, []);
 
-    const handleKeyDown = (event: React.KeyboardEvent) => {
-      switch (event.key) {
-        case "Escape":
-          setDropdownOpen(false);
-          break;
-        case "Enter":
-          if (dropdownRef.current) {
-            const activeElement = document.activeElement;
-            if (activeElement && activeElement.getAttribute('role') === 'option') {
-              const value = activeElement.getAttribute('data-value');
-              if (value && onSelect) {
-                event.preventDefault();
-                onSelect(value);
-                setDropdownOpen(false);
-              }
-            } else {
-              setDropdownOpen((prev) => !prev);
-            }
-          }
-          break;
-        case "ArrowDown":
-        case "ArrowUp":
-          event.preventDefault();
-          if (dropdownRef.current) {
-            const items = Array.from(
-              dropdownRef.current.querySelectorAll('[role="option"]'),
-            );
-            const currentIndex = items.findIndex((item) =>
-              item === document.activeElement,
-            );
-            const nextIndex =
-              event.key === "ArrowDown"
-                ? (currentIndex + 1) % items.length
-                : (currentIndex - 1 + items.length) % items.length;
-            (items[nextIndex] as HTMLElement)?.focus();
-          }
-          break;
-      }
-    };
-
     return (
       <Flex
         style={{
@@ -156,29 +125,27 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         className={className}
         position="relative"
         ref={wrapperRef}
-        onClick={() => setDropdownOpen(!isDropdownOpen)}
-        onKeyDown={handleKeyDown}
+        onClick={() => onOpenChange?.(!isOpen)}
         tabIndex={-1}
         role="button"
         aria-haspopup="listbox"
-        aria-expanded={isDropdownOpen}
+        aria-expanded={isOpen}
       >
         {trigger}
-        {isDropdownOpen && (
+        {isOpen && (
           <Flex
             zIndex={1}
             className={classNames(styles.dropdown, styles.fadeIn)}
             ref={dropdownRef}
             style={{
-              minWidth: "100%",
               position: strategy,
-              top: Math.round(y) + "px",
-              left: Math.round(x) + "px",
+              top: y ?? 0,
+              left: x ?? 0,
+              width: "100%",
             }}
             role="listbox"
           >
             <Dropdown
-              ref={dropdownRef}
               selectedOption={selectedOption}
               onSelect={onSelect}
             >
@@ -188,8 +155,9 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         )}
       </Flex>
     );
-  },
+  }
 );
 
 DropdownWrapper.displayName = "DropdownWrapper";
+
 export { DropdownWrapper };

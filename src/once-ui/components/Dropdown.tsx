@@ -48,7 +48,6 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         radius="m-4"
         background="surface"
         gap="2"
-        minWidth={12}
         className={classNames(styles.dropdown, className || "")}
         tabIndex={0}
         ref={ref}

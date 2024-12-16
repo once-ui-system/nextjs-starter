@@ -5,6 +5,7 @@ import React, {
   useRef,
   useEffect,
   forwardRef,
+  Children,
 } from "react";
 import classNames from "classnames";
 import { DropdownWrapper, Input, InputProps } from ".";
@@ -12,24 +13,25 @@ import inputStyles from "./Input.module.scss";
 
 interface SelectProps extends Omit<InputProps, "onSelect" | "value"> {
   options: React.ReactNode;
-  value: string;
+  value?: string;
   style?: React.CSSProperties;
   onSelect?: (value: string) => void;
 }
 
 const Select = forwardRef<HTMLDivElement, SelectProps>(
-  ({ options, value, style, onSelect, ...inputProps }, ref) => {
+  ({ options, value = "", style, onSelect, ...inputProps }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
+    const optionsArray = Children.toArray(options) as React.ReactElement<{ value: string }>[];
+    const [highlightedIndex, setHighlightedIndex] = useState<number | null>(() => {
+      if (!optionsArray?.length || !value) return null;
+      return optionsArray.findIndex((child) => child.props.value === value);
+    });
     const selectRef = useRef<HTMLDivElement | null>(null);
-    const optionRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const optionsArray = React.Children.toArray(options);
 
     const handleFocus = () => {
       setIsFocused(true);
-      setIsDropdownOpen(true);
     };
 
     const handleBlur = (event: FocusEvent) => {
@@ -37,9 +39,8 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         selectRef.current &&
         !selectRef.current.contains(event.relatedTarget as Node)
       ) {
-        setIsDropdownOpen(false);
+        setIsFocused(false);
       }
-      setIsFocused(false);
     };
 
     const handleSelect = (value: string) => {
@@ -63,11 +64,6 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
               prevIndex === null || prevIndex === optionsArray.length - 1
                 ? 0
                 : prevIndex + 1;
-            optionRefs.current[newIndex]?.focus();
-            optionRefs.current[newIndex]?.scrollIntoView({
-              behavior: "smooth",
-              block: "nearest",
-            });
             return newIndex;
           });
           break;
@@ -79,11 +75,6 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
               prevIndex === null || prevIndex === 0
                 ? optionsArray.length - 1
                 : prevIndex - 1;
-            optionRefs.current[newIndex]?.focus();
-            optionRefs.current[newIndex]?.scrollIntoView({
-              behavior: "smooth",
-              block: "nearest",
-            });
             return newIndex;
           });
           break;
@@ -91,10 +82,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         case "Enter":
           event.preventDefault();
           if (highlightedIndex !== null && isDropdownOpen) {
-            const selectedOption = optionsArray[highlightedIndex] as React.ReactElement;
-            if (selectedOption?.props?.value) {
-              handleSelect(selectedOption.props.value);
-            }
+            handleSelect(optionsArray[highlightedIndex].props.value);
           } else {
             setIsDropdownOpen(true);
           }
@@ -140,6 +128,8 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
           if (typeof ref === "function") ref(node);
           else if (ref) ref.current = node;
         }}
+        isOpen={isDropdownOpen}
+        onOpenChange={setIsDropdownOpen}
         trigger={
           <Input
             {...inputProps}
@@ -148,7 +138,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
             onFocus={handleFocus}
             onKeyDown={handleKeyDown}
             readOnly
-            className={classNames({
+            className={classNames("cursor-interactive", {
               [inputStyles.filled]: isFilled,
               [inputStyles.focused]: isFocused,
             })}
@@ -159,17 +149,10 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         dropdown={
           optionsArray.map((child, index) => {
             if (!React.isValidElement(child)) return null;
+            if (!('value' in child.props)) return null;
 
-            return React.cloneElement(child as React.ReactElement, {
-              ref: (el: HTMLDivElement | null) => (optionRefs.current[index] = el),
-              tabIndex: highlightedIndex === index ? 0 : -1,
-              role: "option",
-              "aria-selected": highlightedIndex === index,
-              style: {
-                background: highlightedIndex === index ? "var(--neutral-alpha-weak)" : "transparent",
-              },
-              onClick: () => handleSelect(child.props.value),
-              onMouseEnter: () => setHighlightedIndex(index),
+            return React.cloneElement(child, {
+              key: child.props.value,
             });
           })
         }
