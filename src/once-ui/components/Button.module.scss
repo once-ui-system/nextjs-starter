@@ -51,14 +51,17 @@
 }
 
 .tertiary {
-    box-shadow: inset 0 var(--solid-inset-distance) var(--solid-inset-size) var(--solid-inset-color-neutral);
     background: var(--static-transparent);
-    border: 1px solid var(--neutral-border-medium);
     color: var(--neutral-on-background-strong);
+    border: 1px solid var(--static-transparent);
 
     &:hover, &:focus {
-        background: var(--neutral-background-medium);
-        border-color: var(--neutral-border-strong);
+        border: 1px solid var(--neutral-border-medium);
+    }
+
+    &:disabled {
+        background: var(--static-transparent);
+        color: var(--neutral-on-background-weak);
     }
 }
 

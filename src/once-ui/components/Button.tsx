@@ -10,7 +10,7 @@ import styles from "./Button.module.scss";
 interface CommonProps {
   variant?: "primary" | "secondary" | "tertiary" | "danger";
   size?: "s" | "m" | "l";
-  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left"
+  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
   label?: string;
   weight?: "default" | "strong";
   prefixIcon?: string;
