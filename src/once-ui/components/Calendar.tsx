@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import classNames from "classnames";
 import { Flex, Text, Button, Grid, SegmentedControl, IconButton } from ".";
 import styles from "./Calendar.module.scss";
@@ -22,17 +22,31 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
     { value, onChange, showTime = false, size = "m", className, style },
     ref,
   ) => {
-    const [selectedDate, setSelectedDate] = useState<Date>(value || new Date());
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
     const [selectedTime, setSelectedTime] = useState<{
       hours: number;
       minutes: number;
     }>({
-      hours: selectedDate.getHours(),
-      minutes: selectedDate.getMinutes(),
+      hours: value?.getHours() ?? new Date().getHours(),
+      minutes: value?.getMinutes() ?? new Date().getMinutes(),
     });
-    const [isPM, setIsPM] = useState(selectedDate.getHours() >= 12);
-    const [currentMonth, setCurrentMonth] = useState(selectedDate.getMonth());
-    const [currentYear, setCurrentYear] = useState(selectedDate.getFullYear());
+    const [isPM, setIsPM] = useState((value?.getHours() ?? new Date().getHours()) >= 12);
+    const today = new Date();
+    const [currentMonth, setCurrentMonth] = useState(value?.getMonth() ?? today.getMonth());
+    const [currentYear, setCurrentYear] = useState(value?.getFullYear() ?? today.getFullYear());
+
+    useEffect(() => {
+      setSelectedDate(value);
+      if (value) {
+        setCurrentMonth(value.getMonth());
+        setCurrentYear(value.getFullYear());
+        setSelectedTime({
+          hours: value.getHours(),
+          minutes: value.getMinutes(),
+        });
+        setIsPM(value.getHours() >= 12);
+      }
+    }, [value]);
 
     const monthNames = [
       "January",
@@ -60,9 +74,10 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
 
     const handleDateSelect = (date: Date) => {
       const newDate = new Date(date);
-      // Preserve existing time when selecting new date
-      newDate.setHours(selectedTime.hours);
-      newDate.setMinutes(selectedTime.minutes);
+      if (showTime && selectedDate) {
+        newDate.setHours(selectedTime.hours);
+        newDate.setMinutes(selectedTime.minutes);
+      }
       setSelectedDate(newDate);
       setCurrentMonth(newDate.getMonth());
       setCurrentYear(newDate.getFullYear());
@@ -105,7 +120,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
       setIsPM(pmState);
 
       // Create new date combining selected date and time
-      const newDate = new Date(selectedDate);
+      const newDate = new Date(selectedDate ?? new Date());
       newDate.setHours(hour24);
       newDate.setMinutes(newMinutes);
       onChange?.(newDate);
@@ -160,9 +175,9 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
       for (let day = 1; day <= daysInMonth; day++) {
         const currentDate = new Date(currentYear, currentMonth, day);
         const isSelected = 
-          selectedDate.getDate() === day && 
-          selectedDate.getMonth() === currentMonth && 
-          selectedDate.getFullYear() === currentYear;
+          selectedDate?.getDate() === day && 
+          selectedDate?.getMonth() === currentMonth && 
+          selectedDate?.getFullYear() === currentYear;
 
         days.push(
           <Button
@@ -279,7 +294,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         style={style}
         gap={size}
       >
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex justifyContent="space-between" alignItems="center" paddingBottom="16">
           <IconButton
             variant="tertiary"
             size={size === "l" ? "l" : "m"}
