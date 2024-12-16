@@ -1,4 +1,23 @@
 :root {
+    /* FONT FAMILY */
+    --font-family-body:     var(--font-primary);
+    --font-family-heading:  var(--font-secondary);
+    --font-family-label:    var(--font-tertiary);
+    --font-family-code:     var(--font-code);
+
+    --font-size-heading-multiplier:   1;
+    --font-size-body-multiplier:      1;
+    --font-size-label-multiplier:     1;
+
+    --line-height-heading-multiplier: 1;
+    --line-height-body-multiplier:    1;
+    --line-height-label-multiplier:   1;
+
+    /* FONT SCALING */
+    --font-scaling-desktop: 16px;
+    --font-scaling-tablet:  16px;
+    --font-scaling-mobile:  16px;
+
     --cursor-interactive:    pointer;
 
     --solid-inset-distance:  0;
