@@ -58,13 +58,21 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
       return new Date(year, month, 1).getDay();
     };
 
-    const handleDateSelect = (day: number) => {
-      const newDate = new Date(currentYear, currentMonth, day);
+    const handleDateSelect = (date: Date) => {
+      const newDate = new Date(date);
       // Preserve existing time when selecting new date
       newDate.setHours(selectedTime.hours);
       newDate.setMinutes(selectedTime.minutes);
       setSelectedDate(newDate);
+      setCurrentMonth(newDate.getMonth());
+      setCurrentYear(newDate.getFullYear());
       onChange?.(newDate);
+    };
+
+    const handleMonthChange = (increment: number) => {
+      const newDate = new Date(currentYear, currentMonth + increment, 1);
+      setCurrentMonth(newDate.getMonth());
+      setCurrentYear(newDate.getFullYear());
     };
 
     const convert24to12 = (hour24: number) => {
@@ -104,25 +112,92 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
     };
 
     const renderCalendarGrid = () => {
-      const daysInMonth = getDaysInMonth(currentMonth, currentYear);
-      const firstDay = getFirstDayOfMonth(currentMonth, currentYear);
+      const firstDay = new Date(
+        currentYear,
+        currentMonth,
+        1
+      ).getDay();
+
+      const daysInMonth = new Date(
+        currentYear,
+        currentMonth + 1,
+        0
+      ).getDate();
+
+      const daysInPrevMonth = new Date(
+        currentYear,
+        currentMonth,
+        0
+      ).getDate();
+
+      // Calculate total number of weeks needed
+      const totalDaysShown = firstDay + daysInMonth;
+      const numberOfWeeks = Math.ceil(totalDaysShown / 7);
+      const totalGridSpots = numberOfWeeks * 7;
+
       const days = [];
 
+      // Previous month's days
       for (let i = 0; i < firstDay; i++) {
-        days.push(<div key={`empty-${i}`} />);
-      }
-
-      for (let day = 1; day <= daysInMonth; day++) {
+        const prevMonthDay = daysInPrevMonth - firstDay + i + 1;
         days.push(
           <Button
-            style={{ width: "var(--static-space-32)" }}
-            variant={selectedDate.getDate() === day ? "primary" : "secondary"}
-            key={day}
-            size="s"
-            onClick={() => handleDateSelect(day)}
+            style={{ 
+              width: "var(--static-space-40)"
+            }}
+            weight="default"
+            variant="tertiary"
+            key={`prev-${prevMonthDay}`}
+            size="m"
+            disabled
+          >
+            {prevMonthDay}
+          </Button>
+        );
+      }
+
+      // Current month's days
+      for (let day = 1; day <= daysInMonth; day++) {
+        const currentDate = new Date(currentYear, currentMonth, day);
+        const isSelected = 
+          selectedDate.getDate() === day && 
+          selectedDate.getMonth() === currentMonth && 
+          selectedDate.getFullYear() === currentYear;
+
+        days.push(
+          <Button
+            style={{ 
+              width: "var(--static-space-40)",
+              transition: "none"
+            }}
+            weight={isSelected ? "strong" : "default"}
+            variant={isSelected ? "primary" : "tertiary"}
+            key={`current-${day}`}
+            size="m"
+            onClick={() => handleDateSelect(currentDate)}
           >
             {day}
-          </Button>,
+          </Button>
+        );
+      }
+
+      // Next month's days
+      const remainingDays = totalGridSpots - days.length;
+
+      for (let i = 1; i <= remainingDays; i++) {
+        days.push(
+          <Button
+            style={{ 
+              width: "var(--static-space-40)"
+            }}
+            weight="default"
+            variant="tertiary"
+            key={`next-${i}`}
+            size="m"
+            disabled
+          >
+            {i}
+          </Button>
         );
       }
 
@@ -203,54 +278,32 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         className={classNames(styles.calendar, styles[size], className)}
         style={style}
         gap={size}
-        padding={size}
-        background="surface"
-        border="neutral-medium"
-        borderStyle="solid-1"
-        radius="m"
       >
         <Flex justifyContent="space-between" alignItems="center">
           <IconButton
-            variant="ghost"
-            tooltip="Previous"
-            tooltipPosition="bottom"
+            variant="tertiary"
             size={size === "l" ? "l" : "m"}
             icon="chevronLeft"
-            onClick={() => {
-              if (currentMonth === 0) {
-                setCurrentMonth(11);
-                setCurrentYear(currentYear - 1);
-              } else {
-                setCurrentMonth(currentMonth - 1);
-              }
-            }}
+            onClick={() => handleMonthChange(-1)}
           />
           <Text variant={`label-default-${size}`} onBackground="neutral-strong">
             {monthNames[currentMonth]} {currentYear}
           </Text>
           <IconButton
-            variant="ghost"
-            tooltip="Next"
-            tooltipPosition="bottom"
+            variant="tertiary"
             size={size === "l" ? "l" : "m"}
             icon="chevronRight"
-            onClick={() => {
-              if (currentMonth === 11) {
-                setCurrentMonth(0);
-                setCurrentYear(currentYear + 1);
-              } else {
-                setCurrentMonth(currentMonth + 1);
-              }
-            }}
+            onClick={() => handleMonthChange(1)}
           />
         </Flex>
 
         <Grid columns="repeat(7, 1fr)" gap={size === "l" ? "8" : "4"}>
           {dayNames.map((day) => (
             <Text
+              marginBottom="16"
               key={day}
               variant="label-default-m"
-              onBackground="neutral-weak"
+              onBackground="neutral-medium"
               align="center"
             >
               {day}
