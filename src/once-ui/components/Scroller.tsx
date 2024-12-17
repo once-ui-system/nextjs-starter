@@ -68,8 +68,9 @@ const Scroller: React.FC<ScrollerProps> = ({
         if (React.isValidElement(child)) {
             return React.cloneElement<any>(child, {
                 onClick: (e: React.MouseEvent) => {
-                    if ('onClick' in child.props && typeof child.props.onClick === 'function') {
-                        child.props.onClick(e);
+                    const childProps = child.props as { onClick?: (e: React.MouseEvent) => void };
+                    if ('onClick' in childProps && typeof childProps.onClick === 'function') {
+                        (child.props as { onClick?: (e: React.MouseEvent) => void }).onClick?.(e);
                     }
                     if (onItemClick) {
                         onItemClick(index);
