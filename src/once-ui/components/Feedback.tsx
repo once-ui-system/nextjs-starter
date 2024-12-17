@@ -47,7 +47,6 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
         fillWidth
         radius="l"
         ref={ref}
-        borderStyle="solid-1"
         border={`${variant}-medium`}
         background={`${variant}-medium`}
         role="alert"
@@ -62,7 +61,6 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
               padding="4"
               radius="m"
               border={`${variant}-medium`}
-              borderStyle="solid-1"
             >
               <Icon
                 onBackground={`${variant}-medium`}
