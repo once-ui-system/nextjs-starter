@@ -11,6 +11,7 @@ import {
   Icon,
   InlineCode,
   Logo,
+  Input,
   LetterFx,
   Calendar,
   CalendarInput,
@@ -18,13 +19,16 @@ import {
   Avatar,
   AvatarGroup,
   Skeleton,
+  Textarea,
+  User,
+  DropdownWrapper,
+  Option,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select } from "@/once-ui/components/Select";
-import { Option } from "@/once-ui/components/Option";
 
 export default function Home() {
-  const [selectedValue, setSelectedValue] = useState("Zebra");
+  const [selectedValue, setSelectedValue] = useState("");
 
   const handleSelect = (value: string) => {
     console.log("Selected option:", value);
@@ -123,7 +127,6 @@ export default function Home() {
           <Grid
             radius="l"
             border="neutral-medium"
-            borderStyle="solid-1"
             columns="repeat(3, 1fr)"
             tabletColumns="1col"
             mobileColumns="1col"
@@ -153,7 +156,7 @@ export default function Home() {
           Work in progress
           <Skeleton marginTop="40" shape="line" width="l" height="l"/>
           <Flex fillWidth direction="column" radius="xl" overflow="hidden" border="neutral-medium">
-            <Accordion title="Accordion title 1">Accordion content</Accordion>
+            <Accordion open title="Accordion title 1">Accordion content</Accordion>
             <Accordion title="Accordion title 1">Accordion content</Accordion>
           </Flex>
           <Flex gap="8">
@@ -306,7 +309,7 @@ export default function Home() {
           </Flex>
 
           <Flex fillWidth padding="48" radius="xl" background="surface" data-theme="dark" direction="column" gap="48">
-            <Flex fillWidth>
+            <Flex fillWidth negativeGap="1">
               <Button variant="secondary" radius="left" data-solid="inverse" data-brand="blue">Button</Button>
               <Button variant="secondary" radius="none" data-solid="inverse" data-brand="indigo">Button</Button>
               <Button variant="secondary" radius="right" data-solid="inverse" data-brand="violet">Button</Button>
@@ -317,27 +320,91 @@ export default function Home() {
               <Button variant="secondary" radius="right" data-solid="inverse" data-brand="violet">Button</Button>
             </Flex>
           </Flex>
+
+          <Flex fillWidth direction="column" negativeGap="1">
+            <Input hasPrefix={<Icon name="check"/>} radius="top" id="input" label="Label"/>
+            <Input radius="none" id="input-2" label="Label"/>
+            <Input radius="none" id="input-2" label="Label"/>
+            <Textarea id="textarea" label="Label" radius="bottom"/>
+          </Flex>
           
+          <Flex fillWidth direction="column" gap="24">
+            <Heading as="h2">Dropdown Wrapper</Heading>
+            <Text>A flexible wrapper component for creating custom dropdowns.</Text>
+
+            <Flex gap="24">
+              <Flex direction="column" gap="8">
+                <DropdownWrapper
+                  trigger={
+                    <Button variant="secondary" suffixIcon="chevronDown">
+                      Actions
+                    </Button>
+                  }
+                  dropdown={
+                    <Flex direction="column" gap="2">
+                      <Option
+                        onClick={() => console.log("Edit")}
+                        value="edit"
+                        label="Edit"
+                        hasPrefix={<Icon name="edit" size="s" />}
+                      />
+                      <Option
+                        onClick={() => console.log("Duplicate")}
+                        value="duplicate"
+                        label="Duplicate"
+                        hasPrefix={<Icon name="copy" size="s" />}
+                      />
+                      <Option
+                        onClick={() => console.log("Archive")}
+                        value="archive"
+                        label="Archive"
+                        hasPrefix={<Icon name="check" onBackground="neutral-medium" size="s" />}
+                      />
+                      <Option
+                        onClick={() => console.log("Delete")}
+                        value="delete"
+                        label="Delete"
+                        hasPrefix={<Icon name="trash" size="s" />}
+                        danger
+                      />
+                    </Flex>
+                  }
+                />
+              </Flex>
+            </Flex>
+          </Flex>
+
+          <Heading as="h2">Select</Heading>
           <Select
             id="select"
-            label="Select an option"
+            label="Select Example"
             value={selectedValue}
-            options={
-              <>
-                <Option onClick={() => handleSelect("Zebra")} selected={selectedValue === "Zebra"} label="Zebra" value="Zebra" description="Option 1 description" />
-                <Option onClick={() => handleSelect("Lion")} selected={selectedValue === "Lion"} label="Lion" value="Lion" description="Option 2 description" />
-                <Option onClick={() => handleSelect("Mammal")} selected={selectedValue === "Mammal"} label="Mammal" value="Mammal" description="Option 3 description" />
-                <Option onClick={() => handleSelect("Coca Cola")} selected={selectedValue === "Coca Cola"} label="Coca Cola" value="Coca Cola" description="Option 4 description" />
-                <Option onClick={() => handleSelect("Chips")} selected={selectedValue === "Chips"} label="Chips" value="Chips" description="Option 5 description" />
-                <Option onClick={() => handleSelect("Computer")} selected={selectedValue === "Computer"} label="Computer" value="Computer" description="Option 6 description" />
-                <Option onClick={() => handleSelect("Keyboard")} selected={selectedValue === "Keyboard"} label="Keyboard" value="Keyboard" description="Option 7 description" />
-                <Option onClick={() => handleSelect("Movie")} selected={selectedValue === "Movie"} label="Movie" value="Movie" description="Option 8 description" />
-                <Option onClick={() => handleSelect("Wreck it Ralph")} selected={selectedValue === "Wreck it Ralph"} label="Wreck it Ralph" value="Wreck it Ralph" description="Option 9 description" />
-                <Option onClick={() => handleSelect("Binding")} selected={selectedValue === "Binding"} label="Binding" value="Binding" description="Option 10 description" />  
-              </>
-            }
+            options={[
+              {
+                value: "edit",
+                label: "Edit",
+                onClick: (value) => console.log("Edit clicked", value)
+              },
+              {
+                value: "Duplicate",
+                label: "Duplicate",
+                onClick: (value) => console.log("Duplicate clicked", value)
+              },
+              {
+                value: "archive",
+                label: "Archive",
+                onClick: (value) => console.log("Archive clicked", value)
+              },
+              {
+                value: "delete",
+                label: "Delete",
+                danger: true,
+                onClick: (value) => console.log("Delete clicked", value)
+              }
+            ]}
+            onSelect={handleSelect}
           />
-          <Calendar id="calendar" size="l" />
+          <Calendar id="calendar" size="l" showTime/>
           <CalendarInput id="calendarInput" label="Pick a date" />
           <Flex fillWidth height={24} overflowY="scroll">
             asd
@@ -379,8 +446,8 @@ export default function Home() {
         paddingY="m"
         justifyContent="space-between"
       >
-        <Text variant="body-default-s" onBackground="neutral-weak">
-          2024 Once UI,{" "}
+        <Text variant="body-default-s" onBackground="neutral-medium">
+          2024 Once UI /{" "}
           <Link href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
             MIT License
           </Link>
@@ -390,6 +457,7 @@ export default function Home() {
             href="https://github.com/once-ui-system/nextjs-starter"
             prefixIcon="github"
             size="s"
+            weight="default"
             variant="tertiary"
           >
             GitHub
@@ -398,6 +466,7 @@ export default function Home() {
             href="https://discord.com/invite/5EyAQ4eNdS"
             prefixIcon="discord"
             size="s"
+            weight="default"
             variant="tertiary"
           >
             Discord
