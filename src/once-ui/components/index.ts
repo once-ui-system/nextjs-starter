@@ -16,7 +16,7 @@ export { ColorInput } from "./ColorInput";
 export { Dialog } from "./Dialog";
 export { Dropdown } from "./Dropdown";
 export type { DropdownProps } from "./Dropdown";
-export type { DropdownOptions } from "./Dropdown";
+export { Option } from "./Option";
 export { DropdownWrapper } from "./DropdownWrapper";
 export { Grid } from "./Grid";
 export type { GridProps } from "./Grid";

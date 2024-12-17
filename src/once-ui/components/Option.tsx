@@ -33,7 +33,7 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(({
   }
   
   return (
-    <ElementType href={href} className="reset-button-styles" onClick={onClick}>
+    <ElementType href={href} className="reset-button-styles">
       <Flex
         {...props}
         ref={ref}
