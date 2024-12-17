@@ -147,7 +147,6 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
           justifyContent="center"
           alignItems="center"
           border="neutral-medium"
-          borderStyle="solid-1"
           radius="l"
           onClick={handleFileSelection}
         >

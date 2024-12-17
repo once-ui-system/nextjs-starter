@@ -43,7 +43,6 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
         paddingY="12"
         paddingX="20"
         border="neutral-medium"
-        borderStyle="solid-1"
         role="alert"
         aria-live="assertive"
         className={classNames(className, styles.toast, styles[variant], {

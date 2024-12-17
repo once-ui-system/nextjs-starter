@@ -55,7 +55,6 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
             </Flex>
             <Flex
               border="neutral-strong"
-              borderStyle="solid-1"
               className={`prefix ${value ? "" : "hidden"}`}
               onClick={handleHexClick}
               height="20"

@@ -25,7 +25,6 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
         paddingX="8"
         radius="s"
         border="neutral-medium"
-        borderStyle="solid-1"
         role="tooltip"
         className={classNames(className)}
       >

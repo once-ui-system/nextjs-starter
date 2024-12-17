@@ -10,6 +10,7 @@ import {
   Button,
   IconButton,
   DropdownWrapper,
+  Option,
 } from "@/once-ui/components";
 
 import Prism from "prismjs";
@@ -47,6 +48,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   const codeRef = useRef<HTMLElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
   const [selectedInstance, setSelectedInstance] = useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { code, language, label } = codeInstances[selectedInstance] || {
     code: "",
@@ -54,7 +56,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
     label: "Select Code",
   };
 
-  const [copyIcon, setCopyIcon] = useState<string>("HiClipboard");
+  const [copyIcon, setCopyIcon] = useState<string>("clipboard");
 
   useEffect(() => {
     if (codeRef.current && codeInstances.length > 0) {
@@ -70,7 +72,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           setCopyIcon("check");
 
           setTimeout(() => {
-            setCopyIcon("HiClipboard");
+            setCopyIcon("clipboard");
           }, 5000);
         })
         .catch((err) => {
@@ -95,7 +97,6 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       background="surface"
       radius="l"
       border="neutral-medium"
-      borderStyle="solid-1"
       direction="column"
       justifyContent="center"
       fillWidth
@@ -116,24 +117,33 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           {codeInstances.length > 1 ? (
             <Flex>
               <DropdownWrapper
-                dropdownOptions={codeInstances.map((instance, index) => ({
-                  label: instance.label,
-                  value: `${instance.label}-${index}`,
-                }))}
-                dropdownProps={{
-                  onOptionSelect: (option) => {
-                    const selectedLabel = option.value.split("-")[0];
-                    handleContent(selectedLabel);
-                  },
-                }}
-              >
-                <Button
-                  size="s"
-                  label={label}
-                  suffixIcon="chevronDown"
-                  variant="tertiary"
-                />
-              </DropdownWrapper>
+                isOpen={isDropdownOpen}
+                onOpenChange={setIsDropdownOpen}
+                trigger={
+                  <Button
+                    size="s"
+                    label={label}
+                    suffixIcon="chevronDown"
+                    variant="tertiary"
+                  />
+                }
+                dropdown={
+                  <Flex direction="column" gap="2">
+                    {codeInstances.map((instance, index) => (
+                      <Option
+                        key={index}
+                        value={instance.label}
+                        label={instance.label}
+                        selected={selectedInstance === index}
+                        onClick={() => {
+                          handleContent(instance.label);
+                          setIsDropdownOpen(false);
+                        }}
+                      />
+                    ))}
+                  </Flex>
+                }
+              />
             </Flex>
           ) : (
             <div />

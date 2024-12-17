@@ -44,7 +44,6 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         direction="column"
         padding="4"
         border="neutral-medium"
-        borderStyle="solid-1"
         radius="m-4"
         background="surface"
         gap="2"

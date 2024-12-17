@@ -256,19 +256,32 @@
  /*           STYLE          */
 /****************************/
 
-.border-solid-1 {
+.border-solid {
     border-style: solid;
+}
+
+.border-1 {
     border-width: 1px;
 }
 
-.border-solid-2 {
-    border-style: solid;
+.border-2 {
     border-width: 2px;
 }
 
+.border-reset {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0; 
+}
 
+.border-top-1 {
+    border-top-width: 1px;
+}
 
-
+.border-bottom-1 {
+    border-bottom-width: 1px;
+}
 
   /****************************/
  /*           COLOR          */

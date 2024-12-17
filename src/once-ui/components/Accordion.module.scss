@@ -6,6 +6,6 @@
 
 .border {
     &:first-of-type {
-        border: none;
+        border-top-width: 0;
     }
 }

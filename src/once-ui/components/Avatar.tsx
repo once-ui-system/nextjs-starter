@@ -123,7 +123,6 @@ const Avatar: React.FC<AvatarProps> = forwardRef<HTMLDivElement, AvatarProps>(
         alignItems="center"
         radius="full"
         border="neutral-strong"
-        borderStyle="solid-1"
         background="surface"
         style={style}
         className={`${styles.avatar} ${styles[size]} ${className || ""}`}

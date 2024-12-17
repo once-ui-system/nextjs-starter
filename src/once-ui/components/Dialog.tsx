@@ -138,7 +138,6 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
           fillWidth
           radius="xl"
           border="neutral-medium"
-          borderStyle="solid-1"
           background="neutral-weak"
           direction="column"
         >

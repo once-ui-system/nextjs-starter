@@ -36,6 +36,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(
         fillWidth
         direction="column"
         style={style}
+        borderTop="neutral-medium"
         className={classNames(styles.border, className)}
       >
         <Flex

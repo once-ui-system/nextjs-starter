@@ -24,13 +24,12 @@ const Sidebar: React.FC = ({}) => {
       gap="m"
       background="page"
       border="neutral-weak"
-      borderStyle="solid-1"
       radius="l"
       justifyContent="flex-start"
       alignItems="flex-start"
       direction="column"
     >
-      <Flex fillpaddingX="xs" gap="m" direction="column">
+      <Flex fill paddingX="xs" gap="m" direction="column">
         <Flex fillWidth gap="4" direction="column">
           <Text
             variant="body-default-xs"
