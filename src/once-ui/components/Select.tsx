@@ -5,14 +5,23 @@ import React, {
   useRef,
   useEffect,
   forwardRef,
-  Children,
 } from "react";
 import classNames from "classnames";
-import { DropdownWrapper, Input, InputProps } from ".";
+import { DropdownWrapper, Input, InputProps, Option } from ".";
 import inputStyles from "./Input.module.scss";
 
+interface SelectOptionType {
+  label: React.ReactNode;
+  value: string;
+  prefixIcon?: React.ReactNode;
+  suffixIcon?: React.ReactNode;
+  description?: React.ReactNode;
+  danger?: boolean;
+  onClick?: (value: string) => void;
+}
+
 interface SelectProps extends Omit<InputProps, "onSelect" | "value"> {
-  options: React.ReactNode;
+  options: SelectOptionType[];
   value?: string;
   style?: React.CSSProperties;
   onSelect?: (value: string) => void;
@@ -23,10 +32,9 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const optionsArray = Children.toArray(options) as React.ReactElement<{ value: string }>[];
     const [highlightedIndex, setHighlightedIndex] = useState<number | null>(() => {
-      if (!optionsArray?.length || !value) return null;
-      return optionsArray.findIndex((child) => child.props.value === value);
+      if (!options?.length || !value) return null;
+      return options.findIndex((option) => option.value === value);
     });
     const selectRef = useRef<HTMLDivElement | null>(null);
 
@@ -61,7 +69,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
           event.preventDefault();
           setHighlightedIndex((prevIndex) => {
             const newIndex =
-              prevIndex === null || prevIndex === optionsArray.length - 1
+              prevIndex === null || prevIndex === options.length - 1
                 ? 0
                 : prevIndex + 1;
             return newIndex;
@@ -73,7 +81,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
           setHighlightedIndex((prevIndex) => {
             const newIndex =
               prevIndex === null || prevIndex === 0
-                ? optionsArray.length - 1
+                ? options.length - 1
                 : prevIndex - 1;
             return newIndex;
           });
@@ -82,7 +90,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         case "Enter":
           event.preventDefault();
           if (highlightedIndex !== null && isDropdownOpen) {
-            handleSelect(optionsArray[highlightedIndex].props.value);
+            handleSelect(options[highlightedIndex].value);
           } else {
             setIsDropdownOpen(true);
           }
@@ -147,14 +155,22 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
           />
         }
         dropdown={
-          optionsArray.map((child, index) => {
-            if (!React.isValidElement(child)) return null;
-            if (!('value' in child.props)) return null;
-
-            return React.cloneElement(child, {
-              key: child.props.value,
-            });
-          })
+          options.map((option, index) => (
+            <Option
+              key={option.value}
+              value={option.value}
+              label={option.label}
+              hasPrefix={option.prefixIcon}
+              hasSuffix={option.suffixIcon}
+              description={option.description}
+              danger={option.danger}
+              onClick={() => {
+                option.onClick?.(option.value);
+                handleSelect(option.value);
+              }}
+              selected={option.value === value}
+            />
+          ))
         }
       />
     );

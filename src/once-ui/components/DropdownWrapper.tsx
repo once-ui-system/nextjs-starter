@@ -33,10 +33,21 @@ interface DropdownWrapperProps {
 }
 
 const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
-  ({ trigger, dropdown, selectedOption, style, minHeight, className, onSelect, isOpen = false, onOpenChange }, ref) => {
+  ({ trigger, dropdown, selectedOption, style, minHeight, className, onSelect, isOpen: controlledIsOpen, onOpenChange }, ref) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [mounted, setMounted] = useState(false);
+    const [internalIsOpen, setInternalIsOpen] = useState(false);
+
+    const isControlled = controlledIsOpen !== undefined;
+    const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
+
+    const handleOpenChange = (newIsOpen: boolean) => {
+      if (!isControlled) {
+        setInternalIsOpen(newIsOpen);
+      }
+      onOpenChange?.(newIsOpen);
+    };
 
     const {
       x,
@@ -94,7 +105,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target as Node)
       ) {
-        onOpenChange?.(false);
+        handleOpenChange(false);
       }
     };
 
@@ -103,7 +114,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         wrapperRef.current &&
         !wrapperRef.current.contains(event.relatedTarget as Node)
       ) {
-        onOpenChange?.(false);
+        handleOpenChange(false);
       }
     };
 
@@ -125,7 +136,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         className={className}
         position="relative"
         ref={wrapperRef}
-        onClick={() => onOpenChange?.(!isOpen)}
+        onClick={() => handleOpenChange(!isOpen)}
         tabIndex={-1}
         role="button"
         aria-haspopup="listbox"
