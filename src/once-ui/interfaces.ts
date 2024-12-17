@@ -93,12 +93,33 @@ export interface StyleProps extends HTMLAttributes<HTMLDivElement> {
     | "transparent";
   alpha?: `${ColorScheme}-${ColorWeight}`;
   solid?: `${ColorScheme}-${ColorWeight}`;
+  borderTop?:
+    | `${ColorScheme}-${ColorWeight}`
+    | `${ColorScheme}-alpha-${ColorWeight}`
+    | "surface"
+    | "transparent";
+  borderRight?:
+    | `${ColorScheme}-${ColorWeight}`
+    | `${ColorScheme}-alpha-${ColorWeight}`
+    | "surface"
+    | "transparent";
+  borderBottom?:
+    | `${ColorScheme}-${ColorWeight}`
+    | `${ColorScheme}-alpha-${ColorWeight}`
+    | "surface"
+    | "transparent";
+  borderLeft?:
+    | `${ColorScheme}-${ColorWeight}`
+    | `${ColorScheme}-alpha-${ColorWeight}`
+    | "surface"
+    | "transparent";
   border?: 
     | `${ColorScheme}-${ColorWeight}`
     | `${ColorScheme}-alpha-${ColorWeight}`
     | "surface"
     | "transparent";
-  borderStyle?: "solid-1" | "solid-2";
+  borderStyle?: "solid" | "dashed";
+  borderWidth?: 1 | 2;
   topRadius?: RadiusSize,
   rightRadius?: RadiusSize,
   bottomRadius?: RadiusSize,
