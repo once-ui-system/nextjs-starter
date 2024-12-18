@@ -23,9 +23,11 @@ import {
   User,
   DropdownWrapper,
   Option,
+  PasswordInput,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select } from "@/once-ui/components/Select";
+import NumberInput from "@/once-ui/components/NumberInput";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
@@ -321,6 +323,8 @@ export default function Home() {
             </Flex>
           </Flex>
 
+          <NumberInput step={5} id="input" label="Label"></NumberInput>
+
           <Flex fillWidth direction="column" negativeGap="1">
             <Input hasPrefix={<Icon name="check"/>} radius="top" id="input" label="Label"/>
             <Input radius="none" id="input-2" label="Label"/>
@@ -346,13 +350,11 @@ export default function Home() {
                         onClick={() => console.log("Edit")}
                         value="edit"
                         label="Edit"
-                        hasPrefix={<Icon name="edit" size="s" />}
                       />
                       <Option
                         onClick={() => console.log("Duplicate")}
                         value="duplicate"
                         label="Duplicate"
-                        hasPrefix={<Icon name="copy" size="s" />}
                       />
                       <Option
                         onClick={() => console.log("Archive")}
@@ -364,7 +366,6 @@ export default function Home() {
                         onClick={() => console.log("Delete")}
                         value="delete"
                         label="Delete"
-                        hasPrefix={<Icon name="trash" size="s" />}
                         danger
                       />
                     </Flex>
@@ -375,6 +376,14 @@ export default function Home() {
           </Flex>
 
           <Heading as="h2">Select</Heading>
+          <Flex fillWidth negativeGap="1" direction="column">
+            <Input id="input" label="Email" radius="top" />
+            <PasswordInput
+              radius="none"
+              id="password"
+              label="Password"/>
+            <Button radius="bottom" label="Login" fillWidth size="l"/>
+          </Flex>
           <Select
             id="select"
             label="Select Example"
