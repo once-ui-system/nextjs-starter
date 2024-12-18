@@ -9,6 +9,8 @@ import {
   HiCheck,
   HiMiniQuestionMarkCircle,
   HiMiniMinus,
+  HiOutlineEye,
+  HiOutlineEyeSlash,
   HiMiniPlus,
   HiMiniUser,
   HiMiniXMark,
@@ -48,4 +50,6 @@ export const iconLibrary: Record<string, IconType> = {
   minus: HiMiniMinus,
   plus: HiMiniPlus,
   calendar: HiCalendar,
+  eye: HiOutlineEye,
+  eyeOff: HiOutlineEyeSlash,
 };
