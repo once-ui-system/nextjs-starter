@@ -6,7 +6,7 @@
         border-color: var(--neutral-border-medium);
     }
 
-    &:focus-within, &:hover {
+    &:focus-within, &:hover:not(:has(.suffix:hover)) {
         background-color: var(--neutral-alpha-medium);
     }
 

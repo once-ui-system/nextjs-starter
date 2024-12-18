@@ -145,7 +145,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 {label}
               </Text>
             )}
-            {children && children}
+            {children}
           </Flex>
           {hasSuffix && (
             <Flex paddingRight="12" className={styles.suffix}>
