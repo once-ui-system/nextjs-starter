@@ -2,8 +2,9 @@
 
 import React, { useState, forwardRef, useEffect } from "react";
 import classNames from "classnames";
-import { Flex, Text, Button, Grid, SegmentedControl, IconButton } from ".";
+import { Flex, Text, Button, Grid, SegmentedControl, IconButton, RevealFx, SmartLink } from ".";
 import styles from "./Calendar.module.scss";
+import NumberInput from "./NumberInput";
 
 interface CalendarProps {
   id: string;
@@ -18,10 +19,7 @@ interface CalendarProps {
 }
 
 const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
-  (
-    { value, onChange, showTime = false, size = "m", className, style },
-    ref,
-  ) => {
+  ({ id, value, onChange, showTime = false, size = "m", className, style }, ref) => {
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
     const [selectedTime, setSelectedTime] = useState<{
       hours: number;
@@ -31,9 +29,8 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
       minutes: value?.getMinutes() ?? new Date().getMinutes(),
     });
     const [isPM, setIsPM] = useState((value?.getHours() ?? new Date().getHours()) >= 12);
-    const today = new Date();
-    const [currentMonth, setCurrentMonth] = useState(value?.getMonth() ?? today.getMonth());
-    const [currentYear, setCurrentYear] = useState(value?.getFullYear() ?? today.getFullYear());
+    const [isTimeSelector, setIsTimeSelector] = useState(false);
+    const [isTransitioning, setIsTransitioning] = useState(true);
 
     useEffect(() => {
       setSelectedDate(value);
@@ -47,6 +44,18 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         setIsPM(value.getHours() >= 12);
       }
     }, [value]);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsTransitioning(true);
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }, []);
+
+    const today = new Date();
+    const [currentMonth, setCurrentMonth] = useState(value?.getMonth() ?? today.getMonth());
+    const [currentYear, setCurrentYear] = useState(value?.getFullYear() ?? today.getFullYear());
 
     const monthNames = [
       "January",
@@ -64,12 +73,14 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
     ];
     const dayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-    const getDaysInMonth = (month: number, year: number) => {
-      return new Date(year, month + 1, 0).getDate();
-    };
-
-    const getFirstDayOfMonth = (month: number, year: number) => {
-      return new Date(year, month, 1).getDay();
+    const handleTimeToggle = (show: boolean) => {
+      setIsTransitioning(false);
+      setTimeout(() => {
+        setTimeout(() => {
+          setIsTimeSelector(show);
+          setIsTransitioning(true);
+        }, 400);
+      }, 400);
     };
 
     const handleDateSelect = (date: Date) => {
@@ -79,9 +90,11 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         newDate.setMinutes(selectedTime.minutes);
       }
       setSelectedDate(newDate);
-      setCurrentMonth(newDate.getMonth());
-      setCurrentYear(newDate.getFullYear());
-      onChange?.(newDate);
+      if (showTime) {
+        handleTimeToggle(true);
+      } else {
+        onChange?.(newDate);
+      }
     };
 
     const handleMonthChange = (increment: number) => {
@@ -112,14 +125,12 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         hour24 = newHours % 12;
       }
 
-      // Update time state separately
       setSelectedTime({
         hours: hour24,
         minutes: newMinutes,
       });
       setIsPM(pmState);
 
-      // Create new date combining selected date and time
       const newDate = new Date(selectedDate ?? new Date());
       newDate.setHours(hour24);
       newDate.setMinutes(newMinutes);
@@ -219,126 +230,127 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
       return days;
     };
 
-    const renderTimeSelector = () => (
-      <Flex gap="8" alignItems="center" className={styles.timeSelector}>
-        <input
-          type="number"
-          min={1}
-          max={12}
-          value={convert24to12(selectedTime.hours)}
-          onChange={(e) => {
-            const value = parseInt(e.target.value);
-            if (!isNaN(value) && value >= 1 && value <= 12) {
-              handleTimeChange(value, selectedTime.minutes);
-            }
-          }}
-          onBlur={(e) => {
-            const value = parseInt(e.target.value);
-            if (isNaN(value) || value < 1) {
-              handleTimeChange(1, selectedTime.minutes);
-            } else if (value > 12) {
-              handleTimeChange(12, selectedTime.minutes);
-            }
-          }}
-          className={styles.timeInput}
-          aria-label="Hours"
-        />
-        <Text variant="label-default-m" onBackground="neutral-medium">
-          :
-        </Text>
-        <input
-          type="number"
-          min={0}
-          max={59}
-          value={selectedTime.minutes.toString().padStart(2, "0")}
-          onChange={(e) => {
-            const value = parseInt(e.target.value);
-            if (!isNaN(value) && value >= 0 && value <= 59) {
-              handleTimeChange(selectedTime.hours, value);
-            }
-          }}
-          onBlur={(e) => {
-            const value = parseInt(e.target.value);
-            if (isNaN(value) || value < 0) {
-              handleTimeChange(selectedTime.hours, 0);
-            } else if (value > 59) {
-              handleTimeChange(selectedTime.hours, 59);
-            }
-          }}
-          className={styles.timeInput}
-          aria-label="Minutes"
-        />
-        <SegmentedControl
-          buttons={[
-            { value: "AM", label: "AM" },
-            { value: "PM", label: "PM" },
-          ]}
-          selected={isPM ? "PM" : "AM"}
-          onToggle={(value) =>
-            handleTimeChange(
-              selectedTime.hours,
-              selectedTime.minutes,
-              value === "PM",
-            )
-          }
-          className={styles.ampmSelector}
-        />
-      </Flex>
-    );
-
     return (
       <Flex
         ref={ref}
         direction="column"
+        fillWidth
+        alignItems="center"
         className={classNames(styles.calendar, styles[size], className)}
         style={style}
         gap={size}
       >
-        <Flex justifyContent="space-between" alignItems="center" paddingBottom="16">
-          <IconButton
-            variant="tertiary"
-            size={size === "l" ? "l" : "m"}
-            icon="chevronLeft"
-            onClick={() => handleMonthChange(-1)}
-          />
-          <Text variant={`label-default-${size}`} onBackground="neutral-strong">
-            {monthNames[currentMonth]} {currentYear}
-          </Text>
-          <IconButton
-            variant="tertiary"
-            size={size === "l" ? "l" : "m"}
-            icon="chevronRight"
-            onClick={() => handleMonthChange(1)}
-          />
+        <Flex fillWidth justifyContent="space-between" alignItems="center" paddingBottom="16">
+          {isTimeSelector ? (
+            <Flex alignItems="center" fillWidth direction="column" gap="8">
+              <Text variant={`label-default-${size}`} onBackground="neutral-strong">
+                {monthNames[currentMonth]} {currentYear}
+              </Text>
+              <Text className="cursor-interactive" variant="label-default-s" onBackground="brand-weak"
+                onClick={() => handleTimeToggle(false)}
+              >
+                Back to calendar
+              </Text>
+            </Flex>
+          ) : (
+            <>
+              <IconButton
+                variant="tertiary"
+                size={size === "l" ? "l" : "m"}
+                icon="chevronLeft"
+                onClick={() => handleMonthChange(-1)}
+              />
+              <Flex fillWidth direction="column" alignItems="center" gap="8">
+                <Text variant={`label-default-${size}`} onBackground="neutral-strong">
+                  {monthNames[currentMonth]} {currentYear}
+                </Text>
+                <Text variant="label-default-s" onBackground="neutral-weak">
+                  {selectedTime ? `${selectedTime.hours.toString().padStart(2, '0')}:${selectedTime.minutes.toString().padStart(2, '0')} ${isPM ? 'PM' : 'AM'}` : 'Time'}
+                </Text>
+              </Flex>
+              <IconButton
+                variant="tertiary"
+                size={size === "l" ? "l" : "m"}
+                icon="chevronRight"
+                onClick={() => handleMonthChange(1)}
+              />
+            </>
+          )}
         </Flex>
 
-        <Grid columns="repeat(7, 1fr)" gap={size === "l" ? "8" : "4"}>
-          {dayNames.map((day) => (
-            <Text
-              marginBottom="16"
-              key={day}
-              variant="label-default-m"
-              onBackground="neutral-medium"
-              align="center"
-            >
-              {day}
-            </Text>
-          ))}
-          {renderCalendarGrid()}
-        </Grid>
-
-        {showTime && (
-          <Flex direction="column" gap="4">
-            <Text
-              variant="label-default-m"
-              onBackground="neutral-weak"
-              paddingLeft="2"
-            >
-              Time
-            </Text>
-            {renderTimeSelector()}
-          </Flex>
-        )}
+        <RevealFx
+          fillWidth justifyContent="center" alignItems="center"
+          key={isTimeSelector ? "time" : "date"}
+          trigger={isTransitioning}
+          speed="fast"
+        >
+          {isTimeSelector ? (
+            <Flex fillWidth maxWidth={24} justifyContent="center" alignItems="center" direction="column" padding="32" gap="32">
+              <SegmentedControl
+                style={{border: '1px solid var(--neutral-alpha-medium)'}}
+                buttons={[
+                  { value: "AM", label: "AM" },
+                  { value: "PM", label: "PM" },
+                ]}
+                selected={isPM ? "PM" : "AM"}
+                onToggle={(value) =>
+                  handleTimeChange(
+                    selectedTime.hours,
+                    selectedTime.minutes,
+                    value === "PM",
+                  )
+                }
+              />
+              <Flex fillWidth gap="16" alignItems="center" data-scaling="110">
+              <NumberInput
+                id="hours"
+                label="Hours"
+                labelAsPlaceholder
+                min={1}
+                max={12}
+                value={convert24to12(selectedTime.hours)}
+                onChange={(value) => {
+                  if (value >= 1 && value <= 12) {
+                    handleTimeChange(value, selectedTime.minutes);
+                  }
+                }}
+                aria-label="Hours"
+              />
+              :
+              <NumberInput
+                id="minutes"
+                label="Minutes"
+                labelAsPlaceholder
+                min={0}
+                max={59}
+                padStart={2}
+                value={selectedTime.minutes}
+                onChange={(value) => {
+                  if (value >= 0 && value <= 59) {
+                    handleTimeChange(selectedTime.hours, value);
+                  }
+                }}
+                aria-label="Minutes"
+              />
+              </Flex>
+            </Flex>
+          ) : (
+            <Grid className="fit-width" columns="repeat(7, 1fr)" gap={size === "l" ? "8" : "4"}>
+              {dayNames.map((day) => (
+                <Text
+                  marginBottom="16"
+                  key={day}
+                  variant="label-default-m"
+                  onBackground="neutral-medium"
+                  align="center"
+                >
+                  {day}
+                </Text>
+              ))}
+              {renderCalendarGrid()}
+            </Grid>
+          )}
+        </RevealFx>
       </Flex>
     );
   },

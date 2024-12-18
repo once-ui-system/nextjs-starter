@@ -1,8 +1,4 @@
 .calendar {
-    width: fit-content;
-    min-width: var(--static-space-280);
-    transition: all 0.2s ease-in-out;
-  
     &.xs {
       --calendar-padding: var(--static-space-8);
       --calendar-gap: var(--static-space-4);
@@ -95,7 +91,6 @@
     border-radius: var(--radius-m);
     border: 1px solid var(--neutral-background-medium);
     padding: var(--calendar-padding);
-    transition: background-color 0.2s ease-in-out;
     font-size: var(--calendar-font-size);
   
     &:focus-within {
@@ -189,3 +184,11 @@
         }
       }
     }
+  
+  .grid {
+    display: grid;
+
+    > div {
+      overflow: hidden;
+    }
+  }
