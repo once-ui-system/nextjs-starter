@@ -17,6 +17,8 @@ export { Dialog } from "./Dialog";
 export { Dropdown } from "./Dropdown";
 export type { DropdownProps } from "./Dropdown";
 export { Option } from "./Option";
+export * from "./Option";
+export * from "./PasswordInput";
 export { DropdownWrapper } from "./DropdownWrapper";
 export { Grid } from "./Grid";
 export type { GridProps } from "./Grid";
