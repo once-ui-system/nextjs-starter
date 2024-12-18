@@ -16,11 +16,12 @@
   }
 
   &.danger {
-      color: var(--danger-alpha-weak);
+      color: var(--danger-on-background-medium);
 
       &:hover, &:focus {
-          background-color: var(--danger-alpha-medium);
-          color: var(--danger-on-background-medium);
+          background-color: var(--danger-solid-strong);
+          color: var(--danger-on-solid-strong);
+          border-color: var(--danger-border-strong);
       }
   }
 }
