@@ -13,8 +13,9 @@ interface ButtonOption {
 
 interface SegmentedControlProps {
   buttons: ButtonOption[];
-  onToggle: (selected: string) => void;
+  onToggle: (value: string, event?: React.MouseEvent<HTMLDivElement>) => void;
   defaultSelected?: string;
+  fillWidth?: boolean;
   selected?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -24,9 +25,11 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   buttons,
   onToggle,
   defaultSelected,
+  fillWidth = true,
   selected,
   className,
   style,
+  ...scrollerProps
 }) => {
   const [internalSelected, setInternalSelected] = useState<string>(() => {
     if (selected !== undefined) return selected;
@@ -51,46 +54,37 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   );
 
   return (
-    <Flex
-      fillWidth
-      minWidth={0}
-      position="relative"
-      className={className}
-      style={style}
-    >
-      <Flex fillWidth position="relative" overflowX="hidden" overflowY="hidden">
-        <Scroller contained={true} direction="row">
-          <Flex fillWidth gap="2">
-            {buttons.map((button, index) => {
-              let label: string | undefined;
-              let children: React.ReactNode = undefined;
+    <Scroller direction="row" {...scrollerProps}
+        fillWidth={fillWidth} fitWidth={!fillWidth} negativeGap="1">
+        {buttons.map((button, index) => {
+          let label: string | undefined;
+          let children: React.ReactNode = undefined;
 
-              if (typeof button.label === "string") {
-                label = button.label;
-              } else {
-                children = button.label;
-              }
+          if (typeof button.label === "string") {
+            label = button.label;
+          } else {
+            children = button.label;
+          }
 
-              return (
-                <ToggleButton
-                  key={button.value}
-                  label={label}
-                  value={button.value}
-                  selected={index === selectedIndex}
-                  onClick={() => handleButtonClick(button)}
-                  prefixIcon={button.prefixIcon}
-                  suffixIcon={button.suffixIcon}
-                  width="fill"
-                  aria-pressed={index === selectedIndex}
-                >
-                  {children}
-                </ToggleButton>
-              );
-            })}
-          </Flex>
-        </Scroller>
-      </Flex>
-    </Flex>
+          return (
+            <ToggleButton
+              variant="outline"
+              radius={index === 0 ? "left" : index === buttons.length - 1 ? "right" : "none"}
+              key={button.value}
+              label={label}
+              value={button.value}
+              selected={index === selectedIndex}
+              onClick={() => handleButtonClick(button)}
+              prefixIcon={button.prefixIcon}
+              suffixIcon={button.suffixIcon}
+              fillWidth={fillWidth}
+              aria-pressed={index === selectedIndex}
+            >
+              {children}
+            </ToggleButton>
+          );
+        })}
+    </Scroller>
   );
 };
 

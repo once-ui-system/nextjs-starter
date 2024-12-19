@@ -5,24 +5,19 @@ import classNames from 'classnames';
 import { Flex, IconButton } from '.';
 import styles from './Scroller.module.scss';
 
-interface ScrollerProps {
+interface ScrollerProps extends React.ComponentProps<typeof Flex> {
     children: React.ReactNode;
     direction?: 'row' | 'column';
-    contained?: boolean;
-    className?: string;
-    style?: React.CSSProperties;
     onItemClick?: (index: number) => void;
-    [key: string]: any;
 }
 
 const Scroller: React.FC<ScrollerProps> = ({
     children,
     direction = 'row',
-    contained = false,
     className,
     style,
     onItemClick,
-    ...props
+    ...flexProps
 }) => {
     const scrollerRef = useRef<HTMLDivElement>(null);
     const [showPrevButton, setShowPrevButton] = useState<boolean>(false);
@@ -84,17 +79,8 @@ const Scroller: React.FC<ScrollerProps> = ({
     return (
         <Flex
             fillWidth
-            minWidth={0}
             position="relative"
             className={className}
-            {...(contained && {
-                padding: "2",
-                radius: "m-4",
-                border: "neutral-medium",
-                borderStyle: "solid-1",
-                overflowX: "hidden",
-                overflowY: "hidden",
-            })}
             style={style}>
             {showPrevButton && (
                 <div className={classNames(styles.scrollMaskContainer, styles.scrollMaskPrev)}>
@@ -110,12 +96,11 @@ const Scroller: React.FC<ScrollerProps> = ({
             )}
             <Flex
                 fillWidth
-                ref={scrollerRef}
-                className={classNames(styles.scroller, {
-                    [styles.row]: direction === 'row',
-                    [styles.column]: direction === 'column',
-                })}
-                {...props}>
+                direction={direction}
+                className={classNames(styles.scroller, styles.row, className)}
+                style={style}
+                {...flexProps}
+                ref={scrollerRef}>
                 {wrappedChildren}
             </Flex>
             {showNextButton && (
