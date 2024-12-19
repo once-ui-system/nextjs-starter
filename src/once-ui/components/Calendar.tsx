@@ -2,9 +2,8 @@
 
 import React, { useState, forwardRef, useEffect } from "react";
 import classNames from "classnames";
-import { Flex, Text, Button, Grid, SegmentedControl, IconButton, RevealFx, SmartLink } from ".";
+import { Flex, Text, Button, Grid, SegmentedControl, IconButton, RevealFx, NumberInput } from ".";
 import styles from "./Calendar.module.scss";
-import NumberInput from "./NumberInput";
 
 interface CalendarProps {
   id: string;
@@ -13,22 +12,23 @@ interface CalendarProps {
   minDate?: Date;
   maxDate?: Date;
   showTime?: boolean;
+  defaultTime?: {
+    hours: number;
+    minutes: number;
+  };
   size?: "s" | "m" | "l";
   className?: string;
   style?: React.CSSProperties;
 }
 
 const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
-  ({ id, value, onChange, showTime = false, size = "m", className, style }, ref) => {
+  ({ id, value, onChange, showTime = false, defaultTime, size = "m", className, style }, ref) => {
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
     const [selectedTime, setSelectedTime] = useState<{
       hours: number;
       minutes: number;
-    }>({
-      hours: value?.getHours() ?? new Date().getHours(),
-      minutes: value?.getMinutes() ?? new Date().getMinutes(),
-    });
-    const [isPM, setIsPM] = useState((value?.getHours() ?? new Date().getHours()) >= 12);
+    } | undefined>(defaultTime);
+    const [isPM, setIsPM] = useState(defaultTime?.hours ? defaultTime.hours >= 12 : false);
     const [isTimeSelector, setIsTimeSelector] = useState(false);
     const [isTransitioning, setIsTransitioning] = useState(true);
 
@@ -85,7 +85,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
 
     const handleDateSelect = (date: Date) => {
       const newDate = new Date(date);
-      if (showTime && selectedDate) {
+      if (showTime && selectedDate && selectedTime) {
         newDate.setHours(selectedTime.hours);
         newDate.setMinutes(selectedTime.minutes);
       }
@@ -110,30 +110,22 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
     };
 
     const handleTimeChange = (
-      newHours: number,
-      newMinutes: number,
-      newIsPM?: boolean,
+      hours: number,
+      minutes: number,
+      pm: boolean = isPM,
     ) => {
-      const pmState = newIsPM ?? isPM;
-      let hour24 = newHours;
+      if (!selectedDate) return;
 
-      if (pmState && newHours < 12) {
-        hour24 = newHours + 12;
-      } else if (!pmState && newHours === 12) {
-        hour24 = 0;
-      } else if (!pmState && newHours > 12) {
-        hour24 = newHours % 12;
-      }
+      const newTime = {
+        hours: pm ? (hours === 12 ? 12 : hours + 12) : (hours === 12 ? 0 : hours),
+        minutes
+      };
+      setSelectedTime(newTime);
+      setIsPM(pm);
 
-      setSelectedTime({
-        hours: hour24,
-        minutes: newMinutes,
-      });
-      setIsPM(pmState);
-
-      const newDate = new Date(selectedDate ?? new Date());
-      newDate.setHours(hour24);
-      newDate.setMinutes(newMinutes);
+      const newDate = new Date(selectedDate);
+      newDate.setHours(newTime.hours);
+      newDate.setMinutes(minutes);
       onChange?.(newDate);
     };
 
@@ -233,11 +225,11 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
     return (
       <Flex
         ref={ref}
+        className={classNames(styles.calendar, className)}
+        style={style}
         direction="column"
         fillWidth
         alignItems="center"
-        className={classNames(styles.calendar, styles[size], className)}
-        style={style}
         gap={size}
       >
         <Flex fillWidth justifyContent="space-between" alignItems="center" paddingBottom="16">
@@ -265,7 +257,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
                   {monthNames[currentMonth]} {currentYear}
                 </Text>
                 <Text variant="label-default-s" onBackground="neutral-weak">
-                  {selectedTime ? `${selectedTime.hours.toString().padStart(2, '0')}:${selectedTime.minutes.toString().padStart(2, '0')} ${isPM ? 'PM' : 'AM'}` : 'Time'}
+                  {selectedTime && `${selectedTime.hours.toString().padStart(2, '0')}:${selectedTime.minutes.toString().padStart(2, '0')} ${isPM ? 'PM' : 'AM'}`}
                 </Text>
               </Flex>
               <IconButton
@@ -287,7 +279,6 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
           {isTimeSelector ? (
             <Flex fillWidth maxWidth={24} justifyContent="center" alignItems="center" direction="column" padding="32" gap="32">
               <SegmentedControl
-                style={{border: '1px solid var(--neutral-alpha-medium)'}}
                 buttons={[
                   { value: "AM", label: "AM" },
                   { value: "PM", label: "PM" },
@@ -295,8 +286,8 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
                 selected={isPM ? "PM" : "AM"}
                 onToggle={(value) =>
                   handleTimeChange(
-                    selectedTime.hours,
-                    selectedTime.minutes,
+                    selectedTime?.hours ?? 0,
+                    selectedTime?.minutes ?? 0,
                     value === "PM",
                   )
                 }
@@ -308,10 +299,10 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
                 labelAsPlaceholder
                 min={1}
                 max={12}
-                value={convert24to12(selectedTime.hours)}
+                value={selectedTime?.hours ? convert24to12(selectedTime.hours) : 12}
                 onChange={(value) => {
                   if (value >= 1 && value <= 12) {
-                    handleTimeChange(value, selectedTime.minutes);
+                    handleTimeChange(value, selectedTime?.minutes ?? 0);
                   }
                 }}
                 aria-label="Hours"
@@ -324,10 +315,10 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
                 min={0}
                 max={59}
                 padStart={2}
-                value={selectedTime.minutes}
+                value={selectedTime?.minutes ?? 0}
                 onChange={(value) => {
                   if (value >= 0 && value <= 59) {
-                    handleTimeChange(selectedTime.hours, value);
+                    handleTimeChange(selectedTime?.hours ?? 0, value);
                   }
                 }}
                 aria-label="Minutes"
