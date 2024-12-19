@@ -140,7 +140,7 @@ export default function RootLayout({
             colorEnd: "accent-background-medium"
           }}
         />
-        <Flex flex={1} direction="column" position="relative">
+        <Flex flex={1} fillWidth direction="column" position="relative">
           {children}
         </Flex>
       </Flex>
