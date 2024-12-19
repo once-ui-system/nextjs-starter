@@ -69,26 +69,29 @@ const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         max={max}
         step={step}
         hasSuffix={
-          <Flex position="absolute" right="0" top="0" direction="column" borderLeft="neutral-medium" fillHeight background="neutral-alpha-weak">
-            <Flex fillHeight borderBottom="neutral-medium" paddingX="4" className={classNames(styles.stepper, 'transition-micro-medium')}>
-              <IconButton
-                icon="chevronUp"
-                variant="ghost"
-                size="s"
-                onClick={increment}
-                aria-label="Increment value"
-              />
+          <>
+            <Flex minWidth={1.25}></Flex>
+            <Flex position="absolute" right="0" top="0" direction="column" borderLeft="neutral-medium" fillHeight background="neutral-alpha-weak">
+              <Flex fillHeight borderBottom="neutral-medium" paddingX="4" className={classNames(styles.stepper, 'transition-micro-medium')}>
+                <IconButton
+                  icon="chevronUp"
+                  variant="ghost"
+                  size="s"
+                  onClick={increment}
+                  aria-label="Increment value"
+                />
+              </Flex>
+              <Flex fillHeight paddingX="4" className={classNames(styles.stepper, 'transition-micro-medium')}>
+                <IconButton
+                  icon="chevronDown"
+                  variant="ghost"
+                  size="s"
+                  onClick={decrement}
+                  aria-label="Decrement value"
+                />
+              </Flex>
             </Flex>
-            <Flex fillHeight paddingX="4" className={classNames(styles.stepper, 'transition-micro-medium')}>
-              <IconButton
-                icon="chevronDown"
-                variant="ghost"
-                size="s"
-                onClick={decrement}
-                aria-label="Decrement value"
-              />
-            </Flex>
-          </Flex>
+          </>
         }
         className={styles.numberInput}
       />
@@ -97,5 +100,4 @@ const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 );
 
 NumberInput.displayName = "NumberInput";
-
-export default NumberInput;
+export { NumberInput };
