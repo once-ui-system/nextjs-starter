@@ -24,10 +24,10 @@ import {
   DropdownWrapper,
   Option,
   PasswordInput,
+  SegmentedControl,
 } from "@/once-ui/components";
 import Link from "next/link";
-import { Select } from "@/once-ui/components/Select";
-import NumberInput from "@/once-ui/components/NumberInput";
+import { Select, NumberInput } from "@/once-ui/components";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
@@ -168,7 +168,7 @@ export default function Home() {
           </Flex>
           <AvatarGroup avatars={[{ src: "/images/cover.png" }, { src: "/images/cover.png" }, { src: "/images/cover.png" }]}></AvatarGroup>
           <Flex alignItems="center" gap="8">Hey man <Icon name="check" tooltip="Check and check" tooltipPosition="right"/></Flex>
-          <Flex fillWidth textVariant="body-default-xl">We've reworked the <InlineCode marginX="8" gap="4"><Icon name="check" size="s"/>InlineCode</InlineCode> component.</Flex>
+          <Text as="p" variant="body-default-xl">We've reworked the <InlineCode marginX="8" gap="4"><Icon name="check" size="s"/>InlineCode</InlineCode> component.</Text>
           <Flex fillWidth padding="48" radius="xl" background="surface" data-theme="dark" direction="column" gap="48">
             <Flex fillWidth wrap gap="12">
               <Button data-solid="inverse" data-brand="blue">Button</Button>
@@ -384,6 +384,30 @@ export default function Home() {
               label="Password"/>
             <Button radius="bottom" label="Login" fillWidth size="l"/>
           </Flex>
+          <SegmentedControl
+            fillWidth={false}
+            onToggle={(value) => console.log("SegmentedControl changed", value)}
+            buttons={
+            [
+              {
+                value: "edit",
+                prefixIcon: "calendar",
+                suffixIcon: "chevronDown"
+              },
+              {
+                value: "duplicate",
+                prefixIcon: "eye",
+              },
+              {
+                value: "archive",
+                prefixIcon: "person",
+              },
+              {
+                value: "delete",
+                prefixIcon: "eyeDropper",
+              }
+            ]
+          }/>
           <Select
             id="select"
             label="Select Example"
@@ -413,6 +437,70 @@ export default function Home() {
             ]}
             onSelect={handleSelect}
           />
+          <SegmentedControl
+            onToggle={(value) => console.log("SegmentedControl changed", value)}
+            buttons={
+            [
+              {
+                value: "edit1",
+                label: "calendar",
+              },
+              {
+                value: "duplicate2",
+                label: "eye",
+              },
+              {
+                value: "archive3",
+                label: "person",
+              },
+              {
+                value: "archive35",
+                label: "person",
+              },
+              {
+                value: "delete4",
+                label: "eyeDropper",
+              },
+              {
+                value: "edit5",
+                label: "calendar",
+              },
+              {
+                value: "duplicate6",
+                label: "eye",
+              },
+              {
+                value: "archive7",
+                label: "person",
+              },
+              {
+                value: "delete8",
+                label: "eyeDropper",
+              }
+            ]
+          }/>
+          <SegmentedControl
+            onToggle={(value) => console.log("SegmentedControl changed", value)}
+            buttons={
+            [
+              {
+                value: "edit1",
+                label: "calendar",
+              },
+              {
+                value: "duplicate2",
+                label: "eye",
+              },
+              {
+                value: "archive3",
+                label: "person",
+              },
+              {
+                value: "delete4",
+                label: "eyeDropper",
+              },
+            ]
+          }/>
           <Calendar id="calendar" size="l" showTime/>
           <CalendarInput id="calendarInput" label="Pick a date" />
           <Flex fillWidth height={24} overflowY="scroll">
@@ -454,6 +542,7 @@ export default function Home() {
         paddingX="l"
         paddingY="m"
         justifyContent="space-between"
+        mobileDirection="column"
       >
         <Text variant="body-default-s" onBackground="neutral-medium">
           2024 Once UI /{" "}
