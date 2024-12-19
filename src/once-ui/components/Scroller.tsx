@@ -84,7 +84,7 @@ const Scroller: React.FC<ScrollerProps> = ({
             style={style}>
             {showPrevButton && (
                 <div className={classNames(styles.scrollMaskContainer, styles.scrollMaskPrev)}>
-                    <div className={styles.scrollMask}></div>
+                    <div className={classNames(styles.scrollMask, styles.maskPrev)}></div>
                     <IconButton
                         icon={direction === 'row' ? 'chevronLeft' : 'chevronUp'}
                         onClick={handleScrollPrev}
@@ -105,7 +105,7 @@ const Scroller: React.FC<ScrollerProps> = ({
             </Flex>
             {showNextButton && (
                 <div className={classNames(styles.scrollMaskContainer, styles.scrollMaskNext)}>
-                    <div className={styles.scrollMask}></div>
+                    <div className={classNames(styles.scrollMask, styles.maskNext)}></div>
                     <IconButton
                         icon={direction === 'row' ? 'chevronRight' : 'chevronDown'}
                         onClick={handleScrollNext}
