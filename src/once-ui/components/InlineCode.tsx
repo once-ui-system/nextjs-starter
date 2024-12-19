@@ -15,6 +15,7 @@ const InlineCode = forwardRef<HTMLDivElement, InlineCodeProps>(
   ({ children, className, style, ...props }, ref) => {
     return (
       <Flex
+        as="span"
         inline
         fit
         ref={ref}
