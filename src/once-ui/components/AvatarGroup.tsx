@@ -5,7 +5,7 @@ import React, { forwardRef } from "react";
 import { Avatar, AvatarProps, Flex } from ".";
 import styles from "./AvatarGroup.module.scss";
 
-interface AvatarGroupProps {
+interface AvatarGroupProps extends React.ComponentProps<typeof Flex> {
   avatars: AvatarProps[];
   size?: "xs" | "s" | "m" | "l" | "xl";
   reverseOrder?: boolean;
@@ -16,7 +16,14 @@ interface AvatarGroupProps {
 
 const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
   (
-    { avatars, size = "m", reverseOrder = false, limit, className, style },
+    { avatars,
+      size = "m",
+      reverseOrder = false,
+      limit,
+      className,
+      style,
+      ...rest
+     },
     ref,
   ) => {
     const displayedAvatars = limit ? avatars.slice(0, limit) : avatars;
@@ -25,6 +32,7 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
 
     return (
       <Flex
+        {...rest}
         position="relative"
         alignItems="center"
         ref={ref}

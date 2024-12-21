@@ -5,8 +5,7 @@ import classNames from "classnames";
 import { Flex, Text, Button, Grid, SegmentedControl, IconButton, RevealFx, NumberInput } from ".";
 import styles from "./Calendar.module.scss";
 
-interface CalendarProps {
-  id: string;
+interface CalendarProps extends Omit<React.ComponentProps<typeof Flex>, 'onChange'> {
   value?: Date;
   onChange?: (date: Date) => void;
   minDate?: Date;
@@ -22,7 +21,7 @@ interface CalendarProps {
 }
 
 const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
-  ({ id, value, onChange, showTime = false, defaultTime, size = "m", className, style }, ref) => {
+  ({ value, onChange, showTime = false, defaultTime, size = "m", className, style, ...rest }, ref) => {
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
     const [selectedTime, setSelectedTime] = useState<{
       hours: number;
@@ -231,6 +230,7 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         fillWidth
         alignItems="center"
         gap={size}
+        {...rest}
       >
         <Flex fillWidth justifyContent="space-between" alignItems="center" paddingBottom="16">
           {isTimeSelector ? (

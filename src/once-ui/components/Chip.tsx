@@ -10,7 +10,7 @@ import classNames from "classnames";
 import { Text, Icon, IconButton, IconButtonProps, Flex } from ".";
 import styles from "./Chip.module.scss";
 
-interface ChipProps extends HTMLAttributes<HTMLDivElement> {
+interface ChipProps extends React.ComponentProps<typeof Flex> {
   label: string;
   selected?: boolean;
   prefixIcon?: string;
@@ -34,7 +34,7 @@ const Chip: React.FC<ChipProps> = forwardRef<HTMLDivElement, ChipProps>(
       iconButtonProps = {},
       style,
       className,
-      ...props
+      ...rest
     },
     ref,
   ) => {
@@ -74,15 +74,15 @@ const Chip: React.FC<ChipProps> = forwardRef<HTMLDivElement, ChipProps>(
         paddingY="4"
         role="button"
         tabIndex={0}
+        onClick={onClick}
+        onKeyDown={handleKeyDown}
         aria-pressed={selected}
         className={classNames(styles.chip, className, {
           [styles.selected]: selected,
           [styles.unselected]: !selected,
         })}
-        onClick={onClick}
-        onKeyDown={handleKeyDown}
         style={style}
-        {...props}
+        {...rest}
       >
         {prefixIcon && <Icon name={prefixIcon} size="s" />}
         <Flex paddingX="8" paddingY="2">

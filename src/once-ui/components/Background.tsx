@@ -156,7 +156,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       return {};
     };
 
-    const commonFlexProps = {
+    const sharedFlexProps = {
       position,
       top: "0" as SpacingToken,
       left: "0" as SpacingToken,
@@ -169,7 +169,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       <>
         {gradient.display && (
           <Flex
-            {...commonFlexProps}
+            {...sharedFlexProps}
             className={classNames(
               styles.gradient,
               mask && styles.mask,
@@ -189,7 +189,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         )}
         {dots.display && (
           <Flex
-            {...commonFlexProps}
+            {...sharedFlexProps}
             className={classNames(
               styles.dots,
               mask && styles.mask,
@@ -206,7 +206,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         )}
         {lines.display && (
           <Flex
-            {...commonFlexProps}
+            {...sharedFlexProps}
             className={classNames(
               styles.lines,
               mask && styles.mask,

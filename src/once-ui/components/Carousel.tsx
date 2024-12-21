@@ -8,7 +8,7 @@ interface Image {
     alt: string;
 }
 
-interface CarouselProps {
+interface CarouselProps extends React.ComponentProps<typeof Flex> {
     images: Image[];
     indicator?: 'line' | 'thumbnail';
     aspectRatio?: string;
@@ -22,6 +22,7 @@ const Carousel: React.FC<CarouselProps> = ({
     aspectRatio = '16 / 9',
     sizes,
     revealedByDefault = false,
+    ...rest
 }) => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [isTransitioning, setIsTransitioning] = useState(revealedByDefault);
@@ -78,30 +79,29 @@ const Carousel: React.FC<CarouselProps> = ({
     }
 
     return (
-        <Flex fillWidth gap="12" direction="column">
-            <Flex onClick={handleImageClick}>
-                <RevealFx
-                    style={{ width: '100%' }}
-                    trigger={isTransitioning}
-                    translateY="16"
-                    speed="fast">
-                    <SmartImage
-                        sizes={sizes}
-                        priority
-                        tabIndex={0}
-                        radius="l"
-                        alt={images[activeIndex]?.alt}
-                        aspectRatio={aspectRatio}
-                        src={images[activeIndex]?.src}
-                        style={{
-                            border: '1px solid var(--neutral-alpha-weak)',
-                            ...(images.length > 1 && {
-                                cursor: 'pointer',
-                            }),
-                        }}
-                    />
-                </RevealFx>
-            </Flex>
+        <Flex fillWidth gap="12" direction="column" {...rest}>
+            <RevealFx
+                onClick={handleImageClick}
+                fillWidth
+                trigger={isTransitioning}
+                translateY="16"
+                speed="fast">
+                <SmartImage
+                    sizes={sizes}
+                    priority
+                    tabIndex={0}
+                    radius="l"
+                    alt={images[activeIndex]?.alt}
+                    aspectRatio={aspectRatio}
+                    src={images[activeIndex]?.src}
+                    style={{
+                        border: '1px solid var(--neutral-alpha-weak)',
+                        ...(images.length > 1 && {
+                            cursor: 'pointer',
+                        }),
+                    }}
+                />
+            </RevealFx>
             {images.length > 1 && (
                 <>
                     {indicator === 'line' ? (

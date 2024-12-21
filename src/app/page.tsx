@@ -25,12 +25,18 @@ import {
   Option,
   PasswordInput,
   SegmentedControl,
+  Badge,
+  SmartLink,
+  Carousel,
+  Dialog,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select, NumberInput } from "@/once-ui/components";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
+  const [isFirstDialogOpen, setIsFirstDialogOpen] = useState(false);
+  const [isSecondDialogOpen, setIsSecondDialogOpen] = useState(false);
 
   const handleSelect = (value: string) => {
     console.log("Selected option:", value);
@@ -156,13 +162,41 @@ export default function Home() {
             ))}
           </Grid>
           Work in progress
+          <Button onClick={() => setIsFirstDialogOpen(true)}>Open First Dialog</Button>
+          <Dialog
+            isOpen={isFirstDialogOpen}
+            onClose={() => setIsFirstDialogOpen(false)}
+            title="First Dialog"
+            description="This is the first dialog. Click the button below to open the second dialog."
+            base={isSecondDialogOpen}
+            footer={
+              <>
+                <Button variant="secondary" onClick={() => setIsFirstDialogOpen(false)}>Close Dialog</Button>
+                <Button onClick={() => setIsSecondDialogOpen(true)}>Open Another</Button>
+              </>
+              }
+          >
+            <Button onClick={() => setIsSecondDialogOpen(true)}>Open Second Dialog</Button>
+          </Dialog>
+
+          <Dialog
+            isOpen={isSecondDialogOpen}
+            onClose={() => setIsSecondDialogOpen(false)}
+            title="Second Dialog"
+            description="This is the second dialog."
+          >
+            <Text>Content of the second dialog</Text>
+          </Dialog>
+          <SmartLink prefixIcon="check" href="https://once-ui.com/docs">Docs</SmartLink>
           <Skeleton marginTop="40" shape="line" width="l" height="l"/>
           <Flex fillWidth direction="column" radius="xl" overflow="hidden" border="neutral-medium">
             <Accordion open title="Accordion title 1">Accordion content</Accordion>
             <Accordion title="Accordion title 1">Accordion content</Accordion>
           </Flex>
+          <Carousel marginBottom="40" images={[{ src: "/images/cover.png", alt: "alt" }, { src: "/images/cover.png", alt: "alt" }, { src: "/images/cover.png", alt: "alt" }, { src: "/images/cover.png", alt: "alt" }]}></Carousel>
+          <Badge radius="s" title="Badge" marginTop="40" href="https://cica.com"/>
           <Flex gap="8">
-            <Avatar size="s"/>
+            <Avatar size="s" marginTop="64" shadow="xl"/>
             <Avatar size="m"/>
             <Avatar size="l"/>
           </Flex>
@@ -234,11 +268,6 @@ export default function Home() {
               <Button size="l" data-solid="contrast" data-border="rounded" data-solid-style="plastic" data-brand="blue">Button</Button>
               <Button size="m" data-solid="contrast" data-border="rounded" data-solid-style="plastic" data-brand="indigo">Button</Button>
               <Button size="s" data-solid="contrast" data-border="rounded" data-solid-style="plastic" data-brand="violet">Button</Button>
-            </Flex>
-            <Flex fillWidth negativeGap="1">
-              <Button weight="default" radius="left" fillWidth data-solid="color" data-border="rounded" data-solid-style="plastic" data-brand="indigo">Button</Button>
-              <Button weight="default" radius="none" fillWidth data-solid="color" data-border="rounded" data-solid-style="plastic" data-brand="indigo">Button</Button>
-              <Button weight="default" radius="right" fillWidth data-solid="color" data-border="rounded" data-solid-style="plastic" data-brand="indigo">Button</Button>
             </Flex>
           </Flex>
 
@@ -501,8 +530,8 @@ export default function Home() {
               },
             ]
           }/>
-          <Calendar id="calendar" size="l" showTime/>
-          <CalendarInput id="calendarInput" label="Pick a date" />
+          <Calendar padding="xl" background="neutral-weak" id="calendar" size="l" showTime/>
+          <CalendarInput radius="top" description="hello" id="calendarInput" label="Pick a date" />
           <Flex fillWidth height={24} overflowY="scroll">
             asd
           </Flex>

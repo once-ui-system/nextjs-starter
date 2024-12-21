@@ -2,20 +2,22 @@
 
 import React, { forwardRef, ReactNode } from "react";
 import classNames from "classnames";
-import Link from "next/link";
 import { Icon } from ".";
+import { ElementType } from "./ElementType";
 
-interface SmartLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  href: string;
+interface CommonProps {
   prefixIcon?: string;
   suffixIcon?: string;
   iconSize?: "xs" | "s" | "m" | "l" | "xl";
-  style?: React.CSSProperties;
-  className?: string;
   selected?: boolean;
   unstyled?: boolean;
   children: ReactNode;
+  href?: string;
+  style?: React.CSSProperties;
+  className?: string;
 }
+
+export type SmartLinkProps = CommonProps & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
   (
@@ -33,8 +35,6 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
     },
     ref,
   ) => {
-    const isExternal = href.startsWith("http") || href.startsWith("//");
-
     const content = (
       <>
         {prefixIcon && <Icon name={prefixIcon} size={iconSize} />}
@@ -45,38 +45,29 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
 
     const commonProps = {
       ref,
-      className: classNames(className || "", {
+      className: classNames(className || "",
+        "fit-width align-items-center display-inline-flex g-8 radius-s", {
         "px-4 mx-4": !unstyled,
       }),
       style: !unstyled
         ? {
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "var(--static-space-8)",
-            borderRadius: "var(--radius-s)",
             ...(selected && { textDecoration: "underline" }),
             ...style,
           }
         : {
             textDecoration: "none",
-            color: "inherit",
             ...style,
           },
       ...props,
     };
 
-    if (isExternal) {
-      return (
-        <a href={href} target="_blank" rel="noreferrer" {...commonProps}>
-          {content}
-        </a>
-      );
-    }
-
     return (
-      <Link href={href} {...commonProps} {...props}>
+      <ElementType
+        href={href}
+        {...commonProps}
+      >
         {content}
-      </Link>
+      </ElementType>
     );
   },
 );

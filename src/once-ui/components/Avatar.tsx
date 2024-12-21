@@ -5,7 +5,7 @@ import React, { forwardRef } from "react";
 import { Skeleton, Icon, Text, StatusIndicator, Flex, SmartImage } from ".";
 import styles from "./Avatar.module.scss";
 
-interface AvatarProps {
+interface AvatarProps extends React.ComponentProps<typeof Flex> {
   size?: "xs" | "s" | "m" | "l" | "xl";
   value?: string;
   src?: string;
@@ -37,7 +37,7 @@ const statusIndicatorSizeMapping: Record<
   xl: "l",
 };
 
-const Avatar: React.FC<AvatarProps> = forwardRef<HTMLDivElement, AvatarProps>(
+const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
   (
     {
       size = "m",
@@ -46,8 +46,9 @@ const Avatar: React.FC<AvatarProps> = forwardRef<HTMLDivElement, AvatarProps>(
       loading,
       empty,
       statusIndicator,
-      style,
       className,
+      style,
+      ...rest
     },
     ref,
   ) => {
@@ -60,6 +61,7 @@ const Avatar: React.FC<AvatarProps> = forwardRef<HTMLDivElement, AvatarProps>(
     if (loading) {
       return (
         <Skeleton
+          {...rest}
           style={{ border: "1px solid var(--neutral-border-medium)" }}
           shape="circle"
           width={size}
@@ -116,6 +118,7 @@ const Avatar: React.FC<AvatarProps> = forwardRef<HTMLDivElement, AvatarProps>(
 
     return (
       <Flex
+        {...rest}
         ref={ref}
         role="img"
         position="relative"

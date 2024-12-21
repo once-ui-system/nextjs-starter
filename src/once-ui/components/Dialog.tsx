@@ -1,205 +1,204 @@
 "use client";
 
-import React, {
-  ReactNode,
-  useEffect,
-  useCallback,
-  useRef,
-  forwardRef,
-  useState,
-} from "react";
-import ReactDOM from "react-dom";
-import classNames from "classnames";
-import { Flex, Heading, IconButton, Button, ButtonProps, Text } from ".";
-import styles from "./Dialog.module.scss";
+import React, { ReactNode, useEffect, useCallback, useRef, forwardRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+import classNames from 'classnames';
+import { Flex, Heading, IconButton, Text } from '.';
+import styles from './Dialog.module.scss';
 
-interface DialogButtonProps extends Partial<ButtonProps> {
-  label: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+interface DialogProps extends Omit<React.ComponentProps<typeof Flex>, 'title'> {
+    isOpen: boolean;
+    onClose: () => void;
+    title: ReactNode;
+    description?: ReactNode;
+    children: ReactNode;
+    footer?: ReactNode;
+    base?: boolean;
+    stack?: boolean;
+    style?: React.CSSProperties;
+    className?: string;
+    onHeightChange?: (height: number) => void;
+    minHeight?: number;
 }
 
-interface DialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: ReactNode;
-  description?: ReactNode;
-  children: ReactNode;
-  primaryButtonProps?: DialogButtonProps;
-  secondaryButtonProps?: DialogButtonProps;
-  dangerButtonProps?: DialogButtonProps;
-  style?: React.CSSProperties;
-  className?: string;
-}
+const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(({
+    isOpen,
+    onClose,
+    title,
+    description,
+    children,
+    footer,
+    base = false,
+    style,
+    className,
+    onHeightChange,
+    minHeight,
+    ...rest
+}, ref) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(isOpen);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
-  (
-    {
-      isOpen,
-      onClose,
-      title,
-      description,
-      children,
-      primaryButtonProps,
-      secondaryButtonProps,
-      dangerButtonProps,
-      style,
-      className,
-    },
-    ref,
-  ) => {
-    const dialogRef = useRef<HTMLDivElement>(null);
-    const [isVisible, setIsVisible] = useState(isOpen);
-    const [isAnimating, setIsAnimating] = useState(false);
-
-    useEffect(() => {
+  useEffect(() => {
       if (isOpen) {
-        setIsVisible(true);
-        setTimeout(() => setIsAnimating(true), 10);
+          setIsVisible(true);
+          setTimeout(() => setIsAnimating(true), 25);
       } else {
-        setIsAnimating(false);
-        const timeout = setTimeout(() => setIsVisible(false), 300);
-        return () => clearTimeout(timeout);
+          setIsAnimating(false);
+          const timeout = setTimeout(() => setIsVisible(false), 300);
+          return () => clearTimeout(timeout);
       }
-    }, [isOpen]);
+  }, [isOpen]);
 
-    const handleKeyDown = useCallback(
-      (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
+  useEffect(() => {
+    if (dialogRef.current && isVisible) {
+      const height = dialogRef.current.offsetHeight;
+      onHeightChange?.(height);
+    }
+  }, [isVisible, onHeightChange]);
+
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+      if (event.key === 'Escape' && !base) {
           onClose();
-        }
-        if (event.key === "Tab" && dialogRef.current) {
-          const focusableElements =
-            dialogRef.current.querySelectorAll<HTMLElement>(
-              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-            );
+      }
+      if (event.key === 'Tab' && dialogRef.current) {
+          const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          );
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
 
           if (event.shiftKey) {
-            if (document.activeElement === firstElement) {
-              lastElement.focus();
-              event.preventDefault();
-            }
+              if (document.activeElement === firstElement) {
+                  lastElement.focus();
+                  event.preventDefault();
+              }
           } else {
-            if (document.activeElement === lastElement) {
-              firstElement.focus();
-              event.preventDefault();
-            }
+              if (document.activeElement === lastElement) {
+                  firstElement.focus();
+                  event.preventDefault();
+              }
           }
-        }
-      },
-      [onClose],
-    );
+      }
+  }, [onClose, base]);
 
-    useEffect(() => {
+  useEffect(() => {
       if (isOpen) {
-        document.body.style.overflow = "hidden";
-        window.addEventListener("keydown", handleKeyDown);
+          document.body.style.overflow = 'hidden';
+          window.addEventListener('keydown', handleKeyDown);
       } else {
-        document.body.style.overflow = "unset";
+          document.body.style.overflow = 'unset';
       }
 
       return () => {
-        window.removeEventListener("keydown", handleKeyDown);
+          window.removeEventListener('keydown', handleKeyDown);
       };
-    }, [isOpen, handleKeyDown]);
+  }, [isOpen, handleKeyDown]);
 
-    useEffect(() => {
+  useEffect(() => {
       if (isOpen && dialogRef.current) {
-        const focusableElements =
-          dialogRef.current.querySelectorAll<HTMLElement>(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
           );
-        const firstElement = focusableElements[0];
-        firstElement.focus();
+          const firstElement = focusableElements[0];
+          firstElement.focus();
       }
-    }, [isOpen]);
+  }, [isOpen]);
 
-    if (!isVisible) return null;
+  if (!isVisible) return null;
 
-    return ReactDOM.createPortal(
+  return ReactDOM.createPortal(
       <Flex
-        ref={ref}
-        className={classNames(styles.overlay, className, {
-          [styles.open]: isAnimating,
-        })}
-        style={style}
-        justifyContent="center"
-        alignItems="center"
-        padding="l"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="dialog-title"
-      >
-        <Flex
-          style={{ maxHeight: "100%" }}
-          className={classNames(styles.dialog, { [styles.open]: isAnimating })}
-          ref={dialogRef}
-          fillWidth
-          radius="xl"
-          border="neutral-medium"
-          background="neutral-weak"
-          direction="column"
-        >
+          ref={ref}
+          transition="macro-medium"
+          background="overlay"
+          position="fixed"
+          zIndex={9}
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          className={classNames(styles.overlay, { [styles.open]: isAnimating })}
+          justifyContent="center"
+          alignItems="center"
+          padding="l"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="dialog-title">
           <Flex
-            as="header"
-            direction="column"
-            paddingX="24"
-            paddingTop="24"
-            paddingBottom="s"
-            gap="4"
-          >
-            <Flex fillWidth justifyContent="space-between" gap="8">
-              <Heading id="dialog-title" variant="heading-strong-l">
-                {title}
-              </Heading>
-              <IconButton
-                icon="close"
-                size="m"
-                variant="tertiary"
-                tooltip="Close"
-                onClick={onClose}
-              />
-            </Flex>
-            {description && (
-              <Text variant="body-default-s" onBackground="neutral-weak">
-                {description}
-              </Text>
-            )}
-          </Flex>
-          <Flex
-            as="section"
-            paddingX="24"
-            paddingBottom="24"
-            overflowY="auto"
-            direction="column"
-          >
-            {children}
-          </Flex>
-          {(primaryButtonProps ||
-            secondaryButtonProps ||
-            dangerButtonProps) && (
-            <Flex
+              fillWidth fillHeight
+              justifyContent="center" alignItems="center"
+              transition="macro-medium"
               style={{
-                borderTop: "1px solid var(--neutral-border-medium)",
+                  transform: base ? 'scale(0.94) translateY(-1.25rem)' : '',
               }}
-              as="footer"
-              justifyContent="space-between"
-              padding="12"
-            >
-              {dangerButtonProps ? <Button {...dangerButtonProps} /> : <div />}
-              <Flex gap="8">
-                {secondaryButtonProps && <Button {...secondaryButtonProps} />}
-                {primaryButtonProps && <Button {...primaryButtonProps} />}
-              </Flex>
+              {...rest}>
+              <Flex
+                  className={classNames(styles.dialog, className, { [styles.open]: isAnimating })}
+                  style={{ ...style, minHeight }}
+                  ref={dialogRef}
+                  fillWidth
+                  maxWidth={40}
+                  transition="macro-medium"
+                  shadow="xl"
+                  radius="xl"
+                  border="neutral-medium"
+                  background="neutral-weak"
+                  direction="column">
+                  <Flex
+                      as="header"
+                      direction="column"
+                      paddingX="24"
+                      paddingTop="24"
+                      paddingBottom="s"
+                      gap="4">
+                      <Flex
+                          fillWidth
+                          justifyContent="space-between"
+                          gap="8">
+                          <Heading
+                              id="dialog-title"
+                              variant="heading-strong-l">
+                              {title}
+                          </Heading>
+                          <IconButton
+                              icon="close"
+                              size="m"
+                              variant="tertiary"
+                              tooltip="Close"
+                              onClick={onClose} />
+                      </Flex>
+                      {description && (
+                          <Text
+                              variant="body-default-s"
+                              onBackground="neutral-weak">
+                              {description}
+                          </Text>
+                      )}
+                  </Flex>
+                  <Flex
+                      as="section"
+                      paddingX="24" paddingBottom="24"
+                      overflowY="auto"
+                      direction="column">
+                      {children}
+                  </Flex>
+                  {footer && (
+                      <Flex
+                          borderTop="neutral-medium"
+                          as="footer"
+                          justifyContent="flex-end"
+                          padding="12"
+                          gap="8">
+                          {footer}
+                      </Flex>
+                  )}
+                </Flex>
             </Flex>
-          )}
-        </Flex>
-      </Flex>,
-      document.body,
+        </Flex>,
+        document.body
     );
-  },
-);
+});
 
 Dialog.displayName = "Dialog";
 

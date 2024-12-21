@@ -286,8 +286,8 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
 
     const combinedStyle: CSSProperties = {
       maxWidth: parseDimension(maxWidth, "width"),
-      minWidth: fillWidth && minWidth === undefined ? "0" : parseDimension(minWidth, "width"),
-      minHeight: fillHeight && minHeight === undefined ? "0" : parseDimension(minHeight, "height"),
+      minWidth: parseDimension(minWidth, "width"),
+      minHeight: parseDimension(minHeight, "height"),
       maxHeight: parseDimension(maxHeight, "height"),
       width: parseDimension(width, "width"),
       height: parseDimension(height, "height"),

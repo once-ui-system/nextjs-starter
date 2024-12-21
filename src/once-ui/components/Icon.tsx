@@ -6,15 +6,8 @@ import { IconType } from "react-icons";
 import { iconLibrary } from "../icons";
 import { ColorScheme, ColorWeight } from "../types";
 import { Flex, Tooltip } from ".";
+import styles from "./Icon.module.scss";
 import iconStyles from "./IconButton.module.scss";
-
-const sizeMap: Record<string, string> = {
-  xs: "var(--static-space-16)",
-  s: "var(--static-space-20)",
-  m: "var(--static-space-24)",
-  l: "var(--static-space-32)",
-  xl: "var(--static-space-40)",
-};
 
 type IconProps = {
   name: string;
@@ -86,31 +79,17 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
     }, [isHover]);
 
     return (
-      <Flex
-        inline
-        position="relative"
-        fit
-        style={{
-          lineHeight: "0",
-        }}
+      <span
+        ref={ref}
+        className={classNames(colorClass, styles.icon, styles[size], "fit-height", className)}
+        style={{ ...style }}
+        role={decorative ? "presentation" : undefined}
+        aria-hidden={decorative ? "true" : undefined}
+        aria-label={decorative ? undefined : name}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
       >
-        <Flex
-          ref={ref}
-          inline
-          alignItems="center"
-          className={classNames(colorClass, className)}
-          style={{
-            fontSize: sizeMap[size],
-            ...style,
-          }}
-          role={decorative ? "presentation" : undefined}
-          aria-hidden={decorative ? "true" : undefined}
-          aria-label={decorative ? undefined : name}
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
-        >
-          <IconComponent />
-        </Flex>
+        <IconComponent />
         {tooltip && isTooltipVisible && (
           <Flex
             position="absolute"
@@ -120,7 +99,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
             <Tooltip label={tooltip} />
           </Flex>
         )}
-      </Flex>
+      </span>
     );
   },
 );

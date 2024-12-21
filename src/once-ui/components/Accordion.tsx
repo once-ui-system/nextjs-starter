@@ -14,7 +14,7 @@ interface AccordionProps {
 }
 
 const Accordion: React.FC<AccordionProps> = forwardRef(
-  ({ title, children, style, className, open = false }, ref) => {
+  ({ title, children, style, className, open = false, ...rest }, ref) => {
     const [isOpen, setIsOpen] = useState(open);
 
     const toggleAccordion = () => {
@@ -36,8 +36,8 @@ const Accordion: React.FC<AccordionProps> = forwardRef(
         fillWidth
         direction="column"
         style={style}
-        borderTop="neutral-medium"
         className={classNames(styles.border, className)}
+        {...rest}
       >
         <Flex
           tabIndex={0}

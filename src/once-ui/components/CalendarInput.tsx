@@ -4,7 +4,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Input, Calendar, DropdownWrapper, Flex } from ".";
 
-interface CalendarInputProps {
+interface CalendarInputProps extends Omit<React.ComponentProps<typeof Input>, 'onChange' | 'value'> {
   id: string;
   label: string;
   value?: Date;
@@ -39,6 +39,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
   className,
   style,
   showTime = false,
+  ...rest
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState(
@@ -65,20 +66,21 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
 
   const trigger = (
     <Input
-      style={{ cursor: "pointer", textOverflow: "ellipsis", ...style }}
+      className="cursor-pointer"
+      style={{ textOverflow: "ellipsis" }}
       id={id}
       label={label}
       value={inputValue}
       error={error}
       readOnly
       onClick={handleInputClick}
+      {...rest}
     />
   );
 
   const dropdown = (
     <Flex padding="20">
       <Calendar
-        id={`${id}-calendar`}
         value={value}
         onChange={handleDateChange}
         showTime={showTime}
@@ -93,6 +95,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
       isOpen={isOpen}
       onOpenChange={setIsOpen}
       className={className}
+      style={{...style}}
     />
   );
 };

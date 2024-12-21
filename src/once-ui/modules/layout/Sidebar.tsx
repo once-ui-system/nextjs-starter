@@ -39,7 +39,7 @@ const Sidebar: React.FC = ({}) => {
           >
             Dashboard
           </Text>
-          <ToggleButton width="fill" align="start" href="" selected={true}>
+          <ToggleButton fillWidth justifyContent="flex-start" href="" selected={true}>
             <Flex
               padding="4"
               alignItems="center"
@@ -55,8 +55,8 @@ const Sidebar: React.FC = ({}) => {
             </Flex>
           </ToggleButton>
           <ToggleButton
-            width="fill"
-            align="start"
+            fillWidth
+            justifyContent="flex-start"
             href=""
             selected={pathname === "analytics"}
           >
@@ -77,8 +77,8 @@ const Sidebar: React.FC = ({}) => {
           <ToggleButton
             style={{ position: "relative" }}
             prefixIcon=""
-            width="fill"
-            align="start"
+            fillWidth
+            justifyContent="flex-start"
             href=""
             selected={pathname === "reports"}
           >
@@ -118,8 +118,8 @@ const Sidebar: React.FC = ({}) => {
             Management
           </Text>
           <ToggleButton
-            width="fill"
-            align="start"
+            fillWidth
+            justifyContent="flex-start"
             href=""
             selected={pathname === "users"}
           >
@@ -134,8 +134,8 @@ const Sidebar: React.FC = ({}) => {
             </Flex>
           </ToggleButton>
           <ToggleButton
-            width="fill"
-            align="start"
+            fillWidth
+            justifyContent="flex-start"
             href=""
             selected={pathname === "roles"}
           >
@@ -150,8 +150,8 @@ const Sidebar: React.FC = ({}) => {
             </Flex>
           </ToggleButton>
           <ToggleButton
-            width="fill"
-            align="start"
+            fillWidth
+            justifyContent="flex-start"
             href=""
             selected={pathname === "permissions"}
           >
@@ -188,8 +188,8 @@ const Sidebar: React.FC = ({}) => {
             />
           </Flex>
           <ToggleButton
-            width="fill"
-            align="start"
+            fillWidth
+            justifyContent="flex-start"
             href=""
             selected={pathname === "overview"}
           >
@@ -204,8 +204,8 @@ const Sidebar: React.FC = ({}) => {
             </Flex>
           </ToggleButton>
           <ToggleButton
-            width="fill"
-            align="start"
+            fillWidth
+            justifyContent="flex-start"
             href=""
             selected={pathname === "projects"}
           >
