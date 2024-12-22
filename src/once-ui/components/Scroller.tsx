@@ -17,7 +17,7 @@ const Scroller: React.FC<ScrollerProps> = ({
     className,
     style,
     onItemClick,
-    ...flexProps
+    ...rest
 }) => {
     const scrollerRef = useRef<HTMLDivElement>(null);
     const [showPrevButton, setShowPrevButton] = useState<boolean>(false);
@@ -80,8 +80,9 @@ const Scroller: React.FC<ScrollerProps> = ({
         <Flex
             fillWidth
             position="relative"
-            className={className}
-            style={style}>
+            className={classNames(styles.container, className)}
+            style={style}
+            {...rest}>
             {showPrevButton && (
                 <div className={classNames(styles.scrollMaskContainer, styles.scrollMaskPrev)}>
                     <div className={classNames(styles.scrollMask, styles.maskPrev)}></div>
@@ -97,9 +98,7 @@ const Scroller: React.FC<ScrollerProps> = ({
             <Flex
                 fillWidth
                 direction={direction}
-                className={classNames(styles.scroller, styles.row, className)}
-                style={style}
-                {...flexProps}
+                className={classNames(styles.scroller, styles[direction])}
                 ref={scrollerRef}>
                 {wrappedChildren}
             </Flex>

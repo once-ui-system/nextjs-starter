@@ -1,6 +1,13 @@
+.container {
+    isolation: isolate;
+}
+
 .scroller {
     border-radius: var(--radius-m);
     scrollbar-width: none;
+    z-index: 0;
+    isolation: isolate;
+    position: relative;
   
     &::-webkit-scrollbar {
         display: none;
