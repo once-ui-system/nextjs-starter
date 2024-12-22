@@ -18,6 +18,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   description?: React.ReactNode;
   radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
   className?: string;
+  style?: React.CSSProperties;
   hasPrefix?: React.ReactNode;
   hasSuffix?: React.ReactNode;
   labelAsPlaceholder?: boolean;
@@ -33,6 +34,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       description,
       radius,
       className,
+      style,
       hasPrefix,
       hasSuffix,
       labelAsPlaceholder = false,
@@ -85,6 +87,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         position="relative"
         direction="column"
         gap="8"
+        style={style}
         fillWidth
         fitHeight
         className={classNames(

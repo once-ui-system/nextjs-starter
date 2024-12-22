@@ -16,6 +16,7 @@ import {
   HiMiniXMark,
   HiEyeDropper,
   HiClipboard,
+  HiOutlineMagnifyingGlass,
   HiCalendar,
   HiOutlineLink,
   HiExclamationTriangle,
@@ -52,4 +53,5 @@ export const iconLibrary: Record<string, IconType> = {
   calendar: HiCalendar,
   eye: HiOutlineEye,
   eyeOff: HiOutlineEyeSlash,
+  search: HiOutlineMagnifyingGlass,
 };
