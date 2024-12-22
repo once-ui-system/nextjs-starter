@@ -3,15 +3,13 @@
 import React, {
   ReactNode,
   forwardRef,
-  HTMLAttributes,
   SyntheticEvent,
 } from "react";
 import classNames from "classnames";
 import { Flex } from ".";
-import styles from "./Dropdown.module.scss";
 
 interface DropdownProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "onSelect"> {
+extends Omit<React.ComponentProps<typeof Flex>, "onSelect"> {
   selectedOption?: string;
   className?: string;
   children?: ReactNode;
@@ -27,7 +25,7 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       children,
       onEscape,
       onSelect,
-      ...props
+      ...rest
     }, ref) => {
 
     const handleSelect = (event: SyntheticEvent<HTMLDivElement>) => {
@@ -42,17 +40,15 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         flex={1}
         overflowY="auto"
         direction="column"
-        padding="4"
         border="neutral-medium"
         radius="m-4"
         background="surface"
         gap="2"
-        className={classNames(styles.dropdown, className || "")}
-        tabIndex={0}
+        className={className || ""}
         ref={ref}
         role="listbox"
         onClick={handleSelect}
-        {...props}
+        {...rest}
       >
         {children}
       </Flex>

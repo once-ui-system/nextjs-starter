@@ -4,7 +4,7 @@ import styles from "./option.module.scss";
 import { ElementType } from "./ElementType";
 import React, { forwardRef } from "react";
 
-interface OptionProps {
+export interface OptionProps {
   label: React.ReactNode;
   href?: string;
   value: string;

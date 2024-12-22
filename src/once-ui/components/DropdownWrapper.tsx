@@ -129,10 +129,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
 
     return (
       <Flex
-        style={{
-          WebkitTapHighlightColor: "transparent",
-          ...style,
-        }}
+        style={{ ...style }}
         className={className}
         position="relative"
         ref={wrapperRef}
