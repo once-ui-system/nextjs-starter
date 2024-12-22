@@ -9,6 +9,7 @@
 }
 
 .dialog {
+    max-width: 40rem;
     max-height: 100%;
     transform: scale(0.2);
     opacity: 0;
@@ -24,6 +25,6 @@
         bottom: var(--static-space-8);
         left: var(--static-space-8);
         right: var(--static-space-8);
-        max-width: 100%;
+        max-width: calc(100% - var(--static-space-16));
     }
 }
