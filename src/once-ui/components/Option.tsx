@@ -13,6 +13,8 @@ export interface OptionProps {
   description?: React.ReactNode;
   danger?: boolean;
   selected?: boolean;
+  highlighted?: boolean;
+  tabIndex?: number;
   onClick?: (value: string) => void;
 }
 
@@ -25,6 +27,8 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(({
   description,
   danger,
   selected,
+  highlighted,
+  tabIndex,
   onClick,
   ...props
 }, ref) => {
@@ -33,10 +37,14 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(({
   }
   
   return (
-    <ElementType href={href} className="reset-button-styles">
+    <ElementType
+      tabIndex={tabIndex}
+      ref={ref}
+      href={href}
+      className="reset-button-styles"
+    >
       <Flex
         {...props}
-        ref={ref}
         fillWidth
         alignItems="center"
         paddingX="12"
@@ -50,6 +58,7 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(({
         className={classNames(styles.option, {
           [styles.danger]: danger,
           [styles.selected]: selected,
+          [styles.highlighted]: highlighted,
         })}
         data-value={value}
       >

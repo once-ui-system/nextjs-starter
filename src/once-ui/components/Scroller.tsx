@@ -11,6 +11,11 @@ interface ScrollerProps extends React.ComponentProps<typeof Flex> {
     onItemClick?: (index: number) => void;
 }
 
+interface ScrollableChildProps {
+    onClick?: (e: React.MouseEvent) => void;
+    onKeyDown?: (e: React.KeyboardEvent) => void;
+}
+
 const Scroller: React.FC<ScrollerProps> = ({
     children,
     direction = 'row',
@@ -60,17 +65,22 @@ const Scroller: React.FC<ScrollerProps> = ({
     };
 
     const wrappedChildren = React.Children.map(children, (child, index) => {
-        if (React.isValidElement(child)) {
-            return React.cloneElement<any>(child, {
+        if (React.isValidElement<ScrollableChildProps>(child)) {
+            const { onClick: childOnClick, onKeyDown: childOnKeyDown, ...otherProps } = child.props;
+            
+            return React.cloneElement(child, {
+                ...otherProps,
                 onClick: (e: React.MouseEvent) => {
-                    const childProps = child.props as { onClick?: (e: React.MouseEvent) => void };
-                    if ('onClick' in childProps && typeof childProps.onClick === 'function') {
-                        (child.props as { onClick?: (e: React.MouseEvent) => void }).onClick?.(e);
-                    }
-                    if (onItemClick) {
-                        onItemClick(index);
-                    }
+                    childOnClick?.(e);
+                    onItemClick?.(index);
                 },
+                onKeyDown: (e: React.KeyboardEvent) => {
+                    childOnKeyDown?.(e);
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        childOnClick?.(e as any);
+                        onItemClick?.(index);
+                    }
+                }
             });
         }
         return child;
@@ -89,6 +99,12 @@ const Scroller: React.FC<ScrollerProps> = ({
                     <IconButton
                         icon={direction === 'row' ? 'chevronLeft' : 'chevronUp'}
                         onClick={handleScrollPrev}
+                        onKeyDown={(e: React.KeyboardEvent) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                handleScrollPrev();
+                            }
+                        }}
                         size="s"
                         variant="secondary"
                         className={classNames(styles.scrollButton, styles.scrollButtonPrev)}
@@ -108,6 +124,12 @@ const Scroller: React.FC<ScrollerProps> = ({
                     <IconButton
                         icon={direction === 'row' ? 'chevronRight' : 'chevronDown'}
                         onClick={handleScrollNext}
+                        onKeyDown={(e: React.KeyboardEvent) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                handleScrollNext();
+                            }
+                        }}
                         size="s"
                         variant="secondary"
                         className={classNames(styles.scrollButton, styles.scrollButtonNext)}

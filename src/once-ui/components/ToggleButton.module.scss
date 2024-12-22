@@ -11,7 +11,7 @@
 	user-select: none;
     white-space: nowrap;
   
-    &:hover {
+    &:hover, &:focus {
         background: var(--neutral-alpha-weak);
         border-color: var(--neutral-alpha-medium);
     }

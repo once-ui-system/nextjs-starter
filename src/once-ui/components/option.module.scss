@@ -15,6 +15,11 @@
       border-color: var(--neutral-alpha-medium);
   }
 
+  &.highlighted {
+      background: var(--neutral-alpha-weak);
+      border-color: var(--neutral-alpha-medium);
+  }
+
   &.danger {
       color: var(--danger-on-background-medium);
 

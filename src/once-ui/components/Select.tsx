@@ -26,23 +26,25 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
     const [highlightedIndex, setHighlightedIndex] = useState<number | null>(() => {
       if (!options?.length || !value) return null;
       return options.findIndex((option) => option.value === value);
     });
+    const [searchQuery, setSearchQuery] = useState("");
     const selectRef = useRef<HTMLDivElement | null>(null);
+    const clearButtonRef = useRef<HTMLButtonElement>(null);
 
     const handleFocus = () => {
       setIsFocused(true);
     };
 
-    const handleBlur = (event: FocusEvent) => {
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
       if (
         selectRef.current &&
         !selectRef.current.contains(event.relatedTarget as Node)
       ) {
         setIsFocused(false);
+        setIsDropdownOpen(false);
       }
     };
 
@@ -56,6 +58,9 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
       if (!isFocused && event.key !== "Enter") return;
 
       switch (event.key) {
+        case "Escape":
+          setIsDropdownOpen(false);
+          break;
         case "ArrowDown":
           if (!isDropdownOpen) {
             setIsDropdownOpen(true);
@@ -91,13 +96,19 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
           }
           break;
 
-        case "Escape":
-          event.preventDefault();
-          setIsDropdownOpen(false);
-          break;
-
         default:
           break;
+      }
+    };
+
+    const handleClearSearch = (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setSearchQuery('');
+      // Force focus back to the input after clearing
+      const input = selectRef.current?.querySelector('input');
+      if (input) {
+        input.focus();
       }
     };
 
@@ -105,14 +116,17 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
       const handleClickOutside = (event: MouseEvent) => {
         if (
           selectRef.current &&
-          !selectRef.current.contains(event.target as Node)
+          !selectRef.current.contains(event.target as Node) &&
+          !clearButtonRef.current?.contains(event.target as Node)
         ) {
           setIsDropdownOpen(false);
         }
       };
 
       const handleFocusOut = (event: FocusEvent) => {
-        handleBlur(event);
+        if (event.target instanceof HTMLInputElement) {
+          handleBlur(event as unknown as React.FocusEvent<HTMLInputElement>);
+        }
       };
 
       document.addEventListener("mousedown", handleClickOutside);
@@ -161,14 +175,12 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                   label="Search"
                   height="s"
                   radius="none"
-                  hasSuffix={searchQuery ? <IconButton tooltip="Clear" tooltipPosition="left" icon="close" variant="ghost" size="s" onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
-                    setSearchQuery('');
-                  }} /> : undefined}
+                  hasSuffix={searchQuery ? <IconButton tooltip="Clear" tooltipPosition="left" icon="close" variant="ghost" size="s" onClick={handleClearSearch} /> : undefined}
                   hasPrefix={<Icon name="search" size="xs" />}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
+                  onBlur={handleBlur}
                 />
               </Flex>
             )}
@@ -189,6 +201,8 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                       handleSelect(option.value);
                     }}
                     selected={option.value === value}
+                    highlighted={index === highlightedIndex}
+                    tabIndex={-1}
                   />
                 ))}
               {searchQuery && options.filter((option) =>
