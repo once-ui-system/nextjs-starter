@@ -20,7 +20,7 @@ import { Flex, Dropdown } from ".";
 import styles from "./DropdownWrapper.module.scss";
 import classNames from "classnames";
 
-interface DropdownWrapperProps {
+export interface DropdownWrapperProps {
   trigger: ReactNode;
   dropdown: ReactNode;
   minHeight?: number;
@@ -66,7 +66,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
           apply({ availableWidth, availableHeight, elements }) {
             Object.assign(elements.floating.style, {
               maxWidth: `${availableWidth}px`,
-              minHeight: `${Math.min(minHeight || 0, availableHeight)}px`,
+              minHeight: `${Math.min(minHeight || 0)}px`,
               maxHeight: `${availableHeight}px`,
             });
           },
@@ -129,7 +129,8 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
 
     return (
       <Flex
-        style={{ ...style }}
+        transition="macro-medium"
+        style={{ ...((minHeight && isOpen) ? { marginBottom: `${minHeight + 48}px` } : {}), ...style }}
         className={className}
         position="relative"
         ref={wrapperRef}
@@ -143,13 +144,13 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         {isOpen && (
           <Flex
             zIndex={1}
+            fillWidth
             className={classNames(styles.dropdown, styles.fadeIn)}
             ref={dropdownRef}
             style={{
               position: strategy,
               top: y ?? 0,
               left: x ?? 0,
-              width: "100%",
             }}
             role="listbox"
           >

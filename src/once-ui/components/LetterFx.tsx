@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import classNames from "classnames";
 
-const defaultAllowedCharacters = [
+const defaultCharset = [
   "X",
   "$",
   "@",
@@ -101,7 +101,7 @@ const LetterFx = forwardRef<HTMLSpanElement, LetterFxProps>(
       children,
       trigger = "hover",
       speed = "medium",
-      charset = defaultAllowedCharacters,
+      charset = defaultCharset,
       onTrigger,
       className,
       style,

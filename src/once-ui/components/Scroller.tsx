@@ -91,8 +91,7 @@ const Scroller: React.FC<ScrollerProps> = ({
             fillWidth
             position="relative"
             className={classNames(styles.container, className)}
-            style={style}
-            {...rest}>
+            style={style}>
             {showPrevButton && (
                 <div className={classNames(styles.scrollMaskContainer, styles.scrollMaskPrev)}>
                     <div className={classNames(styles.scrollMask, styles.maskPrev)}></div>
@@ -115,7 +114,8 @@ const Scroller: React.FC<ScrollerProps> = ({
                 fillWidth
                 direction={direction}
                 className={classNames(styles.scroller, styles[direction])}
-                ref={scrollerRef}>
+                ref={scrollerRef}
+                {...rest}>
                 {wrappedChildren}
             </Flex>
             {showNextButton && (

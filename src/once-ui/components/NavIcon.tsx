@@ -3,7 +3,7 @@ import styles from "./NavIcon.module.scss";
 import { Flex } from ".";
 import classNames from "classnames";
 
-interface NavIconProps {
+interface NavIconProps extends React.ComponentProps<typeof Flex> {
   className?: string;
   style?: React.CSSProperties;
   onClick?: () => void;
@@ -11,7 +11,13 @@ interface NavIconProps {
 }
 
 const NavIcon = forwardRef<HTMLDivElement, Partial<NavIconProps>>(
-  ({ className, isActive, style, onClick }, ref) => {
+  ({
+    className,
+    isActive,
+    style,
+    onClick,
+    ...rest
+  }, ref) => {
     return (
       <Flex
         ref={ref}
@@ -21,6 +27,7 @@ const NavIcon = forwardRef<HTMLDivElement, Partial<NavIconProps>>(
         className={classNames(styles.button, className || "")}
         style={{ ...style }}
         onClick={onClick}
+        {...rest}
       >
         <div className={classNames(styles.line, isActive && styles.active)} />
         <div className={classNames(styles.line, isActive && styles.active)} />

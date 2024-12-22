@@ -62,7 +62,6 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(({
   useEffect(() => {
     if (dialogRef.current && isVisible) {
       const height = dialogRef.current.offsetHeight;
-      console.log('Dialog measuring height:', height);
       onHeightChange?.(height);
     }
   }, [isVisible, onHeightChange]);

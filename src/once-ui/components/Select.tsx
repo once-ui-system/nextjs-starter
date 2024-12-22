@@ -10,10 +10,11 @@ import classNames from "classnames";
 import { DropdownWrapper, Flex, Icon, IconButton, Input, InputProps, Option } from ".";
 import inputStyles from "./Input.module.scss";
 import type { OptionProps } from "./Option";
+import type { DropdownWrapperProps } from "./DropdownWrapper";
 
 type SelectOptionType = Omit<OptionProps, 'selected'>;
 
-interface SelectProps extends Omit<InputProps, "onSelect" | "value"> {
+interface SelectProps extends Omit<InputProps, "onSelect" | "value">, Pick<DropdownWrapperProps, 'minHeight'> {
   options: SelectOptionType[];
   value?: string;
   style?: React.CSSProperties;
@@ -22,7 +23,7 @@ interface SelectProps extends Omit<InputProps, "onSelect" | "value"> {
 }
 
 const Select = forwardRef<HTMLDivElement, SelectProps>(
-  ({ options, value = "", style, onSelect, searchable = false, ...inputProps }, ref) => {
+  ({ options, value = "", style, onSelect, searchable = false, minHeight, ...rest }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -147,9 +148,11 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         }}
         isOpen={isDropdownOpen}
         onOpenChange={setIsDropdownOpen}
+        minHeight={minHeight}
+        {...rest}
         trigger={
           <Input
-            {...inputProps}
+            {...rest}
             style={{ cursor: "pointer", textOverflow: "ellipsis", ...style }}
             value={value}
             onFocus={handleFocus}

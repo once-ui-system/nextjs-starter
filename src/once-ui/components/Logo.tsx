@@ -84,8 +84,8 @@ const Logo: React.FC<LogoProps> = ({
 
   return href ? (
     <Link
-      className={classNames("radius-l", "flex", className)}
-      style={{ height: "fit-content", ...style }}
+      className={classNames("radius-l", "flex", "fit-height", className)}
+      style={style}
       href={href}
       aria-label="Trademark"
       {...props}
@@ -94,8 +94,10 @@ const Logo: React.FC<LogoProps> = ({
     </Link>
   ) : (
     <Flex
-      className={classNames("radius-l", "flex", className)}
-      style={{ height: "fit-content", ...style }}
+      className={classNames(className)}
+      radius="l"
+      fitHeight
+      style={style}
       aria-label="Trademark"
     >
       {content}

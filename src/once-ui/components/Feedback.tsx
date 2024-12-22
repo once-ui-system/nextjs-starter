@@ -3,7 +3,7 @@
 import React, { forwardRef, ReactNode } from "react";
 import { IconButton, Button, Icon, Flex, Text } from ".";
 
-interface FeedbackProps {
+interface FeedbackProps extends Omit<React.ComponentProps<typeof Flex>, 'title'> {
   variant?: "info" | "danger" | "warning" | "success";
   icon?: boolean;
   title?: string;
@@ -38,7 +38,7 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
       className,
       style,
       children,
-      ...props
+      ...rest
     },
     ref,
   ) => {
@@ -53,7 +53,7 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
         aria-live="assertive"
         className={className}
         style={style}
-        {...props}
+        {...rest}
       >
         {icon && (
           <Flex paddingY="16" paddingLeft="16" alignItems="flex-start">

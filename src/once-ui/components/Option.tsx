@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { Flex, Text } from ".";
-import styles from "./option.module.scss";
+import styles from "./Option.module.scss";
 import { ElementType } from "./ElementType";
 import React, { forwardRef } from "react";
 

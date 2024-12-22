@@ -5,6 +5,7 @@ import {
   Flex,
   Logo,
   NavIcon,
+  Option,
   SmartLink,
   ToggleButton,
   UserMenu,
@@ -72,20 +73,13 @@ const Header: React.FC<HeaderProps> = ({
                   empty: !avatar,
                   src: avatar,
                 }}
-                dropdownOptions={[
-                  {
-                    label: "Profile",
-                    value: "profile",
-                  },
-                  {
-                    label: "Settings",
-                    value: "settings",
-                  },
-                  {
-                    label: "Log out",
-                    value: "logout",
-                  },
-                ]}
+                dropdown={
+                  <>
+                    <Option label="Profile" value="profile" />
+                    <Option label="Settings" value="settings" />
+                    <Option label="Log out" value="logout" />
+                  </>
+                }
               />
             </Flex>
             <Flex show="s">
@@ -94,20 +88,13 @@ const Header: React.FC<HeaderProps> = ({
                   empty: !avatar,
                   src: avatar,
                 }}
-                dropdownOptions={[
-                  {
-                    label: "Profile",
-                    value: "profile",
-                  },
-                  {
-                    label: "Settings",
-                    value: "settings",
-                  },
-                  {
-                    label: "Log out",
-                    value: "logout",
-                  },
-                ]}
+                dropdown={
+                  <>
+                    <Option label="Profile" value="profile" />
+                    <Option label="Settings" value="settings" />
+                    <Option label="Log out" value="logout" />
+                  </>
+                }
               />
             </Flex>
           </Flex>

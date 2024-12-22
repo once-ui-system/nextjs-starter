@@ -2,7 +2,6 @@
 
 import React, {
   ReactNode,
-  HTMLAttributes,
   MouseEventHandler,
   forwardRef,
 } from "react";

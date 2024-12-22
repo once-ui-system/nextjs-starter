@@ -9,13 +9,13 @@ import styles from "./UserMenu.module.scss";
 interface UserMenuProps extends UserProps {
   selected?: boolean;
   className?: string;
-  children?: React.ReactNode;
+  dropdown?: React.ReactNode;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({
   selected = false,
   className,
-  children,
+  dropdown,
   ...userProps
 }) => {
 
@@ -39,7 +39,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         </Flex>
       }
       dropdown={
-        <>{children}</>
+        <>{dropdown}</>
       }
     >
       

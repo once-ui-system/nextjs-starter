@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState, forwardRef } from "react";
 import styles from "./GlitchFx.module.scss";
+import { Flex } from "./Flex";
 
-interface GlitchFxProps extends React.HTMLAttributes<HTMLDivElement> {
+interface GlitchFxProps extends React.ComponentProps<typeof Flex> {
   children: React.ReactNode;
   speed?: "slow" | "medium" | "fast";
   interval?: number;
@@ -65,27 +66,31 @@ const GlitchFx = forwardRef<HTMLDivElement, GlitchFxProps>(
 
     const speedClass = styles[speed];
 
-    const combinedClassName = `${styles.glitchFx} ${speedClass} ${isGlitching ? styles.active : ""} ${className || ""}`;
+    const combinedClassName = `${speedClass} ${isGlitching ? styles.active : ""} ${className || ""}`;
 
     return (
-      <div
+      <Flex
         ref={ref}
         style={style}
+        position="relative"
+        inline
         className={combinedClassName}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         {...rest}
       >
-        <div className={styles.original}>{children}</div>
-
-        <div className={`${styles.glitchLayer} ${styles.blueShift}`}>
+        <Flex fillWidth inline position="relative" zIndex={1}>
           {children}
-        </div>
+        </Flex>
 
-        <div className={`${styles.glitchLayer} ${styles.redShift}`}>
+        <Flex inline position="absolute" top="0" left="0" fill zIndex={0} opacity={50} className={`${styles.glitchLayer} ${styles.blueShift}`}>
           {children}
-        </div>
-      </div>
+        </Flex>
+
+        <Flex inline position="absolute" top="0" left="0" fill zIndex={0} opacity={50} className={`${styles.glitchLayer} ${styles.redShift}`}>
+          {children}
+        </Flex>
+      </Flex>
     );
   },
 );

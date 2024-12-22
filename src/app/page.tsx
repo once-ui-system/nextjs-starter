@@ -29,6 +29,9 @@ import {
   SmartLink,
   Carousel,
   Dialog,
+  Feedback,
+  GlitchFx,
+  SmartImage,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select, NumberInput } from "@/once-ui/components";
@@ -167,8 +170,11 @@ export default function Home() {
             ))}
           </Grid>
           Work in progress
+          <Icon name="check" radius="full" background="brand-medium" padding="20"></Icon>
+          <Feedback fillWidth title="Hey" marginTop="24" icon description="lolz" background="neutral-alpha-weak" radius={undefined} topRadius="l"/>
           <Button onClick={() => setIsFirstDialogOpen(true)}>Open First Dialog</Button>
           <Dialog
+            maxWidth={120}
             isOpen={isFirstDialogOpen}
             onClose={() => setIsFirstDialogOpen(false)}
             title="First Dialog"
@@ -186,6 +192,7 @@ export default function Home() {
           </Dialog>
 
           <Dialog
+            maxWidth={120}
             isOpen={isSecondDialogOpen}
             onClose={() => setIsSecondDialogOpen(false)}
             title="Second Dialog"
@@ -194,14 +201,49 @@ export default function Home() {
             minHeight={firstDialogHeight}
           >
             <Text>Content of the second dialog</Text>
+            <Select
+            searchable
+            labelAsPlaceholder
+            id="select"
+            label="Select Example"
+            value={selectedValue}
+            minHeight={160}
+            options={[
+              {
+                value: "edit",
+                label: "Edit",
+                onClick: (value) => console.log("Edit clicked", value)
+              },
+              {
+                value: "Duplicate",
+                label: "Duplicate",
+                onClick: (value) => console.log("Duplicate clicked", value)
+              },
+              {
+                value: "archive",
+                label: "Archive",
+                onClick: (value) => console.log("Archive clicked", value)
+              },
+              {
+                value: "delete",
+                label: "Delete",
+                danger: true,
+                onClick: (value) => console.log("Delete clicked", value)
+              }
+            ]}
+            onSelect={handleSelect}
+          />
           </Dialog>
+          <SmartImage alt="image" marginTop="80" src="/images/cover.png" enlarge radius="xl" aspectRatio="16 / 9"/>
           <SmartLink prefixIcon="check" href="https://once-ui.com/docs">Docs</SmartLink>
           <Skeleton marginTop="40" shape="line" width="l" height="l"/>
           <Flex fillWidth direction="column" radius="xl" overflow="hidden" border="neutral-medium">
             <Accordion open title="Accordion title 1">Accordion content</Accordion>
             <Accordion title="Accordion title 1">Accordion content</Accordion>
           </Flex>
+          <GlitchFx>
           <Carousel marginBottom="40" images={[{ src: "/images/cover.png", alt: "alt" }, { src: "/images/cover.png", alt: "alt" }, { src: "/images/cover.png", alt: "alt" }, { src: "/images/cover.png", alt: "alt" }]}></Carousel>
+          </GlitchFx>
           <Badge radius="s" title="Badge" marginTop="40" href="https://cica.com"/>
           <Flex gap="8">
             <Avatar size="s" marginTop="64" shadow="xl"/>
@@ -445,74 +487,52 @@ export default function Home() {
               }
             ]
           }/>
-          <Select
-          searchable
-          labelAsPlaceholder
-            id="select"
-            label="Select Example"
-            value={selectedValue}
-            options={[
-              {
-                value: "edit",
-                label: "Edit",
-                onClick: (value) => console.log("Edit clicked", value)
-              },
-              {
-                value: "Duplicate",
-                label: "Duplicate",
-                onClick: (value) => console.log("Duplicate clicked", value)
-              },
-              {
-                value: "archive",
-                label: "Archive",
-                onClick: (value) => console.log("Archive clicked", value)
-              },
-              {
-                value: "delete",
-                label: "Delete",
-                danger: true,
-                onClick: (value) => console.log("Delete clicked", value)
-              }
-            ]}
-            onSelect={handleSelect}
-          />
           <SegmentedControl
             onToggle={(value) => console.log("SegmentedControl changed", value)}
             buttons={
             [
               {
+                size: 'l',
                 value: "edit1",
                 label: "calendar",
               },
               {
+                size: 'l',
                 value: "duplicate2",
                 label: "eye",
               },
               {
+                size: 'l',
                 value: "archive3",
                 label: "person",
               },
               {
+                size: 'l',
                 value: "archive35",
                 label: "person",
               },
               {
+                size: 'l',
                 value: "delete4",
                 label: "eyeDropper",
               },
               {
+                size: 'l',
                 value: "edit5",
                 label: "calendar",
               },
               {
+                size: 'l',
                 value: "duplicate6",
                 label: "eye",
               },
               {
+                size: 'l',
                 value: "archive7",
                 label: "person",
               },
               {
+                size: 'l',
                 value: "delete8",
                 label: "eyeDropper",
               }

@@ -9,7 +9,7 @@ import { Flex, Tooltip } from ".";
 import styles from "./Icon.module.scss";
 import iconStyles from "./IconButton.module.scss";
 
-type IconProps = {
+interface IconProps extends React.ComponentProps<typeof Flex> {
   name: string;
   onBackground?: `${ColorScheme}-${ColorWeight}`;
   onSolid?: `${ColorScheme}-${ColorWeight}`;
@@ -33,6 +33,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       style,
       tooltip,
       tooltipPosition = "top",
+      ...rest
     },
     ref,
   ) => {
@@ -79,7 +80,10 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
     }, [isHover]);
 
     return (
-      <span
+      <Flex
+        inline
+        position="relative"
+        as="span"
         ref={ref}
         className={classNames(colorClass, styles.icon, styles[size], "fit-height", className)}
         style={{ ...style }}
@@ -88,6 +92,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
         aria-label={decorative ? undefined : name}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
+        {...rest}
       >
         <IconComponent />
         {tooltip && isTooltipVisible && (
@@ -99,7 +104,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
             <Tooltip label={tooltip} />
           </Flex>
         )}
-      </span>
+      </Flex>
     );
   },
 );

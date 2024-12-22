@@ -5,7 +5,6 @@ import React, {
   forwardRef,
   SyntheticEvent,
 } from "react";
-import classNames from "classnames";
 import { Flex } from ".";
 
 interface DropdownProps
