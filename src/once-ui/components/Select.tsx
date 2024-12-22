@@ -7,31 +7,26 @@ import React, {
   forwardRef,
 } from "react";
 import classNames from "classnames";
-import { DropdownWrapper, Input, InputProps, Option } from ".";
+import { DropdownWrapper, Flex, Icon, IconButton, Input, InputProps, Option } from ".";
 import inputStyles from "./Input.module.scss";
+import type { OptionProps } from "./Option";
 
-interface SelectOptionType {
-  label: React.ReactNode;
-  value: string;
-  prefixIcon?: React.ReactNode;
-  suffixIcon?: React.ReactNode;
-  description?: React.ReactNode;
-  danger?: boolean;
-  onClick?: (value: string) => void;
-}
+type SelectOptionType = Omit<OptionProps, 'selected'>;
 
 interface SelectProps extends Omit<InputProps, "onSelect" | "value"> {
   options: SelectOptionType[];
   value?: string;
   style?: React.CSSProperties;
   onSelect?: (value: string) => void;
+  searchable?: boolean;
 }
 
 const Select = forwardRef<HTMLDivElement, SelectProps>(
-  ({ options, value = "", style, onSelect, ...inputProps }, ref) => {
+  ({ options, value = "", style, onSelect, searchable = false, ...inputProps }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
     const [highlightedIndex, setHighlightedIndex] = useState<number | null>(() => {
       if (!options?.length || !value) return null;
       return options.findIndex((option) => option.value === value);
@@ -155,22 +150,59 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
           />
         }
         dropdown={
-          options.map((option, index) => (
-            <Option
-              key={option.value}
-              value={option.value}
-              label={option.label}
-              hasPrefix={option.prefixIcon}
-              hasSuffix={option.suffixIcon}
-              description={option.description}
-              danger={option.danger}
-              onClick={() => {
-                option.onClick?.(option.value);
-                handleSelect(option.value);
-              }}
-              selected={option.value === value}
-            />
-          ))
+          <>
+            {searchable && (
+              <Flex fillWidth position="relative">
+                <Input
+                  data-scaling="90"
+                  style={{marginTop: '-1px', marginLeft: '-1px', width: 'calc(100% + 2px)'}}
+                  labelAsPlaceholder
+                  id="search"
+                  label="Search"
+                  height="s"
+                  radius="none"
+                  hasSuffix={searchQuery ? <IconButton tooltip="Clear" tooltipPosition="left" icon="close" variant="ghost" size="s" onClick={(e: React.MouseEvent) => {
+                    e.stopPropagation();
+                    setSearchQuery('');
+                  }} /> : undefined}
+                  hasPrefix={<Icon name="search" size="xs" />}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </Flex>
+            )}
+            <Flex fillWidth padding="4" direction="column" gap="2">
+              {options
+                .filter((option) =>
+                  option.label
+                    ?.toString()
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase())
+                )
+                .map((option, index) => (
+                  <Option
+                    key={option.value}
+                    {...option}
+                    onClick={() => {
+                      option.onClick?.(option.value);
+                      handleSelect(option.value);
+                    }}
+                    selected={option.value === value}
+                  />
+                ))}
+              {searchQuery && options.filter((option) =>
+                option.label
+                  ?.toString()
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase())
+              ).length === 0 && (
+                <Flex fillWidth alignItems="center" justifyContent="center" paddingX="16" paddingY="32">
+                  No results
+                </Flex>
+              )}
+            </Flex>
+          </>
         }
       />
     );
