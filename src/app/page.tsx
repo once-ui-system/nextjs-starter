@@ -37,10 +37,15 @@ export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
   const [isFirstDialogOpen, setIsFirstDialogOpen] = useState(false);
   const [isSecondDialogOpen, setIsSecondDialogOpen] = useState(false);
+  const [firstDialogHeight, setFirstDialogHeight] = useState<number>();
 
   const handleSelect = (value: string) => {
     console.log("Selected option:", value);
     setSelectedValue(value);
+  };
+
+  const handleFirstDialogHeight = (height: number) => {
+    setFirstDialogHeight(height);
   };
 
   const links = [
@@ -169,6 +174,7 @@ export default function Home() {
             title="First Dialog"
             description="This is the first dialog. Click the button below to open the second dialog."
             base={isSecondDialogOpen}
+            onHeightChange={(height) => setFirstDialogHeight(height)}
             footer={
               <>
                 <Button variant="secondary" onClick={() => setIsFirstDialogOpen(false)}>Close Dialog</Button>
@@ -183,7 +189,9 @@ export default function Home() {
             isOpen={isSecondDialogOpen}
             onClose={() => setIsSecondDialogOpen(false)}
             title="Second Dialog"
+            stack
             description="This is the second dialog."
+            minHeight={firstDialogHeight}
           >
             <Text>Content of the second dialog</Text>
           </Dialog>
@@ -438,6 +446,8 @@ export default function Home() {
             ]
           }/>
           <Select
+          searchable
+          labelAsPlaceholder
             id="select"
             label="Select Example"
             value={selectedValue}
