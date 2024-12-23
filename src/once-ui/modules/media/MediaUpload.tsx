@@ -4,21 +4,21 @@ import Compressor from "compressorjs";
 import { Flex, Icon, SmartImage, Spinner, Text } from "@/once-ui/components";
 import styles from "./MediaUpload.module.scss";
 
-interface MediaUploadProps {
+interface MediaUploadProps extends React.ComponentProps<typeof Flex> {
   onFileUpload?: (file: File) => Promise<void>;
   compress?: boolean;
-  minHeight?: number;
   aspectRatio?: string;
   className?: string;
   style?: React.CSSProperties;
   initialPreviewImage?: string | null;
+  emptyState?: React.ReactNode;
   quality?: number;
-  maxWidth?: number;
   convertTypes?: string[];
-  maxHeight?: number;
+  resizeMaxWidth?: number;
+  resizeMaxHeight?: number;
+  resizeWidth?: number;
+  resizeHeight?: number;
   loading?: boolean;
-  width?: number;
-  height?: number;
   accept?: string;
 }
 
@@ -27,19 +27,20 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
     {
       onFileUpload,
       compress = true,
-      minHeight,
       aspectRatio = "16 / 9",
       quality = 0.8,
-      maxWidth = 1920,
       convertTypes = ["image/png", "image/webp", "image/jpg"],
-      maxHeight = 1920,
-      width = 1200,
-      height = 1200,
+      emptyState = "Drag and drop or click to browse",
+      resizeMaxWidth = 1920,
+      resizeMaxHeight = 1920,
+      resizeWidth = 1200,
+      resizeHeight = 1200,
       loading = false,
       className,
       style,
       initialPreviewImage = null,
       accept = "image/*",
+      ...rest
     },
     ref,
   ) => {
@@ -105,10 +106,10 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
       new Compressor(file, {
         convertTypes: convertTypes,
         quality: quality,
-        maxWidth: maxWidth,
-        maxHeight: maxHeight,
-        width: width,
-        height: height,
+        maxWidth: resizeMaxWidth,
+        maxHeight: resizeMaxHeight,
+        width: resizeWidth,
+        height: resizeHeight,
         success(compressedFile) {
           uploadFile(compressedFile as File);
         },
@@ -128,30 +129,25 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
     };
 
     return (
-      <Flex
-        fillWidth
-        fillHeight
-        className={classNames(styles["image-upload-container"], className, {
-          "drag-active": dragActive,
-        })}
-        style={style}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
         <Flex
           position="relative"
           transition="micro-medium"
           overflow="hidden"
           cursor="interactive"
-          className={styles.container}
-          style={{ aspectRatio: aspectRatio }}
+          className={classNames(styles["image-upload-container"], styles.container, className, {
+            "drag-active": dragActive,
+          })}
+          style={{ aspectRatio: aspectRatio, ...style }}
           fillWidth
           justifyContent="center"
           alignItems="center"
           border="neutral-medium"
           radius="l"
           onClick={handleFileSelection}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          {...rest}
         >
           {!loading && (
             <>
@@ -167,8 +163,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
                 />
               ) : (
                 <Flex
-                  fillWidth
-                  minHeight={minHeight}
+                  fill
                   alignItems="center"
                   justifyContent="center"
                 >
@@ -182,8 +177,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
             zIndex={1}
             transition="micro-medium"
             position="absolute"
-            fillWidth
-            fillHeight
+            fill
             padding="m"
             justifyContent="center"
             alignItems="center"
@@ -192,11 +186,10 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
               <Spinner size="l" />
             ) : (
               <Text className={styles.text} align="center">
-                Drag and drop or click to browse
+                {emptyState}
               </Text>
             )}
           </Flex>
-        </Flex>
 
         <input
           type="file"

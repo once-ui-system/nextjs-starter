@@ -83,7 +83,7 @@ export default function Home() {
       flex={1}
     >
        <Fade pattern={{display: true, size: "4"}} position="fixed" top="0" left="0" zIndex={2} to="bottom" height={8} fillWidth blur={0.25} base="page"></Fade>
-      <MediaUpload maxWidth="24rem" height="12rem" radius="xs" imageMaxWidth={1920} imageMaxHeight={1080}/>
+      <MediaUpload maxWidth={24} height={12} radius="xs"/>
       <Flex
         position="relative"
         as="section"
