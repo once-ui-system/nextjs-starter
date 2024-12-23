@@ -26,7 +26,7 @@ type CodeInstance = {
   label: string;
 };
 
-type CodeBlockProps = {
+interface CodeBlockProps extends React.ComponentProps<typeof Flex> {
   highlight?: string;
   codeInstances?: CodeInstance[];
   codePreview?: ReactNode;
@@ -44,6 +44,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   compact = false,
   className,
   style,
+  ...rest
 }) => {
   const codeRef = useRef<HTMLElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
@@ -101,14 +102,13 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       justifyContent="center"
       fillWidth
       minHeight={3}
-      className={className || ""}
+      className={className}
       style={style}
+      {...rest}
     >
       {(codeInstances.length > 1 || (copyButton && !compact)) && (
         <Flex
-          style={{
-            borderBottom: "1px solid var(--neutral-border-medium)",
-          }}
+          borderBottom="neutral-medium"
           zIndex={2}
           fillWidth
           padding="8"
@@ -177,12 +177,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       )}
       {codeInstances.length > 0 && (
         <Flex
-          style={{
-            borderTop:
-              !compact && codePreview
-                ? "1px solid var(--neutral-border-medium)"
-                : "none",
-          }}
+          borderTop={(!compact && codePreview) ? "neutral-medium" : undefined}
           fillWidth
           padding="8"
           position="relative"
@@ -191,10 +186,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           {compact && copyButton && (
             <Flex
               zIndex={1}
-              style={{
-                right: "var(--static-space-8)",
-                top: "var(--static-space-8)",
-              }}
+              right="8"
+              top="8"
               position="absolute"
             >
               <IconButton

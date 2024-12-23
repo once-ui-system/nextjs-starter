@@ -38,7 +38,7 @@ import {
 import Link from "next/link";
 import { Select, NumberInput } from "@/once-ui/components";
 import { Fade } from "@/once-ui/components/Fade";
-import { MediaUpload } from "@/once-ui/modules";
+import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
@@ -49,10 +49,6 @@ export default function Home() {
   const handleSelect = (value: string) => {
     console.log("Selected option:", value);
     setSelectedValue(value);
-  };
-
-  const handleFirstDialogHeight = (height: number) => {
-    setFirstDialogHeight(height);
   };
 
   const links = [
@@ -145,6 +141,16 @@ export default function Home() {
               </Button>
             </Flex>
           </Flex>
+          <CodeBlock
+            codeInstances={[
+              {
+                code: "import { Button } from\n '@once-ui/components'",
+                language: "tsx",
+                label: "Button",
+              },
+            ]}
+            highlight="2"
+            />
           <Tag marginTop="80" size="l" variant="gradient" label="Cool cool"/>
           <Grid
             radius="l"
