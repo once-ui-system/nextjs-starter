@@ -21,9 +21,12 @@ import styles from "./DropdownWrapper.module.scss";
 import classNames from "classnames";
 
 export interface DropdownWrapperProps {
+  fillWidth?: boolean;
+  minWidth?: number;
+  maxWidth?: number;
+  minHeight?: number;
   trigger: ReactNode;
   dropdown: ReactNode;
-  minHeight?: number;
   selectedOption?: string;
   style?: React.CSSProperties;
   className?: string;
@@ -33,7 +36,7 @@ export interface DropdownWrapperProps {
 }
 
 const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
-  ({ trigger, dropdown, selectedOption, style, minHeight, className, onSelect, isOpen: controlledIsOpen, onOpenChange }, ref) => {
+  ({ trigger, dropdown, selectedOption, style, minHeight, className, onSelect, isOpen: controlledIsOpen, onOpenChange, minWidth, maxWidth, fillWidth }, ref) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [mounted, setMounted] = useState(false);
@@ -65,7 +68,9 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         size({
           apply({ availableWidth, availableHeight, elements }) {
             Object.assign(elements.floating.style, {
-              maxWidth: `${availableWidth}px`,
+              width: maxWidth ? '100%' : 'auto',
+              minWidth: minWidth ? `${minWidth}rem` : undefined,
+              maxWidth: maxWidth ? `${maxWidth}rem` : `${availableWidth}px`,
               minHeight: `${Math.min(minHeight || 0)}px`,
               maxHeight: `${availableHeight}px`,
             });
@@ -144,8 +149,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         {isOpen && (
           <Flex
             zIndex={1}
-            fillWidth
-            className={classNames(styles.dropdown, styles.fadeIn)}
+            className={styles.fadeIn}
             ref={dropdownRef}
             style={{
               position: strategy,

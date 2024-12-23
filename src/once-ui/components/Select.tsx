@@ -14,7 +14,7 @@ import type { DropdownWrapperProps } from "./DropdownWrapper";
 
 type SelectOptionType = Omit<OptionProps, 'selected'>;
 
-interface SelectProps extends Omit<InputProps, "onSelect" | "value">, Pick<DropdownWrapperProps, 'minHeight'> {
+interface SelectProps extends Omit<InputProps, "onSelect" | "value">, Pick<DropdownWrapperProps, 'minHeight' | 'minWidth' | 'maxWidth'> {
   options: SelectOptionType[];
   value?: string;
   style?: React.CSSProperties;
@@ -23,7 +23,7 @@ interface SelectProps extends Omit<InputProps, "onSelect" | "value">, Pick<Dropd
 }
 
 const Select = forwardRef<HTMLDivElement, SelectProps>(
-  ({ options, value = "", style, onSelect, searchable = false, minHeight, ...rest }, ref) => {
+  ({ options, value = "", style, onSelect, searchable = false, minHeight, minWidth, maxWidth, ...rest }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -141,6 +141,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
 
     return (
       <DropdownWrapper
+        fillWidth
         ref={(node) => {
           selectRef.current = node;
           if (typeof ref === "function") ref(node);

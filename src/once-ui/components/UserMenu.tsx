@@ -5,8 +5,9 @@ import classNames from "classnames";
 
 import { Flex, DropdownWrapper, User, UserProps } from ".";
 import styles from "./UserMenu.module.scss";
+import { DropdownWrapperProps } from "./DropdownWrapper";
 
-interface UserMenuProps extends UserProps {
+interface UserMenuProps extends UserProps, Pick<DropdownWrapperProps, 'minHeight' | 'minWidth' | 'maxWidth'> {
   selected?: boolean;
   className?: string;
   dropdown?: React.ReactNode;
@@ -16,11 +17,17 @@ const UserMenu: React.FC<UserMenuProps> = ({
   selected = false,
   className,
   dropdown,
+  minWidth,
+  maxWidth,
+  minHeight,
   ...userProps
 }) => {
 
   return (
     <DropdownWrapper
+      minWidth={minWidth}
+      maxWidth={maxWidth}
+      minHeight={minHeight}
       trigger={
         <Flex
           direction="column"
