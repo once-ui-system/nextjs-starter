@@ -584,8 +584,8 @@ export default function Home() {
               },
             ]
           }/>
-          <DatePicker padding="xl" background="neutral-weak" id="calendar" size="l" showTime/>
-          <DateInput radius="top" description="hello" id="calendarInput" label="Pick a date" showTime />
+          <DatePicker padding="xl" background="neutral-weak" id="calendar" size="l" timePicker/>
+          <DateInput radius="top" description="hello" id="calendarInput" label="Pick a date" timePicker />
           <Flex fillWidth height={24} overflowY="scroll">
             asd
           </Flex>
