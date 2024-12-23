@@ -48,7 +48,6 @@ export { Select } from "./Select";
 export { Skeleton } from "./Skeleton";
 export { SmartImage } from "./SmartImage";
 export { SmartLink } from "./SmartLink";
-export { SparkleFx } from "./SparkleFx";
 export { Spinner } from "./Spinner";
 export { StatusIndicator } from "./StatusIndicator";
 export { Switch } from "./Switch";
