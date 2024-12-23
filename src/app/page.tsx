@@ -32,6 +32,7 @@ import {
   Feedback,
   GlitchFx,
   SmartImage,
+  UserMenu,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select, NumberInput } from "@/once-ui/components";
@@ -81,7 +82,6 @@ export default function Home() {
       <Flex
         position="relative"
         as="section"
-        overflow="hidden"
         fillWidth
         minHeight="0"
         maxWidth={68}
@@ -234,7 +234,7 @@ export default function Home() {
             onSelect={handleSelect}
           />
           </Dialog>
-          <SmartImage alt="image" marginTop="80" src="/images/cover.png" enlarge radius="xl" aspectRatio="16 / 9"/>
+          <SmartImage border="neutral-alpha-weak" shadow="xl" alt="image" marginTop="80" src="/images/cover.png" enlarge priority radius="xl" aspectRatio="16 / 9"/>
           <SmartLink prefixIcon="check" href="https://once-ui.com/docs">Docs</SmartLink>
           <Skeleton marginTop="40" shape="line" width="l" height="l"/>
           <Flex fillWidth direction="column" radius="xl" overflow="hidden" border="neutral-medium">
@@ -463,6 +463,30 @@ export default function Home() {
               label="Password"/>
             <Button radius="bottom" label="Login" fillWidth size="l"/>
           </Flex>
+          <UserMenu name="Lorant"
+            subline="Member"
+            maxWidth={16}
+            dropdown={
+              <Flex direction="column" gap="2" padding="4">
+                <Option
+                  onClick={() => console.log("Edit")}
+                  value="edit"
+                  label="Edit"
+                />
+                <Option
+                  onClick={() => console.log("Duplicate")}
+                  value="duplicate"
+                  label="Duplicate"
+                />
+                <Option
+                  onClick={() => console.log("Archive")}
+                  value="archive"
+                  label="Archive"
+                  hasPrefix={<Icon name="check" onBackground="neutral-medium" size="s" />}
+                />
+              </Flex>
+            }
+            ></UserMenu>
           <SegmentedControl
             fillWidth={false}
             onToggle={(value) => console.log("SegmentedControl changed", value)}

@@ -1,23 +1,23 @@
 "use client";
 
 import React, { CSSProperties, useState, useRef, useEffect } from "react";
-import Image, { ImageProps } from "next/image";
-import classNames from "classnames";
+import Image from "next/image";
 
 import { Flex, Skeleton } from "@/once-ui/components";
 
-export type SmartImageProps = ImageProps & {
+interface SmartImageProps extends React.ComponentProps<typeof Flex> {
   className?: string;
   style?: React.CSSProperties;
   aspectRatio?: string;
   height?: number;
-  radius?: string;
   alt?: string;
   isLoading?: boolean;
   objectFit?: CSSProperties["objectFit"];
   enlarge?: boolean;
   src: string;
   unoptimized?: boolean;
+  sizes?: string;
+  priority?: boolean;
 };
 
 const SmartImage: React.FC<SmartImageProps> = ({
@@ -25,14 +25,15 @@ const SmartImage: React.FC<SmartImageProps> = ({
   style,
   aspectRatio,
   height,
-  radius,
   alt = "",
   isLoading = false,
   objectFit = "cover",
   enlarge = false,
   src,
   unoptimized = false,
-  ...props
+  priority,
+  sizes = "100vw",
+  ...rest
 }) => {
   const [isEnlarged, setIsEnlarged] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -42,6 +43,17 @@ const SmartImage: React.FC<SmartImageProps> = ({
       setIsEnlarged(!isEnlarged);
     }
   };
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isEnlarged) {
+        setIsEnlarged(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isEnlarged]);
 
   useEffect(() => {
     if (isEnlarged) {
@@ -98,24 +110,22 @@ const SmartImage: React.FC<SmartImageProps> = ({
       <Flex
         ref={imageRef}
         fillWidth
+        overflow="hidden"
         position="relative"
-        {...(!isEnlarged && { background: "neutral-medium" })}
+        cursor={enlarge ? "interactive" : ''}
         style={{
           outline: "none",
-          overflow: "hidden",
-          height: aspectRatio ? undefined : height ? `${height}rem` : "100%",
+          height: aspectRatio ? '' : height ? `${height}rem` : "100%",
           aspectRatio,
-          cursor: enlarge ? "pointer" : "default",
           borderRadius: isEnlarged
             ? "0"
-            : radius
-              ? `var(--radius-${radius})`
-              : undefined,
+            : undefined,
           ...calculateTransform(),
           ...style,
         }}
-        className={classNames(className)}
+        className={className}
         onClick={handleClick}
+        {...rest}
       >
         {isLoading && <Skeleton shape="block" />}
         {!isLoading && isVideo && (
@@ -128,7 +138,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
             style={{
               width: "100%",
               height: "100%",
-              objectFit: isEnlarged ? "contain" : objectFit,
+              objectFit: objectFit,
             }}
           />
         )}
@@ -147,12 +157,14 @@ const SmartImage: React.FC<SmartImageProps> = ({
         )}
         {!isLoading && !isVideo && !isYouTube && (
           <Image
-            {...props}
             src={src}
             alt={alt}
+            priority={priority}
+            sizes={sizes}
+            unoptimized={unoptimized}
             fill
             style={{
-              objectFit: isEnlarged ? "contain" : objectFit,
+              objectFit: objectFit
             }}
           />
         )}
@@ -163,17 +175,16 @@ const SmartImage: React.FC<SmartImageProps> = ({
           justifyContent="center"
           alignItems="center"
           position="fixed"
-          zIndex={1}
+          background="overlay"
           onClick={handleClick}
+          top="0"
+          left="0"
+          opacity={isEnlarged ? 100 : 0}
+          cursor="interactive"
+          transition="macro-medium"
           style={{
-            top: 0,
-            left: 0,
             width: "100vw",
             height: "100vh",
-            background: "var(--backdrop)",
-            cursor: "pointer",
-            transition: "opacity 0.3s ease-in-out",
-            opacity: isEnlarged ? 1 : 0,
           }}
         >
           <Flex
@@ -199,13 +210,14 @@ const SmartImage: React.FC<SmartImageProps> = ({
               />
             ) : (
               <Image
-                {...props}
                 src={src}
                 alt={alt}
                 fill
                 sizes="90vw"
                 unoptimized={unoptimized}
-                style={{ objectFit: "contain" }}
+                style={{ 
+                  objectFit: "contain",
+                }}
               />
             )}
           </Flex>

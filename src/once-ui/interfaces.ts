@@ -130,7 +130,7 @@ export interface StyleProps extends HTMLAttributes<HTMLDivElement> {
   bottomRightRadius?: RadiusSize,
   radius?: RadiusSize | `${RadiusSize}-${RadiusNest}`;
   shadow?: ShadowSize;
-  cursor?: CSSProperties["cursor"];
+  cursor?: CSSProperties["cursor"] | "interactive";
 }
 
 export interface ConditionalProps extends HTMLAttributes<HTMLDivElement> {
