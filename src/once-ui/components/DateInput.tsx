@@ -1,10 +1,9 @@
-// CalendarInput.tsx
 "use client";
 
 import React, { useState, useCallback, useEffect } from "react";
-import { Input, Calendar, DropdownWrapper, Flex } from ".";
+import { Input, DropdownWrapper, Flex, DatePicker } from ".";
 
-interface CalendarInputProps extends Omit<React.ComponentProps<typeof Input>, 'onChange' | 'value'> {
+interface DateInputProps extends Omit<React.ComponentProps<typeof Input>, 'onChange' | 'value'> {
   id: string;
   label: string;
   value?: Date;
@@ -12,15 +11,18 @@ interface CalendarInputProps extends Omit<React.ComponentProps<typeof Input>, 'o
   error?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  showTime?: boolean;
+  timePicker?: boolean;
 }
 
-const formatDate = (date: Date, showTime: boolean) => {
+const formatDate = (
+  date: Date,
+  timePicker: boolean
+) => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
-    ...(showTime && {
+    ...(timePicker && {
       hour: '2-digit',
       minute: '2-digit',
       hour12: false
@@ -30,7 +32,7 @@ const formatDate = (date: Date, showTime: boolean) => {
   return date.toLocaleString('en-US', options);
 };
 
-export const CalendarInput: React.FC<CalendarInputProps> = ({
+export const DateInput: React.FC<DateInputProps> = ({
   id,
   label,
   value,
@@ -38,27 +40,27 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
   error,
   className,
   style,
-  showTime = false,
+  timePicker = false,
   ...rest
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState(
-    value ? formatDate(value, showTime) : ""
+    value ? formatDate(value, timePicker) : ""
   );
 
   useEffect(() => {
     if (value) {
-      setInputValue(formatDate(value, showTime));
+      setInputValue(formatDate(value, timePicker));
     }
-  }, [value, showTime]);
+  }, [value, timePicker]);
 
   const handleDateChange = useCallback((date: Date) => {
-    setInputValue(formatDate(date, showTime));
+    setInputValue(formatDate(date, timePicker));
     onChange?.(date);
-    if (!showTime) {
+    if (!timePicker) {
       setIsOpen(false);
     }
-  }, [onChange, showTime]);
+  }, [onChange, timePicker]);
 
   const handleInputClick = useCallback(() => {
     setIsOpen(true);
@@ -66,7 +68,7 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
 
   const trigger = (
     <Input
-      className="cursor-pointer"
+      className="cursor-interactive"
       style={{ textOverflow: "ellipsis" }}
       id={id}
       label={label}
@@ -80,10 +82,10 @@ export const CalendarInput: React.FC<CalendarInputProps> = ({
 
   const dropdown = (
     <Flex padding="20">
-      <Calendar
+      <DatePicker
         value={value}
         onChange={handleDateChange}
-        showTime={showTime}
+        timePicker={timePicker}
       />
     </Flex>
   );

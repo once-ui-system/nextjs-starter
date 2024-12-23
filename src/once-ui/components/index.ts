@@ -63,5 +63,5 @@ export { Tooltip } from "./Tooltip";
 export { User } from "./User";
 export type { UserProps } from "./User";
 export { UserMenu } from "./UserMenu";
-export { CalendarInput } from "./CalendarInput";
-export { Calendar } from "./Calendar";
+export { DateInput } from "./DateInput";
+export { DatePicker } from "./DatePicker";

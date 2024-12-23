@@ -3,14 +3,15 @@
 import React, { useState, forwardRef, useEffect } from "react";
 import classNames from "classnames";
 import { Flex, Text, Button, Grid, SegmentedControl, IconButton, RevealFx, NumberInput } from ".";
-import styles from "./Calendar.module.scss";
+import styles from "./DatePicker.module.scss";
 
-interface CalendarProps extends Omit<React.ComponentProps<typeof Flex>, 'onChange'> {
+export interface DatePickerProps extends Omit<React.ComponentProps<typeof Flex>, 'onChange'> {
   value?: Date;
   onChange?: (date: Date) => void;
   minDate?: Date;
   maxDate?: Date;
-  showTime?: boolean;
+  timePicker?: boolean;
+  defaultDate?: Date;
   defaultTime?: {
     hours: number;
     minutes: number;
@@ -20,8 +21,18 @@ interface CalendarProps extends Omit<React.ComponentProps<typeof Flex>, 'onChang
   style?: React.CSSProperties;
 }
 
-const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
-  ({ value, onChange, showTime = false, defaultTime, size = "m", className, style, ...rest }, ref) => {
+const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
+  ({ 
+    value, 
+    onChange, 
+    timePicker = false, 
+    defaultDate,
+    defaultTime, 
+    size = "m", 
+    className, 
+    style, 
+    ...rest 
+  }, ref) => {
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
     const [selectedTime, setSelectedTime] = useState<{
       hours: number;
@@ -84,12 +95,12 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
 
     const handleDateSelect = (date: Date) => {
       const newDate = new Date(date);
-      if (showTime && selectedDate && selectedTime) {
+      if (timePicker && selectedDate && selectedTime) {
         newDate.setHours(selectedTime.hours);
         newDate.setMinutes(selectedTime.minutes);
       }
       setSelectedDate(newDate);
-      if (showTime) {
+      if (timePicker) {
         handleTimeToggle(true);
       } else {
         onChange?.(newDate);
@@ -347,7 +358,5 @@ const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
   },
 );
 
-Calendar.displayName = "Calendar";
-
-export { Calendar };
-export type { CalendarProps };
+DatePicker.displayName = "DatePicker";
+export { DatePicker };
