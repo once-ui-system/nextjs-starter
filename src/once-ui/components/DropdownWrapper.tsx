@@ -18,7 +18,6 @@ import {
 } from "@floating-ui/react-dom";
 import { Flex, Dropdown } from ".";
 import styles from "./DropdownWrapper.module.scss";
-import classNames from "classnames";
 
 export interface DropdownWrapperProps {
   fillWidth?: boolean;
@@ -68,7 +67,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         size({
           apply({ availableWidth, availableHeight, elements }) {
             Object.assign(elements.floating.style, {
-              width: maxWidth ? '100%' : 'auto',
+              width: (maxWidth || fillWidth) ? '100%' : 'auto',
               minWidth: minWidth ? `${minWidth}rem` : undefined,
               maxWidth: maxWidth ? `${maxWidth}rem` : `${availableWidth}px`,
               minHeight: `${Math.min(minHeight || 0)}px`,

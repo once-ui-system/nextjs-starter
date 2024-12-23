@@ -86,6 +86,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
             : `radius-${radiusSize}`,
           'text-decoration-none',
           'button',
+          'cursor-interactive',
           {
             ['fill-width']: fillWidth,
             ['fit-width']: !fillWidth,

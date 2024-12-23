@@ -54,6 +54,10 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(({
         role="option"
         aria-selected={selected}
         tabIndex={-1}
+        borderWidth={1}
+        borderStyle="solid"
+        cursor="interactive"
+        transition="micro-medium"
         onClick={() => onClick?.(value)}
         className={classNames(styles.option, {
           [styles.danger]: danger,

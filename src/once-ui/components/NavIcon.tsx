@@ -24,8 +24,13 @@ const NavIcon = forwardRef<HTMLDivElement, Partial<NavIconProps>>(
         tabIndex={0}
         radius="m"
         position="relative"
-        className={classNames(styles.button, className || "")}
-        style={{ ...style }}
+        cursor="interactive"
+        width="40"
+        height="40"
+        minHeight="40"
+        minWidth="40"
+        className={className}
+        style={style}
         onClick={onClick}
         {...rest}
       >

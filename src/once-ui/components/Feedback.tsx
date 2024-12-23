@@ -57,17 +57,14 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
       >
         {icon && (
           <Flex paddingY="16" paddingLeft="16" alignItems="flex-start">
-            <Flex
+            <Icon
               padding="4"
               radius="m"
               border={`${variant}-medium`}
-            >
-              <Icon
-                onBackground={`${variant}-medium`}
-                name={variantIconMap[variant]}
-                aria-hidden="true"
-              />
-            </Flex>
+              onBackground={`${variant}-medium`}
+              name={variantIconMap[variant]}
+              aria-hidden="true"
+            />
           </Flex>
         )}
         <Flex

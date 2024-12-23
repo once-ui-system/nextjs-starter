@@ -5,6 +5,7 @@ import React, {
   useRef,
   useEffect,
   forwardRef,
+  ReactNode,
 } from "react";
 import classNames from "classnames";
 import { DropdownWrapper, Flex, Icon, IconButton, Input, InputProps, Option } from ".";
@@ -17,13 +18,27 @@ type SelectOptionType = Omit<OptionProps, 'selected'>;
 interface SelectProps extends Omit<InputProps, "onSelect" | "value">, Pick<DropdownWrapperProps, 'minHeight' | 'minWidth' | 'maxWidth'> {
   options: SelectOptionType[];
   value?: string;
-  style?: React.CSSProperties;
+  emptyState?: ReactNode;
   onSelect?: (value: string) => void;
   searchable?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 const Select = forwardRef<HTMLDivElement, SelectProps>(
-  ({ options, value = "", style, onSelect, searchable = false, minHeight, minWidth, maxWidth, ...rest }, ref) => {
+  ({ 
+    options,
+    value = "",
+    onSelect,
+    searchable = false,
+    emptyState = "No results",
+    minHeight,
+    minWidth,
+    maxWidth,
+    className,
+    style,
+    ...rest
+  }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -162,6 +177,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
             className={classNames("cursor-interactive", {
               [inputStyles.filled]: isFilled,
               [inputStyles.focused]: isFocused,
+              className
             })}
             aria-haspopup="listbox"
             aria-expanded={isDropdownOpen}
@@ -216,7 +232,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                   .includes(searchQuery.toLowerCase())
               ).length === 0 && (
                 <Flex fillWidth alignItems="center" justifyContent="center" paddingX="16" paddingY="32">
-                  No results
+                  {emptyState}
                 </Flex>
               )}
             </Flex>

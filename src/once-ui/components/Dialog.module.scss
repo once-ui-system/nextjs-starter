@@ -25,6 +25,6 @@
         bottom: var(--static-space-8);
         left: var(--static-space-8);
         right: var(--static-space-8);
-        max-width: calc(100% - var(--static-space-16));
+        max-width: calc(100% - var(--static-space-16)) !important;
     }
 }

@@ -13,8 +13,6 @@ import {
   Logo,
   Input,
   LetterFx,
-  Calendar,
-  CalendarInput,
   Accordion,
   Avatar,
   AvatarGroup,
@@ -33,6 +31,9 @@ import {
   GlitchFx,
   SmartImage,
   UserMenu,
+  Tag,
+  DatePicker,
+  DateInput,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select, NumberInput } from "@/once-ui/components";
@@ -140,6 +141,7 @@ export default function Home() {
               </Button>
             </Flex>
           </Flex>
+          <Tag marginTop="80" size="l" variant="gradient" label="Cool cool"/>
           <Grid
             radius="l"
             border="neutral-medium"
@@ -241,9 +243,7 @@ export default function Home() {
             <Accordion open title="Accordion title 1">Accordion content</Accordion>
             <Accordion title="Accordion title 1">Accordion content</Accordion>
           </Flex>
-          <GlitchFx>
           <Carousel marginBottom="40" images={[{ src: "/images/cover.png", alt: "alt" }, { src: "/images/cover.png", alt: "alt" }, { src: "/images/cover.png", alt: "alt" }, { src: "/images/cover.png", alt: "alt" }]}></Carousel>
-          </GlitchFx>
           <Badge radius="s" title="Badge" marginTop="40" href="https://cica.com"/>
           <Flex gap="8">
             <Avatar size="s" marginTop="64" shadow="xl"/>
@@ -584,8 +584,8 @@ export default function Home() {
               },
             ]
           }/>
-          <Calendar padding="xl" background="neutral-weak" id="calendar" size="l" showTime/>
-          <CalendarInput radius="top" description="hello" id="calendarInput" label="Pick a date" />
+          <DatePicker padding="xl" background="neutral-weak" id="calendar" size="l" showTime/>
+          <DateInput radius="top" description="hello" id="calendarInput" label="Pick a date" showTime />
           <Flex fillWidth height={24} overflowY="scroll">
             asd
           </Flex>

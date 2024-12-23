@@ -141,6 +141,9 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
       >
         <Flex
           position="relative"
+          transition="micro-medium"
+          overflow="hidden"
+          cursor="interactive"
           className={styles.container}
           style={{ aspectRatio: aspectRatio }}
           fillWidth
@@ -177,6 +180,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
           <Flex
             className={styles.upload}
             zIndex={1}
+            transition="micro-medium"
             position="absolute"
             fillWidth
             fillHeight

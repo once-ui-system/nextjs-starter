@@ -67,6 +67,7 @@ const Chip: React.FC<ChipProps> = forwardRef<HTMLDivElement, ChipProps>(
     return (
       <Flex
         ref={ref}
+        fit
         alignItems="center"
         radius="full"
         paddingX="8"
@@ -76,6 +77,8 @@ const Chip: React.FC<ChipProps> = forwardRef<HTMLDivElement, ChipProps>(
         onClick={onClick}
         onKeyDown={handleKeyDown}
         aria-pressed={selected}
+        cursor="interactive"
+        transition="micro-medium"
         className={classNames(styles.chip, className, {
           [styles.selected]: selected,
           [styles.unselected]: !selected,

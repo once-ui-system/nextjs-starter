@@ -8,7 +8,7 @@ import styles from "./AvatarGroup.module.scss";
 interface AvatarGroupProps extends React.ComponentProps<typeof Flex> {
   avatars: AvatarProps[];
   size?: "xs" | "s" | "m" | "l" | "xl";
-  reverseOrder?: boolean;
+  reverse?: boolean;
   limit?: number;
   className?: string;
   style?: React.CSSProperties;
@@ -18,7 +18,7 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
   (
     { avatars,
       size = "m",
-      reverseOrder = false,
+      reverse = false,
       limit,
       className,
       style,
@@ -48,7 +48,7 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
             className={styles.avatar}
             style={{
               ...avatarProps.style,
-              zIndex: reverseOrder
+              zIndex: reverse
                 ? displayedAvatars.length - index
                 : index + 1,
             }}
@@ -61,7 +61,7 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
             size={size}
             style={{
               ...style,
-              zIndex: reverseOrder ? -1 : displayedAvatars.length + 1,
+              zIndex: reverse ? -1 : displayedAvatars.length + 1,
             }}
           />
         )}

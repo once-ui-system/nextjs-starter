@@ -1,7 +1,5 @@
 .statusIndicator {
-    display: flex;
     border: 2px solid var(--page-background);
-    border-radius: var(--radius-full);
 
     &.s {
         width: var(--static-space-4);

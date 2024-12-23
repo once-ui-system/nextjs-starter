@@ -1,12 +1,12 @@
 "use client";
 
-import React, { forwardRef, HTMLAttributes, ReactNode } from "react";
+import React, { forwardRef, ReactNode } from "react";
 import classNames from "classnames";
 
 import { Flex, Text, Icon } from ".";
 import styles from "./Tag.module.scss";
 
-interface TagProps extends HTMLAttributes<HTMLDivElement> {
+interface TagProps extends React.ComponentProps<typeof Flex> {
   variant?:
     | "brand"
     | "accent"
@@ -33,7 +33,7 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
       suffixIcon,
       className,
       children,
-      ...props
+      ...rest
     },
     ref,
   ) => {
@@ -41,6 +41,9 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
 
     return (
       <Flex
+        fitWidth
+        borderWidth={1}
+        borderStyle="solid"
         alignItems="center"
         radius="l"
         gap="4"
@@ -51,7 +54,7 @@ const Tag = forwardRef<HTMLDivElement, TagProps>(
           styles[size],
           className,
         )}
-        {...props}
+        {...rest}
       >
         {prefixIcon && <Icon name={prefixIcon} size="xs" />}
         <Flex
