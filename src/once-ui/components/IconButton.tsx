@@ -21,7 +21,7 @@ interface CommonProps {
 
 export type IconButtonProps = CommonProps &
   React.ButtonHTMLAttributes<HTMLButtonElement>;
-export type AnchorProps = CommonProps &
+type AnchorProps = CommonProps &
   React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
