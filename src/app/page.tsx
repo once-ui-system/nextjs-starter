@@ -37,6 +37,8 @@ import {
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select, NumberInput } from "@/once-ui/components";
+import { Fade } from "@/once-ui/components/Fade";
+import { MediaUpload } from "@/once-ui/modules";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
@@ -80,6 +82,8 @@ export default function Home() {
       alignItems="center"
       flex={1}
     >
+       <Fade pattern={{display: true, size: "4"}} position="fixed" top="0" left="0" zIndex={2} to="bottom" height={8} fillWidth blur={0.25} base="page"></Fade>
+      <MediaUpload maxWidth="24rem" height="12rem" radius="xs" imageMaxWidth={1920} imageMaxHeight={1080}/>
       <Flex
         position="relative"
         as="section"
