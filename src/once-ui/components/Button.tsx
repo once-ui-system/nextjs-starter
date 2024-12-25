@@ -92,7 +92,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
             ['fit-width']: !fillWidth,
             ['justify-' + justifyContent]: justifyContent
           }, className)}
-        style={{ ...style }}
+        style={style}
         {...props}
       >
         {content}
