@@ -56,7 +56,6 @@ a:not(.button) {
 
 ::-webkit-scrollbar-thumb {
     background: var(--neutral-alpha-medium);
-    border-radius: var(--radius-full);
     transition: var(--transition-micro-medium);
 
     &:hover {
