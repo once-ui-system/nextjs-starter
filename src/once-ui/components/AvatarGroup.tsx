@@ -4,6 +4,7 @@ import React, { forwardRef } from "react";
 
 import { Avatar, AvatarProps, Flex } from ".";
 import styles from "./AvatarGroup.module.scss";
+import classNames from "classnames";
 
 interface AvatarGroupProps extends React.ComponentProps<typeof Flex> {
   avatars: AvatarProps[];
@@ -32,13 +33,13 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
 
     return (
       <Flex
-        {...rest}
         position="relative"
         alignItems="center"
         ref={ref}
-        className={`${styles.avatarGroup} ${className || ""}`}
+        className={classNames(styles.avatarGroup, className)}
         style={style}
         zIndex={0}
+        {...rest}
       >
         {displayedAvatars.map((avatarProps, index) => (
           <Avatar

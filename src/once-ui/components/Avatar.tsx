@@ -118,7 +118,6 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
 
     return (
       <Flex
-        {...rest}
         ref={ref}
         role="img"
         position="relative"
@@ -129,6 +128,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         background="surface"
         style={style}
         className={`${styles.avatar} ${styles[size]} ${className || ""}`}
+        {...rest}
       >
         {renderContent()}
         {statusIndicator && (
