@@ -169,12 +169,14 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         trigger={
           <Input
             {...rest}
-            style={{ cursor: "pointer", textOverflow: "ellipsis", ...style }}
+            style={{textOverflow: "ellipsis", ...style }}
             value={value}
             onFocus={handleFocus}
             onKeyDown={handleKeyDown}
+            radius={isDropdownOpen ? "top" : undefined}
             readOnly
-            className={classNames("cursor-interactive", {
+            className={classNames(
+              "cursor-interactive", {
               [inputStyles.filled]: isFilled,
               [inputStyles.focused]: isFocused,
               className

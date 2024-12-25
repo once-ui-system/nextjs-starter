@@ -40,7 +40,6 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         overflowY="auto"
         direction="column"
         border="neutral-medium"
-        radius="m-4"
         background="surface"
         gap="2"
         className={className || ""}

@@ -35,7 +35,20 @@ export interface DropdownWrapperProps {
 }
 
 const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
-  ({ trigger, dropdown, selectedOption, style, minHeight, className, onSelect, isOpen: controlledIsOpen, onOpenChange, minWidth, maxWidth, fillWidth }, ref) => {
+  ({
+    trigger,
+    dropdown,
+    selectedOption,
+    minHeight,
+    onSelect,
+    isOpen: controlledIsOpen,
+    onOpenChange,
+    minWidth,
+    maxWidth,
+    fillWidth,
+    className,
+    style,
+  }, ref) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [mounted, setMounted] = useState(false);
@@ -61,7 +74,6 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       placement: "bottom-start",
       open: isOpen,
       middleware: [
-        offset(4),
         flip(),
         shift(),
         size({
@@ -133,6 +145,8 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
 
     return (
       <Flex
+        direction="column"
+        negativeGap="1"
         transition="macro-medium"
         style={{ ...((minHeight && isOpen) ? { marginBottom: `${minHeight + 48}px` } : {}), ...style }}
         className={className}
@@ -158,6 +172,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
             role="listbox"
           >
             <Dropdown
+              bottomRadius="l"
               selectedOption={selectedOption}
               onSelect={onSelect}
             >
