@@ -79,7 +79,7 @@
 .line-highlight {
   position: absolute;
   background-color: var(--brand-alpha-medium);
-  width: calc(100% - var(--static-space-16));
+  width: calc(100% - var(--static-space-16)) !important;
   left: var(--static-space-8);
   margin-top: var(--static-space-8);
   z-index: -1;

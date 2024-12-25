@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef, ReactNode } from "react";
 
-import "@/once-ui/modules/code/CodeHighlight.css";
-import styles from "@/once-ui/modules/code/CodeBlock.module.scss";
+import "./CodeHighlight.css";
+import styles from "./CodeBlock.module.scss";
 
 import {
   Flex,
@@ -19,6 +19,7 @@ import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-typescript";
 import "prismjs/components/prism-tsx";
+import classNames from "classnames";
 
 type CodeInstance = {
   code: string;
@@ -31,6 +32,7 @@ interface CodeBlockProps extends React.ComponentProps<typeof Flex> {
   codeInstances?: CodeInstance[];
   codePreview?: ReactNode;
   copyButton?: boolean;
+  codeHeight?: number;
   compact?: boolean;
   className?: string;
   style?: React.CSSProperties;
@@ -42,6 +44,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   codePreview,
   copyButton = true,
   compact = false,
+  codeHeight,
   className,
   style,
   ...rest
@@ -97,6 +100,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       zIndex={0}
       background="surface"
       radius="l"
+      overflow="hidden"
       border="neutral-medium"
       direction="column"
       justifyContent="center"
@@ -111,24 +115,25 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           borderBottom="neutral-medium"
           zIndex={2}
           fillWidth
-          padding="8"
           justifyContent="space-between"
         >
           {codeInstances.length > 1 ? (
-            <Flex>
+            <Flex borderRight="neutral-medium">
               <DropdownWrapper
                 isOpen={isDropdownOpen}
                 onOpenChange={setIsDropdownOpen}
                 trigger={
                   <Button
-                    size="s"
+                    style={{ border: "1px solid var(--static-transparent)", minWidth: '6rem' }}
+                    radius="none"
+                    size="m"
                     label={label}
                     suffixIcon="chevronDown"
-                    variant="tertiary"
+                    variant="secondary"
                   />
                 }
                 dropdown={
-                  <Flex direction="column" gap="2">
+                  <Flex direction="column" gap="2" padding="4" minWidth={6}>
                     {codeInstances.map((instance, index) => (
                       <Option
                         key={index}
@@ -149,12 +154,18 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
             <div />
           )}
           {copyButton && !compact && (
-            <IconButton
-              tooltip="Copy"
-              variant="secondary"
-              onClick={handleCopy}
-              icon={copyIcon}
-            />
+            <Flex borderLeft="neutral-medium">
+              <IconButton
+                style={{ border: "none" }}
+                radius="none"
+                size="l"
+                tooltip="Copy"
+                tooltipPosition="left"
+                variant="secondary"
+                onClick={handleCopy}
+                icon={copyIcon}
+              />
+            </Flex>
           )}
         </Flex>
       )}
@@ -164,7 +175,6 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           zIndex={1}
           fillHeight
           padding="l"
-          minHeight={12}
           justifyContent="center"
           alignItems="center"
         >
@@ -179,15 +189,19 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         <Flex
           borderTop={(!compact && codePreview) ? "neutral-medium" : undefined}
           fillWidth
-          padding="8"
           position="relative"
-          overflowY="auto"
+          minHeight={codeHeight}
+          overflowY={codeHeight ? "auto" : "unset"}
         >
           {compact && copyButton && (
             <Flex
+              overflow="hidden"
               zIndex={1}
-              right="8"
-              top="8"
+              bottomLeftRadius="m"
+              borderBottom="neutral-medium"
+              borderLeft="neutral-medium"
+              right="0"
+              top="0"
               position="absolute"
             >
               <IconButton
@@ -195,27 +209,33 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                 onClick={handleCopy}
                 icon={copyIcon}
                 size="m"
+                radius="none"
+                style={{ border: "none" }}
                 variant="secondary"
               />
             </Flex>
           )}
-          <pre
-            data-line={highlight}
-            ref={preRef}
-            className={`${styles.pre} language-${language}`}
-            tabIndex={-1}
-          >
-            <code
-              ref={codeRef}
-              className={`${styles.code} ${`language-${language}`}`}
+          <Flex
+            overflowX="auto">
+            <pre
+              data-line={highlight}
+              ref={preRef}
+              className={classNames(styles.pre, `language-${language}`)}
+              tabIndex={-1}
             >
-              {code}
-            </code>
-          </pre>
+              <code
+                ref={codeRef}
+                className={classNames(styles.code, `language-${language}`)}
+              >
+                {code}
+              </code>
+            </pre>
+          </Flex>
         </Flex>
       )}
     </Flex>
   );
 };
 
+CodeBlock.displayName = "CodeBlock";
 export { CodeBlock };
