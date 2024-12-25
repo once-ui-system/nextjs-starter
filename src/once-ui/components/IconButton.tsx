@@ -9,7 +9,9 @@ import classNames from "classnames";
 
 interface CommonProps {
   icon?: string;
+  id?: string;
   size?: "s" | "m" | "l";
+  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
   tooltip?: string;
   tooltipPosition?: "top" | "bottom" | "left" | "right";
   variant?: "primary" | "secondary" | "tertiary" | "danger" | "ghost";
@@ -29,13 +31,15 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
     {
       icon = "refresh",
       size = "m",
+      id,
+      radius,
       tooltip,
       tooltipPosition = "top",
       variant = "primary",
-      className,
-      style,
       href,
       children,
+      className,
+      style,
       ...props
     },
     ref
@@ -56,47 +60,57 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
       return () => clearTimeout(timer);
     }, [isHover]);
 
-    const buttonClasses = classNames(
-      buttonStyles.button,
-      buttonStyles[variant],
-      iconStyles[size],
-      className
-    );
-
     const content = (
       <>
         {children ? children : <Icon name={icon} size="s" />}
         {tooltip && isTooltipVisible && (
-          <div
-            style={{
-              position: "absolute",
-              zIndex: "1",
-            }}
+          <Flex
+            position="absolute"
+            zIndex={1}
             className={iconStyles[tooltipPosition]}
           >
             <Tooltip label={tooltip} />
-          </div>
+          </Flex>
         )}
       </>
     );
 
-    const commonProps = {
-      className: buttonClasses,
-      style,
-      onMouseEnter: () => setIsHover(true),
-      onMouseLeave: () => setIsHover(false),
-      "aria-label": tooltip || icon,
-      ...props
-    };
+    const radiusSize = size === 's' || size === 'm' ? 'm' : 'l';
 
     return (
-      <ElementType href={href} {...commonProps} ref={ref}>
-        <Flex fill justifyContent="center" alignItems="center">{content}</Flex>
+      <ElementType
+        id={id}
+        href={href}
+        ref={ref}
+        className={classNames(
+          buttonStyles.button,
+          buttonStyles[variant],
+          iconStyles[size],
+          className,
+          radius === 'none'
+              ? 'radius-none'
+              : radius
+              ? `radius-${radiusSize}-${radius}`
+              : `radius-${radiusSize}`,
+            'text-decoration-none',
+            'button',
+            'cursor-interactive',
+            className)}
+        style={style}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        aria-label={tooltip || icon}
+        {...props}>
+        <Flex
+          fill
+          justifyContent="center"
+          alignItems="center">
+          {content}
+        </Flex>
       </ElementType>
     );
   }
 );
 
 IconButton.displayName = "IconButton";
-
 export { IconButton };
