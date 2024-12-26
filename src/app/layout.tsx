@@ -18,6 +18,7 @@ import { Background, Flex } from "@/once-ui/components";
 
 import { Inter } from "next/font/google";
 import { Roboto_Mono } from "next/font/google";
+import { ToastProvider } from "@/once-ui/components/ToastProvider";
 
 const primary = Inter({
   variable: "--font-primary",
@@ -118,40 +119,47 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </head>
-      <Flex as="body" fillWidth direction="column" margin="0" padding="0">
-        <Background
-          position="absolute"
-          mask={{
-            x: 100,
-            y: 0,
-            radius: 100,
-          }}
-          dots={{
-            display: true,
-            opacity: 40,
-            size: "40",
-          }}
-          gradient={{
-            display: true,
-            x: 100,
-            y: 60,
-            width: 70,
-            height: 50,
-            tilt: -40,
-            opacity: 90,
-            colorStart: "neutral-background-strong",
-            colorEnd: "page-background",
-          }}
-          grid={{
-            display: true,
-            opacity: 100,
-            width: "0.25rem",
-            color: "neutral-alpha-medium",
-            height: "0.25rem",
-          }}
-        />
-        {children}
-      </Flex>
+      <ToastProvider>
+        <Flex
+          as="body"
+          fillWidth
+          direction="column"
+          margin="0"
+          padding="0">
+          <Background
+            position="absolute"
+            mask={{
+              x: 100,
+              y: 0,
+              radius: 100,
+            }}
+            dots={{
+              display: true,
+              opacity: 40,
+              size: "40",
+            }}
+            gradient={{
+              display: true,
+              x: 100,
+              y: 60,
+              width: 70,
+              height: 50,
+              tilt: -40,
+              opacity: 90,
+              colorStart: "neutral-background-strong",
+              colorEnd: "page-background",
+            }}
+            grid={{
+              display: true,
+              opacity: 100,
+              width: "0.25rem",
+              color: "neutral-alpha-medium",
+              height: "0.25rem",
+            }}
+          />
+          {children}
+        </Flex>
+      </ToastProvider>
     </Flex>
   );
 }

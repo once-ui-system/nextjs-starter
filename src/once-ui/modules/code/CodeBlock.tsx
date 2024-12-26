@@ -136,7 +136,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                   />
                 }
                 dropdown={
-                  <Flex direction="column" gap="2" padding="4" minWidth={6}>
+                  <Flex direction="column" gap="2" padding="4" minWidth={6}
+                    data-surface="filled">
                     {codeInstances.map((instance, index) => (
                       <Option
                         key={index}

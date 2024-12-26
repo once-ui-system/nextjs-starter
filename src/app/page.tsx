@@ -36,6 +36,8 @@ import {
   DatePicker,
   DateInput,
   Background,
+  Card,
+  Scroller,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select, NumberInput } from "@/once-ui/components";
@@ -108,7 +110,7 @@ export default function Home() {
           paddingY="16"
         >
           <Logo size="m" icon={false} href="https://once-ui.com" />
-          <Flex gap="12">
+          <Flex gap="12" data-border="rounded">
             <Button
               href="https://github.com/once-ui-system/nextjs-starter"
               prefixIcon="github"
@@ -137,7 +139,10 @@ export default function Home() {
         direction="column"
         alignItems="center"
       >
-        <Flex position="relative" fillWidth direction="column">
+        <Flex
+          position="relative"
+          fillWidth
+          direction="column">
           <Flex
             overflow="hidden"
             as="main"
@@ -153,13 +158,12 @@ export default function Home() {
               alignItems="center"
               gap="48"
               paddingTop="80"
-              paddingX="32"
               position="relative"
             >
               <Background
                 mask={{
                   x: 0,
-                  y: 40,
+                  y: 48,
                 }}
                 position="absolute"
                 grid={{
@@ -213,7 +217,7 @@ export default function Home() {
                 gap="24"
                 position="relative"
               >
-                <InlineCode shadow="m" fit paddingX="16" paddingY="8">
+                <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
                   Start by editing
                   <Text onBackground="brand-medium" marginLeft="8">
                     app/page.tsx
@@ -237,19 +241,21 @@ export default function Home() {
                 />
                 <Flex
                   marginTop="48"
-                  border="neutral-medium"
-                  radius="xl"
                   mobileDirection="column"
                   fillWidth
+                  overflow="hidden"
                 >
-                  {links.map((link) => (
+                  <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
+                  <Flex fillWidth border="neutral-alpha-weak">
+                  {links.map((link, index) => (
                     <SmartLink
-                      style={{ width: "100%" }}
+                      unstyled
+                      fillWidth
                       target="_blank"
                       key={link.href}
                       href={link.href}
                     >
-                      <Flex fillWidth padding="40" gap="8" direction="column">
+                      <Card fillWidth padding="40" gap="8" direction="column" background={undefined} borderRight={index < links.length - 1 ? "neutral-alpha-weak" : undefined} border={undefined} radius={undefined}>
                         <Flex fillWidth gap="12" alignItems="center">
                           <Text
                             variant="body-strong-m"
@@ -265,64 +271,37 @@ export default function Home() {
                         >
                           {link.description}
                         </Text>
-                      </Flex>
+                      </Card>
                     </SmartLink>
                   ))}
+                  </Flex>
+                  <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
                 </Flex>
               </Flex>
-              <Flex fillWidth>
+              <Flex fillWidth paddingX="32" paddingTop="16" gap="32" direction="column" position="relative">
                 <Heading as="h2" variant="display-default-xs">
                   Showcase
                 </Heading>
-              </Flex>
-              <Feedback icon>
-                This is a quick preview of Once UI components, not a
-                comprehensive list.
-              </Feedback>
-              <Flex fillWidth gap="12" tabletDirection="column">
-                <Flex fillWidth direction="column" negativeGap="1">
-                  <SmartImage
-                    topRadius="l"
-                    border="neutral-medium"
-                    shadow="xl"
-                    alt="image"
-                    src="/images/cover.png"
-                    priority
-                    aspectRatio="16 / 9"
-                  />
-                  <Textarea
-                    id="Alt text"
-                    label="Alt text"
-                    radius="bottom"
-                    lines="auto"
-                  />
-                </Flex>
-                <Flex fillWidth direction="column" negativeGap="1">
-                  <SmartImage
-                    topRadius="l"
-                    border="neutral-medium"
-                    shadow="xl"
-                    alt="image"
-                    src="/images/cover.png"
-                    priority
-                    aspectRatio="16 / 9"
-                  />
-                  <Textarea
-                    id="Alt text"
-                    label="Alt text"
-                    radius="bottom"
-                    lines="auto"
-                  />
-                </Flex>
-                <MediaUpload/>
-              </Flex>
-            </Flex>
-            <Flex paddingX="32" fillWidth paddingY="80">
-              <Flex fillWidth mobileDirection="column" radius="xl" border="neutral-alpha-weak" overflow="hidden">
+                <Flex fillWidth mobileDirection="column" radius="xl" border="neutral-alpha-weak" overflow="hidden">
                 <Flex fill hide="m">
-                  <SmartImage src="/images/cover.png" alt="Preview image"/>
+                  <SmartImage src="/images/login.png" alt="Preview image"/>
                 </Flex>
-                <Flex fillWidth direction="column" alignItems="center" gap="20" padding="32">
+                <Flex fillWidth direction="column" alignItems="center" gap="20" padding="32" position="relative">
+                <Background
+                  mask={{
+                    x: 100,
+                    y: 0,
+                    radius: 75,
+                  }}
+                  position="absolute"
+                  grid={{
+                    display: true,
+                    opacity: 50,
+                    width: "0.5rem",
+                    color: "neutral-alpha-medium",
+                    height: "1rem",
+                  }}
+                />
                   <Logo wordmark={false} size="l" />
                   <Heading as="h3" variant="display-default-s">
                     Welcome to Once UI
@@ -375,34 +354,146 @@ export default function Home() {
                   <Button id="login" label="Log in" arrowIcon fillWidth />
                 </Flex>
               </Flex>
+              </Flex>
+            </Flex>
+            <Flex paddingX="32" fillWidth paddingTop="80" gap="32" direction="column" position="relative">
+            <Background
+                mask={{
+                  x: 50,
+                  y: 100,
+                }}
+                position="absolute"
+                grid={{
+                  display: true,
+                  width: "0.25rem",
+                  color: "brand-alpha-medium",
+                  height: "0.25rem",
+                }}
+              />
+              <Flex fillWidth direction="column" negativeGap="1">
+                  <Feedback icon variant="warning" radius={undefined} topRadius="l" zIndex={1}>
+                    We recommend you to update your cover image.
+                  </Feedback>
+                  <MediaUpload marginBottom="12" radius={undefined} bottomRadius="l" initialPreviewImage="/images/cover.png">
+                    <Flex fill alignItems="flex-end" zIndex={1} position="absolute">
+                      <Fade to="top" fillWidth height={12} pattern={{ display: true, size: "2" }} position="absolute" bottom="0" bottomRadius="l"/>
+                      <Flex padding="24" position="relative">
+                      <User name="Lorant" subline="Pro"/>
+                      </Flex>
+                    </Flex>
+                  </MediaUpload>
+                  <Scroller fillWidth gap="12" tabletDirection="column">
+                    {Array(4).fill(null).map((_, index) => (
+                      <Flex key={index} fillWidth direction="column" negativeGap="1" minWidth={16}>
+                        <SmartImage
+                          topRadius="l"
+                          border="neutral-medium"
+                          shadow="xl"
+                          alt="image"
+                          src="/images/cover.png"
+                          priority
+                          aspectRatio="16 / 9"
+                        />
+                        <Textarea
+                          id={`Alt text ${index + 1}`}
+                          label="Alt text"
+                          radius="bottom"
+                          lines="auto"
+                        />
+                      </Flex>
+                    ))}
+                  </Scroller>
+                </Flex>
+              <Flex fillWidth mobileDirection="column" negativeGap="1">
+              <Flex fillWidth leftRadius="l" direction="column" border="neutral-medium" padding="24" maxWidth={32}>
+              <SegmentedControl
+                onToggle={(value) => console.log("SegmentedControl changed", value)}
+                buttons={[
+                  {
+                    size: "l",
+                    value: "edit1",
+                    label: "calendar",
+                  },
+                  {
+                    size: "l",
+                    value: "duplicate2",
+                    label: "eye",
+                  },
+                  {
+                    size: "l",
+                    value: "archive3",
+                    label: "person",
+                  },
+                  {
+                    size: "l",
+                    value: "archive35",
+                    label: "person",
+                  },
+                  {
+                    size: "l",
+                    value: "delete4",
+                    label: "eyeDropper",
+                  },
+                  {
+                    size: "l",
+                    value: "edit5",
+                    label: "calendar",
+                  },
+                  {
+                    size: "l",
+                    value: "duplicate6",
+                    label: "eye",
+                  },
+                  {
+                    size: "l",
+                    value: "archive7",
+                    label: "person",
+                  },
+                  {
+                    size: "l",
+                    value: "delete8",
+                    label: "eyeDropper",
+                  },
+                ]}
+              />
+              </Flex>
+              <CodeBlock
+                radius={undefined}
+                rightRadius="l"
+                highlight="2-3,5"
+                codeInstances={[
+                  {
+                    code: `<Button>lol</Button>
+    <Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button>
+    <Button>lol</Button>
+    <Button>lol</Button>
+    <Button>lol</Button>
+    <Button>lol</Button>`,
+                    language: "tsx",
+                    label: "tsx",
+                  },
+                  {
+                    code: `<Button>lol</Button>
+    <Button>lol</Button>
+    <Button>lol</Button>
+    <Button>lol</Button>
+    <Button>lol</Button>
+    <Button>lol</Button>`,
+                    language: "css",
+                    label: "css",
+                  },
+                ]}
+              />
+              </Flex>
+              <Flex as="footer" fillWidth paddingX="l" gap="16" paddingY="64" textVariant="body-default-xs" onBackground="neutral-medium" justifyContent="center" alignItems="center" align="center" direction="column">
+                  <Logo wordmark={false} size="s"/>
+                  <Text size="m">2024 / Once UI</Text>
+                  <SmartLink href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
+                    MIT License
+                  </SmartLink>
+              </Flex>
             </Flex>
           </Flex>
-          <CodeBlock
-            highlight="2-3,5"
-            codePreview={<Button>lol</Button>}
-            codeInstances={[
-              {
-                code: `<Button>lol</Button>
-<Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button>
-<Button>lol</Button>
-<Button>lol</Button>
-<Button>lol</Button>
-<Button>lol</Button>`,
-                language: "tsx",
-                label: "tsx",
-              },
-              {
-                code: `<Button>lol</Button>
-<Button>lol</Button>
-<Button>lol</Button>
-<Button>lol</Button>
-<Button>lol</Button>
-<Button>lol</Button>`,
-                language: "css",
-                label: "css",
-              },
-            ]}
-          />
           <Tag marginTop="80" size="l" variant="gradient" label="Cool cool" />
           Work in progress
           <Icon
@@ -542,860 +633,6 @@ export default function Home() {
               tooltipPosition="right"
             />
           </Flex>
-          <Text as="p" variant="body-default-xl">
-            We've reworked the{" "}
-            <InlineCode marginX="8" gap="4">
-              <Icon name="check" size="s" />
-              InlineCode
-            </InlineCode>{" "}
-            component.
-          </Text>
-          <Flex
-            fillWidth
-            padding="48"
-            radius="xl"
-            background="surface"
-            data-theme="dark"
-            direction="column"
-            gap="48"
-          >
-            <Flex fillWidth wrap gap="12">
-              <Button data-solid="inverse" data-brand="blue">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="indigo">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="violet">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="magenta">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="pink">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="red">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="orange">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="yellow">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="moss">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="green">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="emerald">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="aqua">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="cyan">
-                Button
-              </Button>
-            </Flex>
-            <Flex fillWidth wrap gap="12">
-              <Button data-solid="color" data-brand="blue">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="indigo">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="violet">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="magenta">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="pink">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="red">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="orange">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="yellow">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="moss">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="green">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="emerald">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="aqua">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="cyan">
-                Button
-              </Button>
-            </Flex>
-            <Flex fillWidth wrap gap="12">
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="blue"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="indigo"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="violet"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="magenta"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="pink"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="red"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="orange"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="yellow"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="moss"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="green"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="emerald"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="aqua"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="cyan"
-              >
-                Button
-              </Button>
-            </Flex>
-            <Flex fillWidth wrap gap="12">
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="blue"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="indigo"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="violet"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="magenta"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="pink"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="red"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="orange"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="yellow"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="moss"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="green"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="emerald"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="aqua"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="dark"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="cyan"
-              >
-                Button
-              </Button>
-            </Flex>
-            <Flex fillWidth wrap gap="12">
-              <Button
-                size="l"
-                data-solid="contrast"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="blue"
-              >
-                Button
-              </Button>
-              <Button
-                size="m"
-                data-solid="contrast"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="indigo"
-              >
-                Button
-              </Button>
-              <Button
-                size="s"
-                data-solid="contrast"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="violet"
-              >
-                Button
-              </Button>
-            </Flex>
-          </Flex>
-          <Flex
-            fillWidth
-            padding="48"
-            topRadius="xl"
-            bottomRightRadius="xl"
-            background="page"
-            data-theme="light"
-            direction="column"
-            gap="48"
-          >
-            <Flex fillWidth wrap gap="12">
-              <Button data-solid="inverse" data-brand="blue">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="indigo">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="violet">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="magenta">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="pink">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="red">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="orange">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="yellow">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="moss">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="green">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="emerald">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="aqua">
-                Button
-              </Button>
-              <Button data-solid="inverse" data-brand="cyan">
-                Button
-              </Button>
-            </Flex>
-            <Flex fillWidth wrap gap="12">
-              <Button data-solid="color" data-brand="blue">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="indigo">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="violet">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="magenta">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="pink">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="red">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="orange">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="yellow">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="moss">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="green">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="emerald">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="aqua">
-                Button
-              </Button>
-              <Button data-solid="color" data-brand="cyan">
-                Button
-              </Button>
-            </Flex>
-            <Flex fillWidth wrap gap="12">
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="blue"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="indigo"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="violet"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="magenta"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="pink"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="red"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="orange"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="yellow"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="moss"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="green"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="emerald"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="aqua"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="inverse"
-                data-border="conservative"
-                data-solid-style="plastic"
-                data-brand="cyan"
-              >
-                Button
-              </Button>
-            </Flex>
-            <Flex fillWidth wrap gap="12">
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="blue"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="indigo"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="violet"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="magenta"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="pink"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="red"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="orange"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="yellow"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="moss"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="green"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="emerald"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="aqua"
-              >
-                Button
-              </Button>
-              <Button
-                data-theme="light"
-                data-solid="color"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="cyan"
-              >
-                Button
-              </Button>
-            </Flex>
-            <Flex fillWidth wrap gap="12">
-              <Button
-                size="l"
-                data-solid="contrast"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="blue"
-              >
-                Button
-              </Button>
-              <Button
-                size="m"
-                data-solid="contrast"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="indigo"
-              >
-                Button
-              </Button>
-              <Button
-                size="s"
-                data-solid="contrast"
-                data-border="rounded"
-                data-solid-style="plastic"
-                data-brand="violet"
-              >
-                Button
-              </Button>
-            </Flex>
-          </Flex>
-          <Flex
-            fillWidth
-            padding="48"
-            radius="xl"
-            background="surface"
-            data-theme="dark"
-            direction="column"
-            gap="48"
-          >
-            <Flex fillWidth negativeGap="1">
-              <Button
-                variant="secondary"
-                radius="left"
-                data-solid="inverse"
-                data-brand="blue"
-              >
-                Button
-              </Button>
-              <Button
-                variant="secondary"
-                radius="none"
-                data-solid="inverse"
-                data-brand="indigo"
-              >
-                Button
-              </Button>
-              <Button
-                variant="secondary"
-                radius="right"
-                data-solid="inverse"
-                data-brand="violet"
-              >
-                Button
-              </Button>
-            </Flex>
-            <Flex fillWidth negativeGap="1">
-              <Button
-                variant="secondary"
-                radius="left"
-                data-solid="inverse"
-                data-brand="blue"
-              >
-                Button
-              </Button>
-              <Button
-                fillWidth
-                prefixIcon="plus"
-                suffixIcon="chevronDown"
-                justifyContent="space-between"
-                variant="secondary"
-                radius="none"
-                data-solid="inverse"
-                data-brand="indigo"
-              >
-                Button
-              </Button>
-              <Button
-                variant="secondary"
-                radius="right"
-                data-solid="inverse"
-                data-brand="violet"
-              >
-                Button
-              </Button>
-            </Flex>
-          </Flex>
-          <NumberInput step={5} id="input" label="Label"></NumberInput>
-          <Flex fillWidth direction="column" negativeGap="1">
-            <Input
-              hasPrefix={<Icon name="check" />}
-              radius="top"
-              id="input"
-              label="Label"
-            />
-            <Input radius="none" id="input-2" label="Label" />
-            <Input radius="none" id="input-2" label="Label" />
-          </Flex>
-          <Flex fillWidth direction="column" gap="24">
-            <Heading as="h2">Dropdown Wrapper</Heading>
-            <Text>
-              A flexible wrapper component for creating custom dropdowns.
-            </Text>
-
-            <Flex gap="24">
-              <Flex direction="column" gap="8">
-                <DropdownWrapper
-                  trigger={
-                    <Button variant="secondary" suffixIcon="chevronDown">
-                      Actions
-                    </Button>
-                  }
-                  dropdown={
-                    <Flex direction="column" gap="2">
-                      <Option
-                        onClick={() => console.log("Edit")}
-                        value="edit"
-                        label="Edit"
-                      />
-                      <Option
-                        onClick={() => console.log("Duplicate")}
-                        value="duplicate"
-                        label="Duplicate"
-                      />
-                      <Option
-                        onClick={() => console.log("Archive")}
-                        value="archive"
-                        label="Archive"
-                        hasPrefix={
-                          <Icon
-                            name="check"
-                            onBackground="neutral-medium"
-                            size="s"
-                          />
-                        }
-                      />
-                      <Option
-                        onClick={() => console.log("Delete")}
-                        value="delete"
-                        label="Delete"
-                        danger
-                      />
-                    </Flex>
-                  }
-                />
-              </Flex>
-            </Flex>
-          </Flex>
           <Heading as="h2">Select</Heading>
           <Flex fillWidth negativeGap="1" direction="column">
             <Input id="input" label="Email" radius="top" />
@@ -1456,56 +693,6 @@ export default function Home() {
             onToggle={(value) => console.log("SegmentedControl changed", value)}
             buttons={[
               {
-                size: "l",
-                value: "edit1",
-                label: "calendar",
-              },
-              {
-                size: "l",
-                value: "duplicate2",
-                label: "eye",
-              },
-              {
-                size: "l",
-                value: "archive3",
-                label: "person",
-              },
-              {
-                size: "l",
-                value: "archive35",
-                label: "person",
-              },
-              {
-                size: "l",
-                value: "delete4",
-                label: "eyeDropper",
-              },
-              {
-                size: "l",
-                value: "edit5",
-                label: "calendar",
-              },
-              {
-                size: "l",
-                value: "duplicate6",
-                label: "eye",
-              },
-              {
-                size: "l",
-                value: "archive7",
-                label: "person",
-              },
-              {
-                size: "l",
-                value: "delete8",
-                label: "eyeDropper",
-              },
-            ]}
-          />
-          <SegmentedControl
-            onToggle={(value) => console.log("SegmentedControl changed", value)}
-            buttons={[
-              {
                 value: "edit1",
                 label: "calendar",
               },
@@ -1537,36 +724,7 @@ export default function Home() {
             label="Pick a date"
             timePicker
           />
-          <Flex fillWidth height={24} overflowY="scroll">
-            asd
-          </Flex>
-          <Button
-            id="github"
-            fillWidth
-            href="https://github.com/once-ui-system/nextjs-starter"
-            prefixIcon="github"
-            size="l"
-            justifyContent="space-between"
-            variant="tertiary"
-            arrowIcon
-          >
-            GitHub
-          </Button>
-          <Button fillWidth size="m" variant="tertiary">
-            GitHub
-          </Button>
-          <Button fillWidth size="s" variant="tertiary">
-            GitHub
-          </Button>
         </Flex>
-      </Flex>
-      <Flex as="footer" fillWidth paddingX="l" paddingY="m">
-        <Text variant="body-default-s" onBackground="neutral-medium">
-          2024 Once UI /{" "}
-          <Link href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
-            MIT License
-          </Link>
-        </Text>
       </Flex>
     </Flex>
   );
