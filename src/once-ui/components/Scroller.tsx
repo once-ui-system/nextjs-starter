@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { Flex, IconButton } from ".";
 import styles from "./Scroller.module.scss";
+import { Fade } from "./Fade";
 
 interface ScrollerProps extends React.ComponentProps<typeof Flex> {
   children: React.ReactNode;
@@ -117,13 +118,13 @@ const Scroller: React.FC<ScrollerProps> = ({
       style={style}
     >
       {showPrevButton && (
-        <div
-          className={classNames(
-            styles.scrollMaskContainer,
-            styles.scrollMaskPrev,
-          )}
-        >
-          <div className={classNames(styles.scrollMask, styles.maskPrev)}></div>
+        <Fade
+          to="right"
+          width={4}
+          fillHeight
+          position="absolute"
+          left="0"
+          zIndex={1}>
           <IconButton
             icon={direction === "row" ? "chevronLeft" : "chevronUp"}
             onClick={handleScrollPrev}
@@ -138,10 +139,13 @@ const Scroller: React.FC<ScrollerProps> = ({
             className={classNames(styles.scrollButton, styles.scrollButtonPrev)}
             aria-label="Scroll Previous"
           />
-        </div>
+        </Fade>
       )}
       <Flex
         fillWidth
+        zIndex={0}
+        position="relative"
+        radius="m"
         direction={direction}
         className={classNames(styles.scroller, styles[direction])}
         ref={scrollerRef}
@@ -150,13 +154,13 @@ const Scroller: React.FC<ScrollerProps> = ({
         {wrappedChildren}
       </Flex>
       {showNextButton && (
-        <div
-          className={classNames(
-            styles.scrollMaskContainer,
-            styles.scrollMaskNext,
-          )}
-        >
-          <div className={classNames(styles.scrollMask, styles.maskNext)}></div>
+        <Fade
+          to="left"
+          width={4}
+          fillHeight
+          position="absolute"
+          right="0"
+          zIndex={1}>
           <IconButton
             icon={direction === "row" ? "chevronRight" : "chevronDown"}
             onClick={handleScrollNext}
@@ -171,7 +175,7 @@ const Scroller: React.FC<ScrollerProps> = ({
             className={classNames(styles.scrollButton, styles.scrollButtonNext)}
             aria-label="Scroll Next"
           />
-        </div>
+        </Fade>
       )}
     </Flex>
   );

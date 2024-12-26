@@ -3,11 +3,8 @@
 }
 
 .scroller {
-    border-radius: var(--radius-m);
     scrollbar-width: none;
-    z-index: 0;
     isolation: isolate;
-    position: relative;
   
     &::-webkit-scrollbar {
         display: none;
@@ -22,47 +19,10 @@
     overflow-y: auto;
 }
 
-.scrollMask {
-	position: relative;
-    width: 100%;
-	height: 100%;
-    backdrop-filter: blur(0.5rem);
-    mask-size: 100% 100%;
-}
-
-.maskPrev {
-    mask-image: linear-gradient(to right, rgba(0,0,0) 25%, rgba(0, 0, 0, 0) 100%);
-}
-
-.maskNext {
-    mask-image: linear-gradient(to left, rgba(0,0,0) 25%, rgba(0, 0, 0, 0) 100%);
-}
-
-.scrollMaskContainer {
-	position: absolute;
-    overflow: hidden;
-    top: 0;
-    bottom: 0;
-    width: var(--static-space-64);
-	height: 100%;
-    z-index: 1;
-}
-
-.scrollMaskPrev {
-    border-radius: var(--radius-m) 0 0 var(--radius-m);
-    left: 0;
-}
-
-.scrollMaskNext {
-    border-radius: 0 var(--radius-m) var(--radius-m) 0;
-    right: 0;
-}
-
 .scrollButton {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    border: none;
     z-index: 2;
 }
 
