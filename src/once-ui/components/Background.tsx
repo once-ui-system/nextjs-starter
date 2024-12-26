@@ -198,6 +198,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         zIndex={0}
         overflow="hidden"
         style={{
+          pointerEvents: "none",
           ...maskStyle(),
           ...styles,
         }}
@@ -206,9 +207,6 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         {gradient.display && (
           <Flex
             position="absolute"
-            top="0"
-            left="0"
-            fill
             className={styles.gradient}
             opacity={gradient.opacity}
             style={{

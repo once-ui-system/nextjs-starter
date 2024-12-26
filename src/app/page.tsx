@@ -60,17 +60,17 @@ export default function Home() {
     {
       href: "https://once-ui.com/docs/theming",
       title: "Themes",
-      description: "Style your app in minutes.",
+      description: "Style your app in minutes",
     },
     {
       href: "https://once-ui.com/docs/flexComponent",
       title: "Layout",
-      description: "Build responsive layouts.",
+      description: "Build responsive layouts",
     },
     {
       href: "https://once-ui.com/docs/typography",
       title: "Typography",
-      description: "Scale text automatically.",
+      description: "Scale text automatically",
     },
   ];
 
@@ -257,7 +257,7 @@ export default function Home() {
                       href={link.href}
                     >
                       <Card fillWidth padding="40" gap="8" direction="column" background={undefined} borderRight={index < links.length - 1 ? "neutral-alpha-weak" : undefined} border={undefined} radius={undefined}>
-                        <Flex fillWidth gap="12" alignItems="center">
+                        <Flex fillWidth justifyContent="center" gap="12" alignItems="center">
                           <Text
                             variant="body-strong-m"
                             onBackground="neutral-strong"
@@ -267,6 +267,7 @@ export default function Home() {
                           <Icon size="s" name="arrowUpRight" />
                         </Flex>
                         <Text
+                          align="center"
                           variant="body-default-s"
                           onBackground="neutral-weak"
                         >
@@ -413,7 +414,7 @@ export default function Home() {
                     <Flex fill alignItems="flex-end" zIndex={1} position="absolute">
                       <Fade to="top" fillWidth height={12} pattern={{ display: true, size: "2" }} position="absolute" bottom="0" bottomRadius="l"/>
                       <Flex padding="24" position="relative">
-                      <User name="Lorant" subline="Pro"/>
+                      <User name="Lorant" subline="Pro member" avatarProps={{ src: "/images/l.jpg" }}/>
                       </Flex>
                     </Flex>
                   </MediaUpload>
@@ -515,7 +516,7 @@ export default function Home() {
               </Button>
               <Flex as="footer" fillWidth paddingX="l" gap="16" paddingY="64" textVariant="body-default-xs" onBackground="neutral-medium" justifyContent="center" alignItems="center" align="center" direction="column">
                   <Logo wordmark={false} size="s"/>
-                  <Text size="m">2024 / Once UI</Text>
+                  <Text size="m"><Text onBackground="neutral-weak">2024 /</Text> Once UI</Text>
                   <SmartLink href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
                     MIT License
                   </SmartLink>
