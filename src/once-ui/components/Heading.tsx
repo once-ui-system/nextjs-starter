@@ -19,7 +19,7 @@ const Heading = <T extends ElementType = "h1">({
   onBackground,
   onSolid,
   align,
-  wrap,
+  wrap = "balance",
   padding,
   paddingLeft,
   paddingRight,
