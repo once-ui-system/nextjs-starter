@@ -35,6 +35,7 @@ import {
   Tag,
   DatePicker,
   DateInput,
+  LogoCloud,
   Background,
   Card,
   Scroller,
@@ -76,7 +77,7 @@ export default function Home() {
   return (
     <Flex
       fillWidth
-      paddingTop="104"
+      paddingY="80"
       paddingX="l"
       direction="column"
       alignItems="center"
@@ -107,7 +108,7 @@ export default function Home() {
           justifyContent="space-between"
           maxWidth="m"
           paddingX="24"
-          paddingY="16"
+          paddingY="20"
         >
           <Logo size="m" icon={false} href="https://once-ui.com" />
           <Flex gap="12" data-border="rounded">
@@ -175,7 +176,7 @@ export default function Home() {
               />
               <Background
                 mask={{
-                  x: 100,
+                  x: 80,
                   y: 0,
                   radius: 100,
                 }}
@@ -187,7 +188,7 @@ export default function Home() {
                   width: 75,
                   x: 100,
                   y: 40,
-                  colorStart: "accent-solid-weak",
+                  colorStart: "accent-solid-medium",
                   colorEnd: "static-transparent",
                 }}
               />
@@ -202,11 +203,11 @@ export default function Home() {
                   display: true,
                   opacity: 100,
                   tilt: -35,
-                  height: 40,
-                  width: 75,
-                  x: 100,
-                  y: 55,
-                  colorStart: "warning-solid-strong",
+                  height: 20,
+                  width: 120,
+                  x: 120,
+                  y: 35,
+                  colorStart: "danger-solid-strong",
                   colorEnd: "static-transparent",
                 }}
               />
@@ -214,7 +215,7 @@ export default function Home() {
                 fillWidth
                 direction="column"
                 alignItems="center"
-                gap="24"
+                gap="32"
                 position="relative"
               >
                 <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
@@ -278,11 +279,45 @@ export default function Home() {
                   <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
                 </Flex>
               </Flex>
-              <Flex fillWidth paddingX="32" paddingTop="16" gap="32" direction="column" position="relative">
-                <Heading as="h2" variant="display-default-xs">
+              <Flex fillWidth paddingX="32" paddingTop="64" gap="12" direction="column" alignItems="center" position="relative">
+                <AvatarGroup
+                  reverse
+                  avatars={[
+                    { src: "/images/l.jpg" },
+                    { src: "/images/z.jpg" },
+                  ]}/>
+                <Heading
+                  marginBottom="32"
+                  as="h2"
+                  align="center"
+                  variant="heading-default-l">
+                  Brought to you by indie creators<br/> behind amazing projects:
+                </Heading>
+                <LogoCloud
+                  paddingBottom="104"
+                  limit={3}
+                  fillWidth
+                  logos={[
+                    { icon: false, wordmarkSrc: "/trademark/design-engineers-wordmark.svg", size: "m" },
+                    { icon: false, wordmarkSrc: "/trademark/enroll-wordmark.svg",  size: "m" },
+                    { icon: false, wordmarkSrc: "/trademark/magic-portfolio-wordmark.svg", size: "m" },
+                    { icon: false, size: "m" },
+                    { icon: false, wordmarkSrc: "/trademark/dopler-wordmark.svg",  size: "m" },
+                    { icon: false, wordmarkSrc: "/trademark/design-engineers-wordmark.svg", size: "m" },
+                    { icon: false, wordmarkSrc: "/trademark/enroll-wordmark.svg", size: "m" },
+                    { icon: false, size: "m" },
+                    { icon: false, wordmarkSrc: "/trademark/dopler-wordmark.svg",  size: "m" },
+                  ]}
+                  columns="repeat(3, 1fr)"
+                />
+                <Heading as="h2" variant="display-default-m">
                   Showcase
                 </Heading>
-                <Flex fillWidth mobileDirection="column" radius="xl" border="neutral-alpha-weak" overflow="hidden">
+                <Text
+                  align="center" onBackground="neutral-weak">
+                  Tiny snippets to inspire your next project
+                </Text>
+                <Flex marginTop="48" fillWidth mobileDirection="column" radius="xl" border="neutral-alpha-weak" overflow="hidden">
                 <Flex fill hide="m">
                   <SmartImage src="/images/login.png" alt="Preview image"/>
                 </Flex>
@@ -371,8 +406,8 @@ export default function Home() {
                 }}
               />
               <Flex fillWidth direction="column" negativeGap="1">
-                  <Feedback icon variant="warning" radius={undefined} topRadius="l" zIndex={1}>
-                    We recommend you to update your cover image.
+                  <Feedback icon variant="success" radius={undefined} topRadius="l" zIndex={1}>
+                    Your cover image was updated.
                   </Feedback>
                   <MediaUpload marginBottom="12" radius={undefined} bottomRadius="l" initialPreviewImage="/images/cover.png">
                     <Flex fill alignItems="flex-end" zIndex={1} position="absolute">
@@ -463,28 +498,21 @@ export default function Home() {
                 highlight="2-3,5"
                 codeInstances={[
                   {
-                    code: `<Button>lol</Button>
-    <Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button>
-    <Button>lol</Button>
-    <Button>lol</Button>
-    <Button>lol</Button>
-    <Button>lol</Button>`,
+                    code: `<Button>lol</Button>`,
                     language: "tsx",
                     label: "tsx",
                   },
                   {
-                    code: `<Button>lol</Button>
-    <Button>lol</Button>
-    <Button>lol</Button>
-    <Button>lol</Button>
-    <Button>lol</Button>
-    <Button>lol</Button>`,
+                    code: `<Button>lol</Button>`,
                     language: "css",
                     label: "css",
                   },
                 ]}
               />
               </Flex>
+              <Button onClick={() => setIsFirstDialogOpen(true)}>
+                Open First Dialog
+              </Button>
               <Flex as="footer" fillWidth paddingX="l" gap="16" paddingY="64" textVariant="body-default-xs" onBackground="neutral-medium" justifyContent="center" alignItems="center" align="center" direction="column">
                   <Logo wordmark={false} size="s"/>
                   <Text size="m">2024 / Once UI</Text>
@@ -494,27 +522,7 @@ export default function Home() {
               </Flex>
             </Flex>
           </Flex>
-          <Tag marginTop="80" size="l" variant="gradient" label="Cool cool" />
-          Work in progress
-          <Icon
-            name="check"
-            radius="full"
-            background="brand-medium"
-            padding="20"
-          ></Icon>
-          <Feedback
-            fillWidth
-            title="Hey"
-            marginTop="24"
-            icon
-            description="lolz"
-            background="neutral-alpha-weak"
-            radius={undefined}
-            topRadius="l"
-          />
-          <Button onClick={() => setIsFirstDialogOpen(true)}>
-            Open First Dialog
-          </Button>
+
           <Dialog
             isOpen={isFirstDialogOpen}
             onClose={() => setIsFirstDialogOpen(false)}
@@ -582,148 +590,6 @@ export default function Home() {
               onSelect={handleSelect}
             />
           </Dialog>
-          <SmartLink prefixIcon="check" href="https://once-ui.com/docs">
-            Docs
-          </SmartLink>
-          <Skeleton marginTop="40" shape="line" width="l" height="l" />
-          <Flex
-            fillWidth
-            direction="column"
-            radius="xl"
-            overflow="hidden"
-            border="neutral-medium"
-          >
-            <Accordion open title="Accordion title 1">
-              Accordion content
-            </Accordion>
-            <Accordion title="Accordion title 1">Accordion content</Accordion>
-          </Flex>
-          <Carousel
-            marginBottom="40"
-            images={[
-              { src: "/images/cover.png", alt: "alt" },
-              { src: "/images/cover.png", alt: "alt" },
-              { src: "/images/cover.png", alt: "alt" },
-              { src: "/images/cover.png", alt: "alt" },
-            ]}
-          ></Carousel>
-          <Badge
-            radius="s"
-            title="Badge"
-            marginTop="40"
-            href="https://cica.com"
-          />
-          <Flex gap="8">
-            <Avatar size="s" marginTop="64" shadow="xl" />
-            <Avatar size="m" />
-            <Avatar size="l" />
-          </Flex>
-          <AvatarGroup
-            avatars={[
-              { src: "/images/cover.png" },
-              { src: "/images/cover.png" },
-              { src: "/images/cover.png" },
-            ]}
-          ></AvatarGroup>
-          <Flex alignItems="center" gap="8">
-            Hey man{" "}
-            <Icon
-              name="check"
-              tooltip="Check and check"
-              tooltipPosition="right"
-            />
-          </Flex>
-          <Heading as="h2">Select</Heading>
-          <Flex fillWidth negativeGap="1" direction="column">
-            <Input id="input" label="Email" radius="top" />
-            <PasswordInput radius="none" id="password" label="Password" />
-            <Button radius="bottom" label="Login" fillWidth size="l" />
-          </Flex>
-          <UserMenu
-            name="Lorant"
-            subline="Member"
-            maxWidth={16}
-            dropdown={
-              <Flex direction="column" gap="2" padding="4">
-                <Option
-                  onClick={() => console.log("Edit")}
-                  value="edit"
-                  label="Edit"
-                />
-                <Option
-                  onClick={() => console.log("Duplicate")}
-                  value="duplicate"
-                  label="Duplicate"
-                />
-                <Option
-                  onClick={() => console.log("Archive")}
-                  value="archive"
-                  label="Archive"
-                  hasPrefix={
-                    <Icon name="check" onBackground="neutral-medium" size="s" />
-                  }
-                />
-              </Flex>
-            }
-          ></UserMenu>
-          <SegmentedControl
-            fillWidth={false}
-            onToggle={(value) => console.log("SegmentedControl changed", value)}
-            buttons={[
-              {
-                value: "edit",
-                prefixIcon: "calendar",
-                suffixIcon: "chevronDown",
-              },
-              {
-                value: "duplicate",
-                prefixIcon: "eye",
-              },
-              {
-                value: "archive",
-                prefixIcon: "person",
-              },
-              {
-                value: "delete",
-                prefixIcon: "eyeDropper",
-              },
-            ]}
-          />
-          <SegmentedControl
-            onToggle={(value) => console.log("SegmentedControl changed", value)}
-            buttons={[
-              {
-                value: "edit1",
-                label: "calendar",
-              },
-              {
-                value: "duplicate2",
-                label: "eye",
-              },
-              {
-                value: "archive3",
-                label: "person",
-              },
-              {
-                value: "delete4",
-                label: "eyeDropper",
-              },
-            ]}
-          />
-          <DatePicker
-            padding="xl"
-            background="neutral-weak"
-            id="calendar"
-            size="l"
-            timePicker
-          />
-          <DateInput
-            radius="top"
-            description="hello"
-            id="calendarInput"
-            label="Pick a date"
-            timePicker
-          />
         </Flex>
       </Flex>
     </Flex>
