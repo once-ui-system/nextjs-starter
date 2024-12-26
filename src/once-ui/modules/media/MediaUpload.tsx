@@ -13,6 +13,7 @@ interface MediaUploadProps extends React.ComponentProps<typeof Flex> {
   initialPreviewImage?: string | null;
   emptyState?: React.ReactNode;
   quality?: number;
+  children?: React.ReactNode;
   convertTypes?: string[];
   resizeMaxWidth?: number;
   resizeMaxHeight?: number;
@@ -37,6 +38,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
       resizeHeight = 1200,
       loading = false,
       className,
+      children,
       style,
       initialPreviewImage = null,
       accept = "image/*",
@@ -135,12 +137,8 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
         overflow="hidden"
         cursor="interactive"
         className={classNames(
-          styles["image-upload-container"],
           styles.container,
-          className,
-          {
-            "drag-active": dragActive,
-          },
+          className
         )}
         style={{ aspectRatio: aspectRatio, ...style }}
         fillWidth
@@ -162,7 +160,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
                   cursor: "pointer",
                   filter: uploading ? "grayscale(1)" : "",
                 }}
-                aspectRatio={aspectRatio}
+                fill
                 src={previewImage ? previewImage : ""}
                 alt="Preview of uploaded image"
               />
@@ -180,6 +178,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
           position="absolute"
           fill
           padding="m"
+          radius="l"
           justifyContent="center"
           alignItems="center"
         >
@@ -191,7 +190,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
             </Text>
           )}
         </Flex>
-
+        {children}
         <input
           type="file"
           ref={inputRef}
