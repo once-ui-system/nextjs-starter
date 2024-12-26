@@ -155,20 +155,20 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
 
     const generateDynamicClass = (type: string, value: string | undefined) => {
       if (!value) return undefined;
-    
+
       if (["surface", "page", "overlay", "transparent"].includes(value)) {
         return `${value}-${type}`;
       }
-    
+
       const parts = value.split("-");
       if (parts.includes("alpha")) {
         const [scheme, , weight] = parts;
         return `${scheme}-${type}-alpha-${weight}`;
       }
-    
+
       const [scheme, weight] = value.split("-") as [ColorScheme, ColorWeight];
       return `${scheme}-${type}-${weight}`;
-    };       
+    };
 
     const classes = classNames(
       inline ? "display-inline-flex" : "display-flex",
@@ -193,10 +193,16 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       generateClassName("left", left),
       generateDynamicClass("background", background),
       generateDynamicClass("solid", solid),
-      generateDynamicClass("border", border || borderTop || borderRight || borderBottom || borderLeft),
-      (border || borderTop || borderRight || borderBottom || borderLeft) && !borderStyle && "border-solid",
+      generateDynamicClass(
+        "border",
+        border || borderTop || borderRight || borderBottom || borderLeft,
+      ),
+      (border || borderTop || borderRight || borderBottom || borderLeft) &&
+        !borderStyle &&
+        "border-solid",
       border && !borderWidth && `border-1`,
-      (borderTop || borderRight || borderBottom || borderLeft) && "border-reset",
+      (borderTop || borderRight || borderBottom || borderLeft) &&
+        "border-reset",
       borderTop && "border-top-1",
       borderRight && "border-right-1",
       borderBottom && "border-bottom-1",
@@ -212,7 +218,8 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       topRightRadius && `radius-${topRightRadius}-top-right`,
       bottomLeftRadius && `radius-${bottomLeftRadius}-bottom-left`,
       bottomRightRadius && `radius-${bottomRightRadius}-bottom-right`,
-      negativeGap && `gap-${direction === 'column' ? 'vertical' : 'horizontal'}--${negativeGap}`,
+      negativeGap &&
+        `gap-${direction === "column" ? "vertical" : "horizontal"}--${negativeGap}`,
       direction === "column" && "flex-column",
       direction === "row" && "flex-row",
       tabletDirection === "column" && "m-flex-column",

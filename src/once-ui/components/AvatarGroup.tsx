@@ -17,14 +17,7 @@ interface AvatarGroupProps extends React.ComponentProps<typeof Flex> {
 
 const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
   (
-    { avatars,
-      size = "m",
-      reverse = false,
-      limit,
-      className,
-      style,
-      ...rest
-     },
+    { avatars, size = "m", reverse = false, limit, className, style, ...rest },
     ref,
   ) => {
     const displayedAvatars = limit ? avatars.slice(0, limit) : avatars;
@@ -49,9 +42,7 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
             className={styles.avatar}
             style={{
               ...avatarProps.style,
-              zIndex: reverse
-                ? displayedAvatars.length - index
-                : index + 1,
+              zIndex: reverse ? displayedAvatars.length - index : index + 1,
             }}
           />
         ))}

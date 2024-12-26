@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { ToggleButton, Scroller } from ".";
 import type { ToggleButtonProps } from "./ToggleButton";
 
-interface ButtonOption extends Omit<ToggleButtonProps, 'selected'> {
+interface ButtonOption extends Omit<ToggleButtonProps, "selected"> {
   value: string;
 }
 
@@ -48,30 +48,36 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
     onToggle(newSelected);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {    
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const focusedIndex = buttonRefs.current.findIndex(
-      (ref) => ref === document.activeElement
+      (ref) => ref === document.activeElement,
     );
 
     switch (event.key) {
-      case 'ArrowLeft':
-      case 'ArrowUp':
+      case "ArrowLeft":
+      case "ArrowUp":
         event.preventDefault();
-        const prevIndex = focusedIndex === -1 
-          ? buttons.length - 1  // If nothing is focused, focus the last item
-          : focusedIndex > 0 ? focusedIndex - 1 : buttons.length - 1;
+        const prevIndex =
+          focusedIndex === -1
+            ? buttons.length - 1 // If nothing is focused, focus the last item
+            : focusedIndex > 0
+              ? focusedIndex - 1
+              : buttons.length - 1;
         buttonRefs.current[prevIndex]?.focus();
         break;
-      case 'ArrowRight':
-      case 'ArrowDown':
+      case "ArrowRight":
+      case "ArrowDown":
         event.preventDefault();
-        const nextIndex = focusedIndex === -1
-          ? 0  // If nothing is focused, focus the first item
-          : focusedIndex < buttons.length - 1 ? focusedIndex + 1 : 0;
+        const nextIndex =
+          focusedIndex === -1
+            ? 0 // If nothing is focused, focus the first item
+            : focusedIndex < buttons.length - 1
+              ? focusedIndex + 1
+              : 0;
         buttonRefs.current[nextIndex]?.focus();
         break;
-      case 'Enter':
-      case ' ': // Space key
+      case "Enter":
+      case " ": // Space key
         event.preventDefault();
         if (focusedIndex >= 0 && focusedIndex < buttons.length) {
           const focusedButton = buttons[focusedIndex];
@@ -89,11 +95,11 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   );
 
   return (
-    <Scroller 
-      direction="row" 
+    <Scroller
+      direction="row"
       {...scrollerProps}
-      fillWidth={fillWidth} 
-      fitWidth={!fillWidth} 
+      fillWidth={fillWidth}
+      fitWidth={!fillWidth}
       negativeGap="1"
       role="tablist"
       aria-orientation="horizontal"
@@ -102,11 +108,17 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
       {buttons.map((button, index) => {
         return (
           <ToggleButton
-            ref={el => {
+            ref={(el) => {
               buttonRefs.current[index] = el as HTMLButtonElement;
             }}
             variant="outline"
-            radius={index === 0 ? "left" : index === buttons.length - 1 ? "right" : "none"}
+            radius={
+              index === 0
+                ? "left"
+                : index === buttons.length - 1
+                  ? "right"
+                  : "none"
+            }
             key={button.value}
             selected={index === selectedIndex}
             onClick={() => handleButtonClick(button)}

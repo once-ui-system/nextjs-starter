@@ -169,30 +169,40 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       return {};
     };
 
-    const remap = (value: number, inputMin: number, inputMax: number, outputMin: number, outputMax: number) => {
-      return ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) + outputMin;
+    const remap = (
+      value: number,
+      inputMin: number,
+      inputMax: number,
+      outputMin: number,
+      outputMax: number,
+    ) => {
+      return (
+        ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) +
+        outputMin
+      );
     };
-    
-    const adjustedX = gradient.x != null ? remap(gradient.x, 0, 100, 37.5, 62.5) : 50;
-    const adjustedY = gradient.y != null ? remap(gradient.y, 0, 100, 37.5, 62.5) : 50;    
+
+    const adjustedX =
+      gradient.x != null ? remap(gradient.x, 0, 100, 37.5, 62.5) : 50;
+    const adjustedY =
+      gradient.y != null ? remap(gradient.y, 0, 100, 37.5, 62.5) : 50;
 
     return (
       <Flex
         ref={backgroundRef}
         fill
         position={position}
-        className={classNames(
-          mask && styles.mask,
-          className)}
+        className={classNames(mask && styles.mask, className)}
         top="0"
         left="0"
         zIndex={0}
         overflow="hidden"
         style={{
           ...maskStyle(),
-          ...styles
+          ...styles,
         }}
-        {...rest}>
+        {...rest}
+      >
         {gradient.display && (
           <Flex
             position="absolute"
@@ -205,11 +215,18 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
               ...commonStyles,
               ["--gradient-position-x" as string]: `${adjustedX}%`,
               ["--gradient-position-y" as string]: `${adjustedY}%`,
-              ["--gradient-width" as string]: gradient.width != null ? `${gradient.width / 4}%` : "25%",
-              ["--gradient-height" as string]: gradient.height != null ? `${gradient.height / 4}%` : "25%",
-              ["--gradient-tilt" as string]: gradient.tilt != null ? `${gradient.tilt}deg` : "0deg",
-              ["--gradient-color-start" as string]: gradient.colorStart ? `var(--${gradient.colorStart})` : "var(--brand-alpha-strong)",
-              ["--gradient-color-end" as string]: gradient.colorEnd ? `var(--${gradient.colorEnd})` : "var(--brand-alpha-weak)",
+              ["--gradient-width" as string]:
+                gradient.width != null ? `${gradient.width / 4}%` : "25%",
+              ["--gradient-height" as string]:
+                gradient.height != null ? `${gradient.height / 4}%` : "25%",
+              ["--gradient-tilt" as string]:
+                gradient.tilt != null ? `${gradient.tilt}deg` : "0deg",
+              ["--gradient-color-start" as string]: gradient.colorStart
+                ? `var(--${gradient.colorStart})`
+                : "var(--brand-alpha-strong)",
+              ["--gradient-color-end" as string]: gradient.colorEnd
+                ? `var(--${gradient.colorEnd})`
+                : "var(--brand-alpha-weak)",
             }}
           />
         )}
@@ -219,11 +236,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             top="0"
             left="0"
             fill
-            className={classNames(
-              styles.dots,
-              mask && styles.mask,
-              className
-            )}
+            className={classNames(styles.dots, mask && styles.mask, className)}
             opacity={dots.opacity}
             style={{
               ...commonStyles,
@@ -238,11 +251,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             top="0"
             left="0"
             fill
-            className={classNames(
-              styles.lines,
-              mask && styles.mask,
-              className
-            )}
+            className={classNames(styles.lines, mask && styles.mask, className)}
             opacity={lines.opacity}
             style={{
               ...commonStyles,
@@ -256,30 +265,26 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             top="0"
             left="0"
             fill
-            className={classNames(
-              styles.grid,
-              mask && styles.mask,
-              className
-            )}
+            className={classNames(styles.grid, mask && styles.mask, className)}
             opacity={grid.opacity}
             style={{
               ...commonStyles,
-              backgroundSize: `${grid.width || '32px'} ${grid.height || '32px'}`, 
-              backgroundPosition: '0 0',
+              backgroundSize: `${grid.width || "32px"} ${grid.height || "32px"}`,
+              backgroundPosition: "0 0",
               backgroundImage: `
                 linear-gradient(
                   90deg,
-                  var(--${grid.color || 'brand-on-background-weak'}) 0,
-                  var(--${grid.color || 'brand-on-background-weak'}) 1px,
+                  var(--${grid.color || "brand-on-background-weak"}) 0,
+                  var(--${grid.color || "brand-on-background-weak"}) 1px,
                   var(--static-transparent) 1px,
-                  var(--static-transparent) ${grid.width || '32px'}
+                  var(--static-transparent) ${grid.width || "32px"}
                 ),
                 linear-gradient(
                   0deg,
-                  var(--${grid.color || 'brand-on-background-weak'}) 0,
-                  var(--${grid.color || 'brand-on-background-weak'}) 1px,
+                  var(--${grid.color || "brand-on-background-weak"}) 0,
+                  var(--${grid.color || "brand-on-background-weak"}) 1px,
                   var(--static-transparent) 1px,
-                  var(--static-transparent) ${grid.height || '32px'}
+                  var(--static-transparent) ${grid.height || "32px"}
                 )
               `,
             }}

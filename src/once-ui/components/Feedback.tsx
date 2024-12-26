@@ -3,7 +3,8 @@
 import React, { forwardRef, ReactNode } from "react";
 import { IconButton, Button, Icon, Flex, Text } from ".";
 
-interface FeedbackProps extends Omit<React.ComponentProps<typeof Flex>, 'title'> {
+interface FeedbackProps
+  extends Omit<React.ComponentProps<typeof Flex>, "title"> {
   variant?: "info" | "danger" | "warning" | "success";
   icon?: boolean;
   title?: string;

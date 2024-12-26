@@ -8,14 +8,24 @@ import React, {
   ReactNode,
 } from "react";
 import classNames from "classnames";
-import { DropdownWrapper, Flex, Icon, IconButton, Input, InputProps, Option } from ".";
+import {
+  DropdownWrapper,
+  Flex,
+  Icon,
+  IconButton,
+  Input,
+  InputProps,
+  Option,
+} from ".";
 import inputStyles from "./Input.module.scss";
 import type { OptionProps } from "./Option";
 import type { DropdownWrapperProps } from "./DropdownWrapper";
 
-type SelectOptionType = Omit<OptionProps, 'selected'>;
+type SelectOptionType = Omit<OptionProps, "selected">;
 
-interface SelectProps extends Omit<InputProps, "onSelect" | "value">, Pick<DropdownWrapperProps, 'minHeight' | 'minWidth' | 'maxWidth'> {
+interface SelectProps
+  extends Omit<InputProps, "onSelect" | "value">,
+    Pick<DropdownWrapperProps, "minHeight" | "minWidth" | "maxWidth"> {
   options: SelectOptionType[];
   value?: string;
   emptyState?: ReactNode;
@@ -26,26 +36,31 @@ interface SelectProps extends Omit<InputProps, "onSelect" | "value">, Pick<Dropd
 }
 
 const Select = forwardRef<HTMLDivElement, SelectProps>(
-  ({ 
-    options,
-    value = "",
-    onSelect,
-    searchable = false,
-    emptyState = "No results",
-    minHeight,
-    minWidth,
-    maxWidth,
-    className,
-    style,
-    ...rest
-  }, ref) => {
+  (
+    {
+      options,
+      value = "",
+      onSelect,
+      searchable = false,
+      emptyState = "No results",
+      minHeight,
+      minWidth,
+      maxWidth,
+      className,
+      style,
+      ...rest
+    },
+    ref,
+  ) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [highlightedIndex, setHighlightedIndex] = useState<number | null>(() => {
-      if (!options?.length || !value) return null;
-      return options.findIndex((option) => option.value === value);
-    });
+    const [highlightedIndex, setHighlightedIndex] = useState<number | null>(
+      () => {
+        if (!options?.length || !value) return null;
+        return options.findIndex((option) => option.value === value);
+      },
+    );
     const [searchQuery, setSearchQuery] = useState("");
     const selectRef = useRef<HTMLDivElement | null>(null);
     const clearButtonRef = useRef<HTMLButtonElement>(null);
@@ -120,9 +135,9 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
     const handleClearSearch = (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      setSearchQuery('');
+      setSearchQuery("");
       // Force focus back to the input after clearing
-      const input = selectRef.current?.querySelector('input');
+      const input = selectRef.current?.querySelector("input");
       if (input) {
         input.focus();
       }
@@ -169,17 +184,16 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         trigger={
           <Input
             {...rest}
-            style={{textOverflow: "ellipsis", ...style }}
+            style={{ textOverflow: "ellipsis", ...style }}
             value={value}
             onFocus={handleFocus}
             onKeyDown={handleKeyDown}
             radius={isDropdownOpen ? "top" : undefined}
             readOnly
-            className={classNames(
-              "cursor-interactive", {
+            className={classNames("cursor-interactive", {
               [inputStyles.filled]: isFilled,
               [inputStyles.focused]: isFocused,
-              className
+              className,
             })}
             aria-haspopup="listbox"
             aria-expanded={isDropdownOpen}
@@ -191,13 +205,28 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
               <Flex fillWidth position="relative">
                 <Input
                   data-scaling="90"
-                  style={{marginTop: '-1px', marginLeft: '-1px', width: 'calc(100% + 2px)'}}
+                  style={{
+                    marginTop: "-1px",
+                    marginLeft: "-1px",
+                    width: "calc(100% + 2px)",
+                  }}
                   labelAsPlaceholder
                   id="search"
                   label="Search"
                   height="s"
                   radius="none"
-                  hasSuffix={searchQuery ? <IconButton tooltip="Clear" tooltipPosition="left" icon="close" variant="ghost" size="s" onClick={handleClearSearch} /> : undefined}
+                  hasSuffix={
+                    searchQuery ? (
+                      <IconButton
+                        tooltip="Clear"
+                        tooltipPosition="left"
+                        icon="close"
+                        variant="ghost"
+                        size="s"
+                        onClick={handleClearSearch}
+                      />
+                    ) : undefined
+                  }
                   hasPrefix={<Icon name="search" size="xs" />}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -212,7 +241,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                   option.label
                     ?.toString()
                     .toLowerCase()
-                    .includes(searchQuery.toLowerCase())
+                    .includes(searchQuery.toLowerCase()),
                 )
                 .map((option, index) => (
                   <Option
@@ -227,22 +256,29 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                     tabIndex={-1}
                   />
                 ))}
-              {searchQuery && options.filter((option) =>
-                option.label
-                  ?.toString()
-                  .toLowerCase()
-                  .includes(searchQuery.toLowerCase())
-              ).length === 0 && (
-                <Flex fillWidth alignItems="center" justifyContent="center" paddingX="16" paddingY="32">
-                  {emptyState}
-                </Flex>
-              )}
+              {searchQuery &&
+                options.filter((option) =>
+                  option.label
+                    ?.toString()
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase()),
+                ).length === 0 && (
+                  <Flex
+                    fillWidth
+                    alignItems="center"
+                    justifyContent="center"
+                    paddingX="16"
+                    paddingY="32"
+                  >
+                    {emptyState}
+                  </Flex>
+                )}
             </Flex>
           </>
         }
       />
     );
-  }
+  },
 );
 
 Select.displayName = "Select";

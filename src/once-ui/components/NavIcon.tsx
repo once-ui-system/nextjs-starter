@@ -11,13 +11,7 @@ interface NavIconProps extends React.ComponentProps<typeof Flex> {
 }
 
 const NavIcon = forwardRef<HTMLDivElement, Partial<NavIconProps>>(
-  ({
-    className,
-    isActive,
-    style,
-    onClick,
-    ...rest
-  }, ref) => {
+  ({ className, isActive, style, onClick, ...rest }, ref) => {
     return (
       <Flex
         ref={ref}

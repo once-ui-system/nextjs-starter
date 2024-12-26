@@ -18,7 +18,7 @@ interface SmartImageProps extends React.ComponentProps<typeof Flex> {
   unoptimized?: boolean;
   sizes?: string;
   priority?: boolean;
-};
+}
 
 const SmartImage: React.FC<SmartImageProps> = ({
   className,
@@ -46,13 +46,13 @@ const SmartImage: React.FC<SmartImageProps> = ({
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isEnlarged) {
+      if (event.key === "Escape" && isEnlarged) {
         setIsEnlarged(false);
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isEnlarged]);
 
   useEffect(() => {
@@ -112,16 +112,14 @@ const SmartImage: React.FC<SmartImageProps> = ({
         fillWidth
         overflow="hidden"
         position="relative"
-        cursor={enlarge ? "interactive" : ''}
+        cursor={enlarge ? "interactive" : ""}
         style={{
           outline: "none",
           isolation: "isolate",
           zIndex: 0,
-          height: aspectRatio ? '' : height ? `${height}rem` : "100%",
+          height: aspectRatio ? "" : height ? `${height}rem` : "100%",
           aspectRatio,
-          borderRadius: isEnlarged
-            ? "0"
-            : undefined,
+          borderRadius: isEnlarged ? "0" : undefined,
           ...calculateTransform(),
           ...style,
         }}
@@ -166,7 +164,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
             unoptimized={unoptimized}
             fill
             style={{
-              objectFit: objectFit
+              objectFit: objectFit,
             }}
           />
         )}
@@ -217,7 +215,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
                 fill
                 sizes="90vw"
                 unoptimized={unoptimized}
-                style={{ 
+                style={{
                   objectFit: "contain",
                 }}
               />

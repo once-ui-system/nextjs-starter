@@ -16,7 +16,16 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   height?: "s" | "m";
   error?: React.ReactNode;
   description?: React.ReactNode;
-  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
+  radius?:
+    | "none"
+    | "top"
+    | "right"
+    | "bottom"
+    | "left"
+    | "top-left"
+    | "top-right"
+    | "bottom-right"
+    | "bottom-left";
   className?: string;
   style?: React.CSSProperties;
   hasPrefix?: React.ReactNode;
@@ -90,12 +99,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         style={style}
         fillWidth
         fitHeight
-        className={classNames(
-          className,
-          {
-            [styles.error]: error,
-          }
-        )}
+        className={classNames(className, {
+          [styles.error]: error,
+        })}
       >
         <Flex
           minHeight="56"
@@ -109,11 +115,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             styles.base,
             { [styles.s]: height === "s" },
             { [styles.m]: height === "m" },
-            radius === 'none'
-              ? 'radius-none'
+            radius === "none"
+              ? "radius-none"
               : radius
-              ? `radius-l-${radius}`
-              : "radius-l",
+                ? `radius-l-${radius}`
+                : "radius-l",
           )}
         >
           {hasPrefix && (
@@ -121,10 +127,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               {hasPrefix}
             </Flex>
           )}
-          <Flex
-            fillWidth
-            direction="column"
-            position="relative">
+          <Flex fillWidth direction="column" position="relative">
             <input
               {...props}
               ref={ref}

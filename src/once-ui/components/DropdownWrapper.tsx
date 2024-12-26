@@ -35,20 +35,23 @@ export interface DropdownWrapperProps {
 }
 
 const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
-  ({
-    trigger,
-    dropdown,
-    selectedOption,
-    minHeight,
-    onSelect,
-    isOpen: controlledIsOpen,
-    onOpenChange,
-    minWidth,
-    maxWidth,
-    fillWidth,
-    className,
-    style,
-  }, ref) => {
+  (
+    {
+      trigger,
+      dropdown,
+      selectedOption,
+      minHeight,
+      onSelect,
+      isOpen: controlledIsOpen,
+      onOpenChange,
+      minWidth,
+      maxWidth,
+      fillWidth,
+      className,
+      style,
+    },
+    ref,
+  ) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [mounted, setMounted] = useState(false);
@@ -64,13 +67,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       onOpenChange?.(newIsOpen);
     };
 
-    const {
-      x,
-      y,
-      strategy,
-      refs,
-      update,
-    } = useFloating({
+    const { x, y, strategy, refs, update } = useFloating({
       placement: "bottom-start",
       open: isOpen,
       middleware: [
@@ -79,7 +76,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         size({
           apply({ availableWidth, availableHeight, elements }) {
             Object.assign(elements.floating.style, {
-              width: (maxWidth || fillWidth) ? '100%' : 'auto',
+              width: maxWidth || fillWidth ? "100%" : "auto",
               minWidth: minWidth ? `${minWidth}rem` : undefined,
               maxWidth: maxWidth ? `${maxWidth}rem` : `${availableWidth}px`,
               minHeight: `${Math.min(minHeight || 0)}px`,
@@ -148,7 +145,12 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         direction="column"
         negativeGap="1"
         transition="macro-medium"
-        style={{ ...((minHeight && isOpen) ? { marginBottom: `${minHeight + 48}px` } : {}), ...style }}
+        style={{
+          ...(minHeight && isOpen
+            ? { marginBottom: `${minHeight + 48}px` }
+            : {}),
+          ...style,
+        }}
         className={className}
         position="relative"
         ref={wrapperRef}
@@ -182,7 +184,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         )}
       </Flex>
     );
-  }
+  },
 );
 
 DropdownWrapper.displayName = "DropdownWrapper";

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { forwardRef, useState, useEffect, ReactNode } from "react";
-import { ElementType } from './ElementType';
+import { ElementType } from "./ElementType";
 import { Flex, Icon, Tooltip } from ".";
 import buttonStyles from "./Button.module.scss";
 import iconStyles from "./IconButton.module.scss";
@@ -11,7 +11,16 @@ interface CommonProps {
   icon?: string;
   id?: string;
   size?: "s" | "m" | "l";
-  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
+  radius?:
+    | "none"
+    | "top"
+    | "right"
+    | "bottom"
+    | "left"
+    | "top-left"
+    | "top-right"
+    | "bottom-right"
+    | "bottom-left";
   tooltip?: string;
   tooltipPosition?: "top" | "bottom" | "left" | "right";
   variant?: "primary" | "secondary" | "tertiary" | "danger" | "ghost";
@@ -23,8 +32,7 @@ interface CommonProps {
 
 export type IconButtonProps = CommonProps &
   React.ButtonHTMLAttributes<HTMLButtonElement>;
-type AnchorProps = CommonProps &
-  React.AnchorHTMLAttributes<HTMLAnchorElement>;
+type AnchorProps = CommonProps & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
   (
@@ -42,7 +50,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
       style,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [isTooltipVisible, setTooltipVisible] = useState(false);
     const [isHover, setIsHover] = useState(false);
@@ -75,7 +83,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
       </>
     );
 
-    const radiusSize = size === 's' || size === 'm' ? 'm' : 'l';
+    const radiusSize = size === "s" || size === "m" ? "m" : "l";
 
     return (
       <ElementType
@@ -87,29 +95,28 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
           buttonStyles[variant],
           iconStyles[size],
           className,
-          radius === 'none'
-              ? 'radius-none'
-              : radius
+          radius === "none"
+            ? "radius-none"
+            : radius
               ? `radius-${radiusSize}-${radius}`
               : `radius-${radiusSize}`,
-            'text-decoration-none',
-            'button',
-            'cursor-interactive',
-            className)}
+          "text-decoration-none",
+          "button",
+          "cursor-interactive",
+          className,
+        )}
         style={style}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         aria-label={tooltip || icon}
-        {...props}>
-        <Flex
-          fill
-          justifyContent="center"
-          alignItems="center">
+        {...props}
+      >
+        <Flex fill justifyContent="center" alignItems="center">
           {content}
         </Flex>
       </ElementType>
     );
-  }
+  },
 );
 
 IconButton.displayName = "IconButton";

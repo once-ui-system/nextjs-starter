@@ -14,13 +14,7 @@ type TooltipProps = {
 };
 
 const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
-  ({ 
-    label,
-    prefixIcon,
-    suffixIcon,
-    className,
-    style
-  }, ref) => {
+  ({ label, prefixIcon, suffixIcon, className, style }, ref) => {
     return (
       <Flex
         hide="m"

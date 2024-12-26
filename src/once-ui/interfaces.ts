@@ -48,12 +48,12 @@ export interface SizeProps extends HTMLAttributes<HTMLDivElement> {
   minWidth?: number | SpacingToken;
   minHeight?: number | SpacingToken;
   maxHeight?: number | SpacingToken;
-  fit?: boolean,
-  fitWidth?: boolean,
-  fitHeight?: boolean,
-  fill?: boolean,
-  fillWidth?: boolean,
-  fillHeight?: boolean,
+  fit?: boolean;
+  fitWidth?: boolean;
+  fitHeight?: boolean;
+  fill?: boolean;
+  fillWidth?: boolean;
+  fillHeight?: boolean;
 }
 
 export interface SpacingProps extends HTMLAttributes<HTMLDivElement> {
@@ -72,7 +72,7 @@ export interface SpacingProps extends HTMLAttributes<HTMLDivElement> {
   marginX?: SpacingToken;
   marginY?: SpacingToken;
   gap?: SpacingToken;
-  negativeGap?: '1' | '2';
+  negativeGap?: "1" | "2";
   top?: SpacingToken;
   right?: SpacingToken;
   bottom?: SpacingToken;
@@ -113,21 +113,21 @@ export interface StyleProps extends HTMLAttributes<HTMLDivElement> {
     | `${ColorScheme}-alpha-${ColorWeight}`
     | "surface"
     | "transparent";
-  border?: 
+  border?:
     | `${ColorScheme}-${ColorWeight}`
     | `${ColorScheme}-alpha-${ColorWeight}`
     | "surface"
     | "transparent";
   borderStyle?: "solid" | "dashed";
   borderWidth?: 1 | 2;
-  topRadius?: RadiusSize,
-  rightRadius?: RadiusSize,
-  bottomRadius?: RadiusSize,
-  leftRadius?: RadiusSize,
-  topLeftRadius?: RadiusSize,
-  topRightRadius?: RadiusSize,
-  bottomLeftRadius?: RadiusSize,
-  bottomRightRadius?: RadiusSize,
+  topRadius?: RadiusSize;
+  rightRadius?: RadiusSize;
+  bottomRadius?: RadiusSize;
+  leftRadius?: RadiusSize;
+  topLeftRadius?: RadiusSize;
+  topRightRadius?: RadiusSize;
+  bottomLeftRadius?: RadiusSize;
+  bottomRightRadius?: RadiusSize;
   radius?: RadiusSize | `${RadiusSize}-${RadiusNest}`;
   shadow?: ShadowSize;
   cursor?: CSSProperties["cursor"] | "interactive";
@@ -144,7 +144,13 @@ export interface DisplayProps extends HTMLAttributes<HTMLDivElement> {
   overflow?: CSSProperties["overflow"];
   overflowX?: CSSProperties["overflowX"];
   overflowY?: CSSProperties["overflowY"];
-  transition?: "micro-short" | "micro-medium" | "micro-long" | "macro-short" | "macro-medium" | "macro-long";
+  transition?:
+    | "micro-short"
+    | "micro-medium"
+    | "micro-long"
+    | "macro-short"
+    | "macro-medium"
+    | "macro-long";
   opacity?: 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100;
   zIndex?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }

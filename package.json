@@ -23,6 +23,7 @@
     "sharp": "^0.33.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@csstools/postcss-global-data": "^2.1.1",
     "@types/node": "^20",
     "@types/react": "19.0.1",

@@ -13,18 +13,18 @@ export const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         type={showPassword ? "text" : "password"}
         hasSuffix={
-            <IconButton
-              onClick={() => {
-                setShowPassword(!showPassword);
-              }}
-              variant="ghost"
-              icon={showPassword ? "eyeOff" : "eye"}
-              size="s"
-            />
+          <IconButton
+            onClick={() => {
+              setShowPassword(!showPassword);
+            }}
+            variant="ghost"
+            icon={showPassword ? "eyeOff" : "eye"}
+            size="s"
+          />
         }
       />
     );
-  }
+  },
 );
 
 PasswordInput.displayName = "PasswordInput";

@@ -1,10 +1,6 @@
 "use client";
 
-import React, {
-  ReactNode,
-  MouseEventHandler,
-  forwardRef,
-} from "react";
+import React, { ReactNode, MouseEventHandler, forwardRef } from "react";
 import classNames from "classnames";
 import { Text, Icon, IconButton, IconButtonProps, Flex } from ".";
 import styles from "./Chip.module.scss";

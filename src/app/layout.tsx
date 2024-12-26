@@ -123,8 +123,8 @@ export default function RootLayout({
           position="absolute"
           mask={{
             x: 100,
-            y:0,
-            radius: 100
+            y: 0,
+            radius: 100,
           }}
           dots={{
             display: true,

@@ -83,11 +83,29 @@ const GlitchFx = forwardRef<HTMLDivElement, GlitchFxProps>(
           {children}
         </Flex>
 
-        <Flex inline position="absolute" top="0" left="0" fill zIndex={0} opacity={50} className={`${styles.glitchLayer} ${styles.blueShift}`}>
+        <Flex
+          inline
+          position="absolute"
+          top="0"
+          left="0"
+          fill
+          zIndex={0}
+          opacity={50}
+          className={`${styles.glitchLayer} ${styles.blueShift}`}
+        >
           {children}
         </Flex>
 
-        <Flex inline position="absolute" top="0" left="0" fill zIndex={0} opacity={50} className={`${styles.glitchLayer} ${styles.redShift}`}>
+        <Flex
+          inline
+          position="absolute"
+          top="0"
+          left="0"
+          fill
+          zIndex={0}
+          opacity={50}
+          className={`${styles.glitchLayer} ${styles.redShift}`}
+        >
           {children}
         </Flex>
       </Flex>

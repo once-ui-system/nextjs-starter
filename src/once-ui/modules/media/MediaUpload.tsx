@@ -129,67 +129,68 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
     };
 
     return (
-        <Flex
-          position="relative"
-          transition="micro-medium"
-          overflow="hidden"
-          cursor="interactive"
-          className={classNames(styles["image-upload-container"], styles.container, className, {
+      <Flex
+        position="relative"
+        transition="micro-medium"
+        overflow="hidden"
+        cursor="interactive"
+        className={classNames(
+          styles["image-upload-container"],
+          styles.container,
+          className,
+          {
             "drag-active": dragActive,
-          })}
-          style={{ aspectRatio: aspectRatio, ...style }}
-          fillWidth
+          },
+        )}
+        style={{ aspectRatio: aspectRatio, ...style }}
+        fillWidth
+        justifyContent="center"
+        alignItems="center"
+        border="neutral-medium"
+        radius="l"
+        onClick={handleFileSelection}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        {...rest}
+      >
+        {!loading && (
+          <>
+            {previewImage ? (
+              <SmartImage
+                style={{
+                  cursor: "pointer",
+                  filter: uploading ? "grayscale(1)" : "",
+                }}
+                aspectRatio={aspectRatio}
+                src={previewImage ? previewImage : ""}
+                alt="Preview of uploaded image"
+              />
+            ) : (
+              <Flex fill alignItems="center" justifyContent="center">
+                <Icon name="plus" size="l" />
+              </Flex>
+            )}
+          </>
+        )}
+        <Flex
+          className={styles.upload}
+          zIndex={1}
+          transition="micro-medium"
+          position="absolute"
+          fill
+          padding="m"
           justifyContent="center"
           alignItems="center"
-          border="neutral-medium"
-          radius="l"
-          onClick={handleFileSelection}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          {...rest}
         >
-          {!loading && (
-            <>
-              {previewImage ? (
-                <SmartImage
-                  style={{
-                    cursor: "pointer",
-                    filter: uploading ? "grayscale(1)" : "",
-                  }}
-                  aspectRatio={aspectRatio}
-                  src={previewImage ? previewImage : ""}
-                  alt="Preview of uploaded image"
-                />
-              ) : (
-                <Flex
-                  fill
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Icon name="plus" size="l" />
-                </Flex>
-              )}
-            </>
+          {uploading || loading ? (
+            <Spinner size="l" />
+          ) : (
+            <Text className={styles.text} align="center">
+              {emptyState}
+            </Text>
           )}
-          <Flex
-            className={styles.upload}
-            zIndex={1}
-            transition="micro-medium"
-            position="absolute"
-            fill
-            padding="m"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {uploading || loading ? (
-              <Spinner size="l" />
-            ) : (
-              <Text className={styles.text} align="center">
-                {emptyState}
-              </Text>
-            )}
-          </Flex>
+        </Flex>
 
         <input
           type="file"

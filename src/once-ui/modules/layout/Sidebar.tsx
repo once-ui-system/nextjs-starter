@@ -39,7 +39,12 @@ const Sidebar: React.FC = ({}) => {
           >
             Dashboard
           </Text>
-          <ToggleButton fillWidth justifyContent="flex-start" href="" selected={true}>
+          <ToggleButton
+            fillWidth
+            justifyContent="flex-start"
+            href=""
+            selected={true}
+          >
             <Flex
               padding="4"
               alignItems="center"

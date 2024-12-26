@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { ReactNode, forwardRef } from "react";
 
-interface LinkButtonProps {
+interface ElementTypeProps {
   href?: string;
   children: ReactNode;
   className?: string;
@@ -11,7 +11,7 @@ interface LinkButtonProps {
 
 const isExternalLink = (url: string) => /^https?:\/\//.test(url);
 
-const ElementType = forwardRef<HTMLElement, LinkButtonProps>(({ href, children, className, style, ...props }, ref) => {
+const ElementType = forwardRef<HTMLElement, ElementTypeProps>(({ href, children, className, style, ...props }, ref) => {
   if (href) {
     const isExternal = isExternalLink(href);
     if (isExternal) {

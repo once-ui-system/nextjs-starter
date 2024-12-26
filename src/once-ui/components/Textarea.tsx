@@ -16,7 +16,16 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   lines?: number | "auto";
   error?: React.ReactNode;
   description?: React.ReactNode;
-  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
+  radius?:
+    | "none"
+    | "top"
+    | "right"
+    | "bottom"
+    | "left"
+    | "top-left"
+    | "top-right"
+    | "bottom-right"
+    | "bottom-left";
   className?: string;
   hasPrefix?: React.ReactNode;
   hasSuffix?: React.ReactNode;
@@ -54,7 +63,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const adjustHeight = () => {
       const textarea = textareaRef.current;
       if (textarea && lines === "auto") {
-        textarea.style.height = 'auto';
+        textarea.style.height = "auto";
         textarea.style.height = `${textarea.scrollHeight}px`;
       }
     };
@@ -111,12 +120,9 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         gap="8"
         fillWidth
         fitHeight
-        className={classNames(
-          className,
-          {
-            [styles.error]: error,
-          }
-        )}
+        className={classNames(className, {
+          [styles.error]: error,
+        })}
       >
         <Flex
           minHeight="56"
@@ -129,11 +135,11 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           className={classNames(
             styles.base,
             lines !== "auto" && styles.textareaBase,
-            radius === 'none'
-              ? 'radius-none'
+            radius === "none"
+              ? "radius-none"
               : radius
-              ? `radius-l-${radius}`
-              : "radius-l",
+                ? `radius-l-${radius}`
+                : "radius-l",
           )}
         >
           {hasPrefix && (
@@ -141,15 +147,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               {hasPrefix}
             </Flex>
           )}
-          <Flex
-            fillWidth
-            direction="column"
-            position="relative">
+          <Flex fillWidth direction="column" position="relative">
             <textarea
               {...props}
               ref={(node) => {
                 // Handle both refs
-                if (typeof ref === 'function') {
+                if (typeof ref === "function") {
                   ref(node);
                 } else if (ref) {
                   ref.current = node;

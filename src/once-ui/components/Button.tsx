@@ -1,8 +1,8 @@
 "use client";
 
 import React, { ReactNode, forwardRef } from "react";
-import { ElementType } from './ElementType';
-import classNames from 'classnames';
+import { ElementType } from "./ElementType";
+import classNames from "classnames";
 
 import { Spinner, Icon, Arrow, Flex } from ".";
 import styles from "./Button.module.scss";
@@ -10,7 +10,16 @@ import styles from "./Button.module.scss";
 interface CommonProps {
   variant?: "primary" | "secondary" | "tertiary" | "danger";
   size?: "s" | "m" | "l";
-  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
+  radius?:
+    | "none"
+    | "top"
+    | "right"
+    | "bottom"
+    | "left"
+    | "top-left"
+    | "top-right"
+    | "bottom-right"
+    | "bottom-left";
   label?: string;
   weight?: "default" | "strong";
   prefixIcon?: string;
@@ -60,15 +69,28 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       <>
         {prefixIcon && !loading && <Icon name={prefixIcon} size={iconSize} />}
         {loading && <Spinner size={size} />}
-        <Flex paddingX="4" paddingY="0" textWeight={weight} textSize={size} className="font-label">
+        <Flex
+          paddingX="4"
+          paddingY="0"
+          textWeight={weight}
+          textSize={size}
+          className="font-label"
+        >
           {label || children}
         </Flex>
-        {arrowIcon && <Arrow style={{ marginLeft: "calc(-1 * var(--static-space-4))" }} trigger={'#' + id} scale={size === "s" ? 0.8 : size === "m" ? 0.9 : 1} color={variant === "primary" ? "onSolid" : "onBackground"} />}
+        {arrowIcon && (
+          <Arrow
+            style={{ marginLeft: "calc(-1 * var(--static-space-4))" }}
+            trigger={"#" + id}
+            scale={size === "s" ? 0.8 : size === "m" ? 0.9 : 1}
+            color={variant === "primary" ? "onSolid" : "onBackground"}
+          />
+        )}
         {suffixIcon && <Icon name={suffixIcon} size={iconSize} />}
       </>
     );
 
-    const radiusSize = size === 's' || size === 'm' ? 'm' : 'l';
+    const radiusSize = size === "s" || size === "m" ? "m" : "l";
 
     return (
       <ElementType
@@ -79,19 +101,21 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
           styles.button,
           styles[variant],
           styles[size],
-          radius === 'none'
-            ? 'radius-none'
+          radius === "none"
+            ? "radius-none"
             : radius
-            ? `radius-${radiusSize}-${radius}`
-            : `radius-${radiusSize}`,
-          'text-decoration-none',
-          'button',
-          'cursor-interactive',
+              ? `radius-${radiusSize}-${radius}`
+              : `radius-${radiusSize}`,
+          "text-decoration-none",
+          "button",
+          "cursor-interactive",
           {
-            ['fill-width']: fillWidth,
-            ['fit-width']: !fillWidth,
-            ['justify-' + justifyContent]: justifyContent
-          }, className)}
+            ["fill-width"]: fillWidth,
+            ["fit-width"]: !fillWidth,
+            ["justify-" + justifyContent]: justifyContent,
+          },
+          className,
+        )}
         style={style}
         {...props}
       >

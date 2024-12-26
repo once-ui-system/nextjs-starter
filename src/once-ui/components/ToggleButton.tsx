@@ -11,7 +11,16 @@ interface CommonProps {
   selected: boolean;
   variant?: "ghost" | "outline";
   size?: "s" | "m" | "l";
-  radius?: "none" | "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-right" | "bottom-left";
+  radius?:
+    | "none"
+    | "top"
+    | "right"
+    | "bottom"
+    | "left"
+    | "top-left"
+    | "top-right"
+    | "bottom-right"
+    | "bottom-left";
   justifyContent?: "flex-start" | "center" | "flex-end" | "space-between";
   fillWidth?: boolean;
   weight?: "default" | "strong";
@@ -24,7 +33,8 @@ interface CommonProps {
   href?: string;
 }
 
-export type ToggleButtonProps = CommonProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
+export type ToggleButtonProps = CommonProps &
+  React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
   (
@@ -46,9 +56,9 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
       href,
       ...props
     },
-    ref
+    ref,
   ) => {
-    const radiusSize = size === 's' || size === 'm' ? 'm' : 'l';
+    const radiusSize = size === "s" || size === "m" ? "m" : "l";
 
     return (
       <ElementType
@@ -59,18 +69,20 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
           selected && styles.selected,
           styles[size],
           styles[variant],
-          radius === 'none'
-            ? 'radius-none'
+          radius === "none"
+            ? "radius-none"
             : radius
-            ? `radius-${radiusSize}-${radius}`
-            : `radius-${radiusSize}`,
-          'text-decoration-none',
-          'button',
+              ? `radius-${radiusSize}-${radius}`
+              : `radius-${radiusSize}`,
+          "text-decoration-none",
+          "button",
           {
-            ['fill-width']: fillWidth,
-            ['fit-width']: !fillWidth,
-            ['justify-' + justifyContent]: justifyContent
-          }, className)}
+            ["fill-width"]: fillWidth,
+            ["fit-width"]: !fillWidth,
+            ["justify-" + justifyContent]: justifyContent,
+          },
+          className,
+        )}
         style={{ ...style }}
         {...props}
       >
@@ -81,11 +93,11 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
             className={styles.icon}
           />
         )}
-        {(label || children) &&
+        {(label || children) && (
           <Flex textWeight={weight} padding="4">
             {label || children}
           </Flex>
-        }
+        )}
         {suffixIcon && (
           <Icon
             name={suffixIcon}
@@ -95,7 +107,7 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
         )}
       </ElementType>
     );
-  }
+  },
 );
 
 ToggleButton.displayName = "ToggleButton";

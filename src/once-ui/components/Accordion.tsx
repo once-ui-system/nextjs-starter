@@ -76,12 +76,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(
           }}
           aria-hidden={!isOpen}
         >
-          <Flex
-            fillWidth
-            minHeight={0}
-            overflow="hidden"
-            direction="column"
-          >
+          <Flex fillWidth minHeight={0} overflow="hidden" direction="column">
             <Flex fillWidth paddingX="20" paddingTop="8" paddingBottom="16">
               {children}
             </Flex>

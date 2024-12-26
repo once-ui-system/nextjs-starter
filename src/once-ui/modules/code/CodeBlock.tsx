@@ -36,7 +36,7 @@ interface CodeBlockProps extends React.ComponentProps<typeof Flex> {
   compact?: boolean;
   className?: string;
   style?: React.CSSProperties;
-};
+}
 
 const CodeBlock: React.FC<CodeBlockProps> = ({
   highlight,
@@ -124,7 +124,10 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                 onOpenChange={setIsDropdownOpen}
                 trigger={
                   <Button
-                    style={{ border: "1px solid var(--static-transparent)", minWidth: '6rem' }}
+                    style={{
+                      border: "1px solid var(--static-transparent)",
+                      minWidth: "6rem",
+                    }}
                     radius="none"
                     size="m"
                     label={label}
@@ -187,7 +190,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       )}
       {codeInstances.length > 0 && (
         <Flex
-          borderTop={(!compact && codePreview) ? "neutral-medium" : undefined}
+          borderTop={!compact && codePreview ? "neutral-medium" : undefined}
           fillWidth
           position="relative"
           minHeight={codeHeight}
@@ -215,8 +218,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
               />
             </Flex>
           )}
-          <Flex
-            overflowX="auto">
+          <Flex overflowX="auto">
             <pre
               data-line={highlight}
               ref={preRef}

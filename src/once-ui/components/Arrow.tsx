@@ -53,13 +53,10 @@ const Arrow: React.FC<ArrowProps> = ({
       className={classNames(styles.arrowContainer, className)}
       style={{
         transform: `scale(${scale})`,
-        ...style
+        ...style,
       }}
     >
-      <Flex
-        className={classNames(styles.arrow, styles[color])}
-        height={0.1}
-      />
+      <Flex className={classNames(styles.arrow, styles[color])} height={0.1} />
       <Flex
         className={classNames(styles.arrowHead, styles[color])}
         height={0.0875}

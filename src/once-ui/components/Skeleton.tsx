@@ -18,25 +18,30 @@ interface SkeletonProps extends React.ComponentProps<typeof Flex> {
 const Skeleton: React.FC<SkeletonProps> = forwardRef<
   HTMLDivElement,
   SkeletonProps
->(({ shape = "line", width, height, delay, style, className, ...props }, ref) => {
-  return (
-    <Flex
-      {...props}
-      ref={ref}
-      style={style}
-      radius="full"
-      inline
-      className={classNames(
-        styles.skeleton,
-        styles[shape],
-        width && styles["w-" + width],
-        height && styles["h-" + height],
-        delay && styles["delay-" + delay],
-        className,
-      )}
-    />
-  );
-});
+>(
+  (
+    { shape = "line", width, height, delay, style, className, ...props },
+    ref,
+  ) => {
+    return (
+      <Flex
+        {...props}
+        ref={ref}
+        style={style}
+        radius="full"
+        inline
+        className={classNames(
+          styles.skeleton,
+          styles[shape],
+          width && styles["w-" + width],
+          height && styles["h-" + height],
+          delay && styles["delay-" + delay],
+          className,
+        )}
+      />
+    );
+  },
+);
 
 Skeleton.displayName = "Skeleton";
 
