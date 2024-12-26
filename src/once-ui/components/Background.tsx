@@ -33,7 +33,9 @@ interface GradientProps {
   opacity?: DisplayProps["opacity"];
   x?: number;
   y?: number;
-  radius?: number;
+  width?: number;
+  height?: number;
+  tilt?: number;
   colorStart?: string;
   colorEnd?: string;
 }
@@ -45,16 +47,25 @@ interface DotsProps {
   size?: SpacingToken;
 }
 
+interface GridProps {
+  display?: boolean;
+  opacity?: DisplayProps["opacity"];
+  color?: string;
+  width?: string;
+  height?: string;
+}
+
 interface LinesProps {
   display?: boolean;
   opacity?: DisplayProps["opacity"];
   size?: SpacingToken;
 }
 
-interface BackgroundProps {
+interface BackgroundProps extends React.ComponentProps<typeof Flex> {
   position?: CSSProperties["position"];
   gradient?: GradientProps;
   dots?: DotsProps;
+  grid?: GridProps;
   lines?: LinesProps;
   mask?: MaskProps;
   className?: string;
@@ -67,10 +78,12 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       position = "fixed",
       gradient = {},
       dots = {},
+      grid = {},
       lines = {},
       mask = {},
       className,
       style,
+      ...rest
     },
     forwardedRef,
   ) => {
@@ -156,32 +169,45 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       return {};
     };
 
-    const sharedFlexProps = {
-      position,
-      top: "0" as SpacingToken,
-      left: "0" as SpacingToken,
-      zIndex: 0 as DisplayProps["zIndex"],
-      fill: true,
-      ref: backgroundRef,
+    const remap = (value: number, inputMin: number, inputMax: number, outputMin: number, outputMax: number) => {
+      return ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) + outputMin;
     };
+    
+    const adjustedX = gradient.x != null ? remap(gradient.x, 0, 100, 37.5, 62.5) : 50;
+    const adjustedY = gradient.y != null ? remap(gradient.y, 0, 100, 37.5, 62.5) : 50;    
 
     return (
-      <>
+      <Flex
+        ref={backgroundRef}
+        fill
+        position={position}
+        className={classNames(
+          mask && styles.mask,
+          className)}
+        top="0"
+        left="0"
+        zIndex={0}
+        overflow="hidden"
+        style={{
+          ...maskStyle(),
+          ...styles
+        }}
+        {...rest}>
         {gradient.display && (
           <Flex
-            {...sharedFlexProps}
-            className={classNames(
-              styles.gradient,
-              mask && styles.mask,
-              className
-            )}
+            position="absolute"
+            top="0"
+            left="0"
+            fill
+            className={styles.gradient}
             opacity={gradient.opacity}
             style={{
               ...commonStyles,
-              ...maskStyle(),
-              ["--gradient-position-x" as string]: gradient.x != null ? `${gradient.x}%` : "50%",
-              ["--gradient-position-y" as string]: gradient.y != null ? `${gradient.y}%` : "50%",
-              ["--gradient-radius" as string]: gradient.radius != null ? `${gradient.radius}% ${gradient.radius}%` : "100% 100%",
+              ["--gradient-position-x" as string]: `${adjustedX}%`,
+              ["--gradient-position-y" as string]: `${adjustedY}%`,
+              ["--gradient-width" as string]: gradient.width != null ? `${gradient.width / 4}%` : "25%",
+              ["--gradient-height" as string]: gradient.height != null ? `${gradient.height / 4}%` : "25%",
+              ["--gradient-tilt" as string]: gradient.tilt != null ? `${gradient.tilt}deg` : "0deg",
               ["--gradient-color-start" as string]: gradient.colorStart ? `var(--${gradient.colorStart})` : "var(--brand-alpha-strong)",
               ["--gradient-color-end" as string]: gradient.colorEnd ? `var(--${gradient.colorEnd})` : "var(--brand-alpha-weak)",
             }}
@@ -189,7 +215,10 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         )}
         {dots.display && (
           <Flex
-            {...sharedFlexProps}
+            position="absolute"
+            top="0"
+            left="0"
+            fill
             className={classNames(
               styles.dots,
               mask && styles.mask,
@@ -200,13 +229,15 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
               ...commonStyles,
               backgroundImage: `radial-gradient(var(--${dotsColor}) 0.5px, var(--static-transparent) 0.5px)`,
               backgroundSize: `${dotsSize} ${dotsSize}`,
-              ...maskStyle(),
             }}
           />
         )}
         {lines.display && (
           <Flex
-            {...sharedFlexProps}
+            position="absolute"
+            top="0"
+            left="0"
+            fill
             className={classNames(
               styles.lines,
               mask && styles.mask,
@@ -216,11 +247,45 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             style={{
               ...commonStyles,
               backgroundImage: `repeating-linear-gradient(45deg, var(--brand-on-background-weak) 0, var(--brand-on-background-weak) 0.5px, var(--static-transparent) 0.5px, var(--static-transparent) ${dots.size})`,
-              ...maskStyle(),
             }}
           />
         )}
-      </>
+        {grid.display && (
+          <Flex
+            position="absolute"
+            top="0"
+            left="0"
+            fill
+            className={classNames(
+              styles.grid,
+              mask && styles.mask,
+              className
+            )}
+            opacity={grid.opacity}
+            style={{
+              ...commonStyles,
+              backgroundSize: `${grid.width || '32px'} ${grid.height || '32px'}`, 
+              backgroundPosition: '0 0',
+              backgroundImage: `
+                linear-gradient(
+                  90deg,
+                  var(--${grid.color || 'brand-on-background-weak'}) 0,
+                  var(--${grid.color || 'brand-on-background-weak'}) 1px,
+                  var(--static-transparent) 1px,
+                  var(--static-transparent) ${grid.width || '32px'}
+                ),
+                linear-gradient(
+                  0deg,
+                  var(--${grid.color || 'brand-on-background-weak'}) 0,
+                  var(--${grid.color || 'brand-on-background-weak'}) 1px,
+                  var(--static-transparent) 1px,
+                  var(--static-transparent) ${grid.height || '32px'}
+                )
+              `,
+            }}
+          />
+        )}
+      </Flex>
     );
   },
 );

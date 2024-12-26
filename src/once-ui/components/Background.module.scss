@@ -1,11 +1,15 @@
 .gradient {
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
   background: radial-gradient(
-    var(--gradient-radius) at var(--gradient-position-x) var(--gradient-position-y),
-    var(--gradient-color-start) 0%,
-    var(--gradient-color-end) 100%
-  );
+        ellipse var(--gradient-width) var(--gradient-height) at var(--gradient-position-x) var(--gradient-position-y),
+        var(--gradient-color-start),
+        var(--gradient-color-end)
+      );
+  width: 400%;
+  height: 400%;
+  left: -150%;
+  top: -150%;
+  transform: rotate(var(--gradient-tilt));
+  transform-origin: center;
 }
 
 .mask {
