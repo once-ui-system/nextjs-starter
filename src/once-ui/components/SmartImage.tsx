@@ -115,6 +115,8 @@ const SmartImage: React.FC<SmartImageProps> = ({
         cursor={enlarge ? "interactive" : ''}
         style={{
           outline: "none",
+          isolation: "isolate",
+          zIndex: 0,
           height: aspectRatio ? '' : height ? `${height}rem` : "100%",
           aspectRatio,
           borderRadius: isEnlarged
