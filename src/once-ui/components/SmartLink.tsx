@@ -8,6 +8,7 @@ import { ElementType } from "./ElementType";
 interface CommonProps {
   prefixIcon?: string;
   suffixIcon?: string;
+  fillWidth?: boolean;
   iconSize?: "xs" | "s" | "m" | "l" | "xl";
   selected?: boolean;
   unstyled?: boolean;
@@ -26,6 +27,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
       href,
       prefixIcon,
       suffixIcon,
+      fillWidth = false,
       iconSize = "xs",
       style,
       className,
@@ -47,9 +49,11 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
     const commonProps = {
       ref,
       className: classNames(
-        className || "",
-        "fit-width align-items-center display-inline-flex g-8 radius-s",
+        className,
+        "align-items-center display-inline-flex g-8 radius-s",
         {
+          "fill-width" : fillWidth,
+          "fit-width": !fillWidth,
           "px-4 mx-4": !unstyled,
         },
       ),
