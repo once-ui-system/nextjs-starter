@@ -54,7 +54,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
     },
     ref,
   ) => {
-    const iconSize = size === "l" ? "m" : size === "m" ? "s" : "xs";
+    const iconSize = size === "l" ? "s" : size === "m" ? "s" : "xs";
 
     const content = (
       <>
@@ -63,7 +63,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
         <Flex paddingX="4" paddingY="0" textWeight={weight} textSize={size} className="font-label">
           {label || children}
         </Flex>
-        {arrowIcon && <Arrow style={{ marginLeft: "calc(-1 * var(--static-space-4))" }} trigger={'#' + id} scale={size === "s" ? 0.8 : size === "m" ? 0.9 : 1} />}
+        {arrowIcon && <Arrow style={{ marginLeft: "calc(-1 * var(--static-space-4))" }} trigger={'#' + id} scale={size === "s" ? 0.8 : size === "m" ? 0.9 : 1} color={variant === "primary" ? "onSolid" : "onBackground"} />}
         {suffixIcon && <Icon name={suffixIcon} size={iconSize} />}
       </>
     );
