@@ -171,6 +171,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
             )}
           </>
         )}
+        {children}
         <Flex
           className={styles.upload}
           zIndex={1}
@@ -190,7 +191,6 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
             </Text>
           )}
         </Flex>
-        {children}
         <input
           type="file"
           ref={inputRef}
