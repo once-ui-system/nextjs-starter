@@ -118,11 +118,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </head>
-      <Flex as="body" fill margin="0" padding="0">
+      <Flex as="body" fillWidth direction="column" margin="0" padding="0">
         <Background
-          position="fixed"
+          position="absolute"
           mask={{
-            cursor: true,
+            x: 100,
+            y:0,
             radius: 100
           }}
           dots={{
@@ -132,17 +133,24 @@ export default function RootLayout({
           }}
           gradient={{
             display: true,
-            x: 80,
-            y: 20,
-            radius: 50,
+            x: 100,
+            y: 60,
+            width: 70,
+            height: 50,
+            tilt: -40,
             opacity: 90,
-            colorStart: "brand-background-strong",
-            colorEnd: "accent-background-medium"
+            colorStart: "neutral-background-strong",
+            colorEnd: "page-background",
+          }}
+          grid={{
+            display: true,
+            opacity: 100,
+            width: "0.25rem",
+            color: "neutral-alpha-medium",
+            height: "0.25rem",
           }}
         />
-        <Flex flex={1} fillWidth direction="column" position="relative">
-          {children}
-        </Flex>
+        {children}
       </Flex>
     </Flex>
   );

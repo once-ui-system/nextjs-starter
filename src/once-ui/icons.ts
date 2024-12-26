@@ -26,7 +26,7 @@ import {
   HiCheckCircle,
 } from "react-icons/hi2";
 
-import { FaDiscord, FaGithub } from "react-icons/fa6";
+import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa6";
 
 export const iconLibrary: Record<string, IconType> = {
   chevronUp: HiChevronUp,
@@ -46,6 +46,7 @@ export const iconLibrary: Record<string, IconType> = {
   close: HiMiniXMark,
   openLink: HiOutlineLink,
   discord: FaDiscord,
+  google: FaGoogle,
   github: FaGithub,
   arrowUpRight: HiArrowUpRight,
   minus: HiMiniMinus,

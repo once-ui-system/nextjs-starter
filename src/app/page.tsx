@@ -30,10 +30,12 @@ import {
   Feedback,
   GlitchFx,
   SmartImage,
+  Line,
   UserMenu,
   Tag,
   DatePicker,
   DateInput,
+  Background,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select, NumberInput } from "@/once-ui/components";
@@ -72,121 +74,239 @@ export default function Home() {
   return (
     <Flex
       fillWidth
-      paddingTop="l"
+      paddingTop="104"
       paddingX="l"
       direction="column"
       alignItems="center"
       flex={1}
     >
-       <Fade pattern={{display: true, size: "4"}} position="fixed" top="0" left="0" zIndex={2} to="bottom" height={8} fillWidth blur={0.25} base="page"></Fade>
-      <MediaUpload maxWidth={24} height={12} radius="xs"/>
+      <Fade
+        zIndex={3}
+        pattern={{
+          display: true,
+          size: "4"
+        }}
+        position="fixed"
+        top="0"
+        left="0"
+        to="bottom"
+        height={5}
+        fillWidth
+        blur={0.25}>
+      </Fade>
+      <Flex
+        position="fixed" top="0" fillWidth justifyContent="center" zIndex={3}>
+        <Flex justifyContent="space-between" maxWidth="m" paddingX="24"
+        paddingY="16">
+        <Logo
+          size="m"
+          icon={false}
+          href="https://once-ui.com"
+        />
+        <Flex gap="12">
+          <Button
+            href="https://github.com/once-ui-system/nextjs-starter"
+            prefixIcon="github"
+            size="s"
+            weight="default"
+            variant="tertiary"
+          >
+            GitHub
+          </Button>
+          <Button
+            href="https://discord.com/invite/5EyAQ4eNdS"
+            prefixIcon="discord"
+            size="s"
+            weight="default"
+            variant="tertiary"
+          >
+            Discord
+          </Button>
+          </Flex>
+        </Flex>
+      </Flex>
       <Flex
         position="relative"
         as="section"
-        fillWidth
-        minHeight="0"
-        maxWidth={68}
+        maxWidth="m"
         direction="column"
         alignItems="center"
-        flex={1}
       >
-        <Flex
-          as="main"
-          direction="column"
-          justifyContent="center"
-          fillWidth
-          fillHeight
-          padding="l"
-          gap="l"
-        >
-          <Flex mobileDirection="column" fillWidth gap="24">
-            <Flex position="relative" flex={2} paddingTop="56" paddingX="xl">
-              <Logo
-                size="xl"
-                icon={false}
-                style={{ zIndex: "1" }}
-                href="https://once-ui.com"
-              />
-            </Flex>
-            <Flex
-              position="relative"
-              flex={4}
-              gap="24"
-              marginBottom="104"
-              direction="column"
-            >
-              <InlineCode
-                shadow="m"
-                fit
-                paddingX="16"
-                paddingY="8"
-              >
-                Start by editing
-                <Text onBackground="brand-medium">app/page.tsx</Text>
-              </InlineCode>
-              <Heading wrap="balance" variant="display-strong-s">
-                <span className="font-code">
-                  <LetterFx trigger="instant">
-                    Helping designers code and developers design
-                  </LetterFx>
-                </span>
-              </Heading>
-              <Button
-                id="readDocs"
-                href="https://once-ui.com/docs"
-                variant="secondary"
-                arrowIcon
-              >
-                  Read docs
-              </Button>
-            </Flex>
-          </Flex>
-          <CodeBlock
-            codeInstances={[
-              {
-                code: "import { Button } from\n '@once-ui/components'",
-                language: "tsx",
-                label: "Button",
-              },
-            ]}
-            highlight="2"
-            />
-          <Tag marginTop="80" size="l" variant="gradient" label="Cool cool"/>
-          <Grid
-            radius="l"
-            border="neutral-medium"
-            columns="repeat(3, 1fr)"
-            tabletColumns="1col"
-            mobileColumns="1col"
+        <Flex position="relative" fillWidth direction="column">
+          <Flex
+            overflow="hidden"
+            as="main"
+            direction="column"
+            gap="24"
+            topRadius="xl"
+            alignItems="center"
+            border="neutral-alpha-weak"
             fillWidth
           >
-            {links.map((link) => (
-              <Link
-                target="_blank"
-                style={{ padding: "var(--responsive-space-l)" }}
-                key={link.href}
-                href={link.href}
+            <Flex fillWidth direction="column" alignItems="center" gap="48" paddingY="80"
+            paddingX="32" position="relative">
+            <Background
+              mask={{
+                x: 0,
+                y: 40,
+              }}
+              position="absolute"
+              grid={{
+                display: true,
+                width: "0.25rem",
+                color: "neutral-alpha-medium",
+                height: "0.25rem",
+              }}
+            />
+            <Background
+              mask={{
+                x: 100,
+                y: 0,
+                radius: 100
+              }}
+              position="absolute"
+              gradient={{
+                display: true,
+                tilt: -35,
+                height: 50,
+                width: 75,
+                x: 100,
+                y: 40,
+                colorStart: "accent-solid-weak",
+                colorEnd: "static-transparent",
+              }}
+            />
+            <Background
+              mask={{
+                x: 100,
+                y: 0,
+                radius: 100
+              }}
+              position="absolute"
+              gradient={{
+                display: true,
+                opacity: 100,
+                tilt: -35,
+                height: 40,
+                width: 75,
+                x: 100,
+                y: 55,
+                colorStart: "warning-solid-strong",
+                colorEnd: "static-transparent",
+              }}
+            />
+            <Flex fillWidth direction="column" alignItems="center" gap="24" position="relative">
+            <InlineCode
+              shadow="m"
+              fit
+              paddingX="16"
+              paddingY="8"
+            >
+              Start by editing
+              <Text onBackground="brand-medium" marginLeft="8">app/page.tsx</Text>
+            </InlineCode>
+            <Heading wrap="balance" variant="display-default-l" align="center" marginBottom="16">
+                Once UI is like Typescript for design
+            </Heading>
+            <Button
+              id="readDocs"
+              target="_blank"
+              label="Open docs"
+              href="https://once-ui.com/docs"
+              variant="secondary"
+              arrowIcon
+            />
+             <Flex
+                marginTop="48"
+                border="neutral-medium"
+                radius="xl"
+                mobileDirection="column"
+                fillWidth
               >
-                <Flex fillWidth paddingY="8" gap="8" direction="column">
-                  <Flex fillWidth gap="12" alignItems="center">
-                    <Text variant="body-strong-m" onBackground="neutral-strong">
-                      {link.title}
-                    </Text>
-                    <Icon size="s" name="arrowUpRight" />
-                  </Flex>
-                  <Text variant="body-default-s" onBackground="neutral-weak">
-                    {link.description}
-                  </Text>
-                </Flex>
-              </Link>
-            ))}
-          </Grid>
+                {links.map((link) => (
+                  <SmartLink
+                    style={{width: '100%'}}
+                    target="_blank"
+                    key={link.href}
+                    href={link.href}
+                  >
+                    <Flex fillWidth padding="40" gap="8" direction="column">
+                      <Flex fillWidth gap="12" alignItems="center">
+                        <Text variant="body-strong-m" onBackground="neutral-strong">
+                          {link.title}
+                        </Text>
+                        <Icon size="s" name="arrowUpRight" />
+                      </Flex>
+                      <Text variant="body-default-s" onBackground="neutral-weak">
+                        {link.description}
+                      </Text>
+                    </Flex>
+                  </SmartLink>
+                ))}
+              </Flex>
+            </Flex>
+              <Flex fillWidth>
+              <Heading as="h2" variant="display-default-xs">
+                Showcase
+              </Heading>
+              </Flex>
+              <Feedback icon>This is a quick preview of Once UI components, not a comprehensive list.</Feedback>
+            <Flex fillWidth direction="column" negativeGap="1">
+              <SmartImage topRadius="l" border="neutral-medium" shadow="xl" alt="image" src="/images/cover.png" priority aspectRatio="16 / 9"/>
+              <Textarea id="Alt text" label="Alt text" radius="bottom" lines="auto"/>
+            </Flex>
+            </Flex>
+            <Flex fillWidth direction="column" alignItems="center" gap="20">
+              <Logo wordmark={false} size="l"/>
+              <Heading as="h3" variant="display-default-s">Welcome to Once UI</Heading>
+              <Text onBackground="neutral-medium" marginBottom="24">Log in or<SmartLink href="/">sign up</SmartLink></Text>
+              <Flex fillWidth direction="column" gap="8">
+              <Button label="Continue with Google" fillWidth variant="secondary" weight="default" prefixIcon="google" size="l"/>
+              <Button label="Continue with GitHub" fillWidth variant="secondary" weight="default" prefixIcon="github" size="l"/>
+              </Flex>
+              <Flex fillWidth paddingY="24">
+                <Flex onBackground="neutral-weak" fillWidth gap="24" alignItems="center"><Line/>/<Line/></Flex></Flex>
+            <Flex direction="column" negativeGap="1" fillWidth>
+              <Input id="email" label="Email" labelAsPlaceholder radius="top"/>
+              <PasswordInput id="password" label="Password" labelAsPlaceholder radius="bottom"/>
+            </Flex>
+            <Button id="login" label="Log in" arrowIcon fillWidth/>
+            </Flex>
+          </Flex>
+            <MediaUpload maxWidth={24} height={12} radius="xs"/>
+          <CodeBlock
+            highlight="2-3,5"
+            codePreview={<Button>lol</Button>}
+            codeInstances={[
+              {
+                code: 
+`<Button>lol</Button>
+<Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button><Button>lol</Button>
+<Button>lol</Button>
+<Button>lol</Button>
+<Button>lol</Button>
+<Button>lol</Button>`,
+                language: "tsx",
+                label: "tsx",
+              },
+              {
+                code: 
+`<Button>lol</Button>
+<Button>lol</Button>
+<Button>lol</Button>
+<Button>lol</Button>
+<Button>lol</Button>
+<Button>lol</Button>`,
+                language: "css",
+                label: "css",
+              }
+            ]}/>
+          <Tag marginTop="80" size="l" variant="gradient" label="Cool cool"/>
           Work in progress
           <Icon name="check" radius="full" background="brand-medium" padding="20"></Icon>
           <Feedback fillWidth title="Hey" marginTop="24" icon description="lolz" background="neutral-alpha-weak" radius={undefined} topRadius="l"/>
           <Button onClick={() => setIsFirstDialogOpen(true)}>Open First Dialog</Button>
           <Dialog
-            maxWidth={120}
             isOpen={isFirstDialogOpen}
             onClose={() => setIsFirstDialogOpen(false)}
             title="First Dialog"
@@ -204,7 +324,6 @@ export default function Home() {
           </Dialog>
 
           <Dialog
-            maxWidth={120}
             isOpen={isSecondDialogOpen}
             onClose={() => setIsSecondDialogOpen(false)}
             title="Second Dialog"
@@ -246,7 +365,6 @@ export default function Home() {
             onSelect={handleSelect}
           />
           </Dialog>
-          <SmartImage border="neutral-alpha-weak" shadow="xl" alt="image" marginTop="80" src="/images/cover.png" enlarge priority radius="xl" aspectRatio="16 / 9"/>
           <SmartLink prefixIcon="check" href="https://once-ui.com/docs">Docs</SmartLink>
           <Skeleton marginTop="40" shape="line" width="l" height="l"/>
           <Flex fillWidth direction="column" radius="xl" overflow="hidden" border="neutral-medium">
@@ -418,7 +536,6 @@ export default function Home() {
             <Input hasPrefix={<Icon name="check"/>} radius="top" id="input" label="Label"/>
             <Input radius="none" id="input-2" label="Label"/>
             <Input radius="none" id="input-2" label="Label"/>
-            <Textarea id="textarea" label="Label" radius="bottom"/>
           </Flex>
           
           <Flex fillWidth direction="column" gap="24">
@@ -630,12 +747,9 @@ export default function Home() {
       </Flex>
       <Flex
         as="footer"
-        position="relative"
         fillWidth
         paddingX="l"
         paddingY="m"
-        justifyContent="space-between"
-        mobileDirection="column"
       >
         <Text variant="body-default-s" onBackground="neutral-medium">
           2024 Once UI /{" "}
@@ -643,26 +757,6 @@ export default function Home() {
             MIT License
           </Link>
         </Text>
-        <Flex gap="12">
-          <Button
-            href="https://github.com/once-ui-system/nextjs-starter"
-            prefixIcon="github"
-            size="s"
-            weight="default"
-            variant="tertiary"
-          >
-            GitHub
-          </Button>
-          <Button
-            href="https://discord.com/invite/5EyAQ4eNdS"
-            prefixIcon="discord"
-            size="s"
-            weight="default"
-            variant="tertiary"
-          >
-            Discord
-          </Button>
-        </Flex>
       </Flex>
     </Flex>
   );
