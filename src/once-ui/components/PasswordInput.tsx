@@ -20,6 +20,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
             variant="ghost"
             icon={showPassword ? "eyeOff" : "eye"}
             size="s"
+            type="button"
           />
         }
       />
