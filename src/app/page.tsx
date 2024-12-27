@@ -77,7 +77,7 @@ export default function Home() {
   return (
     <Flex
       fillWidth
-      paddingY="80"
+      paddingTop="80"
       paddingX="l"
       direction="column"
       alignItems="center"
@@ -148,7 +148,7 @@ export default function Home() {
             overflow="hidden"
             as="main"
             direction="column"
-            radius="xl"
+            topRadius="xl"
             alignItems="center"
             border="neutral-alpha-weak"
             fillWidth
@@ -230,7 +230,7 @@ export default function Home() {
                   align="center"
                   marginBottom="16"
                 >
-                  Once UI is like Typescript for design
+                  Once UI is like TypeScript for design
                 </Heading>
                 <Button
                   id="readDocs"
@@ -240,14 +240,43 @@ export default function Home() {
                   variant="secondary"
                   arrowIcon
                 />
+                <Flex alignItems="center" paddingTop="64" fillWidth gap="24" direction="column">
+                <Line maxWidth={4} marginBottom="16"/>
+                <AvatarGroup
+                  marginBottom="8"
+                  reverse
+                  size="s"
+                  avatars={[
+                    { src: "/images/l.jpg" },
+                    { src: "/images/z.jpg" },
+                  ]}/>
+                <Heading
+                  marginBottom="12"
+                  as="h2"
+                  align="center"
+                  variant="heading-default-l">
+                  Brought to you by indie creators<br/> behind stellar projects:
+                </Heading>
+                <LogoCloud
+                  paddingBottom="128"
+                  limit={3}
+                  fillWidth
+                  logos={[
+                    { icon: false, wordmarkSrc: "/trademark/dopler-wordmark.svg",  size: "m" },
+                    { icon: false, wordmarkSrc: "/trademark/design-engineers-wordmark.svg", size: "m" },
+                    { icon: false, wordmarkSrc: "/trademark/enroll-wordmark.svg",  size: "m" },
+                    { icon: false, wordmarkSrc: "/trademark/magic-portfolio-wordmark.svg", size: "m" },
+                    { icon: false, size: "m" },
+                  ]}
+                  columns="repeat(3, 1fr)"
+                />
+                </Flex>
                 <Flex
-                  marginTop="48"
-                  mobileDirection="column"
                   fillWidth
                   overflow="hidden"
                 >
-                  <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
-                  <Flex fillWidth border="neutral-alpha-weak">
+                  <Flex hide="s" maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
+                  <Flex fillWidth border="neutral-alpha-weak" mobileDirection="column">
                   {links.map((link, index) => (
                     <SmartLink
                       unstyled
@@ -277,40 +306,10 @@ export default function Home() {
                     </SmartLink>
                   ))}
                   </Flex>
-                  <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
+                  <Flex hide="s" maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
                 </Flex>
               </Flex>
-              <Flex fillWidth paddingX="32" paddingTop="64" gap="12" direction="column" alignItems="center" position="relative">
-                <AvatarGroup
-                  reverse
-                  avatars={[
-                    { src: "/images/l.jpg" },
-                    { src: "/images/z.jpg" },
-                  ]}/>
-                <Heading
-                  marginBottom="32"
-                  as="h2"
-                  align="center"
-                  variant="heading-default-l">
-                  Brought to you by indie creators<br/> behind amazing projects:
-                </Heading>
-                <LogoCloud
-                  paddingBottom="104"
-                  limit={3}
-                  fillWidth
-                  logos={[
-                    { icon: false, wordmarkSrc: "/trademark/design-engineers-wordmark.svg", size: "m" },
-                    { icon: false, wordmarkSrc: "/trademark/enroll-wordmark.svg",  size: "m" },
-                    { icon: false, wordmarkSrc: "/trademark/magic-portfolio-wordmark.svg", size: "m" },
-                    { icon: false, size: "m" },
-                    { icon: false, wordmarkSrc: "/trademark/dopler-wordmark.svg",  size: "m" },
-                    { icon: false, wordmarkSrc: "/trademark/design-engineers-wordmark.svg", size: "m" },
-                    { icon: false, wordmarkSrc: "/trademark/enroll-wordmark.svg", size: "m" },
-                    { icon: false, size: "m" },
-                    { icon: false, wordmarkSrc: "/trademark/dopler-wordmark.svg",  size: "m" },
-                  ]}
-                  columns="repeat(3, 1fr)"
-                />
+              <Flex fillWidth paddingTop="64" paddingX="32" gap="12" direction="column" alignItems="center" position="relative">
                 <Heading as="h2" variant="display-default-m">
                   Showcase
                 </Heading>
