@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./HoloFx.module.scss";
 import { Flex } from ".";
 import { CSSProperties } from "react";
+import classNames from "classnames";
 
 interface MaskOptions {
   maskPosition?: string;
@@ -48,21 +49,20 @@ const HoloFx: React.FC<HoloFxProps> = ({
   light,
   burn,
   texture,
-  ...props
+  ...rest
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
   let lastCall = 0;
 
   const lightDefaults = {
-    opacity: 0.3,
+    opacity: 30,
     blending: "color-dodge" as CSSProperties["mixBlendMode"],
     mask: getMaskStyle(light?.mask),
     ...light,
   };
 
   const burnDefaults = {
-    opacity: 0.3,
+    opacity: 30,
     filter: "brightness(0.2) contrast(2)",
     blending: "color-dodge" as CSSProperties["mixBlendMode"],
     mask: getMaskStyle(burn?.mask),
@@ -70,7 +70,7 @@ const HoloFx: React.FC<HoloFxProps> = ({
   };
 
   const textureDefaults = {
-    opacity: 0.1,
+    opacity: 10,
     blending: "color-dodge" as CSSProperties["mixBlendMode"],
     image:
       "repeating-linear-gradient(-45deg, var(--static-white) 0, var(--static-white) 1px, transparent 3px, transparent 2px)",
@@ -111,27 +111,22 @@ const HoloFx: React.FC<HoloFxProps> = ({
   return (
     <Flex
       position="relative"
-      style={{ overflow: "hidden" }}
-      zIndex={0}
+      overflow="hidden"
+      className={styles.holoFx}
       ref={ref}
-      className={styles.HoloFx}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      {...props}
+      {...rest}
     >
-      <Flex fillWidth fillHeight className={styles.base}>
+      <Flex fill className={styles.base}>
         {children}
       </Flex>
       <Flex
+        hide="m"
         position="absolute"
-        fillWidth
-        fillHeight
-        className={styles.overlay1}
+        fill
+        pointerEvents="none"
+        className={classNames(styles.overlay, styles.burn)}
         style={{
-          transform: "translateX(1px) translateY(1px)",
-          pointerEvents: "none",
-          opacity: isHovered ? burnDefaults.opacity : 0,
-          transition: "opacity 0.3s ease-in-out",
+          ['--burn-opacity' as any]: burnDefaults.opacity + '%',
           filter: burnDefaults.filter,
           mixBlendMode: burnDefaults.blending,
           maskImage: burnDefaults.mask as string,
@@ -140,15 +135,13 @@ const HoloFx: React.FC<HoloFxProps> = ({
         {children}
       </Flex>
       <Flex
+        hide="m"
         position="absolute"
-        fillWidth
-        fillHeight
-        className={styles.overlay1}
+        fill
+        pointerEvents="none"
+        className={classNames(styles.overlay, styles.light)}
         style={{
-          transform: "translateX(-1px) translateY(-1px)",
-          pointerEvents: "none",
-          opacity: isHovered ? lightDefaults.opacity : 0,
-          transition: "opacity 0.3s ease-in-out",
+          ['--light-opacity' as any]: lightDefaults.opacity + '%',
           filter: lightDefaults.filter,
           mixBlendMode: lightDefaults.blending,
           maskImage: lightDefaults.mask as string,
@@ -157,17 +150,14 @@ const HoloFx: React.FC<HoloFxProps> = ({
         {children}
       </Flex>
       <Flex
+        hide="m"
         position="absolute"
-        fillWidth
-        fillHeight
-        className={styles.overlay2}
+        fill
+        pointerEvents="none"
+        className={classNames(styles.overlay, styles.texture)}
         style={{
-          pointerEvents: "none",
-          opacity: isHovered ? textureDefaults.opacity : 0,
+          ['--texture-opacity' as any]: textureDefaults.opacity + '%',
           backgroundImage: textureDefaults.image,
-          backgroundSize: "150% 150%",
-          backgroundPosition: "center",
-          transform: `translateX(calc(var(--gradient-pos-x) / 50))`,
           filter: textureDefaults.filter,
           mixBlendMode: textureDefaults.blending,
           maskImage: textureDefaults.mask as string,
