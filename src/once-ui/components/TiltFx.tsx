@@ -6,15 +6,19 @@ import { Flex } from ".";
 
 interface TiltFxProps extends React.ComponentProps<typeof Flex> {
   children: React.ReactNode;
-  style?: React.CSSProperties;
 }
 
-const TiltFx: React.FC<TiltFxProps> = ({ children, style, ...props }) => {
+const TiltFx: React.FC<TiltFxProps> = ({
+  children,
+  ...rest
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   let lastCall = 0;
   let resetTimeout: NodeJS.Timeout;
 
-  const handleMouseMove = (event: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if ('ontouchstart' in window) return;
+
     clearTimeout(resetTimeout);
 
     const now = Date.now();
@@ -25,8 +29,8 @@ const TiltFx: React.FC<TiltFxProps> = ({ children, style, ...props }) => {
     if (!element) return;
 
     const rect = element.getBoundingClientRect();
-    const offsetX = event.clientX - rect.left;
-    const offsetY = event.clientY - rect.top;
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
 
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
@@ -43,6 +47,8 @@ const TiltFx: React.FC<TiltFxProps> = ({ children, style, ...props }) => {
   };
 
   const handleMouseLeave = () => {
+    if ('ontouchstart' in window) return;
+
     const element = ref.current;
     if (element) {
       resetTimeout = setTimeout(() => {
@@ -55,15 +61,11 @@ const TiltFx: React.FC<TiltFxProps> = ({ children, style, ...props }) => {
   return (
     <Flex
       ref={ref}
-      className={styles.TiltFx}
+      overflow="hidden"
+      className={styles.tiltFx}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
-        transition: "transform 0.3s ease-out",
-        overflow: "hidden",
-        ...style,
-      }}
-      {...props}
+      {...rest}
     >
       {children}
     </Flex>
