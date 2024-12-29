@@ -32,7 +32,6 @@ interface CodeBlockProps extends React.ComponentProps<typeof Flex> {
   codeInstances?: CodeInstance[];
   codePreview?: ReactNode;
   copyButton?: boolean;
-  codeHeight?: number;
   compact?: boolean;
   className?: string;
   style?: React.CSSProperties;
@@ -44,7 +43,6 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   codePreview,
   copyButton = true,
   compact = false,
-  codeHeight,
   className,
   style,
   ...rest
@@ -195,8 +193,6 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           borderTop={!compact && codePreview ? "neutral-medium" : undefined}
           fillWidth
           position="relative"
-          minHeight={codeHeight}
-          overflowY={codeHeight ? "auto" : "unset"}
         >
           {compact && copyButton && (
             <Flex
