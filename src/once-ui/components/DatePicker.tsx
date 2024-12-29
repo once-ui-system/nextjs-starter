@@ -376,7 +376,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
           ) : (
             <Grid
               className="fit-width"
-              columns="repeat(7, 1fr)"
+              columns="7"
               gap={size === "l" ? "8" : "4"}
             >
               {dayNames.map((day) => (
