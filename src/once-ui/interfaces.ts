@@ -13,19 +13,18 @@ import {
 } from "./types";
 
 export interface GridProps extends HTMLAttributes<HTMLDivElement> {
-  columns?: number | string;
-  rows?: number | string;
-  tabletColumns?: "1col" | "2col" | "3col";
-  mobileColumns?: "1col" | "2col" | "3col";
-  tabletRows?: number | string;
-  mobileRows?: number | string;
+  columns?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
+  rows?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
+  tabletColumns?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
+  mobileColumns?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
+  tabletRows?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
+  mobileRows?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
 }
 
 export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   direction?: "row" | "column";
   justifyContent?: CSSProperties["justifyContent"];
   alignItems?: CSSProperties["alignItems"];
-  inline?: boolean;
   wrap?: boolean;
   flex?: number;
   tabletDirection?: "row" | "column";
@@ -141,6 +140,7 @@ export interface ConditionalProps extends HTMLAttributes<HTMLDivElement> {
 
 export interface DisplayProps extends HTMLAttributes<HTMLDivElement> {
   as?: ElementType;
+  inline?: boolean;
   pointerEvents?: "none" | "all" | "auto";
   position?: CSSProperties["position"];
   overflow?: CSSProperties["overflow"];
