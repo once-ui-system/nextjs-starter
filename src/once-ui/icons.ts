@@ -26,6 +26,8 @@ import {
   HiCheckCircle,
 } from "react-icons/hi2";
 
+import { RiVisaLine } from "react-icons/ri";
+
 import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa6";
 
 export const iconLibrary: Record<string, IconType> = {
@@ -55,4 +57,5 @@ export const iconLibrary: Record<string, IconType> = {
   eye: HiOutlineEye,
   eyeOff: HiOutlineEyeSlash,
   search: HiOutlineMagnifyingGlass,
+  visa: RiVisaLine,
 };

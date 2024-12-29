@@ -37,19 +37,26 @@ import {
   DateInput,
   LogoCloud,
   Background,
+  useToast,
   Card,
   Scroller,
+  StatusIndicator,
+  TiltFx,
+  HoloFx,
+  IconButton,
 } from "@/once-ui/components";
 import Link from "next/link";
 import { Select, NumberInput } from "@/once-ui/components";
 import { Fade } from "@/once-ui/components/Fade";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
+import { TbBackground } from "react-icons/tb";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
   const [isFirstDialogOpen, setIsFirstDialogOpen] = useState(false);
   const [isSecondDialogOpen, setIsSecondDialogOpen] = useState(false);
   const [firstDialogHeight, setFirstDialogHeight] = useState<number>();
+  const { addToast } = useToast();
 
   const handleSelect = (value: string) => {
     console.log("Selected option:", value);
@@ -96,7 +103,7 @@ export default function Home() {
         height={5}
         fillWidth
         blur={0.25}
-      ></Fade>
+      />
       <Flex
         position="fixed"
         top="0"
@@ -133,22 +140,13 @@ export default function Home() {
           </Flex>
         </Flex>
       </Flex>
-      <Flex
-        position="relative"
-        as="section"
-        maxWidth="m"
-        direction="column"
-        alignItems="center"
-      >
-        <Flex
-          position="relative"
-          fillWidth
-          direction="column">
           <Flex
             overflow="hidden"
             as="main"
+            maxWidth="m"
+            position="relative"
+            radius="xl"
             direction="column"
-            topRadius="xl"
             alignItems="center"
             border="neutral-alpha-weak"
             fillWidth
@@ -158,6 +156,7 @@ export default function Home() {
               direction="column"
               alignItems="center"
               gap="48"
+              radius="xl"
               paddingTop="80"
               position="relative"
             >
@@ -207,7 +206,7 @@ export default function Home() {
                   width: 120,
                   x: 120,
                   y: 35,
-                  colorStart: "danger-solid-strong",
+                  colorStart: "brand-solid-strong",
                   colorEnd: "static-transparent",
                 }}
               />
@@ -241,7 +240,7 @@ export default function Home() {
                   arrowIcon
                 />
                 <Flex alignItems="center" paddingTop="64" fillWidth gap="24" direction="column">
-                <Line maxWidth={4} marginBottom="16"/>
+                <Line maxWidth={4} marginBottom="16" background="neutral-alpha-medium"/>
                 <AvatarGroup
                   marginBottom="8"
                   reverse
@@ -380,14 +379,86 @@ export default function Home() {
                       radius="top"
                     />
                     <PasswordInput
+                      autoComplete="new-password"
                       id="password"
                       label="Password"
                       labelAsPlaceholder
                       radius="bottom"
                     />
                   </Flex>
-                  <Button id="login" label="Log in" arrowIcon fillWidth />
+                  <Button id="login" label="Log in" arrowIcon fillWidth onClick={() => {
+  addToast({
+    variant: "danger",
+    message: "There was an issue with your credentials."
+  });
+}} />
                 </Flex>
+              </Flex>
+              </Flex>
+            </Flex>
+            <Flex paddingX="32" fillWidth paddingTop="80" gap="48" position="relative" mobileDirection="column" alignItems="center">
+              <TiltFx position="relative" aspectRatio="16 / 9" fillWidth radius="xl" border="accent-alpha-weak" overflow="hidden" maxWidth={32}>
+                <HoloFx fill>
+                  <Background
+                    fill
+                    position="absolute"
+                    gradient={{
+                      display: true,
+                      opacity: 100,
+                      tilt: -45,
+                      height: 150,
+                      width: 100,
+                      x: 75,
+                      y: -50,
+                      colorStart: "danger-solid-strong",
+                      colorEnd: "accent-background-strong",
+                    }}
+                  >
+                    <Flex
+                      fill position="absolute" 
+                      padding="24"
+                      direction="column" justifyContent="flex-end" gap="12">
+                      <Text variant="body-default-xl">Lorant One</Text>
+                      <Flex fillWidth justifyContent="space-between" alignItems="flex-end" paddingRight="16">
+                      <Flex gap="4" direction="column">
+                        <Text variant="body-default-m">08 / 27</Text>
+                        <Text variant="body-default-m">1234 5678 1234 5678</Text>
+                      </Flex>
+                      <Icon name="visa" size="xl"/>
+                      </Flex>
+                      </Flex>
+                  </Background>
+                </HoloFx>
+              </TiltFx>
+              <Flex position="relative" fillWidth direction="column" negativeGap="1">
+              <Flex fillWidth alignItems="center" justifyContent="space-between" marginBottom="32">
+                <Heading as="h3" variant="display-default-xs">
+                  Fill in your card details
+                </Heading>
+                <IconButton data-border="rounded" variant="tertiary" icon="chevronRight" tooltip="Next" tooltipPosition="left"/>
+              </Flex>
+              <Input
+                id="cardnumber"
+                label="Card number"
+                labelAsPlaceholder
+                radius="top"
+                defaultValue="1234 5678 1234 5678"
+              />
+              <Flex fillWidth negativeGap="1">
+              <Input
+                id="expiry"
+                label="Expiry date"
+                labelAsPlaceholder
+                radius="bottom-left"
+                defaultValue="08 / 27"
+              />
+              <Input
+                id="cvv"
+                label="CVV"
+                labelAsPlaceholder
+                radius="bottom-right"
+                defaultValue="123"
+              />
               </Flex>
               </Flex>
             </Flex>
@@ -405,9 +476,10 @@ export default function Home() {
                   height: "0.25rem",
                 }}
               />
-              <Flex fillWidth direction="column" negativeGap="1">
+              <Flex fillWidth gap="40" mobileDirection="column" paddingTop="104">
+                <Flex flex={2} minWidth={0} direction="column" negativeGap="1">
                   <Feedback icon variant="success" radius={undefined} topRadius="l" zIndex={1}>
-                    Your cover image was updated.
+                    Post successfully published to your network.
                   </Feedback>
                   <MediaUpload marginBottom="12" radius={undefined} bottomRadius="l" initialPreviewImage="/images/cover.png">
                     <Flex fill alignItems="flex-end" zIndex={1} position="absolute">
@@ -425,7 +497,7 @@ export default function Home() {
                           border="neutral-medium"
                           shadow="xl"
                           alt="image"
-                          src="/images/cover.png"
+                          src={`/images/preview-${index + 1}.jpg`}
                           priority
                           aspectRatio="16 / 9"
                         />
@@ -439,58 +511,51 @@ export default function Home() {
                     ))}
                   </Scroller>
                 </Flex>
+                <Flex flex={1} direction="column" gap="24" paddingY="80">
+                  <Heading as="h2" variant="display-default-m">
+                    Get creative
+                  </Heading>
+                  <Text
+                    onBackground="neutral-weak" wrap="balance">
+                    Build production-grade UI without the struggle
+                  </Text>
+                </Flex>
+                </Flex>
               <Flex fillWidth mobileDirection="column" negativeGap="1">
-              <Flex fillWidth leftRadius="l" direction="column" border="neutral-medium" padding="24" maxWidth={32}>
+              <Flex fillWidth leftRadius="l" direction="column" border="neutral-medium" padding="24" gap="24" maxWidth={32}>
               <SegmentedControl
                 onToggle={(value) => console.log("SegmentedControl changed", value)}
                 buttons={[
                   {
                     size: "l",
-                    value: "edit1",
-                    label: "calendar",
+                    value: "profile",
+                    label: "Profile",
                   },
                   {
                     size: "l",
-                    value: "duplicate2",
-                    label: "eye",
+                    value: "settings",
+                    label: "Settings",
                   },
                   {
                     size: "l",
-                    value: "archive3",
-                    label: "person",
+                    value: "notifications",
+                    label: <Flex gap="8">Notifications<StatusIndicator size="s" color="cyan"/></Flex>,
                   },
                   {
                     size: "l",
-                    value: "archive35",
-                    label: "person",
+                    value: "integrations",
+                    label: "Integrations",
                   },
                   {
                     size: "l",
-                    value: "delete4",
-                    label: "eyeDropper",
-                  },
-                  {
-                    size: "l",
-                    value: "edit5",
-                    label: "calendar",
-                  },
-                  {
-                    size: "l",
-                    value: "duplicate6",
-                    label: "eye",
-                  },
-                  {
-                    size: "l",
-                    value: "archive7",
-                    label: "person",
-                  },
-                  {
-                    size: "l",
-                    value: "delete8",
-                    label: "eyeDropper",
+                    value: "inbox",
+                    label: "Inbox",
                   },
                 ]}
               />
+              <Button variant="secondary" onClick={() => setIsFirstDialogOpen(true)}>
+                Manage account
+              </Button>
               </Flex>
               <CodeBlock
                 radius={undefined}
@@ -510,9 +575,6 @@ export default function Home() {
                 ]}
               />
               </Flex>
-              <Button onClick={() => setIsFirstDialogOpen(true)}>
-                Open First Dialog
-              </Button>
               <Flex as="footer" fillWidth paddingX="l" gap="16" paddingY="64" textVariant="body-default-xs" onBackground="neutral-medium" justifyContent="center" alignItems="center" align="center" direction="column">
                   <Logo wordmark={false} size="s"/>
                   <Text size="m"><Text onBackground="neutral-weak">2024 /</Text> Once UI</Text>
@@ -526,8 +588,8 @@ export default function Home() {
           <Dialog
             isOpen={isFirstDialogOpen}
             onClose={() => setIsFirstDialogOpen(false)}
-            title="First Dialog"
-            description="This is the first dialog. Click the button below to open the second dialog."
+            title="Account details"
+            description="Manage your email and password."
             base={isSecondDialogOpen}
             onHeightChange={(height) => setFirstDialogHeight(height)}
             footer={
@@ -536,16 +598,13 @@ export default function Home() {
                   variant="secondary"
                   onClick={() => setIsFirstDialogOpen(false)}
                 >
-                  Close Dialog
-                </Button>
-                <Button onClick={() => setIsSecondDialogOpen(true)}>
-                  Open Another
+                  Close
                 </Button>
               </>
             }
           >
             <Button onClick={() => setIsSecondDialogOpen(true)}>
-              Open Second Dialog
+              Change password
             </Button>
           </Dialog>
           <Dialog
@@ -591,7 +650,5 @@ export default function Home() {
             />
           </Dialog>
         </Flex>
-      </Flex>
-    </Flex>
   );
 }
