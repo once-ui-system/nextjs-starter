@@ -70,6 +70,7 @@ interface BackgroundProps extends React.ComponentProps<typeof Flex> {
   mask?: MaskProps;
   className?: string;
   style?: React.CSSProperties;
+  children?: React.ReactNode;
 }
 
 const Background = forwardRef<HTMLDivElement, BackgroundProps>(
@@ -81,6 +82,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       grid = {},
       lines = {},
       mask = {},
+      children,
       className,
       style,
       ...rest
@@ -88,7 +90,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
     forwardedRef,
   ) => {
     const dotsColor = dots.color ?? "brand-on-background-weak";
-    const dotsSize = dots.size ?? "24";
+    const dotsSize = "var(--static-space-" + (dots.size ?? "24") + ")";
 
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
@@ -142,11 +144,6 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       };
     }, [cursorPosition, mask]);
 
-    const commonStyles: CSSProperties = {
-      pointerEvents: "none",
-      ...style,
-    };
-
     const maskStyle = (): CSSProperties => {
       if (!mask) return {};
 
@@ -198,7 +195,6 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         zIndex={0}
         overflow="hidden"
         style={{
-          pointerEvents: "none",
           ...maskStyle(),
           ...styles,
         }}
@@ -209,8 +205,8 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             position="absolute"
             className={styles.gradient}
             opacity={gradient.opacity}
+            pointerEvents="none"
             style={{
-              ...commonStyles,
               ["--gradient-position-x" as string]: `${adjustedX}%`,
               ["--gradient-position-y" as string]: `${adjustedY}%`,
               ["--gradient-width" as string]:
@@ -221,10 +217,10 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
                 gradient.tilt != null ? `${gradient.tilt}deg` : "0deg",
               ["--gradient-color-start" as string]: gradient.colorStart
                 ? `var(--${gradient.colorStart})`
-                : "var(--brand-alpha-strong)",
+                : "var(--brand-solid-strong)",
               ["--gradient-color-end" as string]: gradient.colorEnd
                 ? `var(--${gradient.colorEnd})`
-                : "var(--brand-alpha-weak)",
+                : "var(--brand-solid-weak)",
             }}
           />
         )}
@@ -234,13 +230,13 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             top="0"
             left="0"
             fill
-            className={classNames(styles.dots, mask && styles.mask, className)}
+            pointerEvents="none"
+            className={styles.dots}
             opacity={dots.opacity}
             style={{
-              ...commonStyles,
-              backgroundImage: `radial-gradient(var(--${dotsColor}) 0.5px, var(--static-transparent) 0.5px)`,
-              backgroundSize: `${dotsSize} ${dotsSize}`,
-            }}
+              '--dots-color': `var(--${dotsColor})`,
+              '--dots-size': dotsSize,
+            } as React.CSSProperties}
           />
         )}
         {lines.display && (
@@ -249,10 +245,10 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             top="0"
             left="0"
             fill
-            className={classNames(styles.lines, mask && styles.mask, className)}
+            pointerEvents="none"
+            className={styles.lines}
             opacity={lines.opacity}
             style={{
-              ...commonStyles,
               backgroundImage: `repeating-linear-gradient(45deg, var(--brand-on-background-weak) 0, var(--brand-on-background-weak) 0.5px, var(--static-transparent) 0.5px, var(--static-transparent) ${dots.size})`,
             }}
           />
@@ -263,11 +259,13 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             top="0"
             left="0"
             fill
-            className={classNames(styles.grid, mask && styles.mask, className)}
+            pointerEvents="none"
+            className={styles.grid}
             opacity={grid.opacity}
             style={{
-              ...commonStyles,
-              backgroundSize: `${grid.width || "32px"} ${grid.height || "32px"}`,
+              backgroundSize: `
+                ${grid.width || "var(--static-space-32)"}
+                ${grid.height || "var(--static-space-32)"}`,
               backgroundPosition: "0 0",
               backgroundImage: `
                 linear-gradient(
@@ -275,19 +273,20 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
                   var(--${grid.color || "brand-on-background-weak"}) 0,
                   var(--${grid.color || "brand-on-background-weak"}) 1px,
                   var(--static-transparent) 1px,
-                  var(--static-transparent) ${grid.width || "32px"}
+                  var(--static-transparent) ${grid.width || "var(--static-space-32)"}
                 ),
                 linear-gradient(
                   0deg,
                   var(--${grid.color || "brand-on-background-weak"}) 0,
                   var(--${grid.color || "brand-on-background-weak"}) 1px,
                   var(--static-transparent) 1px,
-                  var(--static-transparent) ${grid.height || "32px"}
+                  var(--static-transparent) ${grid.height || "var(--static-space-32)"}
                 )
               `,
             }}
           />
         )}
+        {children}
       </Flex>
     );
   },

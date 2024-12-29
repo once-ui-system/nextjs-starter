@@ -1,3 +1,12 @@
+.mask {
+  mask-size: 100% 100%;
+  mask-image: radial-gradient(
+    var(--mask-radius) at var(--mask-position-x) var(--mask-position-y),
+    black 0%,
+    transparent 100%
+  );
+}
+
 .gradient {
   background: radial-gradient(
         ellipse var(--gradient-width) var(--gradient-height) at var(--gradient-position-x) var(--gradient-position-y),
@@ -12,11 +21,7 @@
   transform-origin: center;
 }
 
-.mask {
-  mask-size: 100% 100%;
-  mask-image: radial-gradient(
-    var(--mask-radius) at var(--mask-position-x) var(--mask-position-y),
-    black 0%,
-    transparent 100%
-  );
+.dots {
+  background-image: radial-gradient(var(--dots-color) 1px, var(--static-transparent) 1px);
+  background-size: var(--dots-size) var(--dots-size);
 }
