@@ -7,7 +7,7 @@ import { Flex, Icon } from ".";
 import styles from "./ToggleButton.module.scss";
 
 interface CommonProps {
-  label?: string;
+  label?: ReactNode;
   selected: boolean;
   variant?: "ghost" | "outline";
   size?: "s" | "m" | "l";
