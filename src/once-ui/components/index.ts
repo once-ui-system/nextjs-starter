@@ -53,6 +53,7 @@ export * from "./Textarea";
 export * from "./TiltFx";
 export * from "./Toast";
 export * from "./Toaster";
+export * from "./ToastProvider";
 export * from "./ToggleButton";
 export * from "./Tooltip";
 export * from "./User";
