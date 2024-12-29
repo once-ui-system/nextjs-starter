@@ -24,6 +24,18 @@
   height: fit-content;
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
+}
+
+.pointer-events-all {
+  pointer-events: all;
+}
+
 .justify-flex-start {
   justify-content: flex-start;
 }
