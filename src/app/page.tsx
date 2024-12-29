@@ -84,7 +84,7 @@ export default function Home() {
   return (
     <Flex
       fillWidth
-      paddingTop="80"
+      paddingY="80"
       paddingX="l"
       direction="column"
       alignItems="center"
@@ -267,48 +267,12 @@ export default function Home() {
                     { icon: false, wordmarkSrc: "/trademark/magic-portfolio-wordmark.svg", size: "m" },
                     { icon: false, size: "m" },
                   ]}
-                  columns="repeat(3, 1fr)"
+                  columns="3"
+                  mobileColumns="1"
                 />
                 </Flex>
-                <Flex
-                  fillWidth
-                  overflow="hidden"
-                >
-                  <Flex hide="s" maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
-                  <Flex fillWidth border="neutral-alpha-weak" mobileDirection="column">
-                  {links.map((link, index) => (
-                    <SmartLink
-                      unstyled
-                      fillWidth
-                      target="_blank"
-                      key={link.href}
-                      href={link.href}
-                    >
-                      <Card fillWidth padding="40" gap="8" direction="column" background={undefined} borderRight={index < links.length - 1 ? "neutral-alpha-weak" : undefined} border={undefined} radius={undefined}>
-                        <Flex fillWidth justifyContent="center" gap="12" alignItems="center">
-                          <Text
-                            variant="body-strong-m"
-                            onBackground="neutral-strong"
-                          >
-                            {link.title}
-                          </Text>
-                          <Icon size="s" name="arrowUpRight" />
-                        </Flex>
-                        <Text
-                          align="center"
-                          variant="body-default-s"
-                          onBackground="neutral-weak"
-                        >
-                          {link.description}
-                        </Text>
-                      </Card>
-                    </SmartLink>
-                  ))}
-                  </Flex>
-                  <Flex hide="s" maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
-                </Flex>
               </Flex>
-              <Flex fillWidth paddingTop="64" paddingX="32" gap="12" direction="column" alignItems="center" position="relative">
+              <Flex fillWidth paddingX="32" gap="12" direction="column" alignItems="center" position="relative">
                 <Heading as="h2" variant="display-default-m">
                   Showcase
                 </Heading>
@@ -316,7 +280,9 @@ export default function Home() {
                   align="center" onBackground="neutral-weak">
                   Tiny snippets to inspire your next project
                 </Text>
-                <Flex marginTop="48" fillWidth mobileDirection="column" radius="xl" border="neutral-alpha-weak" overflow="hidden">
+
+                {/* LOGIN */}
+                <Flex marginTop="48" fillWidth radius="xl" border="neutral-alpha-weak" overflow="hidden">
                 <Flex fill hide="m">
                   <SmartImage src="/images/login.png" alt="Preview image"/>
                 </Flex>
@@ -386,17 +352,21 @@ export default function Home() {
                       radius="bottom"
                     />
                   </Flex>
-                  <Button id="login" label="Log in" arrowIcon fillWidth onClick={() => {
-  addToast({
-    variant: "danger",
-    message: "There was an issue with your credentials."
-  });
-}} />
+                  <Button id="login" label="Log in" arrowIcon fillWidth
+                    onClick={() => {
+                      addToast({
+                        variant: "danger",
+                        message: "There was an issue with your credentials."
+                      });
+                    }} />
                 </Flex>
               </Flex>
               </Flex>
             </Flex>
-            <Flex paddingX="32" fillWidth paddingTop="80" gap="48" position="relative" mobileDirection="column" alignItems="center">
+
+            {/* PAYMENT */}
+            <Flex paddingX="32" fillWidth paddingY="160" gap="48" position="relative" mobileDirection="column" alignItems="center">
+              <Flex fillWidth border="neutral-alpha-medium" borderStyle="dashed" radius="xl">
               <TiltFx position="relative" aspectRatio="16 / 9" fillWidth radius="xl" border="accent-alpha-weak" overflow="hidden" maxWidth={32}>
                 <HoloFx fill>
                   <Background
@@ -410,8 +380,8 @@ export default function Home() {
                       width: 100,
                       x: 75,
                       y: -50,
-                      colorStart: "danger-solid-strong",
-                      colorEnd: "accent-background-strong",
+                      colorStart: "brand-solid-strong",
+                      colorEnd: "accent-solid-weak",
                     }}
                   >
                     <Flex
@@ -430,6 +400,7 @@ export default function Home() {
                   </Background>
                 </HoloFx>
               </TiltFx>
+              </Flex>
               <Flex position="relative" fillWidth direction="column" negativeGap="1">
               <Flex fillWidth alignItems="center" justifyContent="space-between" marginBottom="32">
                 <Heading as="h3" variant="display-default-xs">
@@ -462,22 +433,17 @@ export default function Home() {
               </Flex>
               </Flex>
             </Flex>
+
+            {/* MEDIAUPLOAD */}
             <Flex paddingX="32" fillWidth paddingTop="80" gap="32" direction="column" position="relative">
-            <Background
-                mask={{
-                  x: 50,
-                  y: 100,
-                }}
-                position="absolute"
-                grid={{
-                  display: true,
-                  width: "0.25rem",
-                  color: "brand-alpha-medium",
-                  height: "0.25rem",
-                }}
-              />
-              <Flex fillWidth gap="40" mobileDirection="column" paddingTop="104">
-                <Flex flex={2} minWidth={0} direction="column" negativeGap="1">
+              <Heading as="h2" variant="display-default-m">
+                    Get creative
+                  </Heading>
+                  <Text
+                    onBackground="neutral-weak" wrap="balance">
+                    Build production-grade UI without the struggle
+                  </Text>
+              <Flex fillWidth direction="column" negativeGap="1" paddingTop="104">
                   <Feedback icon variant="success" radius={undefined} topRadius="l" zIndex={1}>
                     Post successfully published to your network.
                   </Feedback>
@@ -489,7 +455,7 @@ export default function Home() {
                       </Flex>
                     </Flex>
                   </MediaUpload>
-                  <Scroller fillWidth gap="12" tabletDirection="column">
+                  <Scroller fillWidth gap="12">
                     {Array(4).fill(null).map((_, index) => (
                       <Flex key={index} fillWidth direction="column" negativeGap="1" minWidth={16}>
                         <SmartImage
@@ -511,16 +477,8 @@ export default function Home() {
                     ))}
                   </Scroller>
                 </Flex>
-                <Flex flex={1} direction="column" gap="24" paddingY="80">
-                  <Heading as="h2" variant="display-default-m">
-                    Get creative
-                  </Heading>
-                  <Text
-                    onBackground="neutral-weak" wrap="balance">
-                    Build production-grade UI without the struggle
-                  </Text>
-                </Flex>
-                </Flex>
+
+              {/* CODE PREVIEW */}
               <Flex fillWidth mobileDirection="column" negativeGap="1">
               <Flex fillWidth leftRadius="l" direction="column" border="neutral-medium" padding="24" gap="24" maxWidth={32}>
               <SegmentedControl
@@ -575,14 +533,83 @@ export default function Home() {
                 ]}
               />
               </Flex>
-              <Flex as="footer" fillWidth paddingX="l" gap="16" paddingY="64" textVariant="body-default-xs" onBackground="neutral-medium" justifyContent="center" alignItems="center" align="center" direction="column">
+            </Flex>
+
+            <Flex position="relative" fillWidth paddingX="32" paddingTop="160" paddingBottom="80" justifyContent="center">
+            <Background
+                mask={{
+                  x: 50,
+                  y: 100,
+                }}
+                position="absolute"
+                grid={{
+                  display: true,
+                  width: "0.25rem",
+                  color: "brand-alpha-medium",
+                  height: "0.25rem",
+                }}
+              />
+            <Heading as="h2" variant="display-default-m" align="center">
+              Build with style
+            </Heading>
+            </Flex>
+            <Flex
+                  fillWidth
+                  overflow="hidden"
+                >
+                  <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
+                  <Flex fillWidth border="neutral-alpha-weak" mobileDirection="column">
+                  {links.map((link, index) => (
+                    <SmartLink
+                      unstyled
+                      fillWidth
+                      target="_blank"
+                      key={link.href}
+                      href={link.href}
+                    >
+                      <Card fillWidth padding="40" gap="8" direction="column" background={undefined} borderRight={index < links.length - 1 ? "neutral-alpha-weak" : undefined} border={undefined} radius={undefined}>
+                        <Flex fillWidth justifyContent="center" gap="12" alignItems="center">
+                          <Text
+                            variant="body-strong-m"
+                            onBackground="neutral-strong"
+                          >
+                            {link.title}
+                          </Text>
+                          <Icon size="s" name="arrowUpRight" />
+                        </Flex>
+                        <Text
+                          align="center"
+                          variant="body-default-s"
+                          onBackground="neutral-weak"
+                        >
+                          {link.description}
+                        </Text>
+                      </Card>
+                    </SmartLink>
+                  ))}
+                  </Flex>
+                  <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
+                </Flex>
+                <Flex position="relative" as="footer" fillWidth paddingX="l" gap="16" paddingY="80" textVariant="body-default-xs" onBackground="neutral-medium" justifyContent="center" alignItems="center" align="center" direction="column">
+                <Background
+                mask={{
+                  x: 50,
+                  y: 0,
+                }}
+                position="absolute"
+                grid={{
+                  display: true,
+                  width: "0.25rem",
+                  color: "brand-alpha-medium",
+                  height: "0.25rem",
+                }}
+              />
                   <Logo wordmark={false} size="s"/>
                   <Text size="m"><Text onBackground="neutral-weak">2024 /</Text> Once UI</Text>
                   <SmartLink href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
                     MIT License
                   </SmartLink>
               </Flex>
-            </Flex>
           </Flex>
 
           <Dialog

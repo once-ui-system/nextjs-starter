@@ -133,11 +133,6 @@ export default function RootLayout({
               y: 0,
               radius: 100,
             }}
-            dots={{
-              display: true,
-              opacity: 40,
-              size: "40",
-            }}
             gradient={{
               display: true,
               x: 100,
@@ -146,7 +141,7 @@ export default function RootLayout({
               height: 50,
               tilt: -40,
               opacity: 90,
-              colorStart: "neutral-background-strong",
+              colorStart: "accent-background-strong",
               colorEnd: "page-background",
             }}
             grid={{
