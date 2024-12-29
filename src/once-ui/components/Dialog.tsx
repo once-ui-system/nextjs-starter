@@ -23,8 +23,6 @@ interface DialogProps extends Omit<React.ComponentProps<typeof Flex>, "title"> {
   footer?: ReactNode;
   base?: boolean;
   stack?: boolean;
-  style?: React.CSSProperties;
-  className?: string;
   onHeightChange?: (height: number) => void;
   minHeight?: number;
 }
@@ -54,8 +52,6 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
       title,
       description,
       children,
-      className,
-      style,
       stack,
       base,
       footer,
@@ -244,11 +240,10 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
           }}
         >
           <Flex
-            className={classNames(styles.dialog, className, {
+            className={classNames(styles.dialog, {
               [styles.open]: isAnimating,
             })}
             style={{
-              ...style,
               minHeight: minHeight ? `${minHeight}px` : undefined,
             }}
             ref={dialogRef}

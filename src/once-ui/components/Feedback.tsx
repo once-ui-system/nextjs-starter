@@ -12,8 +12,6 @@ interface FeedbackProps
   showCloseButton?: boolean;
   onClose?: () => void;
   actionButtonProps?: React.ComponentProps<typeof Button>;
-  className?: string;
-  style?: React.CSSProperties;
   children?: ReactNode;
 }
 
@@ -36,8 +34,6 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
       showCloseButton = false,
       onClose,
       actionButtonProps,
-      className,
-      style,
       children,
       ...rest
     },
@@ -52,8 +48,6 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
         background={`${variant}-medium`}
         role="alert"
         aria-live="assertive"
-        className={className}
-        style={style}
         {...rest}
       >
         {icon && (

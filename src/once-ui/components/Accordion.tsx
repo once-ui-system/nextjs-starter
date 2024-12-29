@@ -3,18 +3,20 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
 import { Flex, Icon, Heading } from ".";
 import styles from "./Accordion.module.scss";
-import classNames from "classnames";
 
 interface AccordionProps {
   title: React.ReactNode;
   children: React.ReactNode;
-  style?: React.CSSProperties;
-  className?: string;
   open?: boolean;
 }
 
 const Accordion: React.FC<AccordionProps> = forwardRef(
-  ({ title, children, style, className, open = false, ...rest }, ref) => {
+  ({ 
+    title, 
+    children, 
+    open = false, 
+    ...rest
+  }, ref) => {
     const [isOpen, setIsOpen] = useState(open);
 
     const toggleAccordion = () => {
@@ -35,8 +37,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(
       <Flex
         fillWidth
         direction="column"
-        style={style}
-        className={classNames(styles.border, className)}
+        className={styles.border}
         {...rest}
       >
         <Flex

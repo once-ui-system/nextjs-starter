@@ -9,7 +9,13 @@ interface ColorInputProps extends Omit<InputProps, "onChange" | "value"> {
 }
 
 const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
-  ({ label, id, value, onChange, ...props }, ref) => {
+  ({
+    label,
+    id,
+    value,
+    onChange,
+    ...props
+  }, ref) => {
     const colorInputRef = useRef<HTMLInputElement>(null);
 
     const handleHexClick = () => {

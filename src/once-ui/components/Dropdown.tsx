@@ -6,7 +6,6 @@ import { Flex } from ".";
 interface DropdownProps
   extends Omit<React.ComponentProps<typeof Flex>, "onSelect"> {
   selectedOption?: string;
-  className?: string;
   children?: ReactNode;
   onEscape?: () => void;
   onSelect?: (event: string) => void;
@@ -32,7 +31,6 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         border="neutral-medium"
         background="surface"
         gap="2"
-        className={className || ""}
         ref={ref}
         role="listbox"
         onClick={handleSelect}

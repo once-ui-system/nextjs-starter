@@ -4,7 +4,6 @@ import React, { forwardRef } from "react";
 import { Arrow, Flex, Icon, SmartLink, Text } from ".";
 
 import styles from "./Badge.module.scss";
-import classNames from "classnames";
 
 interface BadgeProps extends React.ComponentProps<typeof Flex> {
   title?: string;
@@ -24,8 +23,6 @@ const Badge = forwardRef<HTMLDivElement | HTMLAnchorElement, BadgeProps>(
       children,
       href,
       effect = true,
-      style,
-      className,
       ...rest
     },
     ref,
@@ -36,13 +33,12 @@ const Badge = forwardRef<HTMLDivElement | HTMLAnchorElement, BadgeProps>(
         paddingX="20"
         paddingY="12"
         fitWidth
-        className={classNames(effect && styles.animation, className)}
+        className={effect ? styles.animation : undefined}
         alignItems="center"
         radius="full"
         background="neutral-weak"
         border="brand-alpha-medium"
         shadow="l"
-        style={style}
         {...rest}
       >
         {icon && (

@@ -83,8 +83,6 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       lines = {},
       mask = {},
       children,
-      className,
-      style,
       ...rest
     },
     forwardedRef,
@@ -189,14 +187,13 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         ref={backgroundRef}
         fill
         position={position}
-        className={classNames(mask && styles.mask, className)}
+        className={mask && styles.mask}
         top="0"
         left="0"
         zIndex={0}
         overflow="hidden"
         style={{
-          ...maskStyle(),
-          ...styles,
+          ...maskStyle()
         }}
         {...rest}
       >

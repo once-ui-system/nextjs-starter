@@ -1,7 +1,6 @@
 "use client";
 
 import React, { forwardRef, ReactNode } from "react";
-import classNames from "classnames";
 import styles from "./Fade.module.scss";
 
 import { Flex } from ".";
@@ -38,8 +37,6 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
       },
       blur = 0.5,
       children,
-      className,
-      style,
       ...rest
     },
     ref,
@@ -64,7 +61,6 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
         fillWidth
         style={
           {
-            ...style,
             "--base-color": getBaseVar(base),
             "--gradient-direction":
               to === "top"
@@ -81,7 +77,7 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
             }),
           } as React.CSSProperties
         }
-        className={classNames(styles.mask, className)}
+        className={styles.mask}
         {...rest}
       >
         {children}
@@ -91,5 +87,4 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
 );
 
 Fade.displayName = "Fade";
-
 export { Fade };

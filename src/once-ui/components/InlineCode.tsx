@@ -1,18 +1,17 @@
 "use client";
 
 import React, { forwardRef, ReactNode } from "react";
-import classNames from "classnames";
 import styles from "./InlineCode.module.scss";
 import { Flex } from "./Flex";
 
 interface InlineCodeProps extends React.ComponentProps<typeof Flex> {
   children: ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
 }
 
 const InlineCode = forwardRef<HTMLDivElement, InlineCodeProps>(
-  ({ children, className, style, ...props }, ref) => {
+  ({ children,
+    ...rest
+  }, ref) => {
     return (
       <Flex
         as="span"
@@ -26,9 +25,8 @@ const InlineCode = forwardRef<HTMLDivElement, InlineCodeProps>(
         textType="code"
         background="neutral-alpha-weak"
         border="neutral-alpha-medium"
-        className={classNames(styles.inlineCode, className)}
-        style={style}
-        {...props}
+        className={styles.inlineCode}
+        {...rest}
       >
         {children}
       </Flex>

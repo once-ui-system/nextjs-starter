@@ -15,8 +15,6 @@ interface IconProps extends React.ComponentProps<typeof Flex> {
   onSolid?: `${ColorScheme}-${ColorWeight}`;
   size?: "xs" | "s" | "m" | "l" | "xl";
   decorative?: boolean;
-  className?: string;
-  style?: React.CSSProperties;
   tooltip?: ReactNode;
   tooltipPosition?: "top" | "bottom" | "left" | "right";
 }
@@ -29,8 +27,6 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       onSolid,
       size = "m",
       decorative = true,
-      className,
-      style,
       tooltip,
       tooltipPosition = "top",
       ...rest
@@ -82,17 +78,15 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
     return (
       <Flex
         inline
+        fitHeight
         position="relative"
         as="span"
         ref={ref}
         className={classNames(
           colorClass,
           styles.icon,
-          styles[size],
-          "fit-height",
-          className,
+          styles[size]
         )}
-        style={{ ...style }}
         role={decorative ? "presentation" : undefined}
         aria-hidden={decorative ? "true" : undefined}
         aria-label={decorative ? undefined : name}

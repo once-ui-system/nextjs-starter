@@ -2,13 +2,10 @@
 
 import React, { forwardRef } from "react";
 import { Flex } from ".";
-import classNames from "classnames";
 import styles from "./Card.module.scss";
 
 interface CardProps extends React.ComponentProps<typeof Flex> {
   children?: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
 }
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
@@ -21,8 +18,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         transition="macro-medium"
         radius="xl"
         border="neutral-medium"
-        style={style}
-        className={classNames(className, styles.card)}
+        className={styles.card}
         {...rest}
       >
         {children}

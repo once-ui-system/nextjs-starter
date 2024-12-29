@@ -3,6 +3,7 @@
 import React, { useEffect, useState, forwardRef } from "react";
 import styles from "./GlitchFx.module.scss";
 import { Flex } from "./Flex";
+import classNames from "classnames";
 
 interface GlitchFxProps extends React.ComponentProps<typeof Flex> {
   children: React.ReactNode;
@@ -10,8 +11,6 @@ interface GlitchFxProps extends React.ComponentProps<typeof Flex> {
   interval?: number;
   trigger?: "instant" | "hover" | "custom";
   continuous?: boolean;
-  style?: React.CSSProperties;
-  className?: string;
 }
 
 const GlitchFx = forwardRef<HTMLDivElement, GlitchFxProps>(
@@ -22,8 +21,6 @@ const GlitchFx = forwardRef<HTMLDivElement, GlitchFxProps>(
       interval = 2500,
       trigger = "instant",
       continuous = true,
-      style,
-      className,
       ...rest
     },
     ref,
@@ -66,15 +63,13 @@ const GlitchFx = forwardRef<HTMLDivElement, GlitchFxProps>(
 
     const speedClass = styles[speed];
 
-    const combinedClassName = `${speedClass} ${isGlitching ? styles.active : ""} ${className || ""}`;
-
     return (
       <Flex
         ref={ref}
-        style={style}
         position="relative"
         inline
-        className={combinedClassName}
+        zIndex={0}
+        className={classNames(speedClass, isGlitching && styles.active)}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         {...rest}
@@ -91,7 +86,7 @@ const GlitchFx = forwardRef<HTMLDivElement, GlitchFxProps>(
           fill
           zIndex={0}
           opacity={50}
-          className={`${styles.glitchLayer} ${styles.blueShift}`}
+          className={classNames(styles.glitchLayer, styles.blueShift)}
         >
           {children}
         </Flex>
@@ -104,7 +99,7 @@ const GlitchFx = forwardRef<HTMLDivElement, GlitchFxProps>(
           fill
           zIndex={0}
           opacity={50}
-          className={`${styles.glitchLayer} ${styles.redShift}`}
+          className={classNames(styles.glitchLayer, styles.redShift)}
         >
           {children}
         </Flex>
