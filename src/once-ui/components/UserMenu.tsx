@@ -30,16 +30,19 @@ const UserMenu: React.FC<UserMenuProps> = ({
       minWidth={minWidth}
       maxWidth={maxWidth}
       minHeight={minHeight}
+      radius
+      floatingDistance={4}
+      style={{borderRadius: 'var(--radius-full)'}}
       trigger={
         <Flex
           direction="column"
           padding="4"
           radius="full"
+          cursor="interactive"
           border={selected ? "neutral-medium" : "transparent"}
           background={selected ? "neutral-strong" : "transparent"}
           className={classNames(
             className || "",
-            "cursor-interactive",
             selected ? styles.selected : "",
             styles.wrapper,
           )}
@@ -49,7 +52,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         </Flex>
       }
       dropdown={<>{dropdown}</>}
-    ></DropdownWrapper>
+    />
   );
 };
 
