@@ -171,6 +171,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
 
     return (
       <DropdownWrapper
+        bottomRadius
         fillWidth
         ref={(node) => {
           selectRef.current = node;
@@ -180,7 +181,6 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         isOpen={isDropdownOpen}
         onOpenChange={setIsDropdownOpen}
         minHeight={minHeight}
-        {...rest}
         trigger={
           <Input
             {...rest}

@@ -8,8 +8,12 @@ interface CardProps extends React.ComponentProps<typeof Flex> {
   children?: React.ReactNode;
 }
 
-const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ children, style, className, ...rest }, ref) => {
+const Card = forwardRef<HTMLDivElement, CardProps>(({
+    children,
+    style,
+    className,
+    ...rest
+  }, ref) => {
     return (
       <Flex
         ref={ref}

@@ -283,7 +283,7 @@ export default function Home() {
                 </Text>
 
                 {/* LOGIN */}
-                <Flex marginY="64" fillWidth radius="xl" border="neutral-alpha-weak" overflow="hidden">
+                <Flex marginY="32" fillWidth radius="xl" border="neutral-alpha-weak" overflow="hidden">
                 <Flex fill hide="m">
                   <SmartImage src="/images/login.png" alt="Preview image"/>
                 </Flex>
@@ -366,10 +366,10 @@ export default function Home() {
             </Flex>
 
             {/* PAYMENT */}
-            <Flex paddingX="32" fillWidth paddingY="160" gap="48" position="relative" mobileDirection="column" alignItems="center">
+            <Flex paddingX="32" fillWidth paddingY="160" gap="64" position="relative" mobileDirection="column" alignItems="center">
               <Background
                 style={{left: '-1px'}}
-                borderTop="neutral-alpha-weak"
+                borderTop="neutral-alpha-medium"
                 mask={{
                   x: 0,
                   y: 50,
@@ -378,10 +378,10 @@ export default function Home() {
                 position="absolute"
                 grid={{
                   display: true,
-                  opacity: 50,
+                  opacity: 80,
                   width: "10%",
                   color: "neutral-alpha-medium",
-                  height: "0.5rem",
+                  height: "1.25%",
                 }}
               />
               <Flex fillWidth border="neutral-alpha-medium" borderStyle="dashed" radius="xl">
@@ -452,56 +452,21 @@ export default function Home() {
               </Flex>
             </Flex>
 
-            {/* MEDIAUPLOAD */}
+            {/* PROFILE */}
             <Flex paddingX="32" fillWidth paddingTop="80" gap="32" direction="column" position="relative">
-              <Heading as="h2" variant="display-default-m">
-                    Get creative
-                  </Heading>
-                  <Text
-                    onBackground="neutral-weak" wrap="balance">
-                    Build production-grade UI without the struggle
-                  </Text>
-              <Flex fillWidth direction="column" negativeGap="1" paddingTop="104">
+              <Flex maxWidth={32} fillWidth direction="column" negativeGap="1" paddingTop="104">
                   <Feedback icon variant="success" radius={undefined} topRadius="l" zIndex={1}>
-                    Post successfully published to your network.
+                   Your profile is public.
                   </Feedback>
-                  <MediaUpload
-                    sizes="(max-width: 1024px) 90vw, 960px"
-                    marginBottom="12" radius={undefined} bottomRadius="l" initialPreviewImage="/images/cover.png">
-                    <Flex fill alignItems="flex-end" zIndex={1} position="absolute">
-                      <Fade to="top" fillWidth height={12} pattern={{ display: true, size: "2" }} position="absolute" bottom="0" bottomRadius="l"/>
-                      <Flex padding="24" position="relative">
-                      <User name="Lorant" subline="Pro member" avatarProps={{ src: "/images/l.jpg" }}/>
-                      </Flex>
-                    </Flex>
-                  </MediaUpload>
-                  <Scroller fillWidth gap="12">
-                    {Array(4).fill(null).map((_, index) => (
-                      <Flex key={index} fillWidth direction="column" negativeGap="1" minWidth={16}>
-                        <SmartImage
-                          sizes="400px"
-                          topRadius="l"
-                          border="neutral-medium"
-                          shadow="xl"
-                          alt="image"
-                          src={`/images/preview-${index + 1}.jpg`}
-                          priority
-                          aspectRatio="16 / 9"
-                        />
-                        <Textarea
-                          id={`Alt text ${index + 1}`}
-                          label="Alt text"
-                          radius="bottom"
-                          lines="auto"
-                        />
-                      </Flex>
-                    ))}
-                  </Scroller>
-                </Flex>
-
-              {/* CODE PREVIEW */}
-              <Flex fillWidth mobileDirection="column" negativeGap="1">
-              <Flex fillWidth leftRadius="l" direction="column" border="neutral-medium" padding="24" gap="24" maxWidth={32}>
+              <Flex radius={undefined} bottomRadius="l" overflow="hidden" position="relative" fillWidth direction="column" alignItems="center" border="neutral-medium">
+              <MediaUpload
+                border={undefined}
+                position="absolute" aspectRatio="16 / 9"
+                sizes="560px" radius={undefined} initialPreviewImage="/images/cover.png">
+              </MediaUpload>
+              <Flex paddingTop="160" paddingX="32" paddingBottom="32" fillWidth direction="column" position="relative" alignItems="center" gap="32">
+              <Avatar zIndex={1} style={{border: "8px solid var(--page-background)"}} size="xl" src="/images/l.jpg"/>
+              <Heading as="h3" variant="display-default-m">Lorant One</Heading>
               <SegmentedControl
                 onToggle={(value) => console.log("SegmentedControl changed", value)}
                 buttons={[
@@ -536,13 +501,48 @@ export default function Home() {
                 Manage account
               </Button>
               </Flex>
-              <CodeBlock
-                radius={undefined}
-                rightRadius="l"
-                highlight="2-3,5"
+              </Flex>
+              </Flex>
+
+            {/* CODE PREVIEW */}
+            <CodeBlock
+                highlight="15-19"
                 codeInstances={[
                   {
-                    code: `<Button>lol</Button>`,
+                    code: 
+`<Flex fillWidth mobileDirection="column" negativeGap="1">
+  <SegmentedControl
+    onToggle={(value) => console.log("SegmentedControl changed", value)}
+    buttons={[
+      {
+        size: "l",
+        value: "profile",
+        label: "Profile",
+      },
+      {
+        size: "l",
+        value: "settings",
+        label: "Settings",
+      },
+      {
+        size: "l",
+        value: "notifications",
+        label: <Flex gap="8">Notifications<StatusIndicator size="s" color="cyan"/></Flex>,
+      },
+      {
+        size: "l",
+        value: "integrations",
+        label: "Integrations",
+      },
+      {
+        size: "l",
+        value: "inbox",
+        label: "Inbox",
+      },
+    ]}
+  />
+</Flex>
+`,
                     language: "tsx",
                     label: "tsx",
                   },
@@ -553,7 +553,6 @@ export default function Home() {
                   },
                 ]}
               />
-              </Flex>
             </Flex>
 
             <Flex position="relative" fillWidth paddingX="32" paddingTop="160" paddingBottom="80" justifyContent="center">
@@ -566,13 +565,13 @@ export default function Home() {
                 grid={{
                   display: true,
                   width: "0.25rem",
-                  color: "brand-alpha-medium",
+                  color: "brand-alpha-strong",
                   height: "0.25rem",
                 }}
               />
-            <Heading as="h2" variant="display-default-m" align="center">
+            <Flex position="relative" textVariant="display-default-m" align="center">
               Build with style
-            </Heading>
+            </Flex>
             </Flex>
             <Flex
                   fillWidth
@@ -611,8 +610,9 @@ export default function Home() {
                   </Flex>
                   <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
                 </Flex>
-                <Flex position="relative" as="footer" fillWidth paddingX="l" gap="16" paddingY="80" textVariant="body-default-xs" onBackground="neutral-medium" justifyContent="center" alignItems="center" align="center" direction="column">
+                <Flex position="relative" as="footer" fillWidth paddingX="l" paddingTop="128" paddingBottom="80">
                 <Background
+                borderTop="brand-alpha-strong"
                 mask={{
                   x: 50,
                   y: 0,
@@ -621,15 +621,17 @@ export default function Home() {
                 grid={{
                   display: true,
                   width: "0.25rem",
-                  color: "brand-alpha-medium",
+                  color: "brand-alpha-strong",
                   height: "0.25rem",
                 }}
               />
+              <Flex position="relative" textVariant="body-default-xs" onBackground="neutral-medium" alignItems="center" align="center" fillWidth direction="column" gap="16">
                   <Logo wordmark={false} size="s"/>
                   <Text size="m"><Text onBackground="neutral-weak">2024 /</Text> Once UI</Text>
                   <SmartLink href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
                     MIT License
                   </SmartLink>
+                  </Flex>
               </Flex>
           </Flex>
 
