@@ -6,8 +6,6 @@ import Image from "next/image";
 import { Flex, Skeleton } from "@/once-ui/components";
 
 interface SmartImageProps extends React.ComponentProps<typeof Flex> {
-  className?: string;
-  style?: React.CSSProperties;
   aspectRatio?: string;
   height?: number;
   alt?: string;
@@ -21,8 +19,6 @@ interface SmartImageProps extends React.ComponentProps<typeof Flex> {
 }
 
 const SmartImage: React.FC<SmartImageProps> = ({
-  className,
-  style,
   aspectRatio,
   height,
   alt = "",
@@ -112,18 +108,16 @@ const SmartImage: React.FC<SmartImageProps> = ({
         fillWidth
         overflow="hidden"
         position="relative"
+        zIndex={0}
         cursor={enlarge ? "interactive" : ""}
         style={{
           outline: "none",
           isolation: "isolate",
-          zIndex: 0,
           height: aspectRatio ? "" : height ? `${height}rem` : "100%",
           aspectRatio,
           borderRadius: isEnlarged ? "0" : undefined,
-          ...calculateTransform(),
-          ...style,
+          ...calculateTransform()
         }}
-        className={className}
         onClick={handleClick}
         {...rest}
       >

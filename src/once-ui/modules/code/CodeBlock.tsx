@@ -120,6 +120,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           {codeInstances.length > 1 ? (
             <Flex borderRight="neutral-medium">
               <DropdownWrapper
+                bottomRightRadius
                 isOpen={isDropdownOpen}
                 onOpenChange={setIsDropdownOpen}
                 trigger={

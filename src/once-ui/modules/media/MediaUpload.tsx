@@ -1,5 +1,4 @@
 import React, { useRef, useState, forwardRef, useEffect } from "react";
-import classNames from "classnames";
 import Compressor from "compressorjs";
 import { Flex, Icon, SmartImage, Spinner, Text } from "@/once-ui/components";
 import styles from "./MediaUpload.module.scss";
@@ -13,6 +12,7 @@ interface MediaUploadProps extends React.ComponentProps<typeof Flex> {
   initialPreviewImage?: string | null;
   emptyState?: React.ReactNode;
   quality?: number;
+  sizes?: string;
   children?: React.ReactNode;
   convertTypes?: string[];
   resizeMaxWidth?: number;
@@ -37,9 +37,8 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
       resizeWidth = 1200,
       resizeHeight = 1200,
       loading = false,
-      className,
+      sizes,
       children,
-      style,
       initialPreviewImage = null,
       accept = "image/*",
       ...rest
@@ -136,11 +135,8 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
         transition="micro-medium"
         overflow="hidden"
         cursor="interactive"
-        className={classNames(
-          styles.container,
-          className
-        )}
-        style={{ aspectRatio: aspectRatio, ...style }}
+        className={styles.container}
+        aspectRatio={aspectRatio}
         fillWidth
         justifyContent="center"
         alignItems="center"
@@ -160,6 +156,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
                   cursor: "pointer",
                   filter: uploading ? "grayscale(1)" : "",
                 }}
+                sizes={sizes}
                 fill
                 src={previewImage ? previewImage : ""}
                 alt="Preview of uploaded image"

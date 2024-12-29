@@ -215,6 +215,7 @@ export default function Home() {
                 direction="column"
                 alignItems="center"
                 gap="32"
+                padding="32"
                 position="relative"
               >
                 <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
@@ -257,7 +258,7 @@ export default function Home() {
                   Brought to you by indie creators<br/> behind stellar projects:
                 </Heading>
                 <LogoCloud
-                  paddingBottom="128"
+                  paddingBottom="104"
                   limit={3}
                   fillWidth
                   logos={[
@@ -282,7 +283,7 @@ export default function Home() {
                 </Text>
 
                 {/* LOGIN */}
-                <Flex marginTop="48" fillWidth radius="xl" border="neutral-alpha-weak" overflow="hidden">
+                <Flex marginY="64" fillWidth radius="xl" border="neutral-alpha-weak" overflow="hidden">
                 <Flex fill hide="m">
                   <SmartImage src="/images/login.png" alt="Preview image"/>
                 </Flex>
@@ -366,6 +367,23 @@ export default function Home() {
 
             {/* PAYMENT */}
             <Flex paddingX="32" fillWidth paddingY="160" gap="48" position="relative" mobileDirection="column" alignItems="center">
+              <Background
+                style={{left: '-1px'}}
+                borderTop="neutral-alpha-weak"
+                mask={{
+                  x: 0,
+                  y: 50,
+                  radius: 100,
+                }}
+                position="absolute"
+                grid={{
+                  display: true,
+                  opacity: 50,
+                  width: "10%",
+                  color: "neutral-alpha-medium",
+                  height: "0.5rem",
+                }}
+              />
               <Flex fillWidth border="neutral-alpha-medium" borderStyle="dashed" radius="xl">
               <TiltFx position="relative" aspectRatio="16 / 9" fillWidth radius="xl" border="accent-alpha-weak" overflow="hidden" maxWidth={32}>
                 <HoloFx fill>
@@ -447,7 +465,9 @@ export default function Home() {
                   <Feedback icon variant="success" radius={undefined} topRadius="l" zIndex={1}>
                     Post successfully published to your network.
                   </Feedback>
-                  <MediaUpload marginBottom="12" radius={undefined} bottomRadius="l" initialPreviewImage="/images/cover.png">
+                  <MediaUpload
+                    sizes="(max-width: 1024px) 90vw, 960px"
+                    marginBottom="12" radius={undefined} bottomRadius="l" initialPreviewImage="/images/cover.png">
                     <Flex fill alignItems="flex-end" zIndex={1} position="absolute">
                       <Fade to="top" fillWidth height={12} pattern={{ display: true, size: "2" }} position="absolute" bottom="0" bottomRadius="l"/>
                       <Flex padding="24" position="relative">
@@ -459,6 +479,7 @@ export default function Home() {
                     {Array(4).fill(null).map((_, index) => (
                       <Flex key={index} fillWidth direction="column" negativeGap="1" minWidth={16}>
                         <SmartImage
+                          sizes="400px"
                           topRadius="l"
                           border="neutral-medium"
                           shadow="xl"
