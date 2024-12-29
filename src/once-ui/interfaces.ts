@@ -54,6 +54,7 @@ export interface SizeProps extends HTMLAttributes<HTMLDivElement> {
   fill?: boolean;
   fillWidth?: boolean;
   fillHeight?: boolean;
+  aspectRatio?: CSSProperties["aspectRatio"];
 }
 
 export interface SpacingProps extends HTMLAttributes<HTMLDivElement> {
@@ -140,6 +141,7 @@ export interface ConditionalProps extends HTMLAttributes<HTMLDivElement> {
 
 export interface DisplayProps extends HTMLAttributes<HTMLDivElement> {
   as?: ElementType;
+  pointerEvents?: "none" | "all" | "auto";
   position?: CSSProperties["position"];
   overflow?: CSSProperties["overflow"];
   overflowX?: CSSProperties["overflowX"];
