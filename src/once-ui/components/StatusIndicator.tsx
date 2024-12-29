@@ -7,7 +7,7 @@ import { Flex } from "./Flex";
 
 interface StatusIndicatorProps extends React.ComponentProps<typeof Flex> {
   size: "s" | "m" | "l";
-  color: "green" | "yellow" | "red" | "gray";
+  color: "blue" | "indigo" | "violet" | "magenta" | "pink" | "red" | "orange" | "yellow" | "moss" | "green" | "emerald" | "aqua" | "cyan" | "gray";
   ariaLabel?: string;
   className?: string;
   style?: React.CSSProperties;
