@@ -36,6 +36,7 @@ export * from "./NumberInput";
 export * from "./Option";
 export * from "./PasswordInput";
 export * from "./RadioButton";
+export * from "./RangeDatePicker";
 export * from "./RevealFx";
 export * from "./Scroller";
 export * from "./SegmentedControl";

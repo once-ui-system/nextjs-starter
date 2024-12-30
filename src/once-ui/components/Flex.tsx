@@ -158,7 +158,11 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
     const generateDynamicClass = (type: string, value: string | undefined) => {
       if (!value) return undefined;
 
-      if (["surface", "page", "overlay", "transparent"].includes(value)) {
+      if (value === "transparent") {
+        return `transparent-border`;
+      }
+
+      if (["surface", "page", "overlay"].includes(value)) {
         return `${value}-${type}`;
       }
 
