@@ -304,6 +304,10 @@
     border-color: var(--surface-border);
 }
 
+.transparent-border {
+    border-color: var(--static-transparent);
+}
+
 /* NEUTRAL */
 .neutral-border-weak {
     border-color: var(--neutral-border-weak);
