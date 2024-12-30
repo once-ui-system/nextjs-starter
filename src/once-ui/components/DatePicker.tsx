@@ -20,6 +20,8 @@ export interface DatePickerProps
   onChange?: (date: Date) => void;
   minDate?: Date;
   maxDate?: Date;
+  previousMonth?: boolean;
+  nextMonth?: boolean;
   timePicker?: boolean;
   defaultDate?: Date;
   defaultTime?: {
@@ -29,6 +31,11 @@ export interface DatePickerProps
   size?: "s" | "m" | "l";
   className?: string;
   style?: React.CSSProperties;
+  currentMonth?: number;
+  currentYear?: number;
+  onMonthChange?: (increment: number) => void;
+  range?: { startDate?: Date; endDate?: Date; isPreview?: boolean };
+  onHover?: (date: Date | null) => void;
 }
 
 const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
@@ -37,11 +44,20 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       value,
       onChange,
       timePicker = false,
+      previousMonth = true,
+      nextMonth = true,
+      minDate,
+      maxDate,
       defaultDate,
       defaultTime,
       size = "m",
       className,
       style,
+      currentMonth: propCurrentMonth,
+      currentYear: propCurrentYear,
+      onMonthChange,
+      range,
+      onHover,
       ...rest
     },
     ref,
@@ -63,8 +79,6 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     useEffect(() => {
       setSelectedDate(value);
       if (value) {
-        setCurrentMonth(value.getMonth());
-        setCurrentYear(value.getFullYear());
         setSelectedTime({
           hours: value.getHours(),
           minutes: value.getMinutes(),
@@ -82,12 +96,6 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     }, []);
 
     const today = new Date();
-    const [currentMonth, setCurrentMonth] = useState(
-      value?.getMonth() ?? today.getMonth(),
-    );
-    const [currentYear, setCurrentYear] = useState(
-      value?.getFullYear() ?? today.getFullYear(),
-    );
 
     const monthNames = [
       "January",
@@ -130,9 +138,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     };
 
     const handleMonthChange = (increment: number) => {
-      const newDate = new Date(currentYear, currentMonth + increment, 1);
-      setCurrentMonth(newDate.getMonth());
-      setCurrentYear(newDate.getFullYear());
+      onMonthChange?.(increment);
     };
 
     const convert24to12 = (hour24: number) => {
@@ -161,6 +167,12 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       onChange?.(newDate);
     };
 
+    const isInRange = (date: Date) => {
+      if (!range?.startDate) return false;
+      if (!range?.endDate) return false;
+      return date >= range.startDate && date <= range.endDate;
+    };
+
     const renderCalendarGrid = () => {
       const firstDay = new Date(currentYear, currentMonth, 1).getDay();
 
@@ -179,18 +191,18 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       for (let i = 0; i < firstDay; i++) {
         const prevMonthDay = daysInPrevMonth - firstDay + i + 1;
         days.push(
-          <Button
-            style={{
-              width: "var(--static-space-40)",
-            }}
-            weight="default"
-            variant="tertiary"
-            key={`prev-${prevMonthDay}`}
-            size="m"
-            disabled
-          >
-            {prevMonthDay}
-          </Button>,
+          <Flex width="40" height="40">
+            <Button
+              fillWidth
+              weight="default"
+              variant="tertiary"
+              key={`prev-${prevMonthDay}`}
+              size="m"
+              disabled
+            >
+              {prevMonthDay}
+            </Button>
+          </Flex>,
         );
       }
 
@@ -198,24 +210,41 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       for (let day = 1; day <= daysInMonth; day++) {
         const currentDate = new Date(currentYear, currentMonth, day);
         const isSelected =
-          selectedDate?.getDate() === day &&
-          selectedDate?.getMonth() === currentMonth &&
-          selectedDate?.getFullYear() === currentYear;
+          (selectedDate?.getDate() === day &&
+            selectedDate?.getMonth() === currentMonth &&
+            selectedDate?.getFullYear() === currentYear) ||
+          (value instanceof Date && value.getTime() === currentDate.getTime()) ||
+          (range?.startDate?.getTime() === currentDate.getTime()) ||
+          (range?.endDate?.getTime() === currentDate.getTime());
+
+        const isFirstInRange = range?.startDate && currentDate.getTime() === range.startDate.getTime();
+        const isLastInRange = range?.endDate && currentDate.getTime() === range.endDate.getTime();
 
         days.push(
-          <Button
-            style={{
-              width: "var(--static-space-40)",
-              transition: "none",
-            }}
-            weight={isSelected ? "strong" : "default"}
-            variant={isSelected ? "primary" : "tertiary"}
-            key={`current-${day}`}
-            size="m"
-            onClick={() => handleDateSelect(currentDate)}
+          <Flex paddingY="2">
+          <Flex 
+            key={`day-${day}`}
+            width="40"
+            height="40" 
+            background={isInRange(currentDate) ? "neutral-alpha-weak" : undefined}
+            borderTop={isInRange(currentDate) ? "neutral-alpha-weak" : "transparent"}
+            borderBottom={isInRange(currentDate) ? "neutral-alpha-weak" : "transparent"}
+            leftRadius={isFirstInRange ? "m" : undefined}
+            rightRadius={isLastInRange ? "m" : undefined}
           >
-            {day}
-          </Button>,
+            <Button
+              fillWidth
+              weight={isSelected ? "strong" : "default"}
+              variant={isSelected ? "primary" : "tertiary"}
+              size="m"
+              onClick={() => handleDateSelect(currentDate)}
+              onMouseEnter={() => onHover?.(currentDate)}
+              onMouseLeave={() => onHover?.(null)}
+            >
+              {day}
+            </Button>
+          </Flex>
+          </Flex>,
         );
       }
 
@@ -224,23 +253,26 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
 
       for (let i = 1; i <= remainingDays; i++) {
         days.push(
-          <Button
-            style={{
-              width: "var(--static-space-40)",
-            }}
-            weight="default"
-            variant="tertiary"
-            key={`next-${i}`}
-            size="m"
-            disabled
-          >
-            {i}
-          </Button>,
+          <Flex width="40" height="40">
+            <Button
+              fillWidth
+              weight="default"
+              variant="tertiary"
+              key={`next-${i}`}
+              size="m"
+              disabled
+            >
+              {i}
+            </Button>
+          </Flex>,
         );
       }
 
       return days;
     };
+
+    const currentMonth = propCurrentMonth ?? value?.getMonth() ?? today.getMonth();
+    const currentYear = propCurrentYear ?? value?.getFullYear() ?? today.getFullYear();
 
     return (
       <Flex
@@ -255,9 +287,8 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       >
         <Flex
           fillWidth
-          justifyContent="space-between"
+          justifyContent="center"
           alignItems="center"
-          paddingBottom="16"
         >
           {isTimeSelector ? (
             <Flex alignItems="center" fillWidth direction="column" gap="8">
@@ -278,30 +309,35 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             </Flex>
           ) : (
             <>
-              <IconButton
-                variant="tertiary"
-                size={size === "l" ? "l" : "m"}
-                icon="chevronLeft"
-                onClick={() => handleMonthChange(-1)}
-              />
+              {previousMonth && (
+                <IconButton
+                  variant="tertiary"
+                  size={size === "l" ? "l" : "m"}
+                  icon="chevronLeft"
+                  onClick={() => handleMonthChange(-1)}
+                />
+              )}
               <Flex fillWidth direction="column" alignItems="center" gap="8">
                 <Text
-                  variant={`label-default-${size}`}
+                  variant={`body-default-${size}`}
                   onBackground="neutral-strong"
                 >
                   {monthNames[currentMonth]} {currentYear}
                 </Text>
-                <Text variant="label-default-s" onBackground="neutral-weak">
-                  {selectedTime &&
-                    `${selectedTime.hours.toString().padStart(2, "0")}:${selectedTime.minutes.toString().padStart(2, "0")} ${isPM ? "PM" : "AM"}`}
-                </Text>
+                {timePicker && selectedTime &&
+                  <Text variant="label-default-s" onBackground="neutral-weak">
+                      `${selectedTime.hours.toString().padStart(2, "0")}:${selectedTime.minutes.toString().padStart(2, "0")} ${isPM ? "PM" : "AM"}`
+                  </Text>
+                }
               </Flex>
-              <IconButton
-                variant="tertiary"
-                size={size === "l" ? "l" : "m"}
-                icon="chevronRight"
-                onClick={() => handleMonthChange(1)}
-              />
+              {nextMonth && (
+                <IconButton
+                  variant="tertiary"
+                  size={size === "l" ? "l" : "m"}
+                  icon="chevronRight"
+                  onClick={() => handleMonthChange(1)}
+                />
+              )}
             </>
           )}
         </Flex>
@@ -316,7 +352,6 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         >
           {isTimeSelector ? (
             <Flex
-              fillWidth
               maxWidth={24}
               justifyContent="center"
               alignItems="center"
@@ -375,9 +410,8 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             </Flex>
           ) : (
             <Grid
-              className="fit-width"
+              fitWidth
               columns="7"
-              gap={size === "l" ? "8" : "4"}
             >
               {dayNames.map((day) => (
                 <Text

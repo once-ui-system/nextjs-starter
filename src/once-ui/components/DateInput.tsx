@@ -93,6 +93,7 @@ export const DateInput: React.FC<DateInputProps> = ({
 
   return (
     <DropdownWrapper
+      radius
       trigger={trigger}
       dropdown={dropdown}
       isOpen={isOpen}
