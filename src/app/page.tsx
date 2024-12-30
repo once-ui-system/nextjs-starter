@@ -11,6 +11,7 @@ import {
   Icon,
   InlineCode,
   Logo,
+  RangeDatePicker,
   Input,
   LetterFx,
   Accordion,
@@ -50,9 +51,11 @@ import { Select, NumberInput } from "@/once-ui/components";
 import { Fade } from "@/once-ui/components/Fade";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 import { TbBackground } from "react-icons/tb";
+import { DateRange } from "@/once-ui/components/RangeDatePicker";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
+  const [selectedRange, setSelectedRange] = useState<DateRange>();
   const [isFirstDialogOpen, setIsFirstDialogOpen] = useState(false);
   const [isSecondDialogOpen, setIsSecondDialogOpen] = useState(false);
   const [firstDialogHeight, setFirstDialogHeight] = useState<number>();
@@ -453,6 +456,58 @@ export default function Home() {
               </Flex>
             </Flex>
 
+            {/* BOOKING */}
+            <Flex padding="32" fillWidth gap="64" position="relative" mobileDirection="column" alignItems="center">
+            <Background
+                  fill
+                  position="absolute"
+                  gradient={{
+                    display: true,
+                    opacity: 60,
+                    tilt: 0,
+                    height: 100,
+                    width: 100,
+                    x: 50,
+                    y: 0,
+                    colorStart: "brand-solid-strong",
+                    colorEnd: "static-transparent",
+                  }}
+                />
+            <Flex fillWidth background="surface" radius="xl" border="neutral-medium" overflow="hidden" padding="32" direction="column" gap="40" position="relative">
+              <Flex fillWidth justifyContent="center" negativeGap="1">
+              <Flex maxWidth={12} gap="4" direction="column" leftRadius="l" paddingX="16" paddingY="12" background="surface" border="surface">
+              <Text variant="label-default-s" onBackground="neutral-weak">Check in</Text>
+                {selectedRange?.startDate ? (
+                  <>
+                    {selectedRange?.startDate.toLocaleDateString('default', { day: 'numeric', month: 'long' })}
+                  </>
+                ) : (
+                  "Add dates"
+                ) }
+              </Flex>
+              <Flex maxWidth={12} gap="4" direction="column" rightRadius="l" paddingX="16" paddingY="12" background="surface" border="surface">
+                  <Text variant="label-default-s" onBackground="neutral-weak">Check out</Text>
+                  {selectedRange?.endDate ? (
+                      <>
+                        {selectedRange?.endDate?.toLocaleDateString('default', { day: 'numeric', month: 'long' })}
+                      </>
+                  ) : (
+                    "Add dates"
+                  )}
+              </Flex>
+            </Flex>
+            <Flex fillWidth justifyContent="center">
+            <RangeDatePicker
+              data-scaling="110"
+              size="l"
+              fitWidth gap="40" mobileDirection="column"
+              onChange={(range) => setSelectedRange(range)}
+              value={selectedRange}
+            />
+            </Flex>
+            </Flex>
+            </Flex>
+
             {/* PROFILE */}
             <Flex justifyContent="center" paddingX="32" fillWidth paddingTop="80" gap="32" position="relative">
             <Background
@@ -480,9 +535,9 @@ export default function Home() {
                   }}
                 />
               <Flex maxWidth={32} fillWidth direction="column" negativeGap="1" paddingTop="104">
-                  <Feedback icon variant="success" radius={undefined} topRadius="l" zIndex={1}>
-                   Your profile is public.
-                  </Feedback>
+              <Feedback icon variant="success" radius={undefined} topRadius="l" zIndex={1}>
+                Your profile is public.
+              </Feedback>
               <Flex background="page" radius={undefined} bottomRadius="l" overflow="hidden" position="relative" fillWidth direction="column" alignItems="center" border="neutral-medium">
               <MediaUpload
                 border={undefined}
@@ -531,7 +586,7 @@ export default function Home() {
               />
               <Flex paddingY="32" fillWidth direction="column" negativeGap="1">
               <Input radius="top" label="Name" labelAsPlaceholder defaultValue="Lorant One" id="name"/>
-              <Input radius="bottom" label="Email" labelAsPlaceholder defaultValue="lorant@once-ui.com" id="email"/>
+              <Input radius="bottom" label="Email" labelAsPlaceholder defaultValue="lorant@once-ui.com" id="profileEmail"/>
               </Flex>
               <Button variant="secondary" onClick={() => setIsFirstDialogOpen(true)}>
                 Password and security
