@@ -278,12 +278,13 @@ export default function Home() {
                   Showcase
                 </Heading>
                 <Text
+                  marginBottom="32"
                   align="center" onBackground="neutral-weak">
                   Tiny snippets to inspire your next project
                 </Text>
 
                 {/* LOGIN */}
-                <Flex marginY="32" fillWidth radius="xl" border="neutral-alpha-weak" overflow="hidden">
+                <Flex marginY="32" background="overlay" fillWidth radius="xl" border="neutral-alpha-weak" overflow="hidden">
                 <Flex fill hide="m">
                   <SmartImage src="/images/login.png" alt="Preview image"/>
                 </Flex>
@@ -384,8 +385,8 @@ export default function Home() {
                   height: "1.25%",
                 }}
               />
-              <Flex fillWidth border="neutral-alpha-medium" borderStyle="dashed" radius="xl">
-              <TiltFx position="relative" aspectRatio="16 / 9" fillWidth radius="xl" border="accent-alpha-weak" overflow="hidden" maxWidth={32}>
+              <Flex position="relative" shadow="xl" fillWidth border="neutral-alpha-medium" borderStyle="dashed" background="page" radius="xl">
+              <TiltFx aspectRatio="16 / 9" fillWidth radius="xl" border="accent-alpha-weak" overflow="hidden" maxWidth={32}>
                 <HoloFx fill>
                   <Background
                     fill
@@ -453,20 +454,46 @@ export default function Home() {
             </Flex>
 
             {/* PROFILE */}
-            <Flex paddingX="32" fillWidth paddingTop="80" gap="32" direction="column" position="relative">
+            <Flex justifyContent="center" paddingX="32" fillWidth paddingTop="80" gap="32" position="relative">
+            <Background
+                  mask={{
+                    cursor: true,
+                  }}
+                  dots={{
+                    display: true,
+                    opacity: 50,
+                    color: "neutral-solid-strong",
+                    size: "48",
+                  }}
+                  fill
+                  position="absolute"
+                  gradient={{
+                    display: true,
+                    opacity: 100,
+                    tilt: 0,
+                    height: 25,
+                    width: 200,
+                    x: 50,
+                    y: 25,
+                    colorStart: "neutral-background-medium",
+                    colorEnd: "static-transparent",
+                  }}
+                />
               <Flex maxWidth={32} fillWidth direction="column" negativeGap="1" paddingTop="104">
                   <Feedback icon variant="success" radius={undefined} topRadius="l" zIndex={1}>
                    Your profile is public.
                   </Feedback>
-              <Flex radius={undefined} bottomRadius="l" overflow="hidden" position="relative" fillWidth direction="column" alignItems="center" border="neutral-medium">
+              <Flex background="page" radius={undefined} bottomRadius="l" overflow="hidden" position="relative" fillWidth direction="column" alignItems="center" border="neutral-medium">
               <MediaUpload
                 border={undefined}
+                emptyState={<Flex paddingBottom="80">Drag and drop or click to browse</Flex>}
                 position="absolute" aspectRatio="16 / 9"
-                sizes="560px" radius={undefined} initialPreviewImage="/images/cover.png">
+                sizes="560px" radius={undefined} initialPreviewImage="/images/profile.jpg">
               </MediaUpload>
-              <Flex paddingTop="160" paddingX="32" paddingBottom="32" fillWidth direction="column" position="relative" alignItems="center" gap="32">
+              <Flex paddingTop="160" paddingX="32" paddingBottom="32" fillWidth direction="column" position="relative" alignItems="center" gap="8">
               <Avatar zIndex={1} style={{border: "8px solid var(--page-background)"}} size="xl" src="/images/l.jpg"/>
               <Heading as="h3" variant="display-default-m">Lorant One</Heading>
+              <Text align="center" onBackground="neutral-weak" marginBottom="24">165 connections</Text>
               <SegmentedControl
                 onToggle={(value) => console.log("SegmentedControl changed", value)}
                 buttons={[
@@ -495,16 +522,27 @@ export default function Home() {
                     value: "inbox",
                     label: "Inbox",
                   },
+                  {
+                    size: "l",
+                    value: "requests",
+                    label: "Requests",
+                  },
                 ]}
               />
+              <Flex paddingY="32" fillWidth direction="column" negativeGap="1">
+              <Input radius="top" label="Name" labelAsPlaceholder defaultValue="Lorant One" id="name"/>
+              <Input radius="bottom" label="Email" labelAsPlaceholder defaultValue="lorant@once-ui.com" id="email"/>
+              </Flex>
               <Button variant="secondary" onClick={() => setIsFirstDialogOpen(true)}>
-                Manage account
+                Password and security
               </Button>
+              </Flex>
               </Flex>
               </Flex>
               </Flex>
 
             {/* CODE PREVIEW */}
+            <Flex justifyContent="center" paddingX="32" fillWidth paddingTop="80" position="relative">
             <CodeBlock
                 highlight="15-19"
                 codeInstances={[

@@ -176,7 +176,6 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
           position="absolute"
           fill
           padding="m"
-          radius="l"
           justifyContent="center"
           alignItems="center"
         >
