@@ -5,17 +5,21 @@ import React, {
   useEffect,
   forwardRef,
   TextareaHTMLAttributes,
+  useCallback,
+  ReactNode,
 } from "react";
 import classNames from "classnames";
 import { Flex, Text } from ".";
 import styles from "./Input.module.scss";
+import useDebounce from "../hooks/useDebounce";
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   id: string;
   label: string;
   lines?: number | "auto";
-  error?: React.ReactNode;
-  description?: React.ReactNode;
+  error?: boolean;
+  errorMessage?: ReactNode;
+  description?: ReactNode;
   radius?:
     | "none"
     | "top"
@@ -27,10 +31,11 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     | "bottom-right"
     | "bottom-left";
   className?: string;
-  hasPrefix?: React.ReactNode;
-  hasSuffix?: React.ReactNode;
+  hasPrefix?: ReactNode;
+  hasSuffix?: ReactNode;
   labelAsPlaceholder?: boolean;
   resize?: "horizontal" | "vertical" | "both" | "none";
+  validate?: (value: ReactNode) => ReactNode | null;
 }
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
@@ -39,7 +44,8 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       id,
       label,
       lines = 3,
-      error,
+      error = false,
+      errorMessage,
       description,
       radius,
       className,
@@ -47,6 +53,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       hasSuffix,
       labelAsPlaceholder = false,
       resize = "vertical",
+      validate,
       children,
       onFocus,
       onBlur,
@@ -58,13 +65,15 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!props.value);
+    const [validationError, setValidationError] = useState<ReactNode | null>(null);
+    const [height, setHeight] = useState<number | undefined>(undefined);
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+    const debouncedValue = useDebounce(props.value, 300);
 
     const adjustHeight = () => {
-      const textarea = textareaRef.current;
-      if (textarea && lines === "auto") {
-        textarea.style.height = "auto";
-        textarea.style.height = `${textarea.scrollHeight}px`;
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "auto";
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set to scroll height
       }
     };
 
@@ -82,23 +91,43 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
       setIsFocused(false);
-      if (event.target.value) {
-        setIsFilled(true);
-      } else {
-        setIsFilled(false);
-      }
+      setIsFilled(!!event.target.value);
       if (onBlur) onBlur(event);
     };
 
+    const validateInput = useCallback(() => {
+      if (!debouncedValue) {
+        setValidationError(null);
+        return;
+      }
+
+      if (validate) {
+        const error = validate(debouncedValue);
+        if (error) {
+          setValidationError(error);
+        } else {
+          setValidationError(errorMessage || null);
+        }
+      } else {
+        setValidationError(null);
+      }
+    }, [debouncedValue, validate, errorMessage]);
+
     useEffect(() => {
-      setIsFilled(!!props.value);
+      validateInput();
+    }, [debouncedValue, validateInput]);
+
+    useEffect(() => {
       if (lines === "auto") {
         adjustHeight();
       }
     }, [props.value, lines]);
 
+    const displayError = validationError || errorMessage;
+
     const textareaClassNames = classNames(
       styles.input,
+      styles.textarea,
       "font-body",
       "font-default",
       "font-m",
@@ -108,8 +137,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         [styles.withPrefix]: hasPrefix,
         [styles.withSuffix]: hasSuffix,
         [styles.labelAsPlaceholder]: labelAsPlaceholder,
-        [styles.hasChildren]: children,
-        [styles.textarea]: true,
+        [styles.hasChildren]: children
       },
     );
 
@@ -121,7 +149,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         fillWidth
         fitHeight
         className={classNames(className, {
-          [styles.error]: error,
+          [styles.error]: displayError && debouncedValue !== "",
         })}
       >
         <Flex
@@ -151,7 +179,6 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             <textarea
               {...props}
               ref={(node) => {
-                // Handle both refs
                 if (typeof ref === "function") {
                   ref(node);
                 } else if (ref) {
@@ -165,11 +192,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               onFocus={handleFocus}
               onBlur={handleBlur}
               className={textareaClassNames}
-              aria-describedby={error ? `${id}-error` : undefined}
-              aria-invalid={!!error}
+              aria-describedby={displayError ? `${id}-error` : undefined}
+              aria-invalid={!!displayError}
               style={{
                 ...style,
                 resize: lines === "auto" ? "none" : resize,
+                height: height ? `${height}rem` : 'auto',
               }}
               onChange={handleChange}
             />
@@ -193,7 +221,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             </Flex>
           )}
         </Flex>
-        {error && (
+        {displayError && errorMessage !== false && (
           <Flex paddingX="16">
             <Text
               as="span"
@@ -201,7 +229,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               variant="body-default-s"
               onBackground="danger-weak"
             >
-              {error}
+              {displayError}
             </Text>
           </Flex>
         )}
