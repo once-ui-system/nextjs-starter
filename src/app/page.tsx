@@ -7,52 +7,38 @@ import {
   Text,
   Flex,
   Button,
-  Grid,
   Icon,
   InlineCode,
   Logo,
-  RangeDatePicker,
   Input,
-  LetterFx,
-  Accordion,
   Avatar,
   AvatarGroup,
-  Skeleton,
   Textarea,
-  User,
-  DropdownWrapper,
-  Option,
   PasswordInput,
   SegmentedControl,
-  Badge,
   SmartLink,
-  Carousel,
   Dialog,
   Feedback,
-  GlitchFx,
   SmartImage,
   Line,
-  UserMenu,
-  Tag,
-  DatePicker,
-  DateInput,
   LogoCloud,
   Background,
+  Select,
   useToast,
   Card,
-  Scroller,
+  Fade,
   StatusIndicator,
+  DateRangePicker,
+  DateRange,
   TiltFx,
   HoloFx,
   IconButton,
   TagInput,
   Switch,
   Column,
+  Row,
 } from "@/once-ui/components";
-import { Select } from "@/once-ui/components";
-import { Fade } from "@/once-ui/components/Fade";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
-import { DateRange } from "@/once-ui/components/RangeDatePicker";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
@@ -306,7 +292,7 @@ export default function Home() {
                 {/* LOGIN */}
                 <Flex marginY="32" background="overlay" fillWidth radius="xl" border="neutral-alpha-weak" overflow="hidden">
                 <Flex fill hide="m">
-                  <SmartImage src="/images/login.png" alt="Preview image"/>
+                  <SmartImage src="/images/login.png" alt="Preview image" sizes="560px"/>
                 </Flex>
                 <Column fillWidth alignItems="center" gap="20" padding="32" position="relative">
                 <Background
@@ -521,7 +507,7 @@ export default function Home() {
               </Column>
             </Flex>
             <Flex fillWidth justifyContent="center">
-            <RangeDatePicker
+            <DateRangePicker
               data-scaling="110"
               size="l"
               fitWidth gap="40" mobileDirection="column"
@@ -668,7 +654,7 @@ export default function Home() {
               ]}
               onSelect={handleSelect}
             />
-              <Button className="mt-32" variant="secondary" onClick={() => setIsFirstDialogOpen(true)}>
+              <Button className="mt-32" prefixIcon="security" variant="secondary" onClick={() => setIsFirstDialogOpen(true)}>
                 Password and security
               </Button>
               </Column>
@@ -677,58 +663,66 @@ export default function Home() {
               </Flex>
 
             {/* CODE PREVIEW */}
-            <Flex justifyContent="center" paddingX="32" fillWidth paddingTop="80" position="relative">
-            <CodeBlock
-                highlight="15-19"
-                codeInstances={[
-                  {
-                    code: 
-`<Flex fillWidth mobileDirection="column" negativeGap="1">
-  <SegmentedControl
-    onToggle={(value) => console.log("SegmentedControl changed", value)}
-    buttons={[
-      {
-        size: "l",
-        value: "profile",
-        label: "Profile",
-      },
-      {
-        size: "l",
-        value: "settings",
-        label: "Settings",
-      },
-      {
-        size: "l",
-        value: "notifications",
-        label: <Flex gap="8">Notifications<StatusIndicator size="s" color="cyan"/></Flex>,
-      },
-      {
-        size: "l",
-        value: "integrations",
-        label: "Integrations",
-      },
-      {
-        size: "l",
-        value: "inbox",
-        label: "Inbox",
-      },
-    ]}
-  />
-</Flex>
-`,
-                    language: "tsx",
-                    label: "tsx",
-                  },
-                  {
-                    code: `<Button>lol</Button>`,
-                    language: "css",
-                    label: "css",
-                  },
-                ]}
+            <TiltFx fillWidth paddingX="32" paddingTop="64">
+            <Column border="neutral-alpha-weak" paddingX="32" radius="xl" overflow="hidden" paddingY="160" fillWidth position="relative">
+            <Background
+                mask={{
+                  x: 100,
+                  y: 0,
+                }}
+                position="absolute"
+                grid={{
+                  display: true,
+                  color: "neutral-alpha-medium",
+                  width: "2rem",
+                  height: "2rem",
+                }}
               />
-            </Flex>
+              <Background
+                mask={{
+                  x: 0,
+                  y: 100,
+                  radius: 100,
+                }}
+                position="absolute"
+                grid={{
+                  display: true,
+                  color: 'brand-alpha-strong',
+                  width: "12",
+                  height: "12"
+                }}
+                gradient={{
+                  display: true,
+                  opacity: 100,
+                  height: 100,
+                  width: 100,
+                  tilt: 0,
+                  x: 0,
+                  y: 100,
+                  colorStart: "brand-solid-strong",
+                  colorEnd: "brand-background-medium",
+                }}
+              />
+              <Column alignItems="center" gap="48" fillWidth position="relative">
+              <Heading align="center" as="h2" variant="display-default-l">
+                Quick start
+              </Heading>
+              <CodeBlock
+                  compact
+                  maxWidth={40}
+                  codeInstances={[
+                    {
+                      code: `git clone https://github.com/once-ui-system/nextjs-starter.git`,
+                      language: "tsx",
+                      label: "tsx",
+                    },
+                  ]}
+                />
+              </Column>
+            </Column>
+          </TiltFx>
 
-            <Flex position="relative" fillWidth paddingX="32" paddingTop="160" paddingBottom="80" justifyContent="center">
+            <Flex position="relative" fillWidth paddingX="32" paddingTop="160" minHeight={28} paddingBottom="80" justifyContent="center" alignItems="flex-end">
             <Background
                 mask={{
                   x: 50,
@@ -743,7 +737,7 @@ export default function Home() {
                 }}
               />
             <Flex position="relative" textVariant="display-default-m" align="center">
-              Build with style
+              Learn more
             </Flex>
             </Flex>
             <Flex

@@ -24,6 +24,7 @@ import {
   HiInformationCircle,
   HiExclamationCircle,
   HiCheckCircle,
+  HiOutlineShieldCheck,
 } from "react-icons/hi2";
 
 import { RiVisaLine } from "react-icons/ri";
@@ -58,4 +59,5 @@ export const iconLibrary: Record<string, IconType> = {
   eyeOff: HiOutlineEyeSlash,
   search: HiOutlineMagnifyingGlass,
   visa: RiVisaLine,
+  security: HiOutlineShieldCheck,
 };
