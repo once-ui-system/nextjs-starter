@@ -68,7 +68,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const [validationError, setValidationError] = useState<ReactNode | null>(null);
     const [height, setHeight] = useState<number | undefined>(undefined);
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
-    const debouncedValue = useDebounce(props.value, 300);
+    const debouncedValue = useDebounce(props.value, 1000);
 
     const adjustHeight = () => {
       if (textareaRef.current) {

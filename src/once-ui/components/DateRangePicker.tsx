@@ -8,7 +8,7 @@ export interface DateRange {
   endDate: Date | undefined;
 }
 
-export interface RangeDatePickerProps 
+export interface DateRangePickerProps 
   extends Omit<React.ComponentProps<typeof Flex>, "onChange"> {
   value?: DateRange;
   onChange?: (range: DateRange) => void;
@@ -17,7 +17,7 @@ export interface RangeDatePickerProps
   size?: 's' | 'm' | 'l';
 }
 
-const RangeDatePicker: React.FC<RangeDatePickerProps> = ({
+const DateRangePicker: React.FC<DateRangePickerProps> = ({
   value,
   onChange,
   minDate,
@@ -128,5 +128,5 @@ const RangeDatePicker: React.FC<RangeDatePickerProps> = ({
   );
 };
 
-RangeDatePicker.displayName = "RangeDatePicker";
-export { RangeDatePicker };
+DateRangePicker.displayName = "DateRangePicker";
+export { DateRangePicker };

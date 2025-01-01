@@ -166,7 +166,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
             handleOpenChange(!isOpen);
           }
         }}
-        tabIndex={0}
+        tabIndex={-1}
         role="button"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
