@@ -30,8 +30,6 @@ const UserMenu: React.FC<UserMenuProps> = ({
       minWidth={minWidth}
       maxWidth={maxWidth}
       minHeight={minHeight}
-      radius
-      floatingDistance={4}
       style={{
         borderRadius: "var(--radius-full)",
       }}
@@ -55,5 +53,4 @@ const UserMenu: React.FC<UserMenuProps> = ({
 };
 
 UserMenu.displayName = "UserMenu";
-
 export { UserMenu };
