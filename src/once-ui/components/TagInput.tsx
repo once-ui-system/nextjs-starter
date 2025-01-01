@@ -50,10 +50,6 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
     return (
       <Input
         ref={ref}
-        style={{
-          height: "var(--static-space-48)",
-          paddingTop: "var(--static-space-4)",
-        }}
         label={label}
         placeholder={placeholder}
         labelAsPlaceholder
