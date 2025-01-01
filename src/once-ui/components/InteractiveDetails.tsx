@@ -40,7 +40,7 @@ const InteractiveDetails: React.FC<InteractiveDetailsProps> = forwardRef<
         )}
       </Flex>
       {description && (
-        <Text as="span" variant="body-default-s" onBackground="neutral-medium">
+        <Text as="span" variant="body-default-s" onBackground="neutral-weak">
           {description}
         </Text>
       )}

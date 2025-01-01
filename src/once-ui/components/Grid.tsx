@@ -60,6 +60,8 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       maxHeight,
       fillWidth = false,
       fillHeight = false,
+      fitWidth,
+      fitHeight,
       hide,
       show,
       background,
