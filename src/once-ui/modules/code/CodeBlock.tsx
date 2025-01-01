@@ -118,7 +118,6 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           {codeInstances.length > 1 ? (
             <Flex borderRight="neutral-medium">
               <DropdownWrapper
-                bottomRightRadius
                 isOpen={isDropdownOpen}
                 onOpenChange={setIsDropdownOpen}
                 trigger={
@@ -196,13 +195,10 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         >
           {compact && copyButton && (
             <Flex
+              className={styles.compactCopy}
               overflow="hidden"
               zIndex={1}
-              bottomLeftRadius="m"
-              borderBottom="neutral-medium"
-              borderLeft="neutral-medium"
-              right="0"
-              top="0"
+              right="8"
               position="absolute"
             >
               <IconButton
@@ -210,8 +206,6 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                 onClick={handleCopy}
                 icon={copyIcon}
                 size="m"
-                radius="none"
-                style={{ border: "none" }}
                 variant="secondary"
               />
             </Flex>
