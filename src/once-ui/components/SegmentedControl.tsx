@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { ToggleButton, Scroller } from ".";
+import { ToggleButton, Scroller, Flex } from ".";
 import type { ToggleButtonProps } from "./ToggleButton";
 
 interface ButtonOption extends Omit<ToggleButtonProps, "selected"> {
@@ -96,31 +96,34 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
       {...scrollerProps}
       fillWidth={fillWidth}
       fitWidth={!fillWidth}
-      gap="-1"
       role="tablist"
       aria-orientation="horizontal"
       onKeyDown={handleKeyDown}
     >
-      {buttons.map((button, index) => {
-        return (
-          <ToggleButton
-            ref={(el) => {
-              buttonRefs.current[index] = el as HTMLButtonElement;
-            }}
-            variant="outline"
-            radius={index === 0 ? "left" : index === buttons.length - 1 ? "right" : "none"}
-            key={button.value}
-            selected={index === selectedIndex}
-            onClick={() => handleButtonClick(button)}
-            role="tab"
-            aria-selected={index === selectedIndex}
-            aria-controls={`panel-${button.value}`}
-            tabIndex={index === selectedIndex ? 0 : -1}
-            fillWidth={fillWidth}
-            {...button}
-          />
-        );
-      })}
+      <Flex
+        fillWidth 
+        gap="-1">
+        {buttons.map((button, index) => {
+          return (
+            <ToggleButton
+              ref={(el) => {
+                buttonRefs.current[index] = el as HTMLButtonElement;
+              }}
+              variant="outline"
+              radius={index === 0 ? "left" : index === buttons.length - 1 ? "right" : "none"}
+              key={button.value}
+              selected={index === selectedIndex}
+              onClick={() => handleButtonClick(button)}
+              role="tab"
+              aria-selected={index === selectedIndex}
+              aria-controls={`panel-${button.value}`}
+              tabIndex={index === selectedIndex ? 0 : -1}
+              fillWidth={fillWidth}
+              {...button}
+            />
+          );
+        })}
+      </Flex>
     </Scroller>
   );
 };
