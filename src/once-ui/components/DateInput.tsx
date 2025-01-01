@@ -8,7 +8,6 @@ interface DateInputProps extends Omit<React.ComponentProps<typeof Input>, "onCha
   label: string;
   value?: Date;
   onChange?: (date: Date) => void;
-  error?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
   timePicker?: boolean;
@@ -88,7 +87,6 @@ export const DateInput: React.FC<DateInputProps> = ({
 
   return (
     <DropdownWrapper
-      radius
       trigger={trigger}
       dropdown={dropdown}
       isOpen={isOpen}
