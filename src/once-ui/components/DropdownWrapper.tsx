@@ -25,17 +25,7 @@ export interface DropdownWrapperProps {
   minWidth?: number;
   maxWidth?: number;
   minHeight?: number;
-  floatingDistance?: number;
   floatingPlacement?: Placement;
-  radius?: boolean;
-  topRadius?: boolean;
-  bottomRadius?: boolean;
-  leftRadius?: boolean;
-  rightRadius?: boolean;
-  topLeftRadius?: boolean;
-  topRightRadius?: boolean;
-  bottomLeftRadius?: boolean;
-  bottomRightRadius?: boolean;
   trigger: ReactNode;
   dropdown: ReactNode;
   selectedOption?: string;
@@ -59,17 +49,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       minWidth,
       maxWidth,
       fillWidth,
-      floatingDistance,
       floatingPlacement = "bottom-start",
-      radius,
-      topRadius,
-      bottomRadius,
-      leftRadius,
-      rightRadius,
-      topLeftRadius,
-      topRightRadius,
-      bottomLeftRadius,
-      bottomRightRadius,
       className,
       style,
     },
@@ -94,7 +74,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       placement: floatingPlacement,
       open: isOpen,
       middleware: [
-        offset(floatingDistance ?? 0),
+        offset(4),
         flip(),
         shift(),
         size({
@@ -166,6 +146,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
 
     return (
       <Flex
+        fillWidth={fillWidth}
         direction="column"
         negativeGap="1"
         transition="macro-medium"
@@ -199,21 +180,13 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
             style={{
               position: strategy,
               top: y ?? 0,
-              offset: floatingDistance ?? 0,
+              offset: 4,
               left: x ?? 0,
             }}
             role="listbox"
           >
             <Dropdown
-              radius={radius ? "l" : undefined}
-              topRadius={topRadius ? "l" : undefined}
-              bottomRadius={bottomRadius ? "l" : undefined}
-              leftRadius={leftRadius ? "l" : undefined}
-              rightRadius={rightRadius ? "l" : undefined}
-              topLeftRadius={topLeftRadius ? "l" : undefined}
-              topRightRadius={topRightRadius ? "l" : undefined}
-              bottomLeftRadius={bottomLeftRadius ? "l" : undefined}
-              bottomRightRadius={bottomRightRadius ? "l" : undefined}
+              radius="l"
               selectedOption={selectedOption}
               onSelect={onSelect}
             >

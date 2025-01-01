@@ -171,7 +171,6 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
 
     return (
       <DropdownWrapper
-        bottomRadius
         fillWidth
         ref={(node) => {
           selectRef.current = node;
@@ -188,9 +187,8 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
             value={value}
             onFocus={handleFocus}
             onKeyDown={handleKeyDown}
-            radius={isDropdownOpen ? "top" : undefined}
             readOnly
-            className={classNames("cursor-interactive", {
+            className={classNames("cursor-interactive", "fill-width", {
               [inputStyles.filled]: isFilled,
               [inputStyles.focused]: isFocused,
               className,
