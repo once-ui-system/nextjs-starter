@@ -191,12 +191,11 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       for (let i = 0; i < firstDay; i++) {
         const prevMonthDay = daysInPrevMonth - firstDay + i + 1;
         days.push(
-          <Flex width="40" height="40">
+          <Flex width="40" height="40" key={`prev-${currentYear}-${currentMonth}-${i}`}>
             <Button
               fillWidth
               weight="default"
               variant="tertiary"
-              key={`prev-${prevMonthDay}`}
               size="m"
               disabled
             >
@@ -221,9 +220,8 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         const isLastInRange = range?.endDate && currentDate.getTime() === range.endDate.getTime();
 
         days.push(
-          <Flex paddingY="2">
+          <Flex paddingY="2" key={`day-${currentYear}-${currentMonth}-${day}`}>
           <Flex 
-            key={`day-${day}`}
             width="40"
             height="40" 
             background={isInRange(currentDate) ? "neutral-alpha-weak" : undefined}
@@ -253,12 +251,11 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
 
       for (let i = 1; i <= remainingDays; i++) {
         days.push(
-          <Flex width="40" height="40">
+          <Flex width="40" height="40" key={`next-${currentYear}-${currentMonth}-${i}`}>
             <Button
               fillWidth
               weight="default"
               variant="tertiary"
-              key={`next-${i}`}
               size="m"
               disabled
             >
