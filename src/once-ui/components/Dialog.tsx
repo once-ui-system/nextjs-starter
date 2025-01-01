@@ -314,6 +314,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
               as="section"
               paddingX="24"
               paddingBottom="24"
+              flex={1}
               overflowY="auto"
               direction="column"
             >
