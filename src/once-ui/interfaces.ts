@@ -22,17 +22,16 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
-  direction?: "row" | "column";
+  direction?: "row" | "column" | "row-reverse" | "column-reverse";
+  tabletDirection?: "row" | "column" | "row-reverse" | "column-reverse";
+  mobileDirection?: "row" | "column" | "row-reverse" | "column-reverse";
   justifyContent?: CSSProperties["justifyContent"];
   alignItems?: CSSProperties["alignItems"];
   wrap?: boolean;
   flex?: number;
-  tabletDirection?: "row" | "column";
-  mobileDirection?: "row" | "column";
 }
 
-export interface TextProps<T extends ElementType = "span">
-  extends HTMLAttributes<T> {
+export interface TextProps<T extends ElementType = "span"> extends HTMLAttributes<T> {
   as?: T;
   variant?: TextVariant;
   wrap?: CSSProperties["textWrap"];
@@ -71,8 +70,7 @@ export interface SpacingProps extends HTMLAttributes<HTMLDivElement> {
   marginBottom?: SpacingToken;
   marginX?: SpacingToken;
   marginY?: SpacingToken;
-  gap?: SpacingToken;
-  negativeGap?: "1" | "2";
+  gap?: SpacingToken | "-1";
   top?: SpacingToken;
   right?: SpacingToken;
   bottom?: SpacingToken;

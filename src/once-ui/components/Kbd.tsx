@@ -15,13 +15,7 @@ interface KbdProps extends React.ComponentProps<typeof Flex> {
 
 const Kbd = forwardRef<HTMLDivElement, KbdProps>(
   ({ label, children, className, style, ...rest }, ref) => (
-    <Flex
-      as="kbd"
-      ref={ref}
-      className={classNames(styles.kbd, className)}
-      style={style}
-      {...rest}
-    >
+    <Flex as="kbd" ref={ref} className={classNames(styles.kbd, className)} style={style} {...rest}>
       <Text as="span" variant="label-default-s">
         {label || children}
       </Text>

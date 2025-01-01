@@ -5,14 +5,7 @@ import classNames from "classnames";
 import { headers } from "next/headers";
 import { Metadata } from "next";
 
-import {
-  baseURL,
-  style,
-  meta,
-  og,
-  schema,
-  social,
-} from "@/once-ui/resources/config";
+import { baseURL, style, meta, og, schema, social } from "@/once-ui/resources/config";
 
 import { Background, Flex } from "@/once-ui/components";
 
@@ -116,16 +109,13 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schemaData),
+          }}
         />
       </head>
       <ToastProvider>
-        <Flex
-          as="body"
-          fillWidth
-          direction="column"
-          margin="0"
-          padding="0">
+        <Flex as="body" fillWidth direction="column" margin="0" padding="0">
           <Background
             position="absolute"
             mask={{

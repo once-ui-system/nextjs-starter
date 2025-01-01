@@ -30,15 +30,23 @@ interface DialogProps extends Omit<React.ComponentProps<typeof Flex>, "title"> {
 const DialogContext = React.createContext<{
   stackedDialogOpen: boolean;
   setStackedDialogOpen: (open: boolean) => void;
-}>({ stackedDialogOpen: false, setStackedDialogOpen: () => {} });
+}>({
+  stackedDialogOpen: false,
+  setStackedDialogOpen: () => {},
+});
 
-export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const DialogProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const [stackedDialogOpen, setStackedDialogOpen] = useState(false);
 
   return (
-    <DialogContext.Provider value={{ stackedDialogOpen, setStackedDialogOpen }}>
+    <DialogContext.Provider
+      value={{
+        stackedDialogOpen,
+        setStackedDialogOpen,
+      }}
+    >
       {children}
     </DialogContext.Provider>
   );
@@ -64,8 +72,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
     const dialogRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(isOpen);
     const [isAnimating, setIsAnimating] = useState(false);
-    const { stackedDialogOpen, setStackedDialogOpen } =
-      useContext(DialogContext);
+    const { stackedDialogOpen, setStackedDialogOpen } = useContext(DialogContext);
 
     useEffect(() => {
       if (stack) {
@@ -106,17 +113,12 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
 
           if (focusableElements.length > 0) {
             const firstElement = focusableElements[0] as HTMLElement;
-            const lastElement = focusableElements[
-              focusableElements.length - 1
-            ] as HTMLElement;
+            const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
             if (event.shiftKey && document.activeElement === firstElement) {
               event.preventDefault();
               lastElement.focus();
-            } else if (
-              !event.shiftKey &&
-              document.activeElement === lastElement
-            ) {
+            } else if (!event.shiftKey && document.activeElement === lastElement) {
               event.preventDefault();
               firstElement.focus();
             }
@@ -140,10 +142,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
         document.body.style.overflow = "hidden";
         // Make everything outside the dialog inert
         document.body.childNodes.forEach((node) => {
-          if (
-            node instanceof HTMLElement &&
-            node !== document.getElementById("portal-root")
-          ) {
+          if (node instanceof HTMLElement && node !== document.getElementById("portal-root")) {
             node.inert = true;
           }
         });
@@ -152,10 +151,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
         if (stack) {
           const dialogs = document.querySelectorAll('[role="dialog"]');
           dialogs.forEach((dialog) => {
-            if (
-              dialog instanceof HTMLElement &&
-              !dialog.contains(dialogRef.current)
-            ) {
+            if (dialog instanceof HTMLElement && !dialog.contains(dialogRef.current)) {
               dialog.inert = true;
             }
           });
@@ -183,10 +179,9 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
 
     useEffect(() => {
       if (isOpen && dialogRef.current) {
-        const focusableElements =
-          dialogRef.current.querySelectorAll<HTMLElement>(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-          );
+        const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
         const firstElement = focusableElements[0];
         firstElement.focus();
       }
@@ -222,7 +217,9 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
         left="0"
         right="0"
         bottom="0"
-        className={classNames(styles.overlay, { [styles.open]: isAnimating })}
+        className={classNames(styles.overlay, {
+          [styles.open]: isAnimating,
+        })}
         justifyContent="center"
         alignItems="center"
         padding="l"
@@ -266,17 +263,12 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
                 if (focusableElements.length === 0) return;
 
                 const firstElement = focusableElements[0] as HTMLElement;
-                const lastElement = focusableElements[
-                  focusableElements.length - 1
-                ] as HTMLElement;
+                const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
                 if (e.shiftKey && document.activeElement === firstElement) {
                   e.preventDefault();
                   lastElement.focus();
-                } else if (
-                  !e.shiftKey &&
-                  document.activeElement === lastElement
-                ) {
+                } else if (!e.shiftKey && document.activeElement === lastElement) {
                   e.preventDefault();
                   firstElement.focus();
                 }

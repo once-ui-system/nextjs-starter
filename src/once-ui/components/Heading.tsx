@@ -59,26 +59,18 @@ const Heading = <T extends ElementType = "h1">({
   const sizeClass = size ? `font-${size}` : "font-m";
   const weightClass = weight ? `font-${weight}` : "font-strong";
 
-  const classes = variant
-    ? getVariantClasses(variant)
-    : [sizeClass, weightClass];
+  const classes = variant ? getVariantClasses(variant) : [sizeClass, weightClass];
 
   let colorClass = "neutral-on-background-strong";
   if (onBackground) {
-    const [scheme, weight] = onBackground.split("-") as [
-      ColorScheme,
-      ColorWeight,
-    ];
+    const [scheme, weight] = onBackground.split("-") as [ColorScheme, ColorWeight];
     colorClass = `${scheme}-on-background-${weight}`;
   } else if (onSolid) {
     const [scheme, weight] = onSolid.split("-") as [ColorScheme, ColorWeight];
     colorClass = `${scheme}-on-solid-${weight}`;
   }
 
-  const generateClassName = (
-    prefix: string,
-    token: SpacingToken | undefined,
-  ) => {
+  const generateClassName = (prefix: string, token: SpacingToken | undefined) => {
     return token ? `${prefix}-${token}` : undefined;
   };
 
@@ -105,7 +97,11 @@ const Heading = <T extends ElementType = "h1">({
   return (
     <Component
       className={combinedClasses}
-      style={{ textAlign: align, textWrap: wrap, ...style }}
+      style={{
+        textAlign: align,
+        textWrap: wrap,
+        ...style,
+      }}
       {...props}
     >
       {children}

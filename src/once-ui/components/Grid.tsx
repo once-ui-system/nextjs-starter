@@ -14,8 +14,6 @@ import {
 } from "../interfaces";
 import { SpacingToken, ColorScheme, ColorWeight } from "../types";
 
-import styles from "./Grid.module.scss";
-
 interface ComponentProps
   extends GridProps,
     SpacingProps,
@@ -34,6 +32,12 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       rows,
       gap,
       position,
+      aspectRatio,
+      align,
+      textVariant,
+      textSize,
+      textWeight,
+      textType,
       tabletColumns,
       mobileColumns,
       tabletRows,
@@ -58,6 +62,12 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       minWidth,
       minHeight,
       maxHeight,
+      top,
+      right,
+      bottom,
+      left,
+      fit,
+      fill,
       fillWidth = false,
       fillHeight = false,
       fitWidth,
@@ -66,8 +76,8 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       show,
       background,
       solid,
-      alpha,
       opacity,
+      transition,
       pointerEvents,
       border,
       borderTop,
@@ -88,6 +98,7 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       overflow,
       overflowX,
       overflowY,
+      cursor,
       zIndex,
       shadow,
       className,
@@ -97,14 +108,7 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
     },
     ref,
   ) => {
-    const generateClassName = (
-      prefix: string,
-      token: SpacingToken | undefined,
-    ) => {
-      return token ? `${prefix}-${token}` : undefined;
-    };
-
-    const generateDynamicClass = (type: string, value: string | undefined) => {
+    const generateDynamicClass = (type: string, value: string | "-1" | undefined) => {
       if (!value) return undefined;
       if (value === "surface" || value === "page" || value === "transparent") {
         return `${value}-${type}`;
@@ -151,28 +155,35 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
 
     const classes = classNames(
       inline ? "display-inline-grid" : "display-grid",
-      className,
-      fillWidth && styles.fillWidth,
+      fit && "fit",
+      fitWidth && "fit-width",
+      fitHeight && "fit-height",
+      fill && "fill",
+      (fillWidth || maxWidth) && "fill-width",
+      (fillHeight || maxHeight) && "fill-height",
       columns && `columns-${columns}`,
       tabletColumns && `tablet-columns-${tabletColumns}`,
       mobileColumns && `mobile-columns-${mobileColumns}`,
-      generateClassName("p", padding),
-      generateClassName("pl", paddingLeft),
-      generateClassName("pr", paddingRight),
-      generateClassName("pt", paddingTop),
-      generateClassName("pb", paddingBottom),
-      generateClassName("px", paddingX),
-      generateClassName("py", paddingY),
-      generateClassName("m", margin),
-      generateClassName("ml", marginLeft),
-      generateClassName("mr", marginRight),
-      generateClassName("mt", marginTop),
-      generateClassName("mb", marginBottom),
-      generateClassName("mx", marginX),
-      generateClassName("my", marginY),
-      generateClassName("g", gap),
+      padding && `p-${padding}`,
+      paddingLeft && `pl-${paddingLeft}`,
+      paddingRight && `pr-${paddingRight}`,
+      paddingTop && `pt-${paddingTop}`,
+      paddingBottom && `pb-${paddingBottom}`,
+      paddingX && `px-${paddingX}`,
+      paddingY && `py-${paddingY}`,
+      margin && `m-${margin}`,
+      marginLeft && `ml-${marginLeft}`,
+      marginRight && `mr-${marginRight}`,
+      marginTop && `mt-${marginTop}`,
+      marginBottom && `mb-${marginBottom}`,
+      marginX && `mx-${marginX}`,
+      marginY && `my-${marginY}`,
+      gap && `g-${gap}`,
+      top && `top-${top}`,
+      right && `right-${right}`,
+      bottom && `bottom-${bottom}`,
+      left && `left-${left}`,
       generateDynamicClass("background", background),
-      generateDynamicClass("alpha", alpha),
       generateDynamicClass("solid", solid),
       generateDynamicClass(
         "border",
@@ -182,8 +193,7 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
         !borderStyle &&
         "border-solid",
       border && !borderWidth && `border-1`,
-      (borderTop || borderRight || borderBottom || borderLeft) &&
-        "border-reset",
+      (borderTop || borderRight || borderBottom || borderLeft) && "border-reset",
       borderTop && "border-top-1",
       borderRight && "border-right-1",
       borderBottom && "border-bottom-1",
@@ -199,11 +209,16 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       topRightRadius && `radius-${topRightRadius}-top-right`,
       bottomLeftRadius && `radius-${bottomLeftRadius}-bottom-left`,
       bottomRightRadius && `radius-${bottomRightRadius}-bottom-right`,
-      hide === "s" && "s-grid-hide",
-      hide === "m" && "m-grid-hide",
-      show === "s" && "s-grid-show",
-      show === "m" && "m-grid-show",
+      hide === "s" && `${hide}-grid-hide`,
+      show === "s" && `${show}-grid-show`,
+      pointerEvents && `pointer-events-${pointerEvents}`,
+      transition && `transition-${transition}`,
       shadow && `shadow-${shadow}`,
+      position && `position-${position}`,
+      zIndex && `z-index-${zIndex}`,
+      textType && `font-${textType}`,
+      cursor && `cursor-${cursor}`,
+      className,
     );
 
     const combinedStyle: CSSProperties = {
@@ -212,12 +227,10 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       minWidth: parseDimension(minWidth, "width"),
       minHeight: parseDimension(minHeight, "height"),
       maxHeight: parseDimension(maxHeight, "height"),
-      width: fillWidth ? "100%" : parseDimension(width, "width"),
-      height: fillHeight ? "100%" : parseDimension(height, "height"),
-      position,
-      overflowX,
-      overflowY,
-      zIndex,
+      width: parseDimension(width, "width"),
+      height: parseDimension(height, "height"),
+      aspectRatio: aspectRatio,
+      textAlign: align,
       ...style,
     };
 

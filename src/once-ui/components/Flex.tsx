@@ -29,6 +29,8 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       as: Component = "div",
       inline,
       direction,
+      tabletDirection,
+      mobileDirection,
       justifyContent,
       alignItems,
       wrap = false,
@@ -59,7 +61,6 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       marginX,
       marginY,
       gap,
-      negativeGap,
       position,
       width,
       height,
@@ -77,8 +78,6 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       hide,
       show,
       transition,
-      tabletDirection,
-      mobileDirection,
       background,
       solid,
       opacity,
@@ -112,13 +111,6 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
     },
     ref,
   ) => {
-    const generateClassName = (
-      prefix: string,
-      token: SpacingToken | undefined,
-    ) => {
-      return token ? `${prefix}-${token}` : undefined;
-    };
-
     if (onBackground && onSolid) {
       console.warn(
         "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied.",
@@ -139,16 +131,11 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
     const sizeClass = textSize ? `font-${textSize}` : "";
     const weightClass = textWeight ? `font-${textWeight}` : "";
 
-    const variantClasses = textVariant
-      ? getVariantClasses(textVariant)
-      : [sizeClass, weightClass];
+    const variantClasses = textVariant ? getVariantClasses(textVariant) : [sizeClass, weightClass];
 
     let colorClass = "";
     if (onBackground) {
-      const [scheme, weight] = onBackground.split("-") as [
-        ColorScheme,
-        ColorWeight,
-      ];
+      const [scheme, weight] = onBackground.split("-") as [ColorScheme, ColorWeight];
       colorClass = `${scheme}-on-background-${weight}`;
     } else if (onSolid) {
       const [scheme, weight] = onSolid.split("-") as [ColorScheme, ColorWeight];
@@ -178,25 +165,29 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
 
     const classes = classNames(
       inline ? "display-inline-flex" : "display-flex",
-      generateClassName("p", padding),
-      generateClassName("pl", paddingLeft),
-      generateClassName("pr", paddingRight),
-      generateClassName("pt", paddingTop),
-      generateClassName("pb", paddingBottom),
-      generateClassName("px", paddingX),
-      generateClassName("py", paddingY),
-      generateClassName("m", margin),
-      generateClassName("ml", marginLeft),
-      generateClassName("mr", marginRight),
-      generateClassName("mt", marginTop),
-      generateClassName("mb", marginBottom),
-      generateClassName("mx", marginX),
-      generateClassName("my", marginY),
-      generateClassName("g", gap),
-      generateClassName("top", top),
-      generateClassName("right", right),
-      generateClassName("bottom", bottom),
-      generateClassName("left", left),
+      padding && `p-${padding}`,
+      paddingLeft && `pl-${paddingLeft}`,
+      paddingRight && `pr-${paddingRight}`,
+      paddingTop && `pt-${paddingTop}`,
+      paddingBottom && `pb-${paddingBottom}`,
+      paddingX && `px-${paddingX}`,
+      paddingY && `py-${paddingY}`,
+      margin && `m-${margin}`,
+      marginLeft && `ml-${marginLeft}`,
+      marginRight && `mr-${marginRight}`,
+      marginTop && `mt-${marginTop}`,
+      marginBottom && `mb-${marginBottom}`,
+      marginX && `mx-${marginX}`,
+      marginY && `my-${marginY}`,
+      gap === "-1"
+        ? direction === "column" || direction === "column-reverse"
+          ? "g-vertical--1"
+          : "g-horizontal--1"
+        : gap && `g-${gap}`,
+      top && `top-${top}`,
+      right && `right-${right}`,
+      bottom && `bottom-${bottom}`,
+      left && `left-${left}`,
       generateDynamicClass("background", background),
       generateDynamicClass("solid", solid),
       generateDynamicClass(
@@ -206,9 +197,8 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       (border || borderTop || borderRight || borderBottom || borderLeft) &&
         !borderStyle &&
         "border-solid",
-      border && !borderWidth && `border-1`,
-      (borderTop || borderRight || borderBottom || borderLeft) &&
-        "border-reset",
+      border && !borderWidth && "border-1",
+      (borderTop || borderRight || borderBottom || borderLeft) && "border-reset",
       borderTop && "border-top-1",
       borderRight && "border-right-1",
       borderBottom && "border-bottom-1",
@@ -224,29 +214,22 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       topRightRadius && `radius-${topRightRadius}-top-right`,
       bottomLeftRadius && `radius-${bottomLeftRadius}-bottom-left`,
       bottomRightRadius && `radius-${bottomRightRadius}-bottom-right`,
-      negativeGap &&
-        `gap-${direction === "column" ? "vertical" : "horizontal"}--${negativeGap}`,
-      direction === "column" && "flex-column",
-      direction === "row" && "flex-row",
-      tabletDirection === "column" && "m-flex-column",
-      tabletDirection === "row" && "m-flex-row",
-      mobileDirection === "column" && "s-flex-column",
-      mobileDirection === "row" && "s-flex-row",
+      direction && `flex-${direction}`,
+      tabletDirection && `m-flex-${tabletDirection}`,
+      mobileDirection && `s-flex-${mobileDirection}`,
       pointerEvents && `pointer-events-${pointerEvents}`,
       transition && `transition-${transition}`,
-      hide === "s" && "s-flex-hide",
-      hide === "m" && "m-flex-hide",
-      show === "s" && "s-flex-show",
-      show === "m" && "m-flex-show",
+      hide && `${hide}-flex-hide`,
+      show && `${show}-flex-show`,
       opacity && `opacity-${opacity}`,
-      wrap && `flex-wrap`,
+      wrap && "flex-wrap",
       overflow && `overflow-${overflow}`,
       overflowX && `overflow-x-${overflowX}`,
       overflowY && `overflow-y-${overflowY}`,
-      fit && "fit",
       flex && `flex-${flex}`,
       justifyContent && `justify-${justifyContent}`,
       alignItems && `align-${alignItems}`,
+      fit && "fit",
       fitWidth && "fit-width",
       fitHeight && "fit-height",
       fill && "fill",

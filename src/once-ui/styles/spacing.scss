@@ -1358,11 +1358,11 @@
 
 // Negative gap: collapse stacked borders
 
-.gap-horizontal--1 > *:not(:first-child) {
+.g-horizontal--1 > *:not(:first-child) {
     margin-left: -1px;
 }
   
-.gap-vertical--1 > *:not(:first-child) {
+.g-vertical--1 > *:not(:first-child) {
     margin-top: -1px;
 }
 

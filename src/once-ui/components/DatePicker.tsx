@@ -2,20 +2,10 @@
 
 import React, { useState, forwardRef, useEffect } from "react";
 import classNames from "classnames";
-import {
-  Flex,
-  Text,
-  Button,
-  Grid,
-  SegmentedControl,
-  IconButton,
-  RevealFx,
-  NumberInput,
-} from ".";
+import { Flex, Text, Button, Grid, SegmentedControl, IconButton, RevealFx, NumberInput } from ".";
 import styles from "./DatePicker.module.scss";
 
-export interface DatePickerProps
-  extends Omit<React.ComponentProps<typeof Flex>, "onChange"> {
+export interface DatePickerProps extends Omit<React.ComponentProps<typeof Flex>, "onChange"> {
   value?: Date;
   onChange?: (date: Date) => void;
   minDate?: Date;
@@ -34,7 +24,11 @@ export interface DatePickerProps
   currentMonth?: number;
   currentYear?: number;
   onMonthChange?: (increment: number) => void;
-  range?: { startDate?: Date; endDate?: Date; isPreview?: boolean };
+  range?: {
+    startDate?: Date;
+    endDate?: Date;
+    isPreview?: boolean;
+  };
   onHover?: (date: Date | null) => void;
 }
 
@@ -70,9 +64,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         }
       | undefined
     >(defaultTime);
-    const [isPM, setIsPM] = useState(
-      defaultTime?.hours ? defaultTime.hours >= 12 : false,
-    );
+    const [isPM, setIsPM] = useState(defaultTime?.hours ? defaultTime.hours >= 12 : false);
     const [isTimeSelector, setIsTimeSelector] = useState(false);
     const [isTransitioning, setIsTransitioning] = useState(true);
 
@@ -147,11 +139,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       return hour24;
     };
 
-    const handleTimeChange = (
-      hours: number,
-      minutes: number,
-      pm: boolean = isPM,
-    ) => {
+    const handleTimeChange = (hours: number, minutes: number, pm: boolean = isPM) => {
       if (!selectedDate) return;
 
       const newTime = {
@@ -192,13 +180,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         const prevMonthDay = daysInPrevMonth - firstDay + i + 1;
         days.push(
           <Flex width="40" height="40" key={`prev-${currentYear}-${currentMonth}-${i}`}>
-            <Button
-              fillWidth
-              weight="default"
-              variant="tertiary"
-              size="m"
-              disabled
-            >
+            <Button fillWidth weight="default" variant="tertiary" size="m" disabled>
               {prevMonthDay}
             </Button>
           </Flex>,
@@ -213,35 +195,36 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             selectedDate?.getMonth() === currentMonth &&
             selectedDate?.getFullYear() === currentYear) ||
           (value instanceof Date && value.getTime() === currentDate.getTime()) ||
-          (range?.startDate?.getTime() === currentDate.getTime()) ||
-          (range?.endDate?.getTime() === currentDate.getTime());
+          range?.startDate?.getTime() === currentDate.getTime() ||
+          range?.endDate?.getTime() === currentDate.getTime();
 
-        const isFirstInRange = range?.startDate && currentDate.getTime() === range.startDate.getTime();
+        const isFirstInRange =
+          range?.startDate && currentDate.getTime() === range.startDate.getTime();
         const isLastInRange = range?.endDate && currentDate.getTime() === range.endDate.getTime();
 
         days.push(
           <Flex paddingY="2" key={`day-${currentYear}-${currentMonth}-${day}`}>
-          <Flex 
-            width="40"
-            height="40" 
-            background={isInRange(currentDate) ? "neutral-alpha-weak" : undefined}
-            borderTop={isInRange(currentDate) ? "neutral-alpha-weak" : "transparent"}
-            borderBottom={isInRange(currentDate) ? "neutral-alpha-weak" : "transparent"}
-            leftRadius={isFirstInRange ? "m" : undefined}
-            rightRadius={isLastInRange ? "m" : undefined}
-          >
-            <Button
-              fillWidth
-              weight={isSelected ? "strong" : "default"}
-              variant={isSelected ? "primary" : "tertiary"}
-              size="m"
-              onClick={() => handleDateSelect(currentDate)}
-              onMouseEnter={() => onHover?.(currentDate)}
-              onMouseLeave={() => onHover?.(null)}
+            <Flex
+              width="40"
+              height="40"
+              background={isInRange(currentDate) ? "neutral-alpha-weak" : undefined}
+              borderTop={isInRange(currentDate) ? "neutral-alpha-weak" : "transparent"}
+              borderBottom={isInRange(currentDate) ? "neutral-alpha-weak" : "transparent"}
+              leftRadius={isFirstInRange ? "m" : undefined}
+              rightRadius={isLastInRange ? "m" : undefined}
             >
-              {day}
-            </Button>
-          </Flex>
+              <Button
+                fillWidth
+                weight={isSelected ? "strong" : "default"}
+                variant={isSelected ? "primary" : "tertiary"}
+                size="m"
+                onClick={() => handleDateSelect(currentDate)}
+                onMouseEnter={() => onHover?.(currentDate)}
+                onMouseLeave={() => onHover?.(null)}
+              >
+                {day}
+              </Button>
+            </Flex>
           </Flex>,
         );
       }
@@ -252,13 +235,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       for (let i = 1; i <= remainingDays; i++) {
         days.push(
           <Flex width="40" height="40" key={`next-${currentYear}-${currentMonth}-${i}`}>
-            <Button
-              fillWidth
-              weight="default"
-              variant="tertiary"
-              size="m"
-              disabled
-            >
+            <Button fillWidth weight="default" variant="tertiary" size="m" disabled>
               {i}
             </Button>
           </Flex>,
@@ -282,17 +259,10 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         gap={size}
         {...rest}
       >
-        <Flex
-          fillWidth
-          justifyContent="center"
-          alignItems="center"
-        >
+        <Flex fillWidth justifyContent="center" alignItems="center">
           {isTimeSelector ? (
             <Flex alignItems="center" fillWidth direction="column" gap="8">
-              <Text
-                variant={`label-default-${size}`}
-                onBackground="neutral-strong"
-              >
+              <Text variant={`label-default-${size}`} onBackground="neutral-strong">
                 {monthNames[currentMonth]} {currentYear}
               </Text>
               <Text
@@ -315,17 +285,17 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
                 />
               )}
               <Flex fillWidth direction="column" alignItems="center" gap="8">
-                <Text
-                  variant={`body-default-${size}`}
-                  onBackground="neutral-strong"
-                >
+                <Text variant={`body-default-${size}`} onBackground="neutral-strong">
                   {monthNames[currentMonth]} {currentYear}
                 </Text>
-                {timePicker && selectedTime &&
+                {timePicker && selectedTime && (
                   <Text variant="label-default-s" onBackground="neutral-weak">
-                      `${selectedTime.hours.toString().padStart(2, "0")}:${selectedTime.minutes.toString().padStart(2, "0")} ${isPM ? "PM" : "AM"}`
+                    `$
+                    {selectedTime.hours.toString().padStart(2, "0")}
+                    :$
+                    {selectedTime.minutes.toString().padStart(2, "0")} ${isPM ? "PM" : "AM"}`
                   </Text>
-                }
+                )}
               </Flex>
               {nextMonth && (
                 <IconButton
@@ -358,8 +328,14 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             >
               <SegmentedControl
                 buttons={[
-                  { value: "AM", label: "AM" },
-                  { value: "PM", label: "PM" },
+                  {
+                    value: "AM",
+                    label: "AM",
+                  },
+                  {
+                    value: "PM",
+                    label: "PM",
+                  },
                 ]}
                 selected={isPM ? "PM" : "AM"}
                 onToggle={(value) =>
@@ -377,9 +353,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
                   labelAsPlaceholder
                   min={1}
                   max={12}
-                  value={
-                    selectedTime?.hours ? convert24to12(selectedTime.hours) : 12
-                  }
+                  value={selectedTime?.hours ? convert24to12(selectedTime.hours) : 12}
                   onChange={(value) => {
                     if (value >= 1 && value <= 12) {
                       handleTimeChange(value, selectedTime?.minutes ?? 0);
@@ -406,10 +380,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
               </Flex>
             </Flex>
           ) : (
-            <Grid
-              fitWidth
-              columns="7"
-            >
+            <Grid fitWidth columns="7">
               {dayNames.map((day) => (
                 <Text
                   marginBottom="16"

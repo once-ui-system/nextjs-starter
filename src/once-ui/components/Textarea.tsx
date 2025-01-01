@@ -137,7 +137,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         [styles.withPrefix]: hasPrefix,
         [styles.withSuffix]: hasSuffix,
         [styles.labelAsPlaceholder]: labelAsPlaceholder,
-        [styles.hasChildren]: children
+        [styles.hasChildren]: children,
       },
     );
 
@@ -163,11 +163,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           className={classNames(
             styles.base,
             lines !== "auto" && styles.textareaBase,
-            radius === "none"
-              ? "radius-none"
-              : radius
-                ? `radius-l-${radius}`
-                : "radius-l",
+            radius === "none" ? "radius-none" : radius ? `radius-l-${radius}` : "radius-l",
           )}
         >
           {hasPrefix && (
@@ -197,7 +193,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               style={{
                 ...style,
                 resize: lines === "auto" ? "none" : resize,
-                height: height ? `${height}rem` : 'auto',
+                height: height ? `${height}rem` : "auto",
               }}
               onChange={handleChange}
             />
@@ -223,12 +219,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         </Flex>
         {displayError && errorMessage !== false && (
           <Flex paddingX="16">
-            <Text
-              as="span"
-              id={`${id}-error`}
-              variant="body-default-s"
-              onBackground="danger-weak"
-            >
+            <Text as="span" id={`${id}-error`} variant="body-default-s" onBackground="danger-weak">
               {displayError}
             </Text>
           </Flex>

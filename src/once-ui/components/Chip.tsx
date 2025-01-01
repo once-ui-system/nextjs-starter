@@ -85,7 +85,9 @@ const Chip: React.FC<ChipProps> = forwardRef<HTMLDivElement, ChipProps>(
         </Flex>
         {onRemove && (
           <IconButton
-            style={{ color: "inherit" }}
+            style={{
+              color: "inherit",
+            }}
             {...combinedIconButtonProps}
           />
         )}

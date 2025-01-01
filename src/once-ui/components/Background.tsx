@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  CSSProperties,
-  forwardRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { CSSProperties, forwardRef, useEffect, useRef, useState } from "react";
 import { SpacingToken } from "../types";
 import { Flex } from "./Flex";
 import { DisplayProps } from "../interfaces";
@@ -173,16 +167,11 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       outputMin: number,
       outputMax: number,
     ) => {
-      return (
-        ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) +
-        outputMin
-      );
+      return ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) + outputMin;
     };
 
-    const adjustedX =
-      gradient.x != null ? remap(gradient.x, 0, 100, 37.5, 62.5) : 50;
-    const adjustedY =
-      gradient.y != null ? remap(gradient.y, 0, 100, 37.5, 62.5) : 50;
+    const adjustedX = gradient.x != null ? remap(gradient.x, 0, 100, 37.5, 62.5) : 50;
+    const adjustedY = gradient.y != null ? remap(gradient.y, 0, 100, 37.5, 62.5) : 50;
 
     return (
       <Flex
@@ -213,8 +202,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
                 gradient.width != null ? `${gradient.width / 4}%` : "25%",
               ["--gradient-height" as string]:
                 gradient.height != null ? `${gradient.height / 4}%` : "25%",
-              ["--gradient-tilt" as string]:
-                gradient.tilt != null ? `${gradient.tilt}deg` : "0deg",
+              ["--gradient-tilt" as string]: gradient.tilt != null ? `${gradient.tilt}deg` : "0deg",
               ["--gradient-color-start" as string]: gradient.colorStart
                 ? `var(--${gradient.colorStart})`
                 : "var(--brand-solid-strong)",
@@ -233,10 +221,12 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             pointerEvents="none"
             className={styles.dots}
             opacity={dots.opacity}
-            style={{
-              '--dots-color': `var(--${dotsColor})`,
-              '--dots-size': dotsSize,
-            } as React.CSSProperties}
+            style={
+              {
+                "--dots-color": `var(--${dotsColor})`,
+                "--dots-size": dotsSize,
+              } as React.CSSProperties
+            }
           />
         )}
         {lines.display && (

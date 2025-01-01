@@ -129,10 +129,7 @@ const Carousel: React.FC<CarouselProps> = ({
                 <Flex
                   key={index}
                   style={{
-                    border:
-                      activeIndex === index
-                        ? "2px solid var(--brand-solid-strong)"
-                        : "none",
+                    border: activeIndex === index ? "2px solid var(--brand-solid-strong)" : "none",
                     cursor: "pointer",
                     borderRadius: "var(--radius-m-nest-4)",
                     transition: "border 0.3s ease",

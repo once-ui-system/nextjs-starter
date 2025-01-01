@@ -49,9 +49,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const focusedIndex = buttonRefs.current.findIndex(
-      (ref) => ref === document.activeElement,
-    );
+    const focusedIndex = buttonRefs.current.findIndex((ref) => ref === document.activeElement);
 
     switch (event.key) {
       case "ArrowLeft":
@@ -90,9 +88,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
     }
   };
 
-  const selectedIndex = buttons.findIndex(
-    (button) => button.value === internalSelected,
-  );
+  const selectedIndex = buttons.findIndex((button) => button.value === internalSelected);
 
   return (
     <Scroller
@@ -100,7 +96,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
       {...scrollerProps}
       fillWidth={fillWidth}
       fitWidth={!fillWidth}
-      negativeGap="1"
+      gap="-1"
       role="tablist"
       aria-orientation="horizontal"
       onKeyDown={handleKeyDown}
@@ -112,13 +108,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
               buttonRefs.current[index] = el as HTMLButtonElement;
             }}
             variant="outline"
-            radius={
-              index === 0
-                ? "left"
-                : index === buttons.length - 1
-                  ? "right"
-                  : "none"
-            }
+            radius={index === 0 ? "left" : index === buttons.length - 1 ? "right" : "none"}
             key={button.value}
             selected={index === selectedIndex}
             onClick={() => handleButtonClick(button)}

@@ -1,20 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { Flex, DatePicker } from '.';
+import React, { useState, useEffect } from "react";
+import { Flex, DatePicker } from ".";
 
 export interface DateRange {
   startDate: Date | undefined;
   endDate: Date | undefined;
 }
 
-export interface DateRangePickerProps 
-  extends Omit<React.ComponentProps<typeof Flex>, "onChange"> {
+export interface DateRangePickerProps extends Omit<React.ComponentProps<typeof Flex>, "onChange"> {
   value?: DateRange;
   onChange?: (range: DateRange) => void;
   minDate?: Date;
   maxDate?: Date;
-  size?: 's' | 'm' | 'l';
+  size?: "s" | "m" | "l";
 }
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({
@@ -22,7 +21,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   onChange,
   minDate,
   maxDate,
-  size = 'm',
+  size = "m",
   ...rest
 }) => {
   const [internalValue, setInternalValue] = useState<DateRange>({
@@ -46,7 +45,10 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   const handleDateChange = (date: Date) => {
     if (!internalValue.startDate || (internalValue.startDate && internalValue.endDate)) {
       // Start new selection
-      const newRange = { startDate: date, endDate: undefined };
+      const newRange = {
+        startDate: date,
+        endDate: undefined,
+      };
       setInternalValue(newRange);
       onChange?.(newRange);
     } else {
@@ -90,14 +92,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     return {
       startDate: internalValue.startDate,
       endDate: hoveredDate > internalValue.startDate ? hoveredDate : internalValue.startDate,
-      isPreview: true
+      isPreview: true,
     };
   };
 
   return (
-    <Flex
-      gap="24"
-      {...rest}>
+    <Flex gap="24" {...rest}>
       <DatePicker
         value={internalValue.startDate}
         onChange={handleDateChange}

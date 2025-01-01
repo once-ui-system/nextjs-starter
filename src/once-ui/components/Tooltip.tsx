@@ -19,7 +19,11 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       <Flex
         hide="m"
         ref={ref}
-        style={{ whiteSpace: "nowrap", userSelect: "none", ...style }}
+        style={{
+          whiteSpace: "nowrap",
+          userSelect: "none",
+          ...style,
+        }}
         alignItems="center"
         gap="4"
         zIndex={1}

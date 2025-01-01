@@ -5,13 +5,7 @@ import React, { useState, useEffect, useRef, ReactNode } from "react";
 import "./CodeHighlight.css";
 import styles from "./CodeBlock.module.scss";
 
-import {
-  Flex,
-  Button,
-  IconButton,
-  DropdownWrapper,
-  Option,
-} from "@/once-ui/components";
+import { Flex, Button, IconButton, DropdownWrapper, Option } from "@/once-ui/components";
 
 import Prism from "prismjs";
 import "prismjs/plugins/line-highlight/prism-line-highlight";
@@ -84,9 +78,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   };
 
   const handleContent = (selectedLabel: string) => {
-    const index = codeInstances.findIndex(
-      (instance) => instance.label === selectedLabel,
-    );
+    const index = codeInstances.findIndex((instance) => instance.label === selectedLabel);
     if (index !== -1) {
       setSelectedInstance(index);
     }
@@ -109,12 +101,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       {...rest}
     >
       {(codeInstances.length > 1 || (copyButton && !compact)) && (
-        <Flex
-          borderBottom="neutral-medium"
-          zIndex={2}
-          fillWidth
-          justifyContent="space-between"
-        >
+        <Flex borderBottom="neutral-medium" zIndex={2} fillWidth justifyContent="space-between">
           {codeInstances.length > 1 ? (
             <Flex borderRight="neutral-medium">
               <DropdownWrapper
@@ -134,8 +121,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                   />
                 }
                 dropdown={
-                  <Flex direction="column" gap="2" padding="4" minWidth={6}
-                    data-surface="filled">
+                  <Flex direction="column" gap="2" padding="4" minWidth={6} data-surface="filled">
                     {codeInstances.map((instance, index) => (
                       <Option
                         key={index}
@@ -158,7 +144,9 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           {copyButton && !compact && (
             <Flex borderLeft="neutral-medium">
               <IconButton
-                style={{ border: "none" }}
+                style={{
+                  border: "none",
+                }}
                 radius="none"
                 size="l"
                 tooltip="Copy"
@@ -181,9 +169,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           alignItems="center"
         >
           {Array.isArray(codePreview)
-            ? codePreview.map((item, index) => (
-                <React.Fragment key={index}>{item}</React.Fragment>
-              ))
+            ? codePreview.map((item, index) => <React.Fragment key={index}>{item}</React.Fragment>)
             : codePreview}
         </Flex>
       )}
@@ -217,10 +203,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
               className={classNames(styles.pre, `language-${language}`)}
               tabIndex={-1}
             >
-              <code
-                ref={codeRef}
-                className={classNames(styles.code, `language-${language}`)}
-              >
+              <code ref={codeRef} className={classNames(styles.code, `language-${language}`)}>
                 {code}
               </code>
             </pre>

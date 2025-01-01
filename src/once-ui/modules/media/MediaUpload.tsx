@@ -46,9 +46,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
     ref,
   ) => {
     const [dragActive, setDragActive] = useState(false);
-    const [previewImage, setPreviewImage] = useState<string | null>(
-      initialPreviewImage,
-    ); // Use prop as initial state
+    const [previewImage, setPreviewImage] = useState<string | null>(initialPreviewImage); // Use prop as initial state
     const [uploading, setUploading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 

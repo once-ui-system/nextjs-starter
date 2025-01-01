@@ -19,21 +19,9 @@ interface RadioButtonProps
 
 const generateId = () => `radio-${Math.random().toString(36).substring(2, 9)}`;
 
-const RadioButton: React.FC<RadioButtonProps> = forwardRef<
-  HTMLInputElement,
-  RadioButtonProps
->(
+const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLInputElement, RadioButtonProps>(
   (
-    {
-      style,
-      className,
-      isChecked: controlledIsChecked,
-      name,
-      value,
-      onToggle,
-      disabled,
-      ...props
-    },
+    { style, className, isChecked: controlledIsChecked, name, value, onToggle, disabled, ...props },
     ref,
   ) => {
     const [isChecked, setIsChecked] = useState(controlledIsChecked || false);
@@ -77,9 +65,7 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<
           ref={ref}
           name={name}
           value={value}
-          checked={
-            controlledIsChecked !== undefined ? controlledIsChecked : isChecked
-          }
+          checked={controlledIsChecked !== undefined ? controlledIsChecked : isChecked}
           onChange={toggleItem}
           disabled={disabled}
           className={styles.hidden}
@@ -88,9 +74,7 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<
         />
         <Flex
           role="radio"
-          aria-checked={
-            controlledIsChecked !== undefined ? controlledIsChecked : isChecked
-          }
+          aria-checked={controlledIsChecked !== undefined ? controlledIsChecked : isChecked}
           aria-labelledby={radioId}
           aria-disabled={disabled}
           position="relative"
@@ -101,18 +85,15 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<
           onKeyDown={handleKeyDown}
           tabIndex={disabled ? -1 : 0}
           className={classNames(styles.element, {
-            [styles.checked]:
-              controlledIsChecked !== undefined
-                ? controlledIsChecked
-                : isChecked,
+            [styles.checked]: controlledIsChecked !== undefined ? controlledIsChecked : isChecked,
             [styles.disabled]: disabled,
           })}
         >
-          {(controlledIsChecked !== undefined
-            ? controlledIsChecked
-            : isChecked) && (
+          {(controlledIsChecked !== undefined ? controlledIsChecked : isChecked) && (
             <Flex
-              style={{ backgroundColor: "var(--neutral-on-solid-strong)" }}
+              style={{
+                backgroundColor: "var(--neutral-on-solid-strong)",
+              }}
               radius="full"
               width="12"
               height="12"
@@ -120,9 +101,7 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<
             />
           )}
         </Flex>
-        {props.label && (
-          <InteractiveDetails id={radioId} {...props} onClick={toggleItem} />
-        )}
+        {props.label && <InteractiveDetails id={radioId} {...props} onClick={toggleItem} />}
       </Flex>
     );
   },

@@ -32,7 +32,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
       minHeight={minHeight}
       radius
       floatingDistance={4}
-      style={{borderRadius: 'var(--radius-full)'}}
+      style={{
+        borderRadius: "var(--radius-full)",
+      }}
       trigger={
         <Flex
           direction="column"
@@ -41,11 +43,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
           cursor="interactive"
           border={selected ? "neutral-medium" : "transparent"}
           background={selected ? "neutral-strong" : "transparent"}
-          className={classNames(
-            className || "",
-            selected ? styles.selected : "",
-            styles.wrapper,
-          )}
+          className={classNames(className || "", selected ? styles.selected : "", styles.wrapper)}
           style={style}
         >
           <User {...userProps} />

@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Flex,
-  Icon,
-  IconButton,
-  Tag,
-  Text,
-  ToggleButton,
-} from "@/once-ui/components";
+import { Flex, Icon, IconButton, Tag, Text, ToggleButton } from "@/once-ui/components";
 import { usePathname } from "next/navigation";
 
 const Sidebar: React.FC = ({}) => {
@@ -39,23 +32,9 @@ const Sidebar: React.FC = ({}) => {
           >
             Dashboard
           </Text>
-          <ToggleButton
-            fillWidth
-            justifyContent="flex-start"
-            href=""
-            selected={true}
-          >
-            <Flex
-              padding="4"
-              alignItems="center"
-              gap="12"
-              textVariant="label-default-s"
-            >
-              <Icon
-                name="PiHouseDuotone"
-                onBackground="neutral-weak"
-                size="xs"
-              />
+          <ToggleButton fillWidth justifyContent="flex-start" href="" selected={true}>
+            <Flex padding="4" alignItems="center" gap="12" textVariant="label-default-s">
+              <Icon name="PiHouseDuotone" onBackground="neutral-weak" size="xs" />
               Home
             </Flex>
           </ToggleButton>
@@ -65,43 +44,29 @@ const Sidebar: React.FC = ({}) => {
             href=""
             selected={pathname === "analytics"}
           >
-            <Flex
-              padding="4"
-              alignItems="center"
-              gap="12"
-              textVariant="label-default-s"
-            >
-              <Icon
-                name="PiTrendUpDuotone"
-                onBackground="neutral-weak"
-                size="xs"
-              />
+            <Flex padding="4" alignItems="center" gap="12" textVariant="label-default-s">
+              <Icon name="PiTrendUpDuotone" onBackground="neutral-weak" size="xs" />
               Analytics
             </Flex>
           </ToggleButton>
           <ToggleButton
-            style={{ position: "relative" }}
+            style={{
+              position: "relative",
+            }}
             prefixIcon=""
             fillWidth
             justifyContent="flex-start"
             href=""
             selected={pathname === "reports"}
           >
-            <Flex
-              padding="4"
-              alignItems="center"
-              gap="12"
-              textVariant="label-default-s"
-            >
-              <Icon
-                name="PiNotebookDuotone"
-                onBackground="neutral-weak"
-                size="xs"
-              />
+            <Flex padding="4" alignItems="center" gap="12" textVariant="label-default-s">
+              <Icon name="PiNotebookDuotone" onBackground="neutral-weak" size="xs" />
               Reports
               <Flex
                 position="absolute"
-                style={{ right: "var(--static-space-12)" }}
+                style={{
+                  right: "var(--static-space-12)",
+                }}
               >
                 <Tag variant="neutral" size="s">
                   New
@@ -114,12 +79,7 @@ const Sidebar: React.FC = ({}) => {
         <Flex fillWidth height="1" background="neutral-strong"></Flex>
 
         <Flex fillWidth gap="4" direction="column">
-          <Text
-            variant="body-default-xs"
-            onBackground="neutral-weak"
-            marginY="8"
-            marginLeft="16"
-          >
+          <Text variant="body-default-xs" onBackground="neutral-weak" marginY="8" marginLeft="16">
             Management
           </Text>
           <ToggleButton
@@ -128,12 +88,7 @@ const Sidebar: React.FC = ({}) => {
             href=""
             selected={pathname === "users"}
           >
-            <Flex
-              padding="4"
-              gap="12"
-              alignItems="center"
-              textVariant="label-default-s"
-            >
+            <Flex padding="4" gap="12" alignItems="center" textVariant="label-default-s">
               <Flex height="1" width="16" alpha="neutral-strong"></Flex>
               Users
             </Flex>
@@ -144,12 +99,7 @@ const Sidebar: React.FC = ({}) => {
             href=""
             selected={pathname === "roles"}
           >
-            <Flex
-              padding="4"
-              alignItems="center"
-              gap="12"
-              textVariant="label-default-s"
-            >
+            <Flex padding="4" alignItems="center" gap="12" textVariant="label-default-s">
               <Flex height="1" width="16" alpha="neutral-strong"></Flex>
               Roles
             </Flex>
@@ -160,12 +110,7 @@ const Sidebar: React.FC = ({}) => {
             href=""
             selected={pathname === "permissions"}
           >
-            <Flex
-              padding="4"
-              gap="12"
-              alignItems="center"
-              textVariant="label-default-s"
-            >
+            <Flex padding="4" gap="12" alignItems="center" textVariant="label-default-s">
               <Flex height="1" width="16" alpha="neutral-strong"></Flex>
               Permissions
             </Flex>
@@ -185,12 +130,7 @@ const Sidebar: React.FC = ({}) => {
             <Text variant="body-default-xs" onBackground="neutral-weak">
               Projects
             </Text>
-            <IconButton
-              tooltip="Create"
-              variant="secondary"
-              icon="plus"
-              size="s"
-            />
+            <IconButton tooltip="Create" variant="secondary" icon="plus" size="s" />
           </Flex>
           <ToggleButton
             fillWidth
@@ -198,12 +138,7 @@ const Sidebar: React.FC = ({}) => {
             href=""
             selected={pathname === "overview"}
           >
-            <Flex
-              padding="4"
-              gap="12"
-              alignItems="center"
-              textVariant="label-default-s"
-            >
+            <Flex padding="4" gap="12" alignItems="center" textVariant="label-default-s">
               <Flex height="1" width="16" alpha="neutral-strong"></Flex>
               Overview
             </Flex>
@@ -214,12 +149,7 @@ const Sidebar: React.FC = ({}) => {
             href=""
             selected={pathname === "projects"}
           >
-            <Flex
-              padding="4"
-              gap="12"
-              alignItems="center"
-              textVariant="label-default-s"
-            >
+            <Flex padding="4" gap="12" alignItems="center" textVariant="label-default-s">
               <Flex height="1" width="16" alpha="neutral-strong"></Flex>
               My projects
             </Flex>

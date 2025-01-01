@@ -59,26 +59,18 @@ const Text = <T extends ElementType = "span">({
   const sizeClass = size ? `font-${size}` : "";
   const weightClass = weight ? `font-${weight}` : "";
 
-  const classes = variant
-    ? getVariantClasses(variant)
-    : [sizeClass, weightClass];
+  const classes = variant ? getVariantClasses(variant) : [sizeClass, weightClass];
 
   let colorClass = "";
   if (onBackground) {
-    const [scheme, weight] = onBackground.split("-") as [
-      ColorScheme,
-      ColorWeight,
-    ];
+    const [scheme, weight] = onBackground.split("-") as [ColorScheme, ColorWeight];
     colorClass = `${scheme}-on-background-${weight}`;
   } else if (onSolid) {
     const [scheme, weight] = onSolid.split("-") as [ColorScheme, ColorWeight];
     colorClass = `${scheme}-on-solid-${weight}`;
   }
 
-  const generateClassName = (
-    prefix: string,
-    token: SpacingToken | undefined,
-  ) => {
+  const generateClassName = (prefix: string, token: SpacingToken | undefined) => {
     return token ? `${prefix}-${token}` : undefined;
   };
 
@@ -105,7 +97,11 @@ const Text = <T extends ElementType = "span">({
   return (
     <Component
       className={combinedClasses}
-      style={{ textAlign: align, textWrap: wrap, ...style }}
+      style={{
+        textAlign: align,
+        textWrap: wrap,
+        ...style,
+      }}
       {...props}
     >
       {children}

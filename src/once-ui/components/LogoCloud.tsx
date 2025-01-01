@@ -22,17 +22,8 @@ const ANIMATION_DURATION = 5000;
 const STAGGER_DELAY = 25;
 
 const LogoCloud = forwardRef<HTMLDivElement, LogoCloudProps>(
-  ({ 
-    logos,
-    className,
-    style,
-    limit = 6,
-    rotationInterval = ANIMATION_DURATION,
-    ...rest
-  }, ref) => {
-    const [visibleLogos, setVisibleLogos] = useState<LogoProps[]>(
-      () => logos.slice(0, limit)
-    );
+  ({ logos, className, style, limit = 6, rotationInterval = ANIMATION_DURATION, ...rest }, ref) => {
+    const [visibleLogos, setVisibleLogos] = useState<LogoProps[]>(() => logos.slice(0, limit));
     const [key, setKey] = useState(0);
 
     useEffect(() => {
@@ -41,46 +32,42 @@ const LogoCloud = forwardRef<HTMLDivElement, LogoCloudProps>(
         return;
       }
 
-      const interval = setInterval(() => {
-        setVisibleLogos(currentLogos => {
-          const currentIndices = currentLogos.map(logo => 
-            logos.findIndex(l => l === logo)
-          );
+      const interval = setInterval(
+        () => {
+          setVisibleLogos((currentLogos) => {
+            const currentIndices = currentLogos.map((logo) => logos.findIndex((l) => l === logo));
 
-          const nextIndices = currentIndices.map(index => 
-            (index + 1) % logos.length
-          ).sort((a, b) => a - b);
+            const nextIndices = currentIndices
+              .map((index) => (index + 1) % logos.length)
+              .sort((a, b) => a - b);
 
-          const nextLogos = nextIndices.map(index => logos[index]);
-          setKey(k => k + 1);
-          return nextLogos;
-        });
-      }, rotationInterval + (STAGGER_DELAY * limit));
+            const nextLogos = nextIndices.map((index) => logos[index]);
+            setKey((k) => k + 1);
+            return nextLogos;
+          });
+        },
+        rotationInterval + STAGGER_DELAY * limit,
+      );
 
       return () => clearInterval(interval);
     }, [logos, limit, rotationInterval]);
 
     return (
-      <Grid
-        ref={ref}
-        className={classNames(styles.container, className)}
-        style={style}
-        {...rest}
-      >
+      <Grid ref={ref} className={classNames(styles.container, className)} style={style} {...rest}>
         {visibleLogos.map((logo, index) => (
-          <Flex 
-            key={`${key}-${index}`} 
-            alignItems="center" 
-            justifyContent="center" 
-            paddingX="24" 
-            paddingY="20" 
+          <Flex
+            key={`${key}-${index}`}
+            alignItems="center"
+            justifyContent="center"
+            paddingX="24"
+            paddingY="20"
             radius="l"
           >
             <Logo
               className={styles.logo}
               style={{
                 ...logo.style,
-                animationDelay: `${index * STAGGER_DELAY}ms`
+                animationDelay: `${index * STAGGER_DELAY}ms`,
               }}
               {...logo}
             />
@@ -88,7 +75,7 @@ const LogoCloud = forwardRef<HTMLDivElement, LogoCloudProps>(
         ))}
       </Grid>
     );
-  }
+  },
 );
 
 LogoCloud.displayName = "LogoCloud";

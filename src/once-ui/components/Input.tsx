@@ -109,21 +109,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const displayError = validationError || errorMessage;
 
-    const inputClassNames = classNames(
-      styles.input,
-      "font-body",
-      "font-default",
-      "font-m",
-      {
-        [styles.filled]: isFilled,
-        [styles.focused]: isFocused,
-        [styles.withPrefix]: hasPrefix,
-        [styles.withSuffix]: hasSuffix,
-        [styles.labelAsPlaceholder]: labelAsPlaceholder,
-        [styles.hasChildren]: children,
-        [styles.error]: displayError && debouncedValue !== "",
-      },
-    );
+    const inputClassNames = classNames(styles.input, "font-body", "font-default", "font-m", {
+      [styles.filled]: isFilled,
+      [styles.focused]: isFocused,
+      [styles.withPrefix]: hasPrefix,
+      [styles.withSuffix]: hasSuffix,
+      [styles.labelAsPlaceholder]: labelAsPlaceholder,
+      [styles.hasChildren]: children,
+      [styles.error]: displayError && debouncedValue !== "",
+    });
 
     return (
       <Flex
@@ -147,13 +141,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           alignItems="stretch"
           className={classNames(
             styles.base,
-            { [styles.s]: height === "s" },
-            { [styles.m]: height === "m" },
-            radius === "none"
-              ? "radius-none"
-              : radius
-                ? `radius-l-${radius}`
-                : "radius-l",
+            {
+              [styles.s]: height === "s",
+            },
+            {
+              [styles.m]: height === "m",
+            },
+            radius === "none" ? "radius-none" : radius ? `radius-l-${radius}` : "radius-l",
           )}
         >
           {hasPrefix && (
@@ -195,12 +189,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         </Flex>
         {displayError && errorMessage !== false && (
           <Flex paddingX="16">
-            <Text
-              as="span"
-              id={`${id}-error`}
-              variant="body-default-s"
-              onBackground="danger-weak"
-            >
+            <Text as="span" id={`${id}-error`} variant="body-default-s" onBackground="danger-weak">
               {validationError || errorMessage}
             </Text>
           </Flex>

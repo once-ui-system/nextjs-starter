@@ -33,8 +33,7 @@ const schema = {
   logo: "",
   type: "Organization",
   name: "One UI",
-  description:
-    "Once UI is an open-source design system and component library for Next.js.",
+  description: "Once UI is an open-source design system and component library for Next.js.",
   email: "lorant@once-ui.com",
 };
 

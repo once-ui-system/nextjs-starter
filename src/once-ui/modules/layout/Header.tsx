@@ -20,12 +20,7 @@ interface HeaderProps {
   subline?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  authenticated,
-  avatar,
-  name,
-  subline,
-}) => {
+const Header: React.FC<HeaderProps> = ({ authenticated, avatar, name, subline }) => {
   const pathname = usePathname() ?? "";
 
   return (
@@ -52,16 +47,8 @@ const Header: React.FC<HeaderProps> = ({
           <Flex fillWidth>
             <Flex hide="s" fillWidth gap="4" paddingX="l" alignItems="center">
               <ToggleButton selected={true} href="" label="Dashboard" />
-              <ToggleButton
-                selected={pathname === "/apps"}
-                href=""
-                label="Apps"
-              />
-              <ToggleButton
-                selected={pathname === "/resources"}
-                href=""
-                label="Resources"
-              />
+              <ToggleButton selected={pathname === "/apps"} href="" label="Apps" />
+              <ToggleButton selected={pathname === "/resources"} href="" label="Resources" />
             </Flex>
           </Flex>
           <Flex as="nav">

@@ -11,28 +11,49 @@ interface ElementTypeProps {
 
 const isExternalLink = (url: string) => /^https?:\/\//.test(url);
 
-const ElementType = forwardRef<HTMLElement, ElementTypeProps>(({ href, children, className, style, ...props }, ref) => {
-  if (href) {
-    const isExternal = isExternalLink(href);
-    if (isExternal) {
+const ElementType = forwardRef<HTMLElement, ElementTypeProps>(
+  ({ href, children, className, style, ...props }, ref) => {
+    if (href) {
+      const isExternal = isExternalLink(href);
+      if (isExternal) {
+        return (
+          <a
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            ref={ref as React.Ref<HTMLAnchorElement>}
+            className={className}
+            style={style}
+            {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+          >
+            {children}
+          </a>
+        );
+      }
       return (
-        <a href={href} target="_blank" rel="noreferrer" ref={ref as React.Ref<HTMLAnchorElement>} className={className} style={style} {...props as React.AnchorHTMLAttributes<HTMLAnchorElement>}>
+        <Link
+          href={href}
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          className={className}
+          style={style}
+          {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        >
           {children}
-        </a>
+        </Link>
       );
     }
     return (
-      <Link href={href} ref={ref as React.Ref<HTMLAnchorElement>} className={className} style={style} {...props as React.AnchorHTMLAttributes<HTMLAnchorElement>}>
+      <button
+        ref={ref as React.Ref<HTMLButtonElement>}
+        className={className}
+        style={style}
+        {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+      >
         {children}
-      </Link>
+      </button>
     );
-  }
-  return (
-    <button ref={ref as React.Ref<HTMLButtonElement>} className={className} style={style} {...props as React.ButtonHTMLAttributes<HTMLButtonElement>}>
-      {children}
-    </button>
-  );
-});
+  },
+);
 
 ElementType.displayName = "ElementType";
 export { ElementType };

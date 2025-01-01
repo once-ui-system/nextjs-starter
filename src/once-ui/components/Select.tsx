@@ -1,22 +1,8 @@
 "use client";
 
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  forwardRef,
-  ReactNode,
-} from "react";
+import React, { useState, useRef, useEffect, forwardRef, ReactNode } from "react";
 import classNames from "classnames";
-import {
-  DropdownWrapper,
-  Flex,
-  Icon,
-  IconButton,
-  Input,
-  InputProps,
-  Option,
-} from ".";
+import { DropdownWrapper, Flex, Icon, IconButton, Input, InputProps, Option } from ".";
 import inputStyles from "./Input.module.scss";
 import type { OptionProps } from "./Option";
 import type { DropdownWrapperProps } from "./DropdownWrapper";
@@ -55,12 +41,10 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [highlightedIndex, setHighlightedIndex] = useState<number | null>(
-      () => {
-        if (!options?.length || !value) return null;
-        return options.findIndex((option) => option.value === value);
-      },
-    );
+    const [highlightedIndex, setHighlightedIndex] = useState<number | null>(() => {
+      if (!options?.length || !value) return null;
+      return options.findIndex((option) => option.value === value);
+    });
     const [searchQuery, setSearchQuery] = useState("");
     const selectRef = useRef<HTMLDivElement | null>(null);
     const clearButtonRef = useRef<HTMLButtonElement>(null);
@@ -70,10 +54,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
     };
 
     const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-      if (
-        selectRef.current &&
-        !selectRef.current.contains(event.relatedTarget as Node)
-      ) {
+      if (selectRef.current && !selectRef.current.contains(event.relatedTarget as Node)) {
         setIsFocused(false);
         setIsDropdownOpen(false);
       }
@@ -100,9 +81,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
           event.preventDefault();
           setHighlightedIndex((prevIndex) => {
             const newIndex =
-              prevIndex === null || prevIndex === options.length - 1
-                ? 0
-                : prevIndex + 1;
+              prevIndex === null || prevIndex === options.length - 1 ? 0 : prevIndex + 1;
             return newIndex;
           });
           break;
@@ -111,9 +90,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
           event.preventDefault();
           setHighlightedIndex((prevIndex) => {
             const newIndex =
-              prevIndex === null || prevIndex === 0
-                ? options.length - 1
-                : prevIndex - 1;
+              prevIndex === null || prevIndex === 0 ? options.length - 1 : prevIndex - 1;
             return newIndex;
           });
           break;
@@ -183,7 +160,10 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         trigger={
           <Input
             {...rest}
-            style={{ textOverflow: "ellipsis", ...style }}
+            style={{
+              textOverflow: "ellipsis",
+              ...style,
+            }}
             value={value}
             onFocus={handleFocus}
             onKeyDown={handleKeyDown}
@@ -236,10 +216,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
             <Flex fillWidth padding="4" direction="column" gap="2">
               {options
                 .filter((option) =>
-                  option.label
-                    ?.toString()
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase()),
+                  option.label?.toString().toLowerCase().includes(searchQuery.toLowerCase()),
                 )
                 .map((option, index) => (
                   <Option
@@ -256,10 +233,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                 ))}
               {searchQuery &&
                 options.filter((option) =>
-                  option.label
-                    ?.toString()
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase()),
+                  option.label?.toString().toLowerCase().includes(searchQuery.toLowerCase()),
                 ).length === 0 && (
                   <Flex
                     fillWidth

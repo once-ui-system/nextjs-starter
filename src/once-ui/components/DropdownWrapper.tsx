@@ -118,19 +118,13 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
     }, [isOpen, mounted, refs, update]);
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
         handleOpenChange(false);
       }
     };
 
     const handleFocusOut = (event: FocusEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.relatedTarget as Node)
-      ) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.relatedTarget as Node)) {
         handleOpenChange(false);
       }
     };
@@ -148,11 +142,13 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       <Flex
         fillWidth={fillWidth}
         direction="column"
-        negativeGap="1"
+        gap="-1"
         transition="macro-medium"
         style={{
           ...(minHeight && isOpen
-            ? { marginBottom: `${minHeight + 48}px` }
+            ? {
+                marginBottom: `${minHeight + 48}px`,
+              }
             : {}),
           ...style,
         }}
@@ -161,7 +157,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         ref={wrapperRef}
         onClick={() => handleOpenChange(!isOpen)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             handleOpenChange(!isOpen);
           }
@@ -185,11 +181,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
             }}
             role="listbox"
           >
-            <Dropdown
-              radius="l"
-              selectedOption={selectedOption}
-              onSelect={onSelect}
-            >
+            <Dropdown radius="l" selectedOption={selectedOption} onSelect={onSelect}>
               {dropdown}
             </Dropdown>
           </Flex>

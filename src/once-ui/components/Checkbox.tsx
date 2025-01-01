@@ -13,13 +13,9 @@ interface CheckboxProps
   onToggle?: () => void;
 }
 
-const generateId = () =>
-  `checkbox-${Math.random().toString(36).substring(2, 9)}`;
+const generateId = () => `checkbox-${Math.random().toString(36).substring(2, 9)}`;
 
-const Checkbox: React.FC<CheckboxProps> = forwardRef<
-  HTMLInputElement,
-  CheckboxProps
->(
+const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
       style,
@@ -77,9 +73,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<
                 ? controlledIsChecked
                 : isChecked
           }
-          checked={
-            controlledIsChecked !== undefined ? controlledIsChecked : isChecked
-          }
+          checked={controlledIsChecked !== undefined ? controlledIsChecked : isChecked}
           onChange={toggleItem}
           disabled={disabled}
           className={styles.hidden}
@@ -114,9 +108,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<
             [styles.disabled]: disabled,
           })}
         >
-          {(controlledIsChecked !== undefined
-            ? controlledIsChecked
-            : isChecked) &&
+          {(controlledIsChecked !== undefined ? controlledIsChecked : isChecked) &&
             !isIndeterminate && (
               <Flex className={styles.icon}>
                 <Icon onSolid="brand-strong" name="check" size="xs" />
@@ -128,9 +120,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<
             </Flex>
           )}
         </Flex>
-        {props.label && (
-          <InteractiveDetails id={checkboxId} {...props} onClick={toggleItem} />
-        )}
+        {props.label && <InteractiveDetails id={checkboxId} {...props} onClick={toggleItem} />}
       </Flex>
     );
   },

@@ -17,25 +17,14 @@ const InteractiveDetails: React.FC<InteractiveDetailsProps> = forwardRef<
   InteractiveDetailsProps
 >(({ label, description, iconButtonProps, onClick, className, id }, ref) => {
   return (
-    <Flex
-      ref={ref}
-      direction="column"
-      className={className}
-      onClick={onClick}
-      id={id}
-    >
+    <Flex ref={ref} direction="column" className={className} onClick={onClick} id={id}>
       <Flex gap="4" alignItems="center">
         <Text as="span" variant="label-strong-m" onBackground="neutral-strong">
           {label}
         </Text>
         {iconButtonProps?.tooltip && (
           <div onClick={(e) => e.stopPropagation()}>
-            <IconButton
-              size="s"
-              variant="ghost"
-              icon="helpCircle"
-              {...iconButtonProps}
-            />
+            <IconButton size="s" variant="ghost" icon="helpCircle" {...iconButtonProps} />
           </div>
         )}
       </Flex>

@@ -3,8 +3,7 @@
 import React, { forwardRef, ReactNode } from "react";
 import { IconButton, Button, Icon, Flex, Text } from ".";
 
-interface FeedbackProps
-  extends Omit<React.ComponentProps<typeof Flex>, "title"> {
+interface FeedbackProps extends Omit<React.ComponentProps<typeof Flex>, "title"> {
   variant?: "info" | "danger" | "warning" | "success";
   icon?: boolean;
   title?: string;
@@ -62,13 +61,7 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
             />
           </Flex>
         )}
-        <Flex
-          fillWidth
-          padding="16"
-          gap="24"
-          justifyContent="center"
-          direction="column"
-        >
+        <Flex fillWidth padding="16" gap="24" justifyContent="center" direction="column">
           {(title || description) && (
             <Flex direction="column" fillWidth gap="4">
               {title && (
@@ -98,10 +91,7 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
               )}
               {description && (
                 <Flex fillWidth>
-                  <Text
-                    variant="body-default-s"
-                    onBackground={`${variant}-strong`}
-                  >
+                  <Text variant="body-default-s" onBackground={`${variant}-strong`}>
                     {description}
                   </Text>
                 </Flex>

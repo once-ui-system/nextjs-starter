@@ -26,7 +26,9 @@ export const useToast = () => {
   return context;
 };
 
-const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+const ToastProvider: React.FC<{
+  children: ReactNode;
+}> = ({ children }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const addToast = (toast: Omit<Toast, "id">) => {
@@ -42,7 +44,13 @@ const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
+    <ToastContext.Provider
+      value={{
+        toasts,
+        addToast,
+        removeToast,
+      }}
+    >
       {children}
       <Toaster toasts={toasts} removeToast={removeToast} />
     </ToastContext.Provider>

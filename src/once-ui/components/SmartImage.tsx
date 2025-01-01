@@ -116,7 +116,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
           height: aspectRatio ? "" : height ? `${height}rem` : "100%",
           aspectRatio,
           borderRadius: isEnlarged ? "0" : undefined,
-          ...calculateTransform()
+          ...calculateTransform(),
         }}
         onClick={handleClick}
         {...rest}
