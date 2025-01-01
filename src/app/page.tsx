@@ -15,6 +15,7 @@ import {
   AvatarGroup,
   Textarea,
   PasswordInput,
+  StylePanel,
   SegmentedControl,
   SmartLink,
   Dialog,
@@ -285,6 +286,9 @@ export default function Home() {
               Tiny snippets to inspire your next project
             </Text>
 
+            {/* STYLE */}
+            <StylePanel/>
+
             {/* LOGIN */}
             <Flex
               marginY="32"
@@ -443,7 +447,7 @@ export default function Home() {
                     colorEnd: "accent-solid-weak",
                   }}
                 >
-                  <Column fill position="absolute" padding="24" justifyContent="flex-end" gap="12">
+                  <Column fill position="absolute" padding="24" justifyContent="flex-end" gap="12" onSolid="neutral-strong">
                     <Text variant="body-default-xl">Lorant One</Text>
                     <Flex
                       fillWidth
