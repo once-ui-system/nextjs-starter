@@ -263,36 +263,36 @@ export default function Home() {
               </Heading>
               <LogoCloud
                 paddingBottom="104"
+                columns="3"
+                mobileColumns="1"
                 limit={3}
                 fillWidth
                 logos={[
                   {
                     icon: false,
                     wordmarkSrc: "/trademark/dopler-wordmark.svg",
+                    href: "https://dropler.app",
                     size: "m",
                   },
                   {
                     icon: false,
                     wordmarkSrc: "/trademark/design-engineers-wordmark.svg",
+                    href: "https://club.dropler.io",
                     size: "m",
                   },
                   {
                     icon: false,
                     wordmarkSrc: "/trademark/enroll-wordmark.svg",
+                    href: "https://enroll.dopler.app",
                     size: "m",
                   },
                   {
                     icon: false,
                     wordmarkSrc: "/trademark/magic-portfolio-wordmark.svg",
-                    size: "m",
-                  },
-                  {
-                    icon: false,
+                    href: "https://magic-portfolio.com",
                     size: "m",
                   },
                 ]}
-                columns="3"
-                mobileColumns="1"
               />
             </Column>
           </Column>
