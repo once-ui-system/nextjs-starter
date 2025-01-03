@@ -110,7 +110,7 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
           <Heading as="h2" variant="label-default-s">
             Theme
           </Heading>
-          <Flex fillWidth maxWidth={22} minWidth={0}>
+          <Flex fillWidth>
             <SegmentedControl
               buttons={[
                 { size: "l", label: "Light", value: "light", prefixIcon: "light" },
@@ -131,29 +131,27 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
           <Heading as="h2" variant="label-default-s">
             Shape
           </Heading>
-          <Flex>
             <Flex gap="4">
-              {shapes.map((radius, index) => (
+                {shapes.map((radius, index) => (
                 <Flex
-                  data-border={shapes[index]}
-                  key={radius}
-                  justifyContent="center"
-                  alignItems="center"
-                  className={classNames(
+                    data-border={shapes[index]}
+                    key={radius}
+                    justifyContent="center"
+                    alignItems="center"
+                    className={classNames(
                     styles.select,
                     selectedShape === radius ? styles.selected : "",
-                  )}
-                  onClick={() => {
+                    )}
+                    onClick={() => {
                     setSelectedShape(radius);
-                  }}
+                    }}
                 >
-                  <IconButton variant="ghost" size="m">
+                    <IconButton variant="ghost" size="m">
                     <div className={classNames(styles.neutral, styles.swatch)}></div>
-                  </IconButton>
+                    </IconButton>
                 </Flex>
-              ))}
+                ))}
             </Flex>
-          </Flex>
         </Flex>
       </Column>
 

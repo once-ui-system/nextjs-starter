@@ -23,7 +23,7 @@ const StyleOverlay = forwardRef<HTMLDivElement, StyleOverlayProps>(({ ...rest },
       <Flex
         as="aside"
         className={`${styles.panel} ${isOpen && styles.open}`}
-        maxWidth={isOpen ? 28 : 0}
+        maxWidth={28}
         style={{
           maxHeight: "calc(100% - var(--static-space-16))",
         }}
