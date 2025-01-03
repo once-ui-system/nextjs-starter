@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 import { Flex } from ".";
 
 interface RowProps extends React.ComponentProps<typeof Flex> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const Row = forwardRef<HTMLDivElement, RowProps>(({ children, ...rest }, ref) => {
