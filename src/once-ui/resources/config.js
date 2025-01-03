@@ -26,7 +26,7 @@ const og = {
   title: "Once UI for Next.js",
   description: "We let designers code and developers design.",
   type: "website",
-  image: "/cover.jpg"
+  image: "/images/cover.jpg"
 };
 
 // default schema data
@@ -35,7 +35,7 @@ const schema = {
   type: "Organization",
   name: "One UI",
   description: "Once UI is an open-source design system and component library for Next.js.",
-  email: "lorant@once-ui.com",
+  email: "",
 };
 
 // social links
