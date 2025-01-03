@@ -3,7 +3,7 @@
 A thoughtfully crafted design system that eliminates complexity while maximizing flexibility.
 
 
-![Once UI](public/images/cover.png)
+![Once UI](public/images/cover.jpg)
 
 # Features
 
@@ -59,4 +59,4 @@ Become a sponsor and help us continue to develop and maintain this project.
 Once UI is also available for Figma.  
 Design and prototype entire products from scratch in hours. Use the same tokens and components as the Next.js design system.
 
-Grab a copy from the [Figma Community](https://figma.com/).
+Start designing: [Once UI for Figma](https://once-ui.com/figma).

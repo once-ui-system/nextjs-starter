@@ -7,11 +7,10 @@ import { Metadata } from "next";
 
 import { baseURL, style, meta, og, schema, social } from "@/once-ui/resources/config";
 
-import { Background, Flex, StyleOverlay } from "@/once-ui/components";
+import { Background, Flex, ToastProvider } from "@/once-ui/components";
 
 import { Inter } from "next/font/google";
 import { Roboto_Mono } from "next/font/google";
-import { ToastProvider } from "@/once-ui/components/ToastProvider";
 
 const primary = Inter({
   variable: "--font-primary",
@@ -49,6 +48,12 @@ export async function generateMetadata(): Promise<Metadata> {
       title: og.title,
       description: og.description,
       url: "https://" + baseURL,
+      images: [
+				{
+					url: og.image,
+					alt: og.title,
+				},
+			],
       type: og.type as
         | "website"
         | "article"
@@ -63,6 +68,12 @@ export async function generateMetadata(): Promise<Metadata> {
         | "video.tv_show"
         | "video.other",
     },
+    twitter: {
+			card: 'summary_large_image',
+			title: og.title,
+			description: og.description,
+			images: [og.image],
+		},
     metadataBase,
   };
 }
