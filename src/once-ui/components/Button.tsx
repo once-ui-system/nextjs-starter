@@ -62,28 +62,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
     ref,
   ) => {
     const iconSize = size === "l" ? "s" : size === "m" ? "s" : "xs";
-
-    const content = (
-      <>
-        {prefixIcon && !loading && <Icon name={prefixIcon} size={iconSize} />}
-        {loading && <Spinner size={size} />}
-        <Flex paddingX="4" paddingY="0" textWeight={weight} textSize={size} className="font-label">
-          {label || children}
-        </Flex>
-        {arrowIcon && (
-          <Arrow
-            style={{
-              marginLeft: "calc(-1 * var(--static-space-4))",
-            }}
-            trigger={"#" + id}
-            scale={size === "s" ? 0.8 : size === "m" ? 0.9 : 1}
-            color={variant === "primary" ? "onSolid" : "onBackground"}
-          />
-        )}
-        {suffixIcon && <Icon name={suffixIcon} size={iconSize} />}
-      </>
-    );
-
     const radiusSize = size === "s" || size === "m" ? "m" : "l";
 
     return (
@@ -113,7 +91,30 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
         style={style}
         {...props}
       >
-        {content}
+        {prefixIcon && !loading && <Icon name={prefixIcon} size={iconSize} />}
+        {loading && <Spinner size={size} />}
+        {(label || children) && (
+          <Flex
+            paddingX="4"
+            paddingY="0"
+            textWeight={weight}
+            textSize={size}
+            className="font-label"
+          >
+            {label || children}
+          </Flex>
+        )}
+        {arrowIcon && (
+          <Arrow
+            style={{
+              marginLeft: "calc(-1 * var(--static-space-4))",
+            }}
+            trigger={"#" + id}
+            scale={size === "s" ? 0.8 : size === "m" ? 0.9 : 1}
+            color={variant === "primary" ? "onSolid" : "onBackground"}
+          />
+        )}
+        {suffixIcon && <Icon name={suffixIcon} size={iconSize} />}
       </ElementType>
     );
   },

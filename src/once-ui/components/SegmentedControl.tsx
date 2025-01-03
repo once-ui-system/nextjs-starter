@@ -100,9 +100,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
       aria-orientation="horizontal"
       onKeyDown={handleKeyDown}
     >
-      <Flex
-        fillWidth 
-        gap="-1">
+      <Flex fillWidth gap="-1">
         {buttons.map((button, index) => {
           return (
             <ToggleButton

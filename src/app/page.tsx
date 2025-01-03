@@ -113,35 +113,53 @@ export default function Home() {
         blur={0.25}
       />
       <Row position="fixed" top="0" fillWidth justifyContent="center" zIndex={3}>
-        <Row justifyContent="space-between" maxWidth="m" paddingX="24" paddingY="20">
+        <Row
+          data-border="rounded"
+          justifyContent="space-between"
+          maxWidth="l"
+          paddingRight="64"
+          paddingLeft="32"
+          paddingY="20"
+        >
           <Logo size="m" icon={false} href="https://once-ui.com" />
-          <Row gap="12" paddingRight="48" data-border="rounded">
-            <Button
-              href="https://github.com/once-ui-system/nextjs-starter"
-              prefixIcon="github"
-              size="s"
-              weight="default"
-              variant="tertiary"
-            >
-              GitHub
-            </Button>
+          <Row gap="12" hide="s">
             <Button
               href="https://discord.com/invite/5EyAQ4eNdS"
               prefixIcon="discord"
               size="s"
+              label="Discord"
               weight="default"
               variant="tertiary"
-            >
-              Discord
-            </Button>
-            <StyleOverlay top="20" right="24"/>
+            />
+            <Button
+              href="https://github.com/once-ui-system/nextjs-starter"
+              prefixIcon="github"
+              size="s"
+              label="GitHub"
+              weight="default"
+              variant="tertiary"
+            />
+            <StyleOverlay top="20" right="24" />
+          </Row>
+          <Row gap="16" show="s" alignItems="center" paddingRight="24">
+            <IconButton
+              href="https://discord.com/invite/5EyAQ4eNdS"
+              icon="discord"
+              variant="tertiary"
+            />
+            <IconButton
+              href="https://github.com/once-ui-system/nextjs-starter"
+              icon="github"
+              variant="tertiary"
+            />
+            <StyleOverlay top="20" right="24" />
           </Row>
         </Row>
       </Row>
       <Column
         overflow="hidden"
         as="main"
-        maxWidth="m"
+        maxWidth="l"
         position="relative"
         radius="xl"
         alignItems="center"
@@ -405,7 +423,7 @@ export default function Home() {
             position="absolute"
             grid={{
               display: true,
-              opacity: 80,
+              opacity: 100,
               width: "10%",
               color: "neutral-alpha-medium",
               height: "1.25%",
@@ -426,7 +444,6 @@ export default function Home() {
               radius="xl"
               border="accent-alpha-weak"
               overflow="hidden"
-              maxWidth={32}
             >
               <HoloFx fill>
                 <Background
@@ -434,7 +451,6 @@ export default function Home() {
                   position="absolute"
                   gradient={{
                     display: true,
-                    opacity: 100,
                     tilt: -45,
                     height: 150,
                     width: 100,
@@ -444,12 +460,19 @@ export default function Home() {
                     colorEnd: "accent-solid-weak",
                   }}
                 >
-                  <Column fill position="absolute" padding="24" justifyContent="Row-end" gap="12" onSolid="neutral-strong">
+                  <Column
+                    fill
+                    position="absolute"
+                    padding="24"
+                    justifyContent="flex-end"
+                    gap="12"
+                    onSolid="neutral-strong"
+                  >
                     <Text variant="body-default-xl">Lorant One</Text>
                     <Row
                       fillWidth
                       justifyContent="space-between"
-                      alignItems="Row-end"
+                      alignItems="flex-end"
                       paddingRight="16"
                     >
                       <Column gap="4">
@@ -878,7 +901,7 @@ export default function Home() {
           minHeight={28}
           paddingBottom="80"
           justifyContent="center"
-          alignItems="Row-end"
+          alignItems="flex-end"
         >
           <Background
             mask={{
