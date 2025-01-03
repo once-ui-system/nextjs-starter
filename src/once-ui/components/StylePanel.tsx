@@ -134,26 +134,23 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(
                         <Heading as="h2" variant="label-default-s">
                             Brand
                         </Heading>
-                        <Flex fillWidth maxWidth={32} minWidth={0}>
-                            <Scroller>
-                                <Flex fillWidth gap="4" zIndex={0}>
-                                    {colorOptions.brand.map((color, index) => (
-                                        <Flex
-                                            key={color}
-                                            justifyContent="center"
-                                            alignItems="center"
-                                            className={classNames(styles.select, brandColor === color ? styles.selected : '')}
-                                            onClick={() => {
-                                                setBrandColor(color);
-                                            }}>
-                                            <IconButton variant="ghost" size="m">
-                                                <div className={`${styles[color]} ${styles.swatch}`}></div>
-                                            </IconButton>
-                                        </Flex>
-                                    ))}
+                        <Scroller minWidth={0}>
+                            {colorOptions.brand.map((color, index) => (
+                                <Flex
+                                    marginRight="2"
+                                    key={color}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    className={classNames(styles.select, brandColor === color ? styles.selected : '')}
+                                    onClick={() => {
+                                        setBrandColor(color);
+                                    }}>
+                                    <IconButton variant="ghost" size="m">
+                                        <div className={`${styles[color]} ${styles.swatch}`}></div>
+                                    </IconButton>
                                 </Flex>
-                            </Scroller>
-                        </Flex>
+                            ))}
+                        </Scroller>
                     </Flex>
 
                     <Flex
@@ -163,22 +160,23 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(
                         <Heading as="h2" variant="label-default-s">
                             Accent
                         </Heading>
-                            <Scroller gap="4" zIndex={0} maxWidth={32}>
-                                {colorOptions.accent.map((color, index) => (
-                                    <Flex
-                                        key={color}
-                                        justifyContent="center"
-                                        alignItems="center"
-                                        className={classNames(styles.select, accentColor === color ? styles.selected : '')}
-                                        onClick={() => {
-                                            setAccentColor(color);
-                                        }}>
-                                        <IconButton variant="ghost" size="m">
-                                            <div className={`${styles[color]} ${styles.swatch}`}></div>
-                                        </IconButton>
-                                    </Flex>
-                                ))}
-                            </Scroller>
+                        <Scroller minWidth={0}>
+                            {colorOptions.accent.map((color, index) => (
+                                <Flex
+                                    marginRight="2"
+                                    key={color}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    className={classNames(styles.select, accentColor === color ? styles.selected : '')}
+                                    onClick={() => {
+                                        setAccentColor(color);
+                                    }}>
+                                    <IconButton variant="ghost" size="m">
+                                        <div className={`${styles[color]} ${styles.swatch}`}></div>
+                                    </IconButton>
+                                </Flex>
+                            ))}
+                        </Scroller>
                     </Flex>
 
                     <Flex
@@ -187,35 +185,32 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(
                         <Heading as="h2" variant="label-default-s">
                             Neutral
                         </Heading>
-                        <Flex fillWidth maxWidth={32} minWidth={0}>
-                            <Scroller>
-                                <Flex fillWidth gap="4" zIndex={0}>
-                                    {colorOptions.neutral.map((color, index) => (
-                                        <Flex
-                                            key={color}
-                                            justifyContent="center"
-                                            alignItems="center"
-                                            className={classNames(styles.select, neutralColor === color ? styles.selected : '')}
-                                            onClick={() => {
-                                                setNeutralColor(color);
-                                            }}>
-                                            <IconButton variant="ghost" size="m">
-                                                <div className={`${styles[color]} ${styles.swatch}`}></div>
-                                            </IconButton>
-                                        </Flex>
-                                    ))}
+                        <Scroller minWidth={0}>
+                            {colorOptions.neutral.map((color, index) => (
+                                <Flex
+                                    marginRight="2"
+                                    key={color}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    className={classNames(styles.select, neutralColor === color ? styles.selected : '')}
+                                    onClick={() => {
+                                        setNeutralColor(color);
+                                    }}>
+                                    <IconButton variant="ghost" size="m">
+                                        <div className={`${styles[color]} ${styles.swatch}`}></div>
+                                    </IconButton>
                                 </Flex>
-                            </Scroller>
-                        </Flex>
+                            ))}
+                        </Scroller>
                     </Flex>
                 </Column>
 
             <Column fillWidth paddingTop="12" paddingLeft="16" gap="4">
                 <Heading as="h2" variant="heading-strong-s">
-                    Button
+                    Solid style
                 </Heading>
                 <Text variant="body-default-s" onBackground="neutral-weak">
-                    Customize button appearance
+                    Customize the appearance of interactive elements
                 </Text>
             </Column>
             <Column fillWidth border="neutral-medium" radius="l-4">
@@ -405,7 +400,6 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(
                         <Heading as="h2" variant="label-default-s">
                             Transition
                         </Heading>
-                        <Flex fillWidth maxWidth={22} minWidth={0}>
                         <SegmentedControl
                             onToggle={(value) => setTransition(value as 'all' | 'micro' | 'macro')}
                             selected={transition}
@@ -427,7 +421,6 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(
                                 }
                             ]}
                         />
-                        </Flex>
                     </Flex>
                 </Column>
             </Column>

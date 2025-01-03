@@ -50,6 +50,7 @@ export * from "./SmartLink";
 export * from "./Spinner";
 export * from "./StatusIndicator";
 export * from "./StylePanel";
+export * from "./StyleOverlay";
 export * from "./Switch";
 export * from "./Tag";
 export * from "./TagInput";
