@@ -7,7 +7,7 @@ import { Metadata } from "next";
 
 import { baseURL, style, meta, og, schema, social } from "@/once-ui/resources/config";
 
-import { Background, Flex } from "@/once-ui/components";
+import { Background, Flex, StyleOverlay } from "@/once-ui/components";
 
 import { Inter } from "next/font/google";
 import { Roboto_Mono } from "next/font/google";

@@ -71,8 +71,6 @@ const RevealFx = forwardRef<HTMLDivElement, RevealFxProps>(
 
     const translateValue = getTranslateYValue();
 
-    const combinedClassName = `${styles.revealFx} ${isRevealed ? styles.revealed : styles.hidden} ${className || ""}`;
-
     const revealStyle: React.CSSProperties = {
       transitionDuration: getSpeedDuration(),
       transform: isRevealed ? "translateY(0)" : `translateY(${translateValue})`,
@@ -87,7 +85,7 @@ const RevealFx = forwardRef<HTMLDivElement, RevealFxProps>(
         ref={ref}
         aria-hidden="true"
         style={revealStyle}
-        className={combinedClassName}
+        className={`${styles.revealFx} ${isRevealed ? styles.revealed : styles.hidden} ${className || ""}`}
         {...rest}
       >
         {children}

@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import {
   Heading,
   Text,
-  Flex,
   Button,
   Icon,
   InlineCode,
@@ -15,7 +14,6 @@ import {
   AvatarGroup,
   Textarea,
   PasswordInput,
-  StylePanel,
   SegmentedControl,
   SmartLink,
   Dialog,
@@ -38,6 +36,7 @@ import {
   Switch,
   Column,
   Row,
+  StyleOverlay,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 
@@ -66,7 +65,7 @@ export default function Home() {
       description: "Style your app in minutes",
     },
     {
-      href: "https://once-ui.com/docs/flexComponent",
+      href: "https://once-ui.com/docs/RowComponent",
       title: "Layout",
       description: "Build responsive layouts",
     },
@@ -80,10 +79,10 @@ export default function Home() {
   const validateIntro = (value: React.ReactNode) => {
     if (typeof value === "string" && value.length < 10) {
       return (
-        <Flex alignItems="center" marginBottom="12" gap="8">
+        <Row alignItems="center" marginBottom="12" gap="8">
           <Icon name="errorCircle" />
           Intro must be at least 10 characters long.
-        </Flex>
+        </Row>
       );
     }
     return null;
@@ -113,35 +112,54 @@ export default function Home() {
         fillWidth
         blur={0.25}
       />
-      <Flex position="fixed" top="0" fillWidth justifyContent="center" zIndex={3}>
-        <Flex justifyContent="space-between" maxWidth="m" paddingX="24" paddingY="20">
+      <Row position="fixed" top="0" fillWidth justifyContent="center" zIndex={3}>
+        <Row
+          data-border="rounded"
+          justifyContent="space-between"
+          maxWidth="l"
+          paddingRight="64"
+          paddingLeft="32"
+          paddingY="20"
+        >
           <Logo size="m" icon={false} href="https://once-ui.com" />
-          <Flex gap="12" data-border="rounded">
-            <Button
-              href="https://github.com/once-ui-system/nextjs-starter"
-              prefixIcon="github"
-              size="s"
-              weight="default"
-              variant="tertiary"
-            >
-              GitHub
-            </Button>
+          <Row gap="12" hide="s">
             <Button
               href="https://discord.com/invite/5EyAQ4eNdS"
               prefixIcon="discord"
               size="s"
+              label="Discord"
               weight="default"
               variant="tertiary"
-            >
-              Discord
-            </Button>
-          </Flex>
-        </Flex>
-      </Flex>
+            />
+            <Button
+              href="https://github.com/once-ui-system/nextjs-starter"
+              prefixIcon="github"
+              size="s"
+              label="GitHub"
+              weight="default"
+              variant="tertiary"
+            />
+            <StyleOverlay top="20" right="24" />
+          </Row>
+          <Row gap="16" show="s" alignItems="center" paddingRight="24">
+            <IconButton
+              href="https://discord.com/invite/5EyAQ4eNdS"
+              icon="discord"
+              variant="tertiary"
+            />
+            <IconButton
+              href="https://github.com/once-ui-system/nextjs-starter"
+              icon="github"
+              variant="tertiary"
+            />
+            <StyleOverlay top="20" right="24" />
+          </Row>
+        </Row>
+      </Row>
       <Column
         overflow="hidden"
         as="main"
-        maxWidth="m"
+        maxWidth="l"
         position="relative"
         radius="xl"
         alignItems="center"
@@ -214,7 +232,7 @@ export default function Home() {
               </Text>
             </InlineCode>
             <Heading wrap="balance" variant="display-default-l" align="center" marginBottom="16">
-              Once UI is like TypeScript for design
+              We let designers code and developers design
             </Heading>
             <Button
               id="readDocs"
@@ -245,36 +263,36 @@ export default function Home() {
               </Heading>
               <LogoCloud
                 paddingBottom="104"
+                columns="3"
+                mobileColumns="1"
                 limit={3}
                 fillWidth
                 logos={[
                   {
                     icon: false,
                     wordmarkSrc: "/trademark/dopler-wordmark.svg",
+                    href: "https://dropler.app",
                     size: "m",
                   },
                   {
                     icon: false,
                     wordmarkSrc: "/trademark/design-engineers-wordmark.svg",
+                    href: "https://club.dropler.io",
                     size: "m",
                   },
                   {
                     icon: false,
                     wordmarkSrc: "/trademark/enroll-wordmark.svg",
+                    href: "https://enroll.dopler.app",
                     size: "m",
                   },
                   {
                     icon: false,
                     wordmarkSrc: "/trademark/magic-portfolio-wordmark.svg",
-                    size: "m",
-                  },
-                  {
-                    icon: false,
+                    href: "https://magic-portfolio.com",
                     size: "m",
                   },
                 ]}
-                columns="3"
-                mobileColumns="1"
               />
             </Column>
           </Column>
@@ -286,11 +304,8 @@ export default function Home() {
               Tiny snippets to inspire your next project
             </Text>
 
-            {/* STYLE */}
-            <StylePanel/>
-
             {/* LOGIN */}
-            <Flex
+            <Row
               marginY="32"
               background="overlay"
               fillWidth
@@ -298,9 +313,9 @@ export default function Home() {
               border="neutral-alpha-weak"
               overflow="hidden"
             >
-              <Flex fill hide="m">
+              <Row fill hide="m">
                 <SmartImage src="/images/login.png" alt="Preview image" sizes="560px" />
-              </Flex>
+              </Row>
               <Column fillWidth alignItems="center" gap="20" padding="32" position="relative">
                 <Background
                   mask={{
@@ -343,11 +358,11 @@ export default function Home() {
                     size="l"
                   />
                 </Column>
-                <Flex fillWidth paddingY="24">
-                  <Flex onBackground="neutral-weak" fillWidth gap="24" alignItems="center">
+                <Row fillWidth paddingY="24">
+                  <Row onBackground="neutral-weak" fillWidth gap="24" alignItems="center">
                     <Line />/<Line />
-                  </Flex>
-                </Flex>
+                  </Row>
+                </Row>
                 <Column gap="-1" fillWidth>
                   <Input
                     id="email"
@@ -383,12 +398,12 @@ export default function Home() {
                   }}
                 />
               </Column>
-            </Flex>
+            </Row>
           </Column>
         </Column>
 
         {/* PAYMENT */}
-        <Flex
+        <Row
           paddingX="32"
           fillWidth
           paddingY="160"
@@ -408,13 +423,13 @@ export default function Home() {
             position="absolute"
             grid={{
               display: true,
-              opacity: 80,
+              opacity: 100,
               width: "10%",
               color: "neutral-alpha-medium",
               height: "1.25%",
             }}
           />
-          <Flex
+          <Row
             position="relative"
             shadow="xl"
             fillWidth
@@ -429,7 +444,6 @@ export default function Home() {
               radius="xl"
               border="accent-alpha-weak"
               overflow="hidden"
-              maxWidth={32}
             >
               <HoloFx fill>
                 <Background
@@ -437,7 +451,6 @@ export default function Home() {
                   position="absolute"
                   gradient={{
                     display: true,
-                    opacity: 100,
                     tilt: -45,
                     height: 150,
                     width: 100,
@@ -447,9 +460,16 @@ export default function Home() {
                     colorEnd: "accent-solid-weak",
                   }}
                 >
-                  <Column fill position="absolute" padding="24" justifyContent="flex-end" gap="12" onSolid="neutral-strong">
+                  <Column
+                    fill
+                    position="absolute"
+                    padding="24"
+                    justifyContent="flex-end"
+                    gap="12"
+                    onSolid="neutral-strong"
+                  >
                     <Text variant="body-default-xl">Lorant One</Text>
-                    <Flex
+                    <Row
                       fillWidth
                       justifyContent="space-between"
                       alignItems="flex-end"
@@ -460,14 +480,14 @@ export default function Home() {
                         <Text variant="body-default-m">1234 5678 1234 5678</Text>
                       </Column>
                       <Icon name="visa" size="xl" />
-                    </Flex>
+                    </Row>
                   </Column>
                 </Background>
               </HoloFx>
             </TiltFx>
-          </Flex>
+          </Row>
           <Column position="relative" fillWidth gap="-1">
-            <Flex fillWidth alignItems="center" justifyContent="space-between" marginBottom="32">
+            <Row fillWidth alignItems="center" justifyContent="space-between" marginBottom="32">
               <Heading as="h3" variant="display-default-xs">
                 Fill in your card details
               </Heading>
@@ -478,7 +498,7 @@ export default function Home() {
                 tooltip="Next"
                 tooltipPosition="left"
               />
-            </Flex>
+            </Row>
             <Input
               id="cardnumber"
               label="Card number"
@@ -486,7 +506,7 @@ export default function Home() {
               radius="top"
               defaultValue="1234 5678 1234 5678"
             />
-            <Flex fillWidth gap="-1">
+            <Row fillWidth gap="-1">
               <Input
                 id="expiry"
                 label="Expiry date"
@@ -501,12 +521,12 @@ export default function Home() {
                 radius="bottom-right"
                 defaultValue="123"
               />
-            </Flex>
+            </Row>
           </Column>
-        </Flex>
+        </Row>
 
         {/* BOOKING */}
-        <Flex
+        <Row
           padding="32"
           fillWidth
           gap="64"
@@ -539,7 +559,7 @@ export default function Home() {
             gap="40"
             position="relative"
           >
-            <Flex fillWidth justifyContent="center" gap="-1">
+            <Row fillWidth justifyContent="center" gap="-1">
               <Column
                 maxWidth={12}
                 gap="4"
@@ -586,8 +606,8 @@ export default function Home() {
                   "Add dates"
                 )}
               </Column>
-            </Flex>
-            <Flex fillWidth justifyContent="center">
+            </Row>
+            <Row fillWidth justifyContent="center">
               <DateRangePicker
                 data-scaling="110"
                 size="l"
@@ -597,12 +617,12 @@ export default function Home() {
                 onChange={(range) => setSelectedRange(range)}
                 value={selectedRange}
               />
-            </Flex>
+            </Row>
           </Column>
-        </Flex>
+        </Row>
 
         {/* PROFILE */}
-        <Flex
+        <Row
           justifyContent="center"
           paddingX="32"
           paddingY="64"
@@ -650,7 +670,7 @@ export default function Home() {
             >
               <MediaUpload
                 border={undefined}
-                emptyState={<Flex paddingBottom="80">Drag and drop or click to browse</Flex>}
+                emptyState={<Row paddingBottom="80">Drag and drop or click to browse</Row>}
                 position="absolute"
                 aspectRatio="16 / 9"
                 sizes="560px"
@@ -697,10 +717,10 @@ export default function Home() {
                       size: "l",
                       value: "notifications",
                       label: (
-                        <Flex gap="8">
+                        <Row gap="8">
                           Notifications
                           <StatusIndicator size="s" color="cyan" />
-                        </Flex>
+                        </Row>
                       ),
                     },
                     {
@@ -803,7 +823,7 @@ export default function Home() {
               </Column>
             </Column>
           </Column>
-        </Flex>
+        </Row>
 
         {/* CODE PREVIEW */}
         <TiltFx fillWidth paddingX="32" paddingTop="64">
@@ -873,7 +893,7 @@ export default function Home() {
           </Column>
         </TiltFx>
 
-        <Flex
+        <Row
           position="relative"
           fillWidth
           paddingX="32"
@@ -896,13 +916,13 @@ export default function Home() {
               height: "0.25rem",
             }}
           />
-          <Flex position="relative" textVariant="display-default-m" align="center">
+          <Row position="relative" textVariant="display-default-m" align="center">
             Learn more
-          </Flex>
-        </Flex>
-        <Flex fillWidth overflow="hidden">
-          <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
-          <Flex fillWidth border="neutral-alpha-weak" mobileDirection="column">
+          </Row>
+        </Row>
+        <Row fillWidth overflow="hidden">
+          <Row maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Row>
+          <Row fillWidth border="neutral-alpha-weak" mobileDirection="column">
             {links.map((link, index) => (
               <SmartLink unstyled fillWidth target="_blank" key={link.href} href={link.href}>
                 <Card
@@ -915,22 +935,22 @@ export default function Home() {
                   border={undefined}
                   radius={undefined}
                 >
-                  <Flex fillWidth justifyContent="center" gap="12" alignItems="center">
+                  <Row fillWidth justifyContent="center" gap="12" alignItems="center">
                     <Text variant="body-strong-m" onBackground="neutral-strong">
                       {link.title}
                     </Text>
                     <Icon size="s" name="arrowUpRight" />
-                  </Flex>
+                  </Row>
                   <Text align="center" variant="body-default-s" onBackground="neutral-weak">
                     {link.description}
                   </Text>
                 </Card>
               </SmartLink>
             ))}
-          </Flex>
-          <Flex maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Flex>
-        </Flex>
-        <Flex
+          </Row>
+          <Row maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Row>
+        </Row>
+        <Row
           position="relative"
           as="footer"
           fillWidth
@@ -969,7 +989,7 @@ export default function Home() {
               MIT License
             </SmartLink>
           </Column>
-        </Flex>
+        </Row>
       </Column>
 
       <Dialog
