@@ -1,16 +1,7 @@
 .container {
-    cursor: pointer;
-    overflow: hidden;
-    transition: var(--transition-micro-medium);
-
-
     &:hover, &:focus {
         background-color: var(--neutral-background-strong);
     }
-}
-
-.container.drag-active {
-    border-color: #00f;
 }
 
 .text {
@@ -20,8 +11,6 @@
 }
 
 .upload {
-    transition: var(--transition-micro-medium);
-
     &:hover {
         background: var(--backdrop);
         backdrop-filter: blur(0.25rem);
