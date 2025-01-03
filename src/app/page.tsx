@@ -15,7 +15,6 @@ import {
   AvatarGroup,
   Textarea,
   PasswordInput,
-  StylePanel,
   SegmentedControl,
   SmartLink,
   Dialog,
@@ -38,6 +37,7 @@ import {
   Switch,
   Column,
   Row,
+  StyleOverlay,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 
@@ -116,7 +116,7 @@ export default function Home() {
       <Flex position="fixed" top="0" fillWidth justifyContent="center" zIndex={3}>
         <Flex justifyContent="space-between" maxWidth="m" paddingX="24" paddingY="20">
           <Logo size="m" icon={false} href="https://once-ui.com" />
-          <Flex gap="12" data-border="rounded">
+          <Flex gap="12" paddingRight="48" data-border="rounded">
             <Button
               href="https://github.com/once-ui-system/nextjs-starter"
               prefixIcon="github"
@@ -135,6 +135,7 @@ export default function Home() {
             >
               Discord
             </Button>
+            <StyleOverlay top="20" right="24"/>
           </Flex>
         </Flex>
       </Flex>
@@ -214,7 +215,7 @@ export default function Home() {
               </Text>
             </InlineCode>
             <Heading wrap="balance" variant="display-default-l" align="center" marginBottom="16">
-              Once UI is like TypeScript for design
+              We let designers code and developers design
             </Heading>
             <Button
               id="readDocs"
@@ -285,9 +286,6 @@ export default function Home() {
             <Text marginBottom="32" align="center" onBackground="neutral-weak">
               Tiny snippets to inspire your next project
             </Text>
-
-            {/* STYLE */}
-            <StylePanel/>
 
             {/* LOGIN */}
             <Flex
