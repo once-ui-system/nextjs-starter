@@ -82,6 +82,7 @@ const Carousel: React.FC<CarouselProps> = ({
       <RevealFx
         onClick={handleImageClick}
         fillWidth
+        aspectRatio={aspectRatio}
         trigger={isTransitioning}
         translateY="16"
         speed="fast"
@@ -89,7 +90,6 @@ const Carousel: React.FC<CarouselProps> = ({
         <SmartImage
           sizes={sizes}
           priority
-          tabIndex={0}
           radius="l"
           alt={images[activeIndex]?.alt}
           aspectRatio={aspectRatio}
