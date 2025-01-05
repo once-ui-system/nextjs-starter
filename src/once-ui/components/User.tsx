@@ -8,7 +8,7 @@ import { Flex, Text, Skeleton, Tag, TagProps, Avatar, AvatarProps } from ".";
 interface UserProps {
   name?: string;
   children?: React.ReactNode;
-  subline?: string;
+  subline?: React.ReactNode;
   tag?: string;
   tagProps?: TagProps;
   loading?: boolean;
