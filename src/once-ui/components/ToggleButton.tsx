@@ -65,9 +65,9 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
         href={href}
         className={classNames(
           styles.button,
-          selected && styles.selected,
-          styles[size],
           styles[variant],
+          styles[size],
+          selected && styles.selected,
           radius === "none"
             ? "radius-none"
             : radius
@@ -75,6 +75,7 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
               : `radius-${radiusSize}`,
           "text-decoration-none",
           "button",
+          "cursor-interactive",
           {
             ["fill-width"]: fillWidth,
             ["fit-width"]: !fillWidth,
@@ -82,14 +83,19 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
           },
           className,
         )}
-        style={{ ...style }}
+        style={style}
         {...props}
       >
         {prefixIcon && (
           <Icon name={prefixIcon} size={size === "l" ? "m" : "s"} className={styles.icon} />
         )}
         {(label || children) && (
-          <Flex textWeight={weight} padding="4">
+          <Flex
+            padding="4"
+            textWeight={weight}
+            textSize={size === "l" ? "m" : "s"}
+            className="font-label"
+          >
             {label || children}
           </Flex>
         )}
@@ -102,5 +108,4 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
 );
 
 ToggleButton.displayName = "ToggleButton";
-
 export { ToggleButton };
