@@ -48,7 +48,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       onOpenChange,
       minWidth,
       maxWidth,
-      fillWidth,
+      fillWidth = false,
       floatingPlacement = "bottom-start",
       className,
       style,
@@ -80,7 +80,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         size({
           apply({ availableWidth, availableHeight, elements }) {
             Object.assign(elements.floating.style, {
-              width: maxWidth || fillWidth ? "100%" : "auto",
+              width: fillWidth ? "100%" : "auto",
               minWidth: minWidth ? `${minWidth}rem` : undefined,
               maxWidth: maxWidth ? `${maxWidth}rem` : `${availableWidth}px`,
               minHeight: `${Math.min(minHeight || 0)}px`,
@@ -142,7 +142,6 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       <Flex
         fillWidth={fillWidth}
         direction="column"
-        gap="-1"
         transition="macro-medium"
         style={{
           ...(minHeight && isOpen
@@ -192,5 +191,4 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
 );
 
 DropdownWrapper.displayName = "DropdownWrapper";
-
 export { DropdownWrapper };
