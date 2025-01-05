@@ -147,7 +147,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         style={{
           ...(minHeight && isOpen
             ? {
-                marginBottom: `${minHeight + 48}px`,
+                marginBottom: `${minHeight + 8}px`,
               }
             : {}),
           ...style,
