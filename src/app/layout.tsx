@@ -7,7 +7,7 @@ import { Metadata } from "next";
 
 import { baseURL, style, meta, og, schema, social } from "@/once-ui/resources/config";
 
-import { Background, Flex, ToastProvider } from "@/once-ui/components";
+import { Background, Column, Flex, ToastProvider } from "@/once-ui/components";
 
 import { Inter } from "next/font/google";
 import { Roboto_Mono } from "next/font/google";
@@ -126,7 +126,7 @@ export default function RootLayout({
         />
       </head>
       <ToastProvider>
-        <Flex as="body" fillWidth direction="column" margin="0" padding="0">
+        <Column as="body" fillWidth  margin="0" padding="0">
           <Background
             position="absolute"
             mask={{
@@ -154,7 +154,7 @@ export default function RootLayout({
             }}
           />
           {children}
-        </Flex>
+        </Column>
       </ToastProvider>
     </Flex>
   );
