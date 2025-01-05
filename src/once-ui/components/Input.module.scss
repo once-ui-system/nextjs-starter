@@ -1,5 +1,6 @@
 .base {
     backdrop-filter: var(--backdrop-filter);
+    min-height: var(--static-space-56);
 
     &.focused, &.filled {
         background-color: var(--neutral-background-strong);
