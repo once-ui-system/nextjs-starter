@@ -8,7 +8,7 @@ interface ButtonOption extends Omit<ToggleButtonProps, "selected"> {
   value: string;
 }
 
-interface SegmentedControlProps {
+interface SegmentedControlProps extends Omit<React.ComponentProps<typeof Scroller>, "onToggle"> {
   buttons: ButtonOption[];
   onToggle: (value: string, event?: React.MouseEvent<HTMLDivElement>) => void;
   defaultSelected?: string;
@@ -93,9 +93,8 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   return (
     <Scroller
       direction="row"
+      minWidth={0}
       {...scrollerProps}
-      fillWidth={fillWidth}
-      fitWidth={!fillWidth}
       role="tablist"
       aria-orientation="horizontal"
       onKeyDown={handleKeyDown}

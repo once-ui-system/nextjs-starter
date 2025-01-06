@@ -7,7 +7,7 @@ import styles from "./Scroller.module.scss";
 import { Fade } from "./Fade";
 
 interface ScrollerProps extends React.ComponentProps<typeof Flex> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   direction?: "row" | "column";
   onItemClick?: (index: number) => void;
 }
