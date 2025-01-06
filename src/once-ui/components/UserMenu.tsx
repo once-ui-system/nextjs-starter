@@ -35,6 +35,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
       }}
       trigger={
         <Flex
+          tabIndex={0}
           direction="column"
           padding="4"
           radius="full"
