@@ -2,10 +2,13 @@
 
 import {
   Button,
+  Column,
   Flex,
+  Line,
   Logo,
   NavIcon,
   Option,
+  Row,
   SmartLink,
   ToggleButton,
   UserMenu,
@@ -24,35 +27,33 @@ const Header: React.FC<HeaderProps> = ({ authenticated, avatar, name, subline })
   const pathname = usePathname() ?? "";
 
   return (
-    <Flex
-      style={{
-        borderBottom: "1px solid var(--neutral-border-medium)",
-      }}
+    <Row
       as="header"
+      borderBottom="neutral-medium"
       fillWidth
       paddingX="m"
       height="56"
       alignItems="center"
       background="surface"
     >
-      <Flex hide="s">
-        <Logo />
-      </Flex>
-      <Flex show="s" gap="4" alignItems="center">
+      <Row hide="s">
+        <Logo size="s"/>
+      </Row>
+      <Row show="s" gap="4" alignItems="center">
         <NavIcon />
         <Logo wordmark={false} />
-      </Flex>
+      </Row>
       {authenticated ? (
-        <Flex fillWidth alignItems="center" justifyContent="space-between">
-          <Flex fillWidth>
-            <Flex hide="s" fillWidth gap="4" paddingX="l" alignItems="center">
-              <ToggleButton selected={true} href="" label="Dashboard" />
-              <ToggleButton selected={pathname === "/apps"} href="" label="Apps" />
-              <ToggleButton selected={pathname === "/resources"} href="" label="Resources" />
-            </Flex>
-          </Flex>
-          <Flex as="nav">
-            <Flex hide="s">
+        <Row fillWidth alignItems="center" justifyContent="space-between">
+          <Row fillWidth>
+            <Row hide="s" fillWidth gap="4" paddingX="l" alignItems="center">
+              <ToggleButton selected={true} label="Dashboard" />
+              <ToggleButton selected={pathname === "/apps"} label="Apps" />
+              <ToggleButton selected={pathname === "/resources"} label="Resources" />
+            </Row>
+          </Row>
+          <Row as="nav">
+            <Row hide="s">
               <UserMenu
                 name={name}
                 subline={subline}
@@ -61,15 +62,16 @@ const Header: React.FC<HeaderProps> = ({ authenticated, avatar, name, subline })
                   src: avatar,
                 }}
                 dropdown={
-                  <>
+                  <Column padding="2" gap="2" minWidth={8}>
                     <Option label="Profile" value="profile" />
                     <Option label="Settings" value="settings" />
+                    <Line/>
                     <Option label="Log out" value="logout" />
-                  </>
+                  </Column>
                 }
               />
-            </Flex>
-            <Flex show="s">
+            </Row>
+            <Row show="s">
               <UserMenu
                 avatarProps={{
                   empty: !avatar,
@@ -83,12 +85,12 @@ const Header: React.FC<HeaderProps> = ({ authenticated, avatar, name, subline })
                   </>
                 }
               />
-            </Flex>
-          </Flex>
-        </Flex>
+            </Row>
+          </Row>
+        </Row>
       ) : (
-        <Flex fillWidth alignItems="center" justifyContent="flex-end">
-          <Flex
+        <Row fillWidth alignItems="center" justifyContent="flex-end">
+          <Row
             hide="s"
             textVariant="label-default-s"
             fillWidth
@@ -96,18 +98,18 @@ const Header: React.FC<HeaderProps> = ({ authenticated, avatar, name, subline })
             paddingX="l"
             alignItems="center"
           >
-            <SmartLink href="">Home</SmartLink>
-            <SmartLink href="">Product</SmartLink>
-            <SmartLink href="">Solutions</SmartLink>
-            <SmartLink href="">Pricing</SmartLink>
-          </Flex>
-          <Flex alignItems="center" gap="8">
+            <SmartLink href=" ">Home</SmartLink>
+            <SmartLink href=" ">Product</SmartLink>
+            <SmartLink href=" ">Solutions</SmartLink>
+            <SmartLink href=" ">Pricing</SmartLink>
+          </Row>
+          <Row alignItems="center" gap="8">
             <Button size="s" variant="secondary" label="Login" href="" />
             <Button size="s" variant="primary" label="Sign up" href="" />
-          </Flex>
-        </Flex>
+          </Row>
+        </Row>
       )}
-    </Flex>
+    </Row>
   );
 };
 
