@@ -21,18 +21,22 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
 
     return (
       <Flex
-        flex={1}
-        overflowY="auto"
-        direction="column"
-        border="neutral-medium"
-        background="surface"
-        gap="2"
         ref={ref}
         role="listbox"
         onClick={handleSelect}
-        {...rest}
-      >
-        {children}
+        flex={1}
+        border="neutral-medium"
+        background="surface"
+        overflow="hidden"
+        {...rest}>
+        <Flex
+          flex={1}
+          overflowY="auto"
+          direction="column"
+          gap="2"
+        >
+          {children}
+        </Flex>
       </Flex>
     );
   },
