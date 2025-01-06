@@ -13,7 +13,6 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     return (
       <Flex
         ref={ref}
-        direction="column"
         background="surface"
         transition="macro-medium"
         border="neutral-medium"
