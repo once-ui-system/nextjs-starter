@@ -79,7 +79,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
         ? `translate(${translateX}px, ${translateY}px) scale(${scale})`
         : "translate(0, 0) scale(1)",
       transition: "all 0.3s ease-in-out",
-      zIndex: isEnlarged ? 2 : 1,
+      zIndex: isEnlarged ? 2 : undefined,
     };
   };
 
