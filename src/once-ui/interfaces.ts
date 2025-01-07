@@ -2,6 +2,8 @@ import { CSSProperties, ElementType, HTMLAttributes, ReactNode } from "react";
 import {
   ColorScheme,
   ColorWeight,
+  flex,
+  gridColumns,
   RadiusNest,
   RadiusSize,
   ShadowSize,
@@ -13,12 +15,12 @@ import {
 } from "./types";
 
 export interface GridProps extends HTMLAttributes<HTMLDivElement> {
-  columns?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
-  rows?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
-  tabletColumns?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
-  mobileColumns?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
-  tabletRows?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
-  mobileRows?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
+  columns?: gridColumns;
+  rows?: gridColumns;
+  tabletColumns?: gridColumns;
+  mobileColumns?: gridColumns;
+  tabletRows?: gridColumns;
+  mobileRows?: gridColumns;
 }
 
 export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
@@ -28,7 +30,7 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   justifyContent?: CSSProperties["justifyContent"];
   alignItems?: CSSProperties["alignItems"];
   wrap?: boolean;
-  flex?: number;
+  flex?: flex;
 }
 
 export interface TextProps<T extends ElementType = "span"> extends HTMLAttributes<T> {
@@ -89,7 +91,6 @@ export interface StyleProps extends HTMLAttributes<HTMLDivElement> {
     | "overlay"
     | "page"
     | "transparent";
-  alpha?: `${ColorScheme}-${ColorWeight}`;
   solid?: `${ColorScheme}-${ColorWeight}`;
   borderTop?:
     | `${ColorScheme}-${ColorWeight}`
