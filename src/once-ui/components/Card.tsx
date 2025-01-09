@@ -16,6 +16,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         background="surface"
         transition="macro-medium"
         border="neutral-medium"
+        cursor="interactive"
         className={styles.card}
         {...rest}
       >
