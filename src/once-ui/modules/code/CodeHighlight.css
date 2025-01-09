@@ -82,7 +82,7 @@
   width: calc(100% - var(--static-space-16)) !important;
   left: var(--static-space-8);
   margin-top: var(--static-space-8);
-  z-index: -1;
+  z-index: 0;
   border-radius: var(--radius-s);
 }
 
