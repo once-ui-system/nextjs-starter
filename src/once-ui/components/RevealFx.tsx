@@ -83,7 +83,6 @@ const RevealFx = forwardRef<HTMLDivElement, RevealFxProps>(
         position="relative"
         justifyContent="center"
         ref={ref}
-        aria-hidden="true"
         style={revealStyle}
         className={`${styles.revealFx} ${isRevealed ? styles.revealed : styles.hidden} ${className || ""}`}
         {...rest}
