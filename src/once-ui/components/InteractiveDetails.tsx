@@ -4,8 +4,8 @@ import React, { forwardRef } from "react";
 import { Text, Flex, IconButton, IconButtonProps } from ".";
 
 interface InteractiveDetailsProps {
-  label?: string;
-  description?: string;
+  label?: React.ReactNode;
+  description?: React.ReactNode;
   iconButtonProps?: IconButtonProps;
   onClick: () => void;
   className?: string;
@@ -19,7 +19,7 @@ const InteractiveDetails: React.FC<InteractiveDetailsProps> = forwardRef<
   return (
     <Flex ref={ref} direction="column" className={className} onClick={onClick} id={id}>
       <Flex gap="4" alignItems="center">
-        <Text as="span" variant="label-strong-m" onBackground="neutral-strong">
+        <Text as="span" variant="label-default-m" onBackground="neutral-strong">
           {label}
         </Text>
         {iconButtonProps?.tooltip && (
