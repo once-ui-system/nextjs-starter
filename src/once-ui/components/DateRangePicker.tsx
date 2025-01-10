@@ -52,13 +52,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       setInternalValue(newRange);
       onChange?.(newRange);
     } else {
-      // Complete the selection
       const newRange = {
         startDate: internalValue.startDate,
         endDate: date,
       };
 
-      // Ensure start date is before end date
       if (newRange.startDate > date) {
         newRange.startDate = date;
         newRange.endDate = internalValue.startDate;
@@ -73,7 +71,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     const newDate = new Date(currentYear, currentMonth + increment, 1);
     setCurrentMonth(newDate.getMonth());
     setCurrentYear(newDate.getFullYear());
-    // Update both date pickers to show adjacent months
     setInternalValue({
       startDate: internalValue.startDate,
       endDate: internalValue.endDate,

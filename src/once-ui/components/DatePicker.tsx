@@ -46,15 +46,16 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       size = "m",
       className,
       style,
-      onHover,
+      currentMonth: propCurrentMonth,
+      currentYear: propCurrentYear,
+      onMonthChange,
       range,
+      onHover,
       ...rest
     },
     ref,
   ) => {
     const today = new Date();
-    const [currentMonth, setCurrentMonth] = useState<number>(value ? value.getMonth() : today.getMonth());
-    const [currentYear, setCurrentYear] = useState<number>(value ? value.getFullYear() : today.getFullYear());
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
     const [selectedTime, setSelectedTime] = useState<
       | {
@@ -67,6 +68,22 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     const [isTimeSelector, setIsTimeSelector] = useState(false);
     const [isTransitioning, setIsTransitioning] = useState(true);
 
+    const [currentMonth, setCurrentMonth] = useState<number>(
+      value ? value.getMonth() : today.getMonth()
+    );
+    const [currentYear, setCurrentYear] = useState<number>(
+      value ? value.getFullYear() : today.getFullYear()
+    );
+    
+    useEffect(() => {
+      if (typeof propCurrentMonth === "number") {
+        setCurrentMonth(propCurrentMonth);
+      }
+      if (typeof propCurrentYear === "number") {
+        setCurrentYear(propCurrentYear);
+      }
+    }, [propCurrentMonth, propCurrentYear]);
+    
     useEffect(() => {
       setSelectedDate(value);
       if (value) {
@@ -105,10 +122,8 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     const handleTimeToggle = (show: boolean) => {
       setIsTransitioning(false);
       setTimeout(() => {
-        setTimeout(() => {
-          setIsTimeSelector(show);
-          setIsTransitioning(true);
-        }, 400);
+        setIsTimeSelector(show);
+        setIsTransitioning(true);
       }, 400);
     };
 
@@ -127,15 +142,21 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     };
 
     const handleMonthChange = (increment: number) => {
-      const newMonth = currentMonth + increment;
-      if (newMonth < 0) {
-        setCurrentMonth(11); // December
-        setCurrentYear(currentYear - 1);
-      } else if (newMonth > 11) {
-        setCurrentMonth(0); // January
-        setCurrentYear(currentYear + 1);
+      if (onMonthChange) {
+        // Delegate to external handler
+        onMonthChange(increment);
       } else {
-        setCurrentMonth(newMonth);
+        // Fallback to internal state management
+        const newMonth = currentMonth + increment;
+        if (newMonth < 0) {
+          setCurrentMonth(11); // December
+          setCurrentYear(currentYear - 1);
+        } else if (newMonth > 11) {
+          setCurrentMonth(0); // January
+          setCurrentYear(currentYear + 1);
+        } else {
+          setCurrentMonth(newMonth);
+        }
       }
     };
 
@@ -167,17 +188,9 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       return date >= range.startDate && date <= range.endDate;
     };
 
-    const isDateInRange = (date: Date) => {
-      if (minDate && date < minDate) return false;
-      if (maxDate && date > maxDate) return false;
-      return true;
-    };
-
     const renderCalendarGrid = () => {
       const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
       const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
 
       // Calculate total number of weeks needed
@@ -191,12 +204,10 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       for (let i = 0; i < firstDay; i++) {
         const prevMonthDay = daysInPrevMonth - firstDay + i + 1;
         days.push(
-          <Flex paddingY="2">
-            <Flex width="40" height="40" key={`prev-${currentYear}-${currentMonth}-${i}`}>
-              <Button fillWidth weight="default" variant="tertiary" size="m" disabled>
-                {prevMonthDay}
-              </Button>
-            </Flex>
+          <Flex paddingY="2" width="40" height="40" key={`prev-${currentYear}-${currentMonth}-${i}`}>
+            <Button fillWidth weight="default" variant="tertiary" size="m" disabled>
+              {prevMonthDay}
+            </Button>
           </Flex>,
         );
       }
@@ -216,7 +227,8 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
           range?.startDate && currentDate.getTime() === range.startDate.getTime();
         const isLastInRange = range?.endDate && currentDate.getTime() === range.endDate.getTime();
 
-        const isDisabled = !isDateInRange(currentDate);
+        // Check if the current date is out of the minDate and maxDate range
+        const isDisabled = (minDate && currentDate < minDate) || (maxDate && currentDate > maxDate);
 
         days.push(
           <Flex paddingY="2" key={`day-${currentYear}-${currentMonth}-${day}`}>
@@ -246,17 +258,14 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         );
       }
 
-      // Next month's days
       const remainingDays = totalGridSpots - days.length;
 
       for (let i = 1; i <= remainingDays; i++) {
         days.push(
-          <Flex paddingY="2">
-            <Flex width="40" height="40" key={`next-${currentYear}-${currentMonth}-${i}`}>
-              <Button fillWidth weight="default" variant="tertiary" size="m" disabled>
-                {i}
-              </Button>
-            </Flex>
+          <Flex marginTop="2" width="40" height="40" key={`next-${currentYear}-${currentMonth}-${i}`}>
+            <Button fillWidth weight="default" variant="tertiary" size="m" disabled>
+              {i}
+            </Button>
           </Flex>,
         );
       }
@@ -310,10 +319,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
                 </Text>
                 {timePicker && selectedTime && (
                   <Text variant="label-default-s" onBackground="neutral-weak">
-                    `$
-                    {selectedTime.hours.toString().padStart(2, "0")}
-                    :$
-                    {selectedTime.minutes.toString().padStart(2, "0")} ${isPM ? "PM" : "AM"}`
+                    {`${selectedTime.hours.toString().padStart(2, "0")}:${selectedTime.minutes.toString().padStart(2, "0")} ${isPM ? "PM" : "AM"}`}
                   </Text>
                 )}
               </Flex>
