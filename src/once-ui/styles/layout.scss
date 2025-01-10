@@ -26,12 +26,42 @@
     flex-direction: row-reverse;
 }
 
+.l-flex-show {
+    display: none;
+}
+
 .m-flex-show {
     display: none;
 }
 
 .s-flex-show {
     display: none;
+}
+
+@media (--l) {
+    .l-flex-hide {
+        display: none !important;
+    }
+
+    .l-flex-show {
+        display: flex !important;
+    }
+
+    .l-flex-column {
+        flex-direction: column !important;
+    }
+
+    .l-flex-row {
+        flex-direction: row !important;
+    }
+
+    .l-flex-column-reverse {
+        flex-direction: column-reverse !important;
+    }
+    
+    .l-flex-row-reverse {
+        flex-direction: row-reverse !important;
+    }
 }
 
 @media (--m) {
