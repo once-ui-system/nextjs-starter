@@ -10,7 +10,7 @@ interface ButtonOption extends Omit<ToggleButtonProps, "selected"> {
 
 interface SegmentedControlProps extends Omit<React.ComponentProps<typeof Scroller>, "onToggle"> {
   buttons: ButtonOption[];
-  onToggle: (value: string, event?: React.MouseEvent<HTMLDivElement>) => void;
+  onToggle: (value: string, event?: React.MouseEvent<HTMLButtonElement>) => void;
   defaultSelected?: string;
   fillWidth?: boolean;
   selected?: string;
@@ -42,7 +42,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
     }
   }, [selected]);
 
-  const handleButtonClick = (clickedButton: ButtonOption, event: React.MouseEvent<HTMLDivElement>) => {
+  const handleButtonClick = (clickedButton: ButtonOption, event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     const newSelected = clickedButton.value;
     setInternalSelected(newSelected);
