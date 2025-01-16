@@ -42,10 +42,11 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
     }
   }, [selected]);
 
-  const handleButtonClick = (clickedButton: ButtonOption) => {
+  const handleButtonClick = (clickedButton: ButtonOption, event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
     const newSelected = clickedButton.value;
     setInternalSelected(newSelected);
-    onToggle(newSelected);
+    onToggle(newSelected, event);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -110,7 +111,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
               radius={index === 0 ? "left" : index === buttons.length - 1 ? "right" : "none"}
               key={button.value}
               selected={index === selectedIndex}
-              onClick={() => handleButtonClick(button)}
+              onClick={(event) => handleButtonClick(button, event)}
               role="tab"
               aria-selected={index === selectedIndex}
               aria-controls={`panel-${button.value}`}

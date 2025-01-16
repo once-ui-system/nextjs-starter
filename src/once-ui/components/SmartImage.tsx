@@ -121,7 +121,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
         onClick={handleClick}
         {...rest}
       >
-        {isLoading && <Skeleton shape="block" />}
+        {isLoading && <Skeleton shape="block"/>}
         {!isLoading && isVideo && (
           <video
             src={src}
@@ -166,8 +166,8 @@ const SmartImage: React.FC<SmartImageProps> = ({
 
       {isEnlarged && enlarge && (
         <Flex
-          justifyContent="center"
-          alignItems="center"
+          horizontal="center"
+          vertical="center"
           position="fixed"
           background="overlay"
           onClick={handleClick}

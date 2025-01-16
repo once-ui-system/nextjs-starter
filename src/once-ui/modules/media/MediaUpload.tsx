@@ -136,8 +136,8 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
         className={styles.container}
         aspectRatio={aspectRatio}
         fillWidth
-        justifyContent="center"
-        alignItems="center"
+        horizontal="center"
+        vertical="center"
         border="neutral-medium"
         radius="l"
         onClick={handleFileSelection}
@@ -160,7 +160,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
                 alt="Preview of uploaded image"
               />
             ) : (
-              <Flex fill alignItems="center" justifyContent="center">
+              <Flex fill center>
                 <Icon name="plus" size="l" />
               </Flex>
             )}
@@ -174,8 +174,8 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
           position="absolute"
           fill
           padding="m"
-          justifyContent="center"
-          alignItems="center"
+          horizontal="center"
+          vertical="center"
         >
           {uploading || loading ? (
             <Spinner size="l" />

@@ -79,7 +79,7 @@ export default function Home() {
   const validateIntro = (value: React.ReactNode) => {
     if (typeof value === "string" && value.length < 10) {
       return (
-        <Row alignItems="center" marginBottom="12" gap="8">
+        <Row horizontal="center" marginBottom="12" gap="8">
           <Icon name="errorCircle" />
           Intro must be at least 10 characters long.
         </Row>
@@ -97,7 +97,7 @@ export default function Home() {
   };
 
   return (
-    <Column fillWidth paddingY="80" paddingX="s" alignItems="center" flex={1}>
+    <Column fillWidth paddingY="80" paddingX="s" horizontal="center" flex={1}>
       <Fade
         zIndex={3}
         pattern={{
@@ -112,10 +112,10 @@ export default function Home() {
         fillWidth
         blur={0.25}
       />
-      <Row position="fixed" top="0" fillWidth justifyContent="center" zIndex={3}>
+      <Row position="fixed" top="0" fillWidth horizontal="center" zIndex={3}>
         <Row
           data-border="rounded"
-          justifyContent="space-between"
+          horizontal="space-between"
           maxWidth="l"
           paddingRight="64"
           paddingLeft="32"
@@ -141,7 +141,7 @@ export default function Home() {
             />
             <StyleOverlay top="20" right="24" />
           </Row>
-          <Row gap="16" show="s" alignItems="center" paddingRight="24">
+          <Row gap="16" show="s" horizontal="center" paddingRight="24">
             <IconButton
               href="https://discord.com/invite/5EyAQ4eNdS"
               icon="discord"
@@ -162,13 +162,13 @@ export default function Home() {
         maxWidth="l"
         position="relative"
         radius="xl"
-        alignItems="center"
+        horizontal="center"
         border="neutral-alpha-weak"
         fillWidth
       >
         <Column
           fillWidth
-          alignItems="center"
+          horizontal="center"
           gap="48"
           radius="xl"
           paddingTop="80"
@@ -224,7 +224,7 @@ export default function Home() {
               colorEnd: "static-transparent",
             }}
           />
-          <Column fillWidth alignItems="center" gap="32" padding="32" position="relative">
+          <Column fillWidth horizontal="center" gap="32" padding="32" position="relative">
             <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
               Start by editing
               <Text onBackground="brand-medium" marginLeft="8">
@@ -242,7 +242,7 @@ export default function Home() {
               variant="secondary"
               arrowIcon
             />
-            <Column alignItems="center" paddingTop="64" fillWidth gap="24">
+            <Column horizontal="center" paddingTop="64" fillWidth gap="24">
               <Line maxWidth={4} marginBottom="16" background="neutral-alpha-medium" />
               <AvatarGroup
                 marginBottom="8"
@@ -296,7 +296,7 @@ export default function Home() {
               />
             </Column>
           </Column>
-          <Column fillWidth paddingX="32" gap="12" alignItems="center" position="relative">
+          <Column fillWidth paddingX="32" gap="12" horizontal="center" position="relative">
             <Heading as="h2" variant="display-default-m">
               Showcase
             </Heading>
@@ -316,7 +316,7 @@ export default function Home() {
               <Row fill hide="m">
                 <SmartImage src="/images/login.png" alt="Preview image" sizes="560px" />
               </Row>
-              <Column fillWidth alignItems="center" gap="20" padding="32" position="relative">
+              <Column fillWidth horizontal="center" gap="20" padding="32" position="relative">
                 <Background
                   mask={{
                     x: 100,
@@ -359,7 +359,7 @@ export default function Home() {
                   />
                 </Column>
                 <Row fillWidth paddingY="24">
-                  <Row onBackground="neutral-weak" fillWidth gap="24" alignItems="center">
+                  <Row onBackground="neutral-weak" fillWidth gap="24" vertical="center">
                     <Line />/<Line />
                   </Row>
                 </Row>
@@ -410,7 +410,7 @@ export default function Home() {
           gap="64"
           position="relative"
           mobileDirection="column"
-          alignItems="center"
+          vertical="center"
         >
           <Background
             style={{ left: "-1px" }}
@@ -464,15 +464,15 @@ export default function Home() {
                     fill
                     position="absolute"
                     padding="24"
-                    justifyContent="flex-end"
+                    vertical="end"
                     gap="12"
                     onSolid="neutral-strong"
                   >
                     <Text variant="body-default-xl">Lorant One</Text>
                     <Row
                       fillWidth
-                      justifyContent="space-between"
-                      alignItems="flex-end"
+                      horizontal="space-between"
+                      vertical="end"
                       paddingRight="16"
                     >
                       <Column gap="4">
@@ -487,7 +487,7 @@ export default function Home() {
             </TiltFx>
           </Row>
           <Column position="relative" fillWidth gap="-1">
-            <Row fillWidth alignItems="center" justifyContent="space-between" marginBottom="32">
+            <Row fillWidth vertical="center" horizontal="space-between" marginBottom="32">
               <Heading as="h3" variant="display-default-xs">
                 Fill in your card details
               </Heading>
@@ -532,7 +532,7 @@ export default function Home() {
           gap="64"
           position="relative"
           mobileDirection="column"
-          alignItems="center"
+          vertical="center"
         >
           <Background
             fill
@@ -559,7 +559,7 @@ export default function Home() {
             gap="40"
             position="relative"
           >
-            <Row fillWidth justifyContent="center" gap="-1">
+            <Row fillWidth horizontal="center" gap="-1">
               <Column
                 maxWidth={12}
                 gap="4"
@@ -607,7 +607,7 @@ export default function Home() {
                 )}
               </Column>
             </Row>
-            <Row fillWidth justifyContent="center">
+            <Row fillWidth horizontal="center">
               <DateRangePicker
                 data-scaling="110"
                 size="l"
@@ -623,7 +623,7 @@ export default function Home() {
 
         {/* PROFILE */}
         <Row
-          justifyContent="center"
+          horizontal="center"
           paddingX="32"
           paddingY="64"
           fillWidth
@@ -665,7 +665,7 @@ export default function Home() {
               overflow="hidden"
               position="relative"
               fillWidth
-              alignItems="center"
+              horizontal="center"
               border="neutral-medium"
             >
               <MediaUpload
@@ -676,14 +676,14 @@ export default function Home() {
                 sizes="560px"
                 radius={undefined}
                 initialPreviewImage="/images/profile.jpg"
-              ></MediaUpload>
+              />
               <Column
                 paddingTop="160"
                 paddingX="32"
                 paddingBottom="32"
                 fillWidth
                 position="relative"
-                alignItems="center"
+                horizontal="center"
                 gap="8"
               >
                 <Avatar
@@ -874,7 +874,7 @@ export default function Home() {
                 colorEnd: "brand-background-medium",
               }}
             />
-            <Column alignItems="center" gap="48" fillWidth position="relative">
+            <Column horizontal="center" gap="48" fillWidth position="relative">
               <Heading align="center" as="h2" variant="display-default-l">
                 Quick start
               </Heading>
@@ -900,8 +900,8 @@ export default function Home() {
           paddingTop="160"
           minHeight={28}
           paddingBottom="80"
-          justifyContent="center"
-          alignItems="flex-end"
+          horizontal="center"
+          vertical="end"
         >
           <Background
             mask={{
@@ -935,7 +935,7 @@ export default function Home() {
                   border={undefined}
                   radius={undefined}
                 >
-                  <Row fillWidth justifyContent="center" gap="12" alignItems="center">
+                  <Row fillWidth center gap="12">
                     <Text variant="body-strong-m" onBackground="neutral-strong">
                       {link.title}
                     </Text>
@@ -976,7 +976,7 @@ export default function Home() {
             position="relative"
             textVariant="body-default-xs"
             onBackground="neutral-medium"
-            alignItems="center"
+            horizontal="center"
             align="center"
             fillWidth
             gap="16"
