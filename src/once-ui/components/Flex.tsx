@@ -1,18 +1,18 @@
 "use client";
 
-import React, { CSSProperties, forwardRef } from "react";
 import classNames from "classnames";
+import { CSSProperties, forwardRef } from "react";
 
 import {
-  FlexProps,
-  SpacingProps,
-  SizeProps,
-  StyleProps,
   CommonProps,
-  DisplayProps,
   ConditionalProps,
+  DisplayProps,
+  FlexProps,
+  SizeProps,
+  SpacingProps,
+  StyleProps,
 } from "../interfaces";
-import { TextVariant, SpacingToken, ColorScheme, ColorWeight } from "../types";
+import { ColorScheme, ColorWeight, SpacingToken, TextVariant } from "../types";
 
 interface ComponentProps
   extends FlexProps,
@@ -233,6 +233,8 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       fitWidth && "fit-width",
       fitHeight && "fit-height",
       fill && "fill",
+      fillWidth && !minWidth && "min-width-0",
+      fillHeight && !minHeight && "min-height-0",
       (fillWidth || maxWidth) && "fill-width",
       (fillHeight || maxHeight) && "fill-height",
       shadow && `shadow-${shadow}`,
