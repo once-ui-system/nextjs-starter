@@ -23,6 +23,7 @@ type CodeInstance = {
 
 interface CodeBlockProps extends React.ComponentProps<typeof Flex> {
   highlight?: string;
+  codeHeight?: number;
   codeInstances?: CodeInstance[];
   codePreview?: ReactNode;
   copyButton?: boolean;
@@ -33,6 +34,7 @@ interface CodeBlockProps extends React.ComponentProps<typeof Flex> {
 
 const CodeBlock: React.FC<CodeBlockProps> = ({
   highlight,
+  codeHeight,
   codeInstances = [],
   codePreview,
   copyButton = true,
@@ -198,6 +200,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           )}
           <Flex overflowX="auto">
             <pre
+              style={{ maxHeight: `${codeHeight}rem` }}
               data-line={highlight}
               ref={preRef}
               className={classNames(styles.pre, `language-${language}`)}
