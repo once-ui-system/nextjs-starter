@@ -237,6 +237,8 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       fill && "fill",
       fillWidth && !minWidth && "min-width-0",
       fillHeight && !minHeight && "min-height-0",
+      fill && "min-height-0",
+      fill && "min-width-0",
       (fillWidth || maxWidth) && "fill-width",
       (fillHeight || maxHeight) && "fill-height",
       shadow && `shadow-${shadow}`,
