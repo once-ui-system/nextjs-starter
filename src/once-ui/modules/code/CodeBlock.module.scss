@@ -9,7 +9,7 @@
     tab-size: 2;
     margin: 0;
     height: fit-content;
-    width: fit-content;
+    width: 100%;
     min-height: var(--static-space-32);
     tab-size: 2;
     line-height: 1.75;
@@ -21,9 +21,4 @@
     margin: auto;
     padding: 0 var(--static-space-12);
     font-family: inherit;
-}
-
-.compactCopy {
-    top: 50%;
-    transform: translateY(-50%);
 }
