@@ -333,7 +333,7 @@ export default function Home() {
                   }}
                 />
                 <Logo wordmark={false} size="l" />
-                <Heading as="h3" variant="display-default-s">
+                <Heading as="h3" variant="display-default-s" align="center">
                   Welcome to Once UI
                 </Heading>
                 <Text onBackground="neutral-medium" marginBottom="24">
