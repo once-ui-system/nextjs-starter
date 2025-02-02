@@ -77,7 +77,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
         inline
         fit
         position="relative"
-        as="div"
+        as="span"
         ref={ref}
         className={classNames(colorClass, styles.icon, styles[size])}
         role={decorative ? "presentation" : undefined}
