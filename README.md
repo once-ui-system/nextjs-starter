@@ -59,4 +59,10 @@ Become a sponsor and help us continue to develop and maintain this project.
 Once UI is also available for Figma.  
 Design and prototype entire products from scratch in hours. Use the same tokens and components as the Next.js design system.
 
-Start designing: [Once UI for Figma](https://once-ui.com/figma).
+Start designing: [once-ui.com/figma](https://once-ui.com/figma)
+
+# Once UI Pro
+
+Take your project further with Once UI Pro. Get access to complete templates, fully designed pages, and modular blocks that make building apps even faster.
+
+Explore Pro: [once-ui.com/pro](https://once-ui.com/pro)
