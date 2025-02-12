@@ -1,5 +1,6 @@
 .pre {
     display: flex;
+    isolation: isolate;
     padding: var(--static-space-8);
     font-family: var(--font-family-code);
     color: var(--neutral-on-background-strong);
@@ -21,4 +22,15 @@
     margin: auto;
     padding: 0 var(--static-space-12);
     font-family: inherit;
+}
+
+.fullscreen {
+    position: fixed;
+    left: var(--static-space-8);
+    top: var(--static-space-8);
+    right: var(--static-space-8);
+    bottom: var(--static-space-8);
+    width: calc(100% - var(--static-space-16)) !important;
+    height: calc(100% - var(--static-space-16)) !important;
+    z-index: 9;
 }
