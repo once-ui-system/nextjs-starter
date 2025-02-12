@@ -139,7 +139,9 @@ export default function Home() {
               weight="default"
               variant="tertiary"
             />
-            <StyleOverlay top="20" right="24" />
+            <Row position="fixed" top="16" right="20">
+              <StyleOverlay position="fixed" top="8" right="8" style={{height: "calc(100vh - var(--static-space-16))"}} />
+            </Row>
           </Row>
           <Row gap="16" show="s" horizontal="center" paddingRight="24">
             <IconButton
@@ -655,7 +657,7 @@ export default function Home() {
             }}
           />
           <Column maxWidth={32} gap="-1">
-            <Feedback icon variant="success" radius={undefined} topRadius="l" zIndex={1}>
+            <Feedback icon variant="success" vertical="center" radius={undefined} topRadius="l" zIndex={1}>
               Your profile is public.
             </Feedback>
             <Column
