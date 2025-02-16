@@ -107,9 +107,21 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
   ) => {
     const generateDynamicClass = (type: string, value: string | "-1" | undefined) => {
       if (!value) return undefined;
+
+      if (value === "transparent") {
+        return `transparent-border`;
+      }
+
       if (value === "surface" || value === "page" || value === "transparent") {
         return `${value}-${type}`;
       }
+
+      const parts = value.split("-");
+      if (parts.includes("alpha")) {
+        const [scheme, , weight] = parts;
+        return `${scheme}-${type}-alpha-${weight}`;
+      }
+      
       const [scheme, weight] = value.split("-") as [ColorScheme, ColorWeight];
       return `${scheme}-${type}-${weight}`;
     };
@@ -161,6 +173,9 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       columns && `columns-${columns}`,
       tabletColumns && `tablet-columns-${tabletColumns}`,
       mobileColumns && `mobile-columns-${mobileColumns}`,
+      overflow && `overflow-${overflow}`,
+      overflowX && `overflow-x-${overflowX}`,
+      overflowY && `overflow-y-${overflowY}`,
       padding && `p-${padding}`,
       paddingLeft && `pl-${paddingLeft}`,
       paddingRight && `pr-${paddingRight}`,
