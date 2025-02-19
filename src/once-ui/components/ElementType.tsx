@@ -14,7 +14,7 @@ interface ElementTypeProps {
 const isExternalLink = (url: string) => /^https?:\/\//.test(url);
 
 const ElementType = forwardRef<HTMLElement, ElementTypeProps>(
-  ({ href, onClick, children, className, style, ...props }, ref) => {
+  ({ href, type, onClick, children, className, style, ...props }, ref) => {
     if (href) {
       const isExternal = isExternalLink(href);
       if (isExternal) {
@@ -45,7 +45,7 @@ const ElementType = forwardRef<HTMLElement, ElementTypeProps>(
       );
     }
 
-    if (onClick) {
+    if (onClick || type === "submit" || type === "button") {
       return (
         <button
           ref={ref as React.Ref<HTMLButtonElement>}
