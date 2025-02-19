@@ -50,6 +50,7 @@ const ElementType = forwardRef<HTMLElement, ElementTypeProps>(
         <button
           ref={ref as React.Ref<HTMLButtonElement>}
           className={className}
+          onClick={onClick}
           style={style}
           {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
         >
