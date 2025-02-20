@@ -16,7 +16,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ children, href, onClick, style, className, ...rest }, ref) => {
     return (
       <ElementType
-        className={classNames("reset-button-styles", onClick && "focus-ring", onClick && "radius-l")}
+        className={classNames("reset-button-styles", "fill-width", onClick && "focus-ring", onClick && "radius-l")}
         href={href}
         onClick={onClick}
         ref={ref}>
