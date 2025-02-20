@@ -139,7 +139,7 @@ export default function Home() {
               weight="default"
               variant="tertiary"
             />
-            <Row position="fixed" top="16" right="20">
+            <Row position="fixed" top="20" right="20">
               <StyleOverlay position="fixed" top="8" right="8" style={{height: "calc(100vh - var(--static-space-16))"}} />
             </Row>
           </Row>
@@ -154,7 +154,9 @@ export default function Home() {
               icon="github"
               variant="tertiary"
             />
-            <StyleOverlay top="20" right="24" />
+            <Row position="fixed" top="20" right="20">
+              <StyleOverlay position="fixed" top="8" right="8" style={{height: "calc(100vh - var(--static-space-16))"}} />
+            </Row>
           </Row>
         </Row>
       </Row>
