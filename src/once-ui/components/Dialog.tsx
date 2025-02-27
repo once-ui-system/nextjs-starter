@@ -212,7 +212,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
         transition="macro-medium"
         background="overlay"
         position="fixed"
-        zIndex={base ? 9 : 10}
+        zIndex={base ? 8 : 9}
         top="0"
         left="0"
         right="0"
@@ -311,13 +311,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
               {children}
             </Flex>
             {footer && (
-              <Flex
-                borderTop="neutral-medium"
-                as="footer"
-                horizontal="end"
-                padding="12"
-                gap="8"
-              >
+              <Flex borderTop="neutral-medium" as="footer" horizontal="end" padding="12" gap="8">
                 {footer}
               </Flex>
             )}
