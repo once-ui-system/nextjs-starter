@@ -21,7 +21,8 @@
     "react-dom": "19.0.0",
     "react-icons": "^5.2.1",
     "sass": "^1.77.6",
-    "sharp": "^0.33.4"
+    "sharp": "^0.33.4",
+    "ReactCompareImage": "^3.5.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
