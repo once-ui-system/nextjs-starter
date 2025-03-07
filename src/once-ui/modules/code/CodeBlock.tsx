@@ -1,181 +1,274 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import React, { useState, useEffect, useRef, ReactNode } from "react";
 
-import '@/once-ui/modules/code/CodeHighlight.css';
-import styles from '@/once-ui/modules/code/CodeBlock.module.scss';
+import "./CodeHighlight.css";
+import styles from "./CodeBlock.module.scss";
 
-import { Flex, Button, IconButton, DropdownWrapper } from '@/once-ui/components';
+import { Flex, Button, IconButton, Scroller, Row, StyleOverlay } from "@/once-ui/components";
 
-import Prism from 'prismjs';
-import 'prismjs/plugins/line-highlight/prism-line-highlight';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-tsx';
+import Prism from "prismjs";
+import "prismjs/plugins/line-highlight/prism-line-highlight";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-css";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-tsx";
+import classNames from "classnames";
+import { SpacingToken } from "@/once-ui/types";
 
 type CodeInstance = {
-    code: string;
-    language: string;
-    label: string;
+  code: string | { content: string; error: string | null };
+  language: string;
+  label: string;
 };
 
-type CodeBlockProps = {
-    highlight?: string;
-    codeInstances?: CodeInstance[];
-    codePreview?: ReactNode;
-    copyButton?: boolean;
-    compact?: boolean;
-    className?: string;
-    style?: React.CSSProperties;
-};
+interface CodeBlockProps extends React.ComponentProps<typeof Flex> {
+  highlight?: string;
+  codeHeight?: number;
+  fillHeight?: boolean;
+  previewPadding?: SpacingToken;
+  codeInstances?: CodeInstance[];
+  codePreview?: ReactNode;
+  copyButton?: boolean;
+  styleButton?: boolean;
+  reloadButton?: boolean;
+  fullscreenButton?: boolean;
+  compact?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+  onInstanceChange?: (index: number) => void;
+}
 
 const CodeBlock: React.FC<CodeBlockProps> = ({
-    highlight,
-    codeInstances = [],
-    codePreview,
-    copyButton = true,
-    compact = false,
-    className,
-    style,
+  highlight,
+  codeHeight,
+  fillHeight,
+  previewPadding = "l",
+  codeInstances = [],
+  codePreview,
+  copyButton = true,
+  styleButton = false,
+  reloadButton = false,
+  fullscreenButton = false,
+  compact = false,
+  className,
+  style,
+  onInstanceChange,
+  ...rest
 }) => {
-    const codeRef = useRef<HTMLElement>(null);
-    const preRef = useRef<HTMLPreElement>(null);
-    const [selectedInstance, setSelectedInstance] = useState(0);
+  const codeRef = useRef<HTMLElement>(null);
+  const preRef = useRef<HTMLPreElement>(null);
+  const [selectedInstance, setSelectedInstance] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-    const { code, language, label } = codeInstances[selectedInstance] || { code: '', language: '', label: 'Select Code' };
+  const { code, language, label } = codeInstances[selectedInstance] || {
+    code: "",
+    language: "",
+    label: "Select code",
+  };
 
-    const [copyIcon, setCopyIcon] = useState<string>('HiClipboard');
+  useEffect(() => {
+    if (codeRef.current && codeInstances.length > 0) {
+      Prism.highlightAll();
+    }
+  }, [code, codeInstances.length]);
 
-    useEffect(() => {
-        if (codeRef.current && codeInstances.length > 0) {
-            Prism.highlightAll();
-        }
-    }, [code, codeInstances.length]);
-
-    const handleCopy = () => {
-        if (codeInstances.length > 0) {
-            navigator.clipboard.writeText(code)
-                .then(() => {
-                    setCopyIcon('check');
-
-                    setTimeout(() => {
-                        setCopyIcon('HiClipboard');
-                    }, 5000);
-                })
-                .catch((err) => {
-                    console.error('Failed to copy code: ', err);
-                });
-        }
+  useEffect(() => {
+    if (isFullscreen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
     };
+  }, [isFullscreen]);
 
-    const handleContent = (selectedLabel: string) => {
-        const index = codeInstances.findIndex(instance => instance.label === selectedLabel);
-        if (index !== -1) {
-            setSelectedInstance(index);
-        }
-    };
+  const [copyIcon, setCopyIcon] = useState<string>("clipboard");
+  const handleCopy = () => {
+    if (codeInstances.length > 0 && code) {
+      navigator.clipboard
+        .writeText(typeof code === "string" ? code : code.content)
+        .then(() => {
+          setCopyIcon("check");
 
-    return (
+          setTimeout(() => {
+            setCopyIcon("clipboard");
+          }, 5000);
+        })
+        .catch((err) => {
+          console.error("Failed to copy code: ", err);
+        });
+    }
+  };
+
+  const [refreshKey, setRefreshKey] = useState(0);
+  const handleRefresh = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
+
+  const handleContent = (selectedLabel: string) => {
+    const index = codeInstances.findIndex((instance) => instance.label === selectedLabel);
+    if (index !== -1) {
+      setSelectedInstance(index);
+    }
+  };
+
+  const toggleFullscreen = () => {
+    setIsFullscreen((prev) => !prev);
+  };
+
+  return (
+    <Flex
+      position={isFullscreen ? "fixed" : "relative"}
+      zIndex={0}
+      background="surface"
+      radius="l"
+      overflow="hidden"
+      border="neutral-medium"
+      direction="column"
+      vertical="center"
+      fillWidth
+      minHeight={3}
+      className={classNames(className, {
+        [styles.fullscreen]: isFullscreen,
+      })}
+      style={style}
+      {...rest}
+    >
+      {(codeInstances.length > 1 || (copyButton && !compact)) && (
         <Flex
-            position="relative" zIndex={0}
-            background="surface" radius="l" border="neutral-medium" borderStyle="solid-1"
-            direction="column" justifyContent="center"
-            fillWidth minHeight={3}
-            className={className || ''}
-            style={style}>
-            {(codeInstances.length > 1 || copyButton && !compact) && (
-                <Flex
-                    style={{
-                        borderBottom: '1px solid var(--neutral-border-medium)'
+          borderBottom="neutral-medium"
+          zIndex={2}
+          fillWidth
+          horizontal="space-between"
+          gap="16"
+        >
+          {codeInstances.length > 1 ? (
+            <Scroller paddingX="4">
+              {codeInstances.map((instance, index) => (
+                <Row paddingY="4" paddingRight="2" key={index}>
+                  <Button
+                    className="mr-2"
+                    weight="default"
+                    size="s"
+                    variant={selectedInstance === index ? "secondary" : "tertiary"}
+                    label={instance.label}
+                    onClick={() => {
+                      setSelectedInstance(index);
+                      onInstanceChange?.(index);
+                      handleContent(instance.label);
                     }}
-                    zIndex={2}
-                    fillWidth padding="8"
-                    justifyContent="space-between">
-                    {codeInstances.length > 1 ? (
-                        <Flex>
-                            <DropdownWrapper
-                                dropdownOptions={codeInstances.map((instance, index) => ({
-                                    label: instance.label,
-                                    value: `${instance.label}-${index}`,
-                                }))}
-                                dropdownProps={{
-                                    onOptionSelect: (option) => {
-                                        const selectedLabel = option.value.split('-')[0];
-                                        handleContent(selectedLabel);
-                                    },
-                                }}>
-                                <Button
-                                    size="s"
-                                    label={label}
-                                    suffixIcon="chevronDown"
-                                    variant="tertiary"/>
-                            </DropdownWrapper>
-                        </Flex>
-                    ) : <div/>}
-                    {(copyButton && !compact) && 
-                        <IconButton
-                            tooltip="Copy"
-                            variant="secondary"
-                            onClick={handleCopy}
-                            icon={copyIcon}/>
-                    }
-                </Flex>
-            )}
-            {codePreview && (
-                <Flex
-                    position="relative" zIndex={1}
-                    fillHeight padding="l" minHeight={12}
-                    justifyContent="center" alignItems="center">
-                    {Array.isArray(codePreview)
-                        ? codePreview.map((item, index) => (
-                            <React.Fragment key={index}>
-                                {item}
-                            </React.Fragment>
-                        ))
-                        : codePreview}
-                </Flex>
-            )}
-            {codeInstances.length > 0 && (
-                <Flex
-                    style={{
-                        borderTop: (!compact && codePreview) ?
-                        '1px solid var(--neutral-border-medium)' : 
-                        'none'
-                    }}
-                    fillWidth padding="8"
-                    position="relative" overflowY="auto">
-                    {compact && copyButton &&
-                        <Flex
-                            zIndex={1}
-                            style={{
-                                right: 'var(--static-space-8)',
-                                top: 'var(--static-space-8)',
-                            }}
-                            position="absolute">
-                            <IconButton
-                                aria-label="Copy code"
-                                onClick={handleCopy}
-                                icon={copyIcon}
-                                size="m"
-                                variant="secondary"/>
-                        </Flex>
-                    }
-                    <pre
-                        data-line={highlight}
-                        ref={preRef}
-                        className={`${styles.pre} language-${language}`}
-                        tabIndex={-1}>
-                        <code
-                            ref={codeRef}
-                            className={`${styles.code} ${`language-${language}`}`}>
-                            {code}
-                        </code>
-                    </pre>
-                </Flex>
-            )}
+                  />
+                </Row>
+              ))}
+            </Scroller>
+          ) : (
+            <Row
+              paddingY="12"
+              paddingX="16"
+              textVariant="label-default-s"
+              onBackground="neutral-strong"
+            >
+              {codeInstances[0].label}
+            </Row>
+          )}
+          {!compact && (
+            <Flex padding="4" gap="2">
+              {reloadButton && (
+                <IconButton
+                  size="m"
+                  tooltip="Reload"
+                  tooltipPosition="left"
+                  variant="tertiary"
+                  onClick={handleRefresh}
+                  icon="refresh"
+                />
+              )}
+              {fullscreenButton && (
+                <IconButton
+                  size="m"
+                  tooltip={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+                  tooltipPosition="left"
+                  variant="tertiary"
+                  icon={isFullscreen ? "minimize" : "maximize"}
+                  onClick={toggleFullscreen}
+                />
+              )}
+              {styleButton && (
+                <StyleOverlay
+                  iconButtonProps={{
+                    size: "m",
+                    variant: "tertiary",
+                  }}
+                />
+              )}
+              {copyButton && (
+                <IconButton
+                  size="m"
+                  tooltip="Copy"
+                  tooltipPosition="left"
+                  variant="tertiary"
+                  onClick={handleCopy}
+                  icon={copyIcon}
+                />
+              )}
+            </Flex>
+          )}
         </Flex>
-    );
+      )}
+      {codePreview && (
+        <Flex
+          key={refreshKey}
+          position="relative"
+          padding={previewPadding}
+          fillHeight
+          horizontal="center"
+          overflowY="auto"
+        >
+          {Array.isArray(codePreview)
+            ? codePreview.map((item, index) => <React.Fragment key={index}>{item}</React.Fragment>)
+            : codePreview}
+        </Flex>
+      )}
+      {codeInstances.length > 0 && code && (
+        <Flex
+          borderTop={!compact && codePreview ? "neutral-medium" : undefined}
+          fillWidth
+          fillHeight={fillHeight}
+          position="relative"
+        >
+          <Flex overflowX="auto" fillWidth>
+            <pre
+              style={{ maxHeight: `${codeHeight}rem` }}
+              data-line={highlight}
+              ref={preRef}
+              className={classNames(styles.pre, `language-${language}`)}
+              tabIndex={-1}
+            >
+              <code ref={codeRef} className={classNames(styles.code, `language-${language}`)}>
+                {typeof code === "string" ? code : code.content}
+              </code>
+            </pre>
+          </Flex>
+          {compact && copyButton && (
+            <Flex paddingX="8" paddingY="4" className={styles.compactCopy} zIndex={1}>
+              <IconButton
+                tooltip="Copy"
+                tooltipPosition="left"
+                aria-label="Copy code"
+                onClick={handleCopy}
+                icon={copyIcon}
+                size="m"
+                variant="tertiary"
+              />
+            </Flex>
+          )}
+        </Flex>
+      )}
+    </Flex>
+  );
 };
 
+CodeBlock.displayName = "CodeBlock";
 export { CodeBlock };
