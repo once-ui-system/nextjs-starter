@@ -15,7 +15,7 @@ interface InputOTPProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>((
   { 
-    length = 6, 
+    length = 4, 
     onComplete,
     error = false,
     errorMessage,
@@ -28,7 +28,6 @@ const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>((
 ) => {
   const [values, setValues] = useState<string[]>(Array(length).fill(""));
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (autoFocus && inputsRef.current[0]) {
@@ -96,11 +95,7 @@ const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>((
     <Flex
       direction="column"
       gap="8"
-      ref={(node) => {
-        containerRef.current = node;
-        if (typeof ref === "function") ref(node);
-        else if (ref) ref.current = node;
-      }}
+      ref={ref}
     >
       <Flex gap="8" center onClick={handleContainerClick}>
         {Array.from({ length }, (_, index) => (

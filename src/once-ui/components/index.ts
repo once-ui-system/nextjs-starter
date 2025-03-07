@@ -28,6 +28,7 @@ export * from "./Icon";
 export * from "./IconButton";
 export * from "./InlineCode";
 export * from "./Input";
+export * from "./InputOTP";
 export * from "./InteractiveDetails";
 export * from "./Kbd";
 export * from "./LetterFx";
