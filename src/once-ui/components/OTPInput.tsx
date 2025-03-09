@@ -2,9 +2,9 @@
 
 import React, { useState, useRef, forwardRef, useEffect } from "react";
 import { Flex, Input, Text } from ".";
-import styles from "./InputOTP.module.scss";
+import styles from "./OTPInput.module.scss";
 
-interface InputOTPProps extends React.HTMLAttributes<HTMLDivElement> {
+interface OTPInputProps extends React.HTMLAttributes<HTMLDivElement> {
   length?: number;
   onComplete?: (code: string) => void;
   error?: boolean;
@@ -13,7 +13,7 @@ interface InputOTPProps extends React.HTMLAttributes<HTMLDivElement> {
   autoFocus?: boolean;
 }
 
-const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>((
+const OTPInput = forwardRef<HTMLDivElement, OTPInputProps>((
   { 
     length = 4, 
     onComplete,
@@ -131,7 +131,7 @@ const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>((
   );
 });
 
-InputOTP.displayName = "InputOTP";
+OTPInput.displayName = "OTPInput";
 
-export { InputOTP };
-export type { InputOTPProps };
+export { OTPInput };
+export type { OTPInputProps };
