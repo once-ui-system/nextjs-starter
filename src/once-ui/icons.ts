@@ -34,7 +34,7 @@ import { RiVisaLine } from "react-icons/ri";
 
 import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa6";
 
-export const iconLibrary: Record<string, IconType> = {
+export const iconLibrary = {
   chevronUp: HiChevronUp,
   chevronDown: HiChevronDown,
   chevronRight: HiChevronRight,
@@ -67,3 +67,6 @@ export const iconLibrary: Record<string, IconType> = {
   security: HiOutlineShieldCheck,
   sparkle: HiOutlineSparkles,
 };
+
+export type IconLibrary = typeof iconLibrary;
+export type IconName = keyof IconLibrary;
