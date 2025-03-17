@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { CompareImage } from "@/once-ui/components/CompareImage";
 
 import {
   Heading,
@@ -38,7 +37,6 @@ import {
   Column,
   Row,
   StyleOverlay,
-  RevealFx,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 
@@ -830,56 +828,6 @@ export default function Home() {
             </Column>
           </Column>
         </Row>
-        
-        {/* Compare Image */}
-        <Row
-          horizontal="center"
-          paddingX="32"
-          paddingY="32"
-          fillWidth
-          gap="32"
-          position="relative"
-        >
-          <Background
-            style={{ left: "-1px" }}
-            borderTop="neutral-alpha-medium"
-            mask={{
-              x: 0,
-              y: 100,
-              radius: 100,
-            }}
-            grid={{
-              display: true,
-              opacity: 100,
-              width: "10%",
-              color: "neutral-alpha-medium",
-              height: "20%",
-            }}
-            position="absolute"
-            gradient={{
-              display: true,
-              opacity: 80,
-              height: 100,
-              width: 100,
-              tilt: 0,
-              x: 50,
-              y: 50,
-              colorStart: "accent-solid-strong",
-              colorEnd: "brand-background-medium",
-            }}
-          />
-          <Column
-                  paddingTop="32"
-                  paddingX="32"
-                  paddingBottom="32"
-                  width={50}
-                  position="relative"
-                  horizontal="center"
-                  gap="8"
-                >
-                <CompareImage/>
-            </Column>
-          </Row>
 
         {/* CODE PREVIEW */}
         <TiltFx fillWidth paddingX="32" paddingTop="64">

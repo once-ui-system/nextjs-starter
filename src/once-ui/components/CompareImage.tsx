@@ -4,18 +4,43 @@ import { useState, useRef, useEffect } from "react";
 import { Flex, SmartImage, IconButton } from ".";
 import styles from "./CompareImage.module.scss";
 
-interface CompareImageProps extends React.ComponentProps<typeof Flex> {
-  leftImageSrc: string;
-  rightImageSrc: string;
-  leftImageAlt?: string;
-  rightImageAlt?: string;
+interface SideContent {
+  src: string | React.ReactNode;
+  alt?: string;
 }
 
+interface CompareImageProps extends React.ComponentProps<typeof Flex> {
+  leftContent: SideContent;
+  rightContent: SideContent;
+}
+
+const renderContent = (content: SideContent, clipPath: string) => {
+  if (typeof content.src === "string") {
+    return (
+      <SmartImage
+        src={content.src}
+        alt={content.alt || ""}
+        fill
+        position="absolute"
+        style={{ clipPath }}
+      />
+    );
+  }
+
+  return (
+    <Flex
+      fill
+      position="absolute"
+      style={{ clipPath }}
+    >
+      {content.src}
+    </Flex>
+  );
+};
+
 export const CompareImage = ({
-  leftImageSrc,
-  rightImageSrc,
-  leftImageAlt = "",
-  rightImageAlt = "",
+  leftContent,
+  rightContent,
   ...rest
 }: CompareImageProps) => {
   const [position, setPosition] = useState(50);
@@ -73,13 +98,8 @@ export const CompareImage = ({
       style={{ touchAction: "none" }}
       {...rest}
     >
-        <SmartImage src={leftImageSrc} alt={leftImageAlt} fill position="absolute" style={{
-            clipPath: `inset(0 ${100 - position}% 0 0)`,
-        }} />
-
-        <SmartImage src={rightImageSrc} alt={rightImageAlt} fill position="absolute" style={{
-            clipPath: `inset(0 0 0 ${position}%)`,
-        }} />
+        {renderContent(leftContent, `inset(0 ${100 - position}% 0 0)`)}
+        {renderContent(rightContent, `inset(0 0 0 ${position}%)`)}
 
       {/* Hit area and visible line */}
       <Flex
