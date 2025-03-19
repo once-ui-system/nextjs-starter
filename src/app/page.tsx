@@ -987,7 +987,7 @@ export default function Home() {
           >
             <Logo wordmark={false} size="s" />
             <Text size="m">
-              <Text onBackground="neutral-weak">2024 /</Text> Once UI
+              <Text onBackground="neutral-weak">2025 /</Text> Once UI
             </Text>
             <SmartLink href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
               MIT License
