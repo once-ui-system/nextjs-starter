@@ -8,16 +8,16 @@ import { Metadata } from "next";
 import { baseURL, style, meta, og, schema, social } from "@/once-ui/resources/config";
 import { Background, Column, Flex, ToastProvider } from "@/once-ui/components";
 
-import { Inter } from "next/font/google";
-import { Roboto_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 
-const primary = Inter({
+const primary = Geist({
   variable: "--font-primary",
   subsets: ["latin"],
   display: "swap",
 });
 
-const code = Roboto_Mono({
+const code = Geist_Mono({
   variable: "--font-code",
   subsets: ["latin"],
   display: "swap",
