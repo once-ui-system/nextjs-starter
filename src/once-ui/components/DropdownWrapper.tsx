@@ -32,7 +32,7 @@ export interface DropdownWrapperProps {
   style?: React.CSSProperties;
   className?: string;
   onSelect?: (value: string) => void;
-  ignoreClickInside?: boolean;
+  closeAfterClick?: boolean;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 }
@@ -45,7 +45,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       selectedOption,
       minHeight,
       onSelect,
-      ignoreClickInside = false,
+      closeAfterClick = true,
       isOpen: controlledIsOpen,
       onOpenChange,
       minWidth,
@@ -157,7 +157,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         position="relative"
         ref={wrapperRef}
         onClick={() => {
-            if (!ignoreClickInside) {
+            if (closeAfterClick) {
                 handleOpenChange(!isOpen);
             }
         }}
