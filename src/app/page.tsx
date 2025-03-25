@@ -37,6 +37,7 @@ import {
   Column,
   Row,
   StyleOverlay,
+  CompareImage,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 
@@ -307,6 +308,10 @@ export default function Home() {
             <Text marginBottom="32" align="center" onBackground="neutral-weak">
               Tiny snippets to inspire your next project
             </Text>
+
+            {/* COMPARE IMAGE */}
+            <CompareImage radius="xl" overflow="hidden" border="neutral-alpha-weak" leftContent={{src: "/images/1.jpg", alt: "alt"}}
+              rightContent={{src: "/images/2.jpg", alt: "alt"}}/>
 
             {/* LOGIN */}
             <Row
