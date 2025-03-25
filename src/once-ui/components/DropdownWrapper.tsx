@@ -32,6 +32,7 @@ export interface DropdownWrapperProps {
   style?: React.CSSProperties;
   className?: string;
   onSelect?: (value: string) => void;
+  closeAfterClick?: boolean;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 }
@@ -44,6 +45,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       selectedOption,
       minHeight,
       onSelect,
+      closeAfterClick = true,
       isOpen: controlledIsOpen,
       onOpenChange,
       minWidth,
@@ -154,7 +156,11 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         className={className}
         position="relative"
         ref={wrapperRef}
-        onClick={() => handleOpenChange(!isOpen)}
+        onClick={() => {
+            if (closeAfterClick) {
+                handleOpenChange(!isOpen);
+            }
+        }}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
