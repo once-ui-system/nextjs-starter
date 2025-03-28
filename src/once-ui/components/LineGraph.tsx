@@ -68,6 +68,14 @@ interface LineGraphProps extends React.ComponentProps<typeof Flex> {
    * @default false
    */
   hideAxisTitles?: boolean;
+  firstDashed?: boolean,
+
+  secondDashed?: boolean,
+
+ thirdDashed?: boolean,
+
+  allDashed?: boolean,
+
   fixedYRange?: [number, number]; // [min, max] for y-axis
   /**
    * Show tick lines on the X-axis when true
@@ -151,6 +159,10 @@ export const LineGraph: React.FC<LineGraphProps> = ({
   tooltipTitle,
   radius,
   background,
+  firstDashed = false,
+  secondDashed = false,
+  thirdDashed = false,
+  allDashed = false,
   hideXAxisLabels = false,
   hideYAxisLabels = false,
   hideLabels = false,
@@ -278,12 +290,14 @@ export const LineGraph: React.FC<LineGraphProps> = ({
               dataKey={yAxisKey1}
               stroke="#047857"
               strokeWidth={1.5}
+              strokeDasharray={allDashed || firstDashed ? "5 5" : "0"}
               fillOpacity={1}
               fill="url(#colorValue1)"
             />
             <Area
               type="linear"
               dataKey={yAxisKey2}
+              strokeDasharray={allDashed || secondDashed ? "5 5" : "0"}
               stroke="#991b1b"
               strokeWidth={1.5}
               fillOpacity={1}
@@ -292,6 +306,7 @@ export const LineGraph: React.FC<LineGraphProps> = ({
             <Area
               type="linear"
               dataKey={yAxisKey3}
+              strokeDasharray={allDashed || thirdDashed ? "5 5" : "0"}
               stroke="#6c5ce7"
               strokeWidth={1.5}
               fillOpacity={1}

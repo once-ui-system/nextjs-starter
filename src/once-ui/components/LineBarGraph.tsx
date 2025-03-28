@@ -50,6 +50,8 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
    * @default false
    */
   hideXAxisLabels?: boolean;
+
+  dashedLine?: boolean;
   /**
    * Hide Y-axis labels when true
    * @default false
@@ -128,6 +130,7 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
   barName = "Bar",
   barWidth = "fill",
   blur = false,
+  dashedLine = false,
   border,
   title,
   lineColorVariant = "info", // Options: "info", "success", "danger", "purple"
@@ -304,6 +307,7 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
                 dataKey={lineDataKey}
                 name={lineName}
                 stroke={finalLineColor}
+                strokeDasharray={dashedLine ? "5 5" : "0"}
                 strokeWidth={2}
                 fillOpacity={1}
                 fill={`url(#${lineGradientId})`}
