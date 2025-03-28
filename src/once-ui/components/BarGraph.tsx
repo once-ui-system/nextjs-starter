@@ -136,11 +136,11 @@ export const BarGraph: React.FC<BarGraphProps> = ({
       >
         <Heading padding="s">{title}</Heading>
       </Flex>
-      <Flex padding="m" fill>
+      <Flex padding={title ? "s" : "2"} fill>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
-            margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
+            margin={{  left: 10, bottom: 15 }}
             barGap={4}
           >
             <CartesianGrid
@@ -157,9 +157,10 @@ export const BarGraph: React.FC<BarGraphProps> = ({
                 fill: "var(--neutral-on-background-medium)",
                 fontSize: 12,
               }}
+              
               label={
                 xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle, position: 'bottom', offset: -2, fill: "var(--neutral-on-background-medium)" }
+                  ? { value: xAxisTitle, position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
                   : undefined
               }
             />
@@ -170,8 +171,19 @@ export const BarGraph: React.FC<BarGraphProps> = ({
                 fill: "var(--neutral-on-background-medium)",
                 fontSize: 12,
                }}
-              width={hideYAxisLabels || hideLabels ? 0 : 30}
-       
+               width={yAxisTitle ? 40 : 0}
+              label={
+                yAxisTitle && !hideYAxisTitle && !hideAxisTitles
+                  ? { 
+                      value: yAxisTitle, 
+                      angle: -90, // Rotate the label 90 degrees counter-clockwise
+                      position: 'left', 
+                      dx: 5, // Move label to the left
+                      dy: -20, // Adjust vertical position
+                      fill: "var(--neutral-on-background-medium)" 
+                    }
+                  : undefined
+              }
             />
             <Tooltip
               content={<CustomTooltip tooltipTitle={tooltipTitle} />}

@@ -54,6 +54,33 @@ interface MultiBarGraphProps extends React.ComponentProps<typeof Flex> {
    * @default false
    */
   hideLabels?: boolean;
+  /**
+   * When true, hides the X axis title
+   * @default false
+   */
+  hideXAxisTitle?: boolean;
+  /**
+   * When true, hides the Y axis title
+   * @default false
+   */
+  hideYAxisTitle?: boolean;
+  /**
+   * When true, hides all axis titles
+   * @default false
+   */
+  hideAxisTitles?: boolean;
+  /**
+   * Title for X-axis
+   */
+  xAxisTitle?: string;
+  /**
+   * Title for Y-axis
+   */
+  yAxisTitle?: string;
+  /**
+   * When true, hides the Y axis  title
+   * @default false
+   */
 }
 
 const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
@@ -108,7 +135,12 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
   barLabels,
   background,
   hideXAxisLabels = false,
+  xAxisTitle,
+  hideXAxisTitle = false,
   hideYAxisLabels = false,
+  yAxisTitle,
+  hideYAxisTitle = false,
+  hideAxisTitles = false,
   hideLabels = false,
   ...flexProps
 }) => {
@@ -139,7 +171,7 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
           <Heading padding="s">{title}</Heading>
         </Flex>
       )}
-      <Flex padding="m" fill>
+      <Flex padding={title ? "s" : "2"} fill>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
@@ -162,6 +194,11 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                 fontSize: 12,
               }}
               hide={hideLabels || hideXAxisLabels}
+              label={
+                xAxisTitle && !hideXAxisTitle && !hideAxisTitles
+                  ? { value: xAxisTitle, position: 'bottom', offset: -2, fill: "var(--neutral-on-background-medium)" }
+                  : undefined
+              }
             />
             <YAxis
               axisLine={false}
@@ -170,7 +207,19 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                 fill: "var(--neutral-on-background-medium)",
                 fontSize: 12,
               }}
-              width={30}
+              width={yAxisTitle ? 40 : 0} // Adjust width based on number of bars
+              label={
+                yAxisTitle && !hideYAxisTitle && !hideAxisTitles
+                  ? { 
+                      value: yAxisTitle, 
+                      angle: -90, // Rotate the label 90 degrees counter-clockwise
+                      position: 'left', 
+                      dx: 0, // Move label to the left
+                      dy: -20, // Adjust vertical position
+                      fill: "var(--neutral-on-background-medium)" 
+                    }
+                  : undefined
+              }
               domain={[0, "auto"]} // Start from 0, auto-scale the upper bound
               allowDataOverflow={false} // Prevent data from exceeding the domain
               hide={hideLabels || hideYAxisLabels}
