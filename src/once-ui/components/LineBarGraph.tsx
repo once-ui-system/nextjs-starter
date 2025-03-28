@@ -93,7 +93,7 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <Flex className={styles.tooltip} background="surface" border="neutral-alpha-medium" direction="column">
+      <Flex className={styles.tooltip} minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth

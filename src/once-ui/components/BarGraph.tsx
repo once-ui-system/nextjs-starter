@@ -60,7 +60,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <Flex className={styles.tooltip} background="surface" radius="l" border="neutral-alpha-medium" direction="column">
+      <Flex className={styles.tooltip} minWidth={8} background="surface" radius="l" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
@@ -68,13 +68,12 @@ const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
           padding="8"
         >
           <Text
-            variant="body-default-s"
-            style={{ fontWeight: "600" }}
+            style={{ fontWeight: "500" }}
             onBackground="neutral-strong"
           >{`${xAxisTitle}: ${data.endDate}`}</Text>
         </Flex>
         <Flex padding="s">
-          <Text variant="body-default-s" onBackground="neutral-strong">
+          <Text onBackground="neutral-strong">
             {`${tooltipTitle}: ${data.value}`}
           </Text>
         </Flex>

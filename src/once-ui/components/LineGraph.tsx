@@ -103,6 +103,7 @@ const CustomTooltip = ({
     return (
       <Flex className={styles.tooltip} background="surface" radius="l" border="neutral-alpha-medium" direction="column">
         <Flex
+          minWidth={8}
           borderBottom="neutral-alpha-medium"
           fillWidth
           vertical="center"
@@ -113,7 +114,7 @@ const CustomTooltip = ({
               {tooltipTitle ? tooltipTitle : `${xAxisTitle}: ${label}`}
             </p>
         </Flex>
-        <Flex padding="xs" direction="column" vertical="center">
+        <Flex padding="xs" direction="column" horizontal="center" vertical="center">
           <p className={styles.value} style={{ color: "var(--success-solid-strong)" }}>
             {`${key1}: ${payload[0].value}`}
           </p>
