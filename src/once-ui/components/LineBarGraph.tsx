@@ -93,7 +93,7 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <Flex className={styles.tooltip} direction="column">
+      <Flex className={styles.tooltip} background="surface" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
@@ -228,12 +228,12 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
               axisLine={false}
               tickLine={false}
               tick={hideXAxisLabels || hideLabels ? false : {
-                fill: "var(--neutral-on-background-medium)",
+                fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,
               }}
               label={
                 xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle, position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
+                  ? { value: xAxisTitle,  fontWeight: "500", position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
                   : undefined
               }
               // Make sure to always show the grid even if labels are hidden
@@ -241,8 +241,8 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
             />
             <YAxis
               tick={{
-                fill: "var(--neutral-on-background-medium)",
                 fontSize: 12,
+                fill: "var(--neutral-on-background-weak)",
                }}
               axisLine={false}
               tickLine={false}
@@ -253,6 +253,7 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
                       value: yAxisTitle, 
                       angle: -90, // Rotate the label 90 degrees counter-clockwise
                       position: 'left', 
+                      fontWeight: "500",
                       dx: 0, // Move label to the left
                       dy: -20, // Adjust vertical position
                       fill: "var(--neutral-on-background-medium)" 
