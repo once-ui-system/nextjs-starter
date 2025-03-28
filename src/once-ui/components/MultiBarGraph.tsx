@@ -10,15 +10,8 @@ import {
   Legend,
 } from "recharts";
 
-import {
-  GridProps,
-  SpacingProps,
-  SizeProps,
-  StyleProps,
-  CommonProps,
-  DisplayProps,
-  ConditionalProps,
-} from "../interfaces";
+import { SpacingToken, ColorScheme, ColorWeight } from "../types";
+
 
 import styles from "./BarGraph.module.scss";
 import { Text, Flex, Heading } from ".";
@@ -42,7 +35,7 @@ interface MultiBarGraphProps extends React.ComponentProps<typeof Flex> {
    * Size of the bar graph.
    * @default "m"
    */
-  size?: "xs" | "s" | "m" | "l" | "xl";
+  barWidth?: SpacingToken | "fill";
   blur?: boolean;
   title?: string;
   tooltipTitle?: string;
@@ -106,7 +99,7 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
   data,
   xAxisKey = "name",
   yAxisKeys = ["value1", "value2", "value3"],
-  size = "m",
+  barWidth = "fill",
   blur = false,
   border,
   title,
@@ -119,28 +112,14 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
   hideLabels = false,
   ...flexProps
 }) => {
-  const height = {
-    xs: 100,
-    s: 150,
-    m: 250,
-    l: 275,
-    xl: 300,
-  }[size];
 
-  const barSize = {
-    xs: 32,
-    s: 32,
-    m: 32,
-    l: 32,
-    xl: 32,
-  }[size];
 
   // Using the same colors from LineGraph
   const barColors = ["var(--success-solid-strong)", "var(--danger-solid-strong)", "#6c5ce7"]; // green, red, purple
 
   return (
     <Flex
-      fillWidth
+      fill
       radius={radius}
       border={border}
       align="center"
@@ -161,7 +140,7 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
         </Flex>
       )}
       <Flex padding="m" fill>
-        <ResponsiveContainer width="100%" height={height}>
+        <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
             margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
@@ -237,7 +216,21 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                 stroke={barColors[index % barColors.length]}
                 strokeWidth={1}
                 radius={[6, 6, 0, 0]}
-                barSize={barSize}
+                barSize={
+                  barWidth === "fill"
+                    ? "98%"
+                    : barWidth === "xs"
+                    ? 6
+                    : barWidth === "s"
+                    ? 12
+                    : barWidth === "m"
+                    ? 20
+                    : barWidth === "l"
+                    ? 40
+                    : barWidth === "xl"
+                    ? 50
+                    : barWidth
+                  }
                 isAnimationActive={false}
               />
             ))}

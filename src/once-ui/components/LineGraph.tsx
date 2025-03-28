@@ -29,7 +29,6 @@ interface LineGraphProps extends React.ComponentProps<typeof Flex> {
    * Size of the line graph.
    * @default "m"
    */
-  size?: "xs" | "s" | "m" | "l" | "xl";
   blur?: boolean;
   title?: string;
   tooltipTitle?: string;
@@ -110,7 +109,6 @@ export const LineGraph: React.FC<LineGraphProps> = ({
   yAxisKey1 = "value1",
   yAxisKey2 = "value2",
   yAxisKey3 = "value3",
-  size = "m",
   blur = false,
   border,
   title,
@@ -125,20 +123,16 @@ export const LineGraph: React.FC<LineGraphProps> = ({
   hideLabels = false,
   ...flexProps
 }) => {
-  const height = {
-    xs: 100,
-    s: 150,
-    m: 200,
-    l: 250,
-    xl: 300,
-  }[size];
+ 
 
   return (
     <Flex
       fill
+      fillHeight
       radius={radius}
       border={border}
       align="center"
+      horizontal="center"
       direction="column"
       vertical="center"
       background={background}
@@ -154,8 +148,8 @@ export const LineGraph: React.FC<LineGraphProps> = ({
       >
         <Heading padding="s">{title}</Heading>
       </Flex>
-      <Flex fill padding="m">
-        <ResponsiveContainer width="100%" height={height}>
+      <Flex fill fillHeight padding="m">
+        <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
             margin={{

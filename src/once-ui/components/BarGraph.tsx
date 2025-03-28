@@ -9,16 +9,6 @@ import {
   Tooltip,
 } from "recharts";
 
-import {
-  GridProps,
-  SpacingProps,
-  SizeProps,
-  StyleProps,
-  CommonProps,
-  DisplayProps,
-  ConditionalProps,
-} from "../interfaces";
-
 import { SpacingToken, ColorScheme, ColorWeight } from "../types";
 
 import styles from "./BarGraph.module.scss";
@@ -35,8 +25,6 @@ interface DataPoint {
 
 type BarColor = "success" | "danger" | "purple";
 
-type BarRadius = "xs" | "s" | "m" | "l" | "xl";
-
 interface BarGraphProps extends React.ComponentProps<typeof Flex> {
   data: DataPoint[];
   xAxisKey?: string; // Allows customization of the x-axis data key
@@ -46,7 +34,7 @@ interface BarGraphProps extends React.ComponentProps<typeof Flex> {
    * Size of the bar graph.
    * @default "m"
    */
-  size?: "xs" | "s" | "m" | "l" | "xl";
+  barWidth?: SpacingToken | "fill";
   blur?: boolean; // Controls backdrop blur effect
   title?: string; // Title for the bar graph
   tooltipTitle?: string; // Title for the tooltip
@@ -76,7 +64,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle }: any) => {
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
-          vertical="center"
+          horizontal="center"
           padding="8"
         >
           <Text
@@ -101,7 +89,7 @@ export const BarGraph: React.FC<BarGraphProps> = ({
   xAxisKey = "name",
   yAxisKey = "value",
   barColor = "success",
-  size = "m",
+  barWidth = "fill",
   blur = false,
   border,
   title,
@@ -117,21 +105,7 @@ export const BarGraph: React.FC<BarGraphProps> = ({
   hideYAxisTitle = false,
   hideAxisTitles = false,
 }) => {
-  const height = {
-    xs: 100,
-    s: 150,
-    m: 200,
-    l: 250,
-    xl: 300,
-  }[size];
 
-  const barSize = {
-    xs: 16,
-    s: 24,
-    m: 32,
-    l: 40,
-    xl: 48,
-  }[size];
 
   const barColorMap = {
     success: "var(--success-solid-strong)",
@@ -143,7 +117,8 @@ export const BarGraph: React.FC<BarGraphProps> = ({
 
   return (
     <Flex
-      fillWidth
+      fill
+      style={{height: "100%"}}
       radius={radius}
       border={border}
       align="center"
@@ -162,7 +137,7 @@ export const BarGraph: React.FC<BarGraphProps> = ({
         <Heading padding="s">{title}</Heading>
       </Flex>
       <Flex padding="m" fill>
-        <ResponsiveContainer width="100%" height={height}>
+        <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
             margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
@@ -191,16 +166,12 @@ export const BarGraph: React.FC<BarGraphProps> = ({
             <YAxis
               axisLine={false}
               tickLine={false}
-              tick={hideYAxisLabels || hideLabels ? false : {
+              tick={{
                 fill: "var(--neutral-on-background-medium)",
                 fontSize: 12,
-              }}
+               }}
               width={hideYAxisLabels || hideLabels ? 0 : 30}
-              label={
-                yAxisTitle && !hideYAxisTitle && !hideAxisTitles
-                  ? { value: yAxisTitle, angle: -90, position: 'left', offset: -10, fill: "var(--neutral-on-background-medium)" }
-                  : undefined
-              }
+       
             />
             <Tooltip
               content={<CustomTooltip tooltipTitle={tooltipTitle} />}
@@ -230,8 +201,22 @@ export const BarGraph: React.FC<BarGraphProps> = ({
               fill="url(#barGradient)"
               stroke={barSolidColor}
               strokeWidth={1}
-              radius={[6, 6, 0, 0]} // Replace with appropriate numerical values
-              barSize={barSize}
+              barSize={
+              barWidth === "fill"
+                ? "100%"
+                : barWidth === "xs"
+                ? 6
+                : barWidth === "s"
+                ? 12
+                : barWidth === "m"
+                ? 20
+                : barWidth === "l"
+                ? 40
+                : barWidth === "xl"
+                ? 50
+                : barWidth
+              }
+              radius={[6, 6, 0, 0]}
             />
           </BarChart>
         </ResponsiveContainer>
