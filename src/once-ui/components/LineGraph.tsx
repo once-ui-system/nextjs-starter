@@ -68,8 +68,11 @@ interface LineGraphProps extends React.ComponentProps<typeof Flex> {
    * @default false
    */
   hideAxisTitles?: boolean;
-
-
+  fixedYRange?: [number, number]; // [min, max] for y-axis
+  /**
+   * Show tick lines on the X-axis when true
+   * @default false
+   */
 }
 
 interface CustomTooltipProps extends TooltipProps<number, string> {
@@ -80,6 +83,7 @@ interface CustomTooltipProps extends TooltipProps<number, string> {
   yAxisKey1?: string;
   yAxisKey2?: string;
   yAxisKey3?: string;
+  xAxisTitle?: string; // Add this property
 }
 
 const CustomTooltip = ({
@@ -93,10 +97,11 @@ const CustomTooltip = ({
   yAxisKey1 = "value1",
   yAxisKey2 = "value2",
   yAxisKey3 = "value3",
+  xAxisTitle = "", // Add default value
 }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
-      <Flex className={styles.tooltip} direction="column">
+      <Flex className={styles.tooltip} background="surface" radius="l" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
@@ -104,13 +109,15 @@ const CustomTooltip = ({
           horizontal="center"
           padding="4"
         >
-          <p className={styles.label}>{`${tooltipTitle}`}</p>
+            <p className={styles.label}>
+              {tooltipTitle ? tooltipTitle : `${xAxisTitle}: ${label}`}
+            </p>
         </Flex>
         <Flex padding="xs" direction="column" vertical="center">
-          <p className={styles.value} style={{ color: "#047857" }}>
+          <p className={styles.value} style={{ color: "var(--success-solid-strong)" }}>
             {`${key1}: ${payload[0].value}`}
           </p>
-          <p className={styles.value} style={{ color: "#991b1b" }}>
+          <p className={styles.value} style={{ color: "var(--danger-solid-strong)" }}>
             {`${key2}: ${payload[1].value}`}
           </p>
           <p className={styles.value} style={{ color: "#6c5ce7" }}>
@@ -146,6 +153,7 @@ export const LineGraph: React.FC<LineGraphProps> = ({
   hideXAxisLabels = false,
   hideYAxisLabels = false,
   hideLabels = false,
+  fixedYRange,
   ...flexProps
 }) => {
  
@@ -206,13 +214,12 @@ export const LineGraph: React.FC<LineGraphProps> = ({
               dataKey={xAxisKey}
               stroke="var(--neutral-background-medium)"
               tick={{
-                fill: "var(--neutral-on-background-medium)",
+                fill: "var(--neutral-on-background-weak)",
                 fontSize: 11,
-                fontWeight: "bold",
               }}
               label={
                 xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle, position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
+                  ? { value: xAxisTitle,  fontWeight: "500", position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
                   : undefined
               }
               axisLine={false}
@@ -222,14 +229,16 @@ export const LineGraph: React.FC<LineGraphProps> = ({
             <YAxis
               stroke="var(--neutral-background-strong)"
               tick={{
-                fill: "var(--neutral-on-background-medium)",
+                fill: "var(--neutral-on-background-weak)",
                 fontSize: 11,
               }}
+              tickLine={false}
               width={yAxisTitle ? 40 : 0}
               label={
                 yAxisTitle && !hideYAxisTitle && !hideAxisTitles
                   ? { 
                       value: yAxisTitle, 
+                      fontWeight: "500",
                       angle: -90, // Rotate the label 90 degrees counter-clockwise
                       position: 'left', 
                       dx: 5, // Move label to the left
@@ -240,8 +249,8 @@ export const LineGraph: React.FC<LineGraphProps> = ({
               }
 
               axisLine={false}
-              tickLine={false}
               hide={hideYAxisLabels || hideLabels}
+              domain={fixedYRange ? fixedYRange : undefined}
             />
             <Tooltip
               content={
@@ -253,6 +262,7 @@ export const LineGraph: React.FC<LineGraphProps> = ({
                   yAxisKey1={yAxisKey1}
                   yAxisKey2={yAxisKey2}
                   yAxisKey3={yAxisKey3}
+                  xAxisTitle={xAxisTitle} // Add this prop
                 />
               }
               contentStyle={{

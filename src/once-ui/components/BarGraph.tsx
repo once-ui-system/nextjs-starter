@@ -56,11 +56,11 @@ interface BarGraphProps extends React.ComponentProps<typeof Flex> {
   hideAxisTitles?: boolean;
 }
 
-const CustomTooltip = ({ active, payload, tooltipTitle }: any) => {
+const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <Flex className={styles.tooltip} direction="column">
+      <Flex className={styles.tooltip} background="surface" radius="l" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
@@ -71,7 +71,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle }: any) => {
             variant="body-default-s"
             style={{ fontWeight: "600" }}
             onBackground="neutral-strong"
-          >{`${data.startDate} - ${data.endDate}`}</Text>
+          >{`${xAxisTitle}: ${data.endDate}`}</Text>
         </Flex>
         <Flex padding="s">
           <Text variant="body-default-s" onBackground="neutral-strong">
@@ -154,13 +154,13 @@ export const BarGraph: React.FC<BarGraphProps> = ({
               axisLine={false}
               tickLine={false}
               tick={hideXAxisLabels || hideLabels ? false : {
-                fill: "var(--neutral-on-background-medium)",
+                fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,
               }}
               
               label={
                 xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle, position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
+                  ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
                   : undefined
               }
             />
@@ -168,7 +168,7 @@ export const BarGraph: React.FC<BarGraphProps> = ({
               axisLine={false}
               tickLine={false}
               tick={{
-                fill: "var(--neutral-on-background-medium)",
+                fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,
                }}
                width={yAxisTitle ? 40 : 0}
@@ -178,6 +178,7 @@ export const BarGraph: React.FC<BarGraphProps> = ({
                       value: yAxisTitle, 
                       angle: -90, // Rotate the label 90 degrees counter-clockwise
                       position: 'left', 
+                      fontWeight: "500",
                       dx: 5, // Move label to the left
                       dy: -20, // Adjust vertical position
                       fill: "var(--neutral-on-background-medium)" 
@@ -186,7 +187,7 @@ export const BarGraph: React.FC<BarGraphProps> = ({
               }
             />
             <Tooltip
-              content={<CustomTooltip tooltipTitle={tooltipTitle} />}
+              content={<CustomTooltip tooltipTitle={tooltipTitle} xAxisTitle={xAxisTitle} />}
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
               wrapperClassName={styles.tooltipWrapper} // Apply styles to the tooltip wrapper
             />
