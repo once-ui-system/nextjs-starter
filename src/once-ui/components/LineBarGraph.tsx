@@ -34,7 +34,7 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
    * Size of the graph.
    * @default "m"
    */
-  barWidth?: SpacingToken | "fill";
+  barWidth?: SpacingToken | "fill" | number | string;
   blur?: boolean;
   title?: string;
   lineColor?: string;

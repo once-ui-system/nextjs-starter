@@ -35,7 +35,7 @@ interface MultiBarGraphProps extends React.ComponentProps<typeof Flex> {
    * Size of the bar graph.
    * @default "m"
    */
-  barWidth?: SpacingToken | "fill";
+  barWidth?: SpacingToken | "fill" | number | string;
   blur?: boolean;
   title?: string;
   tooltipTitle?: string;
