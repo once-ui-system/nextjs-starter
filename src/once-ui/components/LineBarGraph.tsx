@@ -185,11 +185,11 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
           <Heading padding="s">{title}</Heading>
         </Flex>
       )}
-      <Flex padding="m" fill>
+      <Flex padding={title ? "s" : "2"} fill>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={data}
-            margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+            margin={{ left: 10, bottom: 15 }}
           >
             <defs>
               {/* Bar gradient */}
@@ -246,10 +246,17 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
                }}
               axisLine={false}
               tickLine={false}
-              width={hideYAxisLabels || hideLabels ? 0 : 30}
+              width={yAxisTitle ? 50 : 0}
               label={
                 yAxisTitle && !hideYAxisTitle && !hideAxisTitles
-                  ? { value: yAxisTitle, angle: -90, position: 'left', offset: -5, fill: "var(--neutral-on-background-medium)" }
+                  ? { 
+                      value: yAxisTitle, 
+                      angle: -90, // Rotate the label 90 degrees counter-clockwise
+                      position: 'left', 
+                      dx: 0, // Move label to the left
+                      dy: -20, // Adjust vertical position
+                      fill: "var(--neutral-on-background-medium)" 
+                    }
                   : undefined
               }
               // Make sure to always show the grid even if labels are hidden

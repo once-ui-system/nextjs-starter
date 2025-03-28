@@ -21,6 +21,8 @@ interface DataPoint {
 
 interface LineGraphProps extends React.ComponentProps<typeof Flex> {
   data: DataPoint[];
+  xAxisTitle?: string;
+  yAxisTitle?: string;
   xAxisKey?: string;
   yAxisKey1?: string;
   yAxisKey2?: string;
@@ -50,6 +52,24 @@ interface LineGraphProps extends React.ComponentProps<typeof Flex> {
    * @default false
    */
   hideLabels?: boolean;
+
+  /**
+   * Hide Y-axis title when true
+   * @default false
+   */
+  hideYAxisTitle?: boolean;
+  /**
+   * Hide X-axis title when true
+   * @default false
+   */
+  hideXAxisTitle?: boolean;
+  /**
+   * Hide both X and Y axis titles when true
+   * @default false
+   */
+  hideAxisTitles?: boolean;
+
+
 }
 
 interface CustomTooltipProps extends TooltipProps<number, string> {
@@ -109,6 +129,11 @@ export const LineGraph: React.FC<LineGraphProps> = ({
   yAxisKey1 = "value1",
   yAxisKey2 = "value2",
   yAxisKey3 = "value3",
+  hideYAxisTitle = false,
+  hideAxisTitles = false,
+  yAxisTitle,
+  xAxisTitle,
+  hideXAxisTitle = false,
   blur = false,
   border,
   title,
@@ -148,16 +173,11 @@ export const LineGraph: React.FC<LineGraphProps> = ({
       >
         <Heading padding="s">{title}</Heading>
       </Flex>
-      <Flex fill fillHeight padding="m">
+      <Flex fill padding={title ? "s" : "2"} className={styles.graph}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
-            margin={{
-              top: 10,
-              right: 30,
-              left: 0,
-              bottom: 0,
-            }}
+            margin={{  left: 10, bottom: 15 }}
           >
             <defs>
               <linearGradient id="colorValue1" x1="0" y1="0" x2="0" y2="1">
@@ -190,6 +210,11 @@ export const LineGraph: React.FC<LineGraphProps> = ({
                 fontSize: 11,
                 fontWeight: "bold",
               }}
+              label={
+                xAxisTitle && !hideXAxisTitle && !hideAxisTitles
+                  ? { value: xAxisTitle, position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
+                  : undefined
+              }
               axisLine={false}
               tickLine={false}
               hide={hideXAxisLabels || hideLabels}
@@ -200,6 +225,20 @@ export const LineGraph: React.FC<LineGraphProps> = ({
                 fill: "var(--neutral-on-background-medium)",
                 fontSize: 11,
               }}
+              width={yAxisTitle ? 40 : 0}
+              label={
+                yAxisTitle && !hideYAxisTitle && !hideAxisTitles
+                  ? { 
+                      value: yAxisTitle, 
+                      angle: -90, // Rotate the label 90 degrees counter-clockwise
+                      position: 'left', 
+                      dx: 5, // Move label to the left
+                      dy: -20, // Adjust vertical position
+                      fill: "var(--neutral-on-background-medium)" 
+                    }
+                  : undefined
+              }
+
               axisLine={false}
               tickLine={false}
               hide={hideYAxisLabels || hideLabels}
