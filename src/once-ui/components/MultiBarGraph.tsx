@@ -108,7 +108,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
           {payload.map((entry: any, index: number) => (
             <Text
               key={`value-${index}`}
-              variant="body-default-s"
+              className={styles.value}
               onBackground="neutral-strong"
               style={{ color: entry.color }}
             >
