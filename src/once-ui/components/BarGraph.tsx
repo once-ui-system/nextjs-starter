@@ -34,7 +34,7 @@ interface BarGraphProps extends React.ComponentProps<typeof Flex> {
    * Size of the bar graph.
    * @default "m"
    */
-  barWidth?: SpacingToken | "fill";
+  barWidth?: SpacingToken | "fill" | number | string;
   blur?: boolean; // Controls backdrop blur effect
   title?: string; // Title for the bar graph
   tooltipTitle?: string; // Title for the tooltip
