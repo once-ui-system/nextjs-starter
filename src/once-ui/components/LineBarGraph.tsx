@@ -13,6 +13,8 @@ import {
 } from "recharts";
 import styles from "./LineBarGraph.module.scss";
 import { Flex, Heading } from ".";
+import { SpacingToken, ColorScheme, ColorWeight } from "../types";
+
 
 interface DataPoint {
   name: string;
@@ -32,7 +34,7 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
    * Size of the graph.
    * @default "m"
    */
-  size?: "xs" | "s" | "m" | "l" | "xl";
+  barWidth?: SpacingToken | "fill";
   blur?: boolean;
   title?: string;
   lineColor?: string;
@@ -124,7 +126,7 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
   barDataKey = "barValue",
   lineName = "Line",
   barName = "Bar",
-  size = "m",
+  barWidth = "fill",
   blur = false,
   border,
   title,
@@ -144,21 +146,7 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
   showLegend = false,
   ...flexProps
 }) => {
-  const height = {
-    xs: 100,
-    s: 150,
-    m: 200,
-    l: 250,
-    xl: 300,
-  }[size];
-
-  const barSize = {
-    xs: 16,
-    s: 24,
-    m: 32,
-    l: 40,
-    xl: 48,
-  }[size];
+ 
 
   // Generate a unique ID for each gradient
   const lineGradientId = `colorLine-${Math.random().toString(36).substring(2, 9)}`;
@@ -176,12 +164,12 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
 
   return (
     <Flex
-      fillWidth
+      fill
       radius={radius}
       border={border}
       align="center"
       direction="column"
-      horizontal="center"
+      vertical="center"
       background={background}
       className={blur ? styles.blur : undefined}
       {...flexProps}
@@ -198,7 +186,7 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
         </Flex>
       )}
       <Flex padding="m" fill>
-        <ResponsiveContainer width="100%" height={height}>
+        <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={data}
             margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
@@ -252,6 +240,10 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
               hide={false}
             />
             <YAxis
+              tick={{
+                fill: "var(--neutral-on-background-medium)",
+                fontSize: 12,
+               }}
               axisLine={false}
               tickLine={false}
               width={hideYAxisLabels || hideLabels ? 0 : 30}
@@ -281,7 +273,21 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
               stroke={barColor}
               strokeWidth={1}
               radius={[4, 4, 0, 0]}
-              barSize={barSize}
+              barSize={
+                barWidth === "fill"
+                  ? "100%"
+                  : barWidth === "xs"
+                  ? 6
+                  : barWidth === "s"
+                  ? 12
+                  : barWidth === "m"
+                  ? 20
+                  : barWidth === "l"
+                  ? 40
+                  : barWidth === "xl"
+                  ? 50
+                  : barWidth
+                }
             />
             
             {showArea ? (
