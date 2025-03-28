@@ -1,56 +1,53 @@
 .graphContainer {
-    width: 100%;
-    height: 200px;
-    border-radius: 12px;
-    padding: 24px;
-  
-    :global(.recharts-bar-rectangle) {
-      filter: drop-shadow(0 0 8px rgba(4, 78, 120, 0.3));
-    }
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  padding: 24px;
+
+  :global(.recharts-bar-rectangle) {
+    filter: drop-shadow(0 0 8px rgba(4, 78, 120, 0.3));
   }
-  
-  .blur {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-  
-  .blur::backdrop {
-    backdrop-filter: blur(12px);
-  }
-  
-  .blur::before {
-    backdrop-filter: blur(12px);
-  }
-  
-  .tooltip {
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--neutral-alpha-medium);
-    border-radius: var(--radius-m);
+}
+
+.blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.blur::backdrop {
+  backdrop-filter: blur(12px);
+}
+
+.blur::before {
+  backdrop-filter: blur(12px);
+}
+
+.tooltip {
+  border-radius: var(--radius-m);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  .label {
     text-align: center;
-    justify-content: center;
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--neutral-on-background-strong);
+  }
+
+  .value {
+    font-weight: 500;
+    text-align: center;
+    margin: 4px 0;
+    display: flex;
     align-items: center;
-  
-    .label {
-      text-align: center;
-      margin: 0 0 10px;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--neutral-on-background-strong);
-    }
-  
-    .value {
-      font-weight: 500;
-      text-align: center;
-      margin: 4px 0;
-      display: flex;
-      align-items: center;
-    }
   }
-  
-  .tooltipWrapper {
-    background-color: var(--neutral-background-strong);
-    border: 1px solid var(--neutral-border-medium);
-    border-radius: var(--radius-s);
-    color: var(--neutral-on-background-medium);
-  }
-  
+}
+
+.tooltipWrapper {
+  background-color: var(--neutral-background-strong);
+  border: 1px solid var(--neutral-border-medium);
+  border-radius: var(--radius-s);
+  color: var(--neutral-on-background-medium);
+}

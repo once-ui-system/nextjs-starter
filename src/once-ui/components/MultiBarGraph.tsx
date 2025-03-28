@@ -87,7 +87,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <Flex className={styles.tooltip} direction="column">
+      <Flex className={styles.tooltip} background="surface" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
@@ -178,7 +178,7 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
             margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
             barGap={4} // Small gap between bars in the same group
             barCategoryGap={1} // Control spacing between different groups (x-axis categories)
-          >
+            >
             <CartesianGrid
               strokeDasharray="2 2"
               horizontal={true}
@@ -190,22 +190,23 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
               axisLine={false}
               tickLine={false}
               tick={{
-                fill: "var(--neutral-on-background-medium)",
-                fontSize: 12,
+                fill: "var(--neutral-on-background-weak)",
+              fontSize: 12,
               }}
               hide={hideLabels || hideXAxisLabels}
               label={
-                xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle, position: 'bottom', offset: -2, fill: "var(--neutral-on-background-medium)" }
-                  : undefined
+              xAxisTitle && !hideXAxisTitle && !hideAxisTitles
+                ? { value: xAxisTitle,               fontWeight: "500",
+                  position: 'bottom', offset: -2, fill: "var(--neutral-on-background-medium)" }
+                : undefined
               }
             />
             <YAxis
               axisLine={false}
               tickLine={false}
               tick={{
-                fill: "var(--neutral-on-background-medium)",
-                fontSize: 12,
+                fill: "var(--neutral-on-background-weak)",
+              fontSize: 12,
               }}
               width={yAxisTitle ? 40 : 0} // Adjust width based on number of bars
               label={
@@ -214,6 +215,7 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                       value: yAxisTitle, 
                       angle: -90, // Rotate the label 90 degrees counter-clockwise
                       position: 'left', 
+                      fontWeight: "500",
                       dx: 0, // Move label to the left
                       dy: -20, // Adjust vertical position
                       fill: "var(--neutral-on-background-medium)" 
