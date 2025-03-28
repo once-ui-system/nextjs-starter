@@ -13,7 +13,7 @@ import {
 import { SpacingToken, ColorScheme, ColorWeight } from "../types";
 
 
-import styles from "./BarGraph.module.scss";
+import styles from "./MultiBarGraph.module.scss";
 import { Text, Flex, Heading } from ".";
 
 // Data structure supporting multiple values
@@ -87,7 +87,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <Flex className={styles.tooltip} background="surface" border="neutral-alpha-medium" direction="column">
+      <Flex className={styles.tooltip} minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
@@ -95,7 +95,6 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
           padding="8"
         >
           <Text
-            variant="body-default-s"
             style={{ fontWeight: "600" }}
             onBackground="neutral-strong"
           >
