@@ -72,3 +72,6 @@ export const iconLibrary: Record<string, IconType> = {
   sparkle: HiOutlineSparkles,
   computer: HiOutlineComputerDesktop
 };
+
+export type IconLibrary = typeof iconLibrary;
+export type IconName = keyof IconLibrary;
