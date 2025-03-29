@@ -66,7 +66,7 @@ export default function Home() {
       description: "Style your app in minutes",
     },
     {
-      href: "https://once-ui.com/docs/RowComponent",
+      href: "https://once-ui.com/docs/flexComponent",
       title: "Layout",
       description: "Build responsive layouts",
     },
@@ -122,7 +122,7 @@ export default function Home() {
           paddingLeft="32"
           paddingY="20"
         >
-          <Logo size="m" icon={false} href="https://once-ui.com" />
+          <Logo size="s" icon={false} href="https://once-ui.com" />
           <Row gap="12" hide="s">
             <Button
               href="https://discord.com/invite/5EyAQ4eNdS"
@@ -133,7 +133,7 @@ export default function Home() {
               variant="tertiary"
             />
             <Button
-              href="https://github.com/once-ui-system/nextjs-starter"
+              href="https://github.com/once-ui-system"
               prefixIcon="github"
               size="s"
               label="GitHub"
@@ -141,7 +141,12 @@ export default function Home() {
               variant="tertiary"
             />
             <Row position="fixed" top="20" right="20">
-              <StyleOverlay position="fixed" top="8" right="8" style={{height: "calc(100vh - var(--static-space-16))"}} />
+              <StyleOverlay
+                position="fixed"
+                top="8"
+                right="8"
+                style={{ height: "calc(100vh - var(--static-space-16))" }}
+              />
             </Row>
           </Row>
           <Row gap="16" show="s" horizontal="center" paddingRight="24">
@@ -156,7 +161,12 @@ export default function Home() {
               variant="tertiary"
             />
             <Row position="fixed" top="20" right="20">
-              <StyleOverlay position="fixed" top="8" right="8" style={{height: "calc(100vh - var(--static-space-16))"}} />
+              <StyleOverlay
+                position="fixed"
+                top="8"
+                right="8"
+                style={{ height: "calc(100vh - var(--static-space-16))" }}
+              />
             </Row>
           </Row>
         </Row>
@@ -236,8 +246,8 @@ export default function Home() {
                 app/page.tsx
               </Text>
             </InlineCode>
-            <Heading wrap="balance" variant="display-default-l" align="center" marginBottom="16">
-              We let designers code and developers design
+            <Heading wrap="balance" variant="display-strong-xl" align="center" marginBottom="16">
+              Code faster than AI
             </Heading>
             <Button
               id="readDocs"
@@ -276,7 +286,7 @@ export default function Home() {
                   {
                     icon: false,
                     wordmarkSrc: "/trademark/dopler-wordmark.svg",
-                    href: "https://dropler.app",
+                    href: "https://dopler.app",
                     size: "m",
                   },
                   {
@@ -310,8 +320,13 @@ export default function Home() {
             </Text>
 
             {/* COMPARE IMAGE */}
-            <CompareImage radius="xl" overflow="hidden" border="neutral-alpha-weak" leftContent={{src: "/images/1.jpg", alt: "alt"}}
-              rightContent={{src: "/images/2.jpg", alt: "alt"}}/>
+            <CompareImage
+              radius="xl"
+              overflow="hidden"
+              border="neutral-alpha-weak"
+              leftContent={{ src: "/images/1.jpg", alt: "alt" }}
+              rightContent={{ src: "/images/2.jpg", alt: "alt" }}
+            />
 
             {/* LOGIN */}
             <Row
@@ -478,12 +493,7 @@ export default function Home() {
                     onSolid="neutral-strong"
                   >
                     <Text variant="body-default-xl">Lorant One</Text>
-                    <Row
-                      fillWidth
-                      horizontal="space-between"
-                      vertical="end"
-                      paddingRight="16"
-                    >
+                    <Row fillWidth horizontal="space-between" vertical="end" paddingRight="16">
                       <Column gap="4">
                         <Text variant="body-default-m">08 / 27</Text>
                         <Text variant="body-default-m">1234 5678 1234 5678</Text>
@@ -631,14 +641,7 @@ export default function Home() {
         </Row>
 
         {/* PROFILE */}
-        <Row
-          horizontal="center"
-          paddingX="32"
-          paddingY="64"
-          fillWidth
-          gap="32"
-          position="relative"
-        >
+        <Row horizontal="center" paddingX="32" paddingY="64" fillWidth gap="32" position="relative">
           <Background
             mask={{
               cursor: true,
@@ -664,7 +667,14 @@ export default function Home() {
             }}
           />
           <Column maxWidth={32} gap="-1">
-            <Feedback icon variant="success" vertical="center" radius={undefined} topRadius="l" zIndex={1}>
+            <Feedback
+              icon
+              variant="success"
+              vertical="center"
+              radius={undefined}
+              topRadius="l"
+              zIndex={1}
+            >
               Your profile is public.
             </Feedback>
             <Column
@@ -933,28 +943,26 @@ export default function Home() {
           <Row maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Row>
           <Row fillWidth border="neutral-alpha-weak" mobileDirection="column">
             {links.map((link, index) => (
-              <SmartLink unstyled fillWidth target="_blank" key={link.href} href={link.href}>
-                <Card
-                  fillWidth
-                  padding="40"
-                  gap="8"
-                  direction="column"
-                  background={undefined}
-                  borderRight={index < links.length - 1 ? "neutral-alpha-weak" : undefined}
-                  border={undefined}
-                  radius={undefined}
-                >
-                  <Row fillWidth center gap="12">
-                    <Text variant="body-strong-m" onBackground="neutral-strong">
-                      {link.title}
-                    </Text>
-                    <Icon size="s" name="arrowUpRight" />
-                  </Row>
-                  <Text align="center" variant="body-default-s" onBackground="neutral-weak">
-                    {link.description}
+              <Card
+                key={index}
+                fillWidth
+                href={link.href}
+                padding="40"
+                gap="8"
+                direction="column"
+                borderRight={index < links.length - 1 ? "neutral-alpha-weak" : undefined}
+                border={undefined}
+              >
+                <Row fillWidth center gap="12">
+                  <Text variant="body-strong-m" onBackground="neutral-strong">
+                    {link.title}
                   </Text>
-                </Card>
-              </SmartLink>
+                  <Icon size="s" name="arrowUpRight" />
+                </Row>
+                <Text align="center" variant="body-default-s" onBackground="neutral-weak">
+                  {link.description}
+                </Text>
+              </Card>
             ))}
           </Row>
           <Row maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Row>
