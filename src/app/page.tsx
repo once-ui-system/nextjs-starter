@@ -3,6 +3,7 @@ import { BarGraph } from "@/once-ui/components/BarGraph";
 import { LineBarGraph } from "@/once-ui/components/LineBarGraph";
 import { LineGraph } from "@/once-ui/components/LineGraph";
 import { MultiBarGraph } from "@/once-ui/components/MultiBarGraph";
+import { PieChart } from "@/once-ui/components/PieChart";
 
 export default function Home() {
   return (
@@ -45,6 +46,49 @@ export default function Home() {
                 Powerful, responsive charts with automatic theming support
               </Text>
             </Column>
+
+            <Row fill gap="32" mobileDirection="column">
+              {/* Bar Graph */}
+              <Column fill>
+              <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" padding="32" gap="24">
+                  <Heading as="h3" variant="heading-default-m">
+                    Revenue
+                  </Heading>
+                  <PieChart
+                  fill
+                  height={20}
+                  showLegend={true}
+                  innerRadius="70%" 
+                  colorVariants={["info", "success", "danger", "purple"]} 
+                    data = {[
+                      { name: 'Category A', value: 400 },
+                      { name: 'Category B', value: 300 },
+                      { name: 'Category C', value: 300 },
+                      { name: 'Category D', value: 200 }
+                    ]}
+                  />
+                </Column>
+              </Column>
+              
+              {/* Line Graph */}
+              <Column fillWidth>
+                <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" padding="32" gap="24">
+                  <Heading as="h3" variant="heading-default-m">
+                    User Activity
+                  </Heading>
+                  <PieChart
+                    fill
+                    showLegend={true}
+                    data = {[
+                      { name: 'Category A', value: 400 },
+                      { name: 'Category B', value: 300 },
+                      { name: 'Category C', value: 300 },
+                      { name: 'Category D', value: 200 }
+                    ]}
+                  />
+                </Column>
+              </Column>
+            </Row>
             
             <Row fill gap="32" mobileDirection="column">
               {/* Bar Graph */}
