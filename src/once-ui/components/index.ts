@@ -43,6 +43,7 @@ export * from "./MegaMenu";
 export * from "./NavIcon";
 export * from "./NumberInput";
 export * from "./Option";
+export * from "./OTPInput";
 export * from "./PasswordInput";
 export * from "./RadioButton";
 export * from "./RevealFx";
