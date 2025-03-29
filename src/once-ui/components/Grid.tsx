@@ -30,7 +30,7 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       inline,
       columns,
       gap,
-      position,
+      position = "relative",
       aspectRatio,
       align,
       textVariant,
@@ -53,6 +53,8 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       marginBottom,
       marginX,
       marginY,
+      dark,
+      light,
       width,
       height,
       maxWidth,
@@ -121,7 +123,7 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
         const [scheme, , weight] = parts;
         return `${scheme}-${type}-alpha-${weight}`;
       }
-      
+
       const [scheme, weight] = value.split("-") as [ColorScheme, ColorWeight];
       return `${scheme}-${type}-${weight}`;
     };
@@ -230,6 +232,8 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       zIndex && `z-index-${zIndex}`,
       textType && `font-${textType}`,
       cursor && `cursor-${cursor}`,
+      dark && "dark-grid",
+      light && "light-grid",
       className,
     );
 

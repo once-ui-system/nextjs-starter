@@ -27,8 +27,22 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   direction?: "row" | "column" | "row-reverse" | "column-reverse";
   tabletDirection?: "row" | "column" | "row-reverse" | "column-reverse";
   mobileDirection?: "row" | "column" | "row-reverse" | "column-reverse";
-  horizontal?: "start" | "center" | "end" | "space-between" | "space-around" | "space-evenly" | "stretch";
-  vertical?: "start" | "center" | "end" | "space-between" | "space-around" | "space-evenly" | "stretch";
+  horizontal?:
+    | "start"
+    | "center"
+    | "end"
+    | "space-between"
+    | "space-around"
+    | "space-evenly"
+    | "stretch";
+  vertical?:
+    | "start"
+    | "center"
+    | "end"
+    | "space-between"
+    | "space-around"
+    | "space-evenly"
+    | "stretch";
   center?: boolean;
   wrap?: boolean;
   flex?: flex;
@@ -155,6 +169,8 @@ export interface DisplayProps extends HTMLAttributes<HTMLDivElement> {
     | "macro-long";
   opacity?: 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100;
   zIndex?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  dark?: boolean;
+  light?: boolean;
 }
 
 export interface CommonProps extends HTMLAttributes<HTMLDivElement> {
