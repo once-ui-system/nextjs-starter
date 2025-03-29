@@ -3,9 +3,10 @@
 import React, {useState, useCallback, useEffect} from "react";
 import {Input, DropdownWrapper, Flex, DateRange, DateRangePicker, Row} from ".";
 
-interface DateRangeInputProps extends Omit<React.ComponentProps<typeof Input>, "onChange" | "value"> {
+interface DateRangeInputProps extends Omit<React.ComponentProps<typeof Input>, "onChange" | "value" | "label"> {
     id: string;
-    label: string;
+    startLabel: string;
+    endLabel: string;
     value?: DateRange;
     onChange?: (range: DateRange) => void;
     minHeight?: number;
@@ -32,7 +33,8 @@ const formatDateRange = (range: DateRange): LocalizedDateRange => {
 
 export const DateRangeInput: React.FC<DateRangeInputProps> = ({
                                                                   id,
-                                                                  label,
+                                                                  startLabel = "Start",
+                                                                  endLabel = "End",
                                                                   value,
                                                                   onChange,
                                                                   error,
@@ -74,13 +76,12 @@ export const DateRangeInput: React.FC<DateRangeInputProps> = ({
                 }}
                 radius={"left"}
                 id={id}
-                label={label}
+                label={startLabel}
                 value={inputValue.startDate ?? ""}
                 error={error}
                 readOnly
                 onClick={handleInputClick}
-                {...rest}
-            />
+                {...rest}/>
             <Input
                 className="cursor-interactive"
                 style={{
@@ -88,7 +89,7 @@ export const DateRangeInput: React.FC<DateRangeInputProps> = ({
                 }}
                 radius={"right"}
                 id={id}
-                label={label}
+                label={endLabel}
                 value={inputValue.endDate ?? ""}
                 error={error}
                 readOnly
