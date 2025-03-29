@@ -38,8 +38,10 @@ import {
   Row,
   StyleOverlay,
   CompareImage,
+  ThemeSwitcher,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
+import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
@@ -99,6 +101,7 @@ export default function Home() {
 
   return (
     <Column fillWidth paddingY="80" paddingX="s" horizontal="center" flex={1}>
+      <ScrollToTop><IconButton variant="secondary" icon="chevronUp"/></ScrollToTop>
       <Fade
         zIndex={3}
         pattern={{
@@ -1005,6 +1008,7 @@ export default function Home() {
             <SmartLink href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
               MIT License
             </SmartLink>
+            <ThemeSwitcher marginTop="24"/>
           </Column>
         </Row>
       </Column>
