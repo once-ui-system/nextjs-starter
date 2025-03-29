@@ -123,14 +123,14 @@ const CustomTooltip = ({
             </p>
         </Flex>
         <Flex padding="xs" direction="column" horizontal="center" vertical="center">
-          <p className={styles.value} style={{ color: "var(--success-solid-strong)" }}>
-            {`${key1}: ${payload[0].value}`}
-          </p>
-          <p className={styles.value} style={{ color: "var(--danger-solid-strong)" }}>
-            {`${key2}: ${payload[1].value}`}
-          </p>
-          <p className={styles.value} style={{ color: "#6c5ce7" }}>
-            {`${key3}: ${payload[2].value}`}
+            <p className={styles.value} style={{ color: "var(--success-solid-strong)" }}>
+            {`${key1}: ${Number(payload[0].value).toLocaleString()}`}
+            </p>
+            <p className={styles.value} style={{ color: "var(--danger-solid-strong)" }}>
+            {`${key2}: ${Number(payload[1].value).toLocaleString()}`}
+            </p>
+            <p className={styles.value} style={{ color: "#6c5ce7" }}>
+            {`${key3}: ${Number(payload[2].value).toLocaleString()}`}
           </p>
         </Flex>
       </Flex>
@@ -139,7 +139,7 @@ const CustomTooltip = ({
   return null;
 };
 
-export const LineGraph: React.FC<LineGraphProps> = ({
+const LineGraph: React.FC<LineGraphProps> = ({
   data,
   xAxisKey = "name",
   yAxisKey1 = "value1",
@@ -318,3 +318,8 @@ export const LineGraph: React.FC<LineGraphProps> = ({
     </Flex>
   );
 };
+
+LineGraph.displayName = "LineGraph";
+
+export { LineGraph };
+export type { LineGraphProps };

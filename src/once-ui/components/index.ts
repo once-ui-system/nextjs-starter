@@ -5,7 +5,6 @@ export * from "./Avatar";
 export * from "./AvatarGroup";
 export * from "./Badge";
 export * from "./Background";
-export * from "./BarGraph"
 export * from "./Button";
 export * from "./Carousel";
 export * from "./Card";
@@ -39,8 +38,6 @@ export * from "./Kbar";
 export * from "./Kbd";
 export * from "./LetterFx";
 export * from "./Line";
-export * from "./LineBarGraph"
-export * from "./LineGraph"
 export * from "./Logo";
 export * from "./LogoCloud";
 export * from "./MegaMenu";
@@ -54,6 +51,7 @@ export * from "./RadioButton";
 export * from "./RevealFx";
 export * from "./Row";
 export * from "./Scroller";
+export * from "./ScrollToTop";
 export * from "./SegmentedControl";
 export * from "./Select";
 export * from "./Skeleton";

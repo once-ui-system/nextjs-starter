@@ -111,7 +111,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
               className={styles.value}
               style={{ color: entry.color }}
             >
-              {`${entry.name}: ${entry.value}`}
+              {`${entry.name.toLocaleString()}: ${entry.value.toLocaleString()}`}
             </p>
           ))}
         </Flex>
@@ -121,7 +121,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export const LineBarGraph: React.FC<LineBarGraphProps> = ({
+const LineBarGraph: React.FC<LineBarGraphProps> = ({
   data,
   xAxisKey = "name",
   lineDataKey = "lineValue",
@@ -331,3 +331,8 @@ export const LineBarGraph: React.FC<LineBarGraphProps> = ({
     </Flex>
   );
 };
+
+LineBarGraph.displayName = "LineBarGraph";
+
+export { LineBarGraph };
+export type { LineBarGraphProps };
