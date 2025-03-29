@@ -6,13 +6,14 @@
     "export": "next export",
     "build": "next build",
     "start": "next start",
+    "biome-write": "npx @biomejs/biome format --write .",
     "lint": "next lint"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.1",
     "classnames": "^2.5.1",
     "compressorjs": "^1.2.1",
-    "next": "15.1.4",
+    "next": "15.2.3",
     "postcss": "^8.4.39",
     "postcss-preset-env": "^9.5.15",
     "prismjs": "^1.29.0",
