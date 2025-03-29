@@ -1,14 +1,11 @@
 "use client";
 
 import React, { forwardRef } from "react";
-import { IconButton } from "./IconButton";
-import { Row } from "./Row";
-import { Flex } from "./Flex";
-import { useTheme } from "@/once-ui/components/ThemeProvider";
+import { Row, useTheme, IconButton } from "@/once-ui/components";
 
 type ThemeType = "system" | "dark" | "light";
 
-interface ThemeSwitchProps extends React.ComponentProps<typeof Flex> {
+interface ThemeSwitchProps extends React.ComponentProps<typeof Row> {
   defaultTheme?: ThemeType;
 }
 
