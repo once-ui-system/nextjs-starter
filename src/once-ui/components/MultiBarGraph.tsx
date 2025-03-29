@@ -111,7 +111,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
               onBackground="neutral-strong"
               style={{ color: entry.color }}
             >
-              {`${barLabels?.[index] || entry.dataKey}: ${entry.value}`}
+              {`${barLabels?.[index] || entry.dataKey}: ${entry.value.toLocaleString()}`}
             </Text>
           ))}
         </Flex>
@@ -121,7 +121,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
   return null;
 };
 
-export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
+const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
   data,
   xAxisKey = "name",
   yAxisKeys = ["value1", "value2", "value3"],
@@ -290,3 +290,8 @@ export const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
     </Flex>
   );
 };
+
+MultiBarGraph.displayName = "MultiBarGraph";
+
+export { MultiBarGraph };
+export type { MultiBarGraphProps };

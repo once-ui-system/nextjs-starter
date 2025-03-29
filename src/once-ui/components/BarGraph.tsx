@@ -74,7 +74,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
         </Flex>
         <Flex padding="s">
           <Text onBackground="neutral-strong">
-            {`${tooltipTitle}: ${data.value}`}
+            {`${tooltipTitle}: ${data.value.toLocaleString()}`}
           </Text>
         </Flex>
       </Flex>
@@ -83,7 +83,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
   return null;
 };
 
-export const BarGraph: React.FC<BarGraphProps> = ({
+const BarGraph: React.FC<BarGraphProps> = ({
   data,
   xAxisKey = "name",
   yAxisKey = "value",
@@ -103,6 +103,7 @@ export const BarGraph: React.FC<BarGraphProps> = ({
   hideXAxisTitle = false,
   hideYAxisTitle = false,
   hideAxisTitles = false,
+  ...flexProps
 }) => {
 
 
@@ -117,7 +118,7 @@ export const BarGraph: React.FC<BarGraphProps> = ({
   return (
     <Flex
       fill
-      style={{height: "100%"}}
+      fillHeight
       radius={radius}
       border={border}
       align="center"
@@ -125,6 +126,7 @@ export const BarGraph: React.FC<BarGraphProps> = ({
       vertical="center"
       background={background}
       className={blur ? styles.blur : undefined}
+      {...flexProps}
     >
       <Flex
         borderBottom={border}
@@ -236,3 +238,8 @@ export const BarGraph: React.FC<BarGraphProps> = ({
     </Flex>
   );
 };
+
+BarGraph.displayName = "BarGraph";
+
+export { BarGraph };
+export type { BarGraphProps };
