@@ -8,7 +8,7 @@ import styles from "./ToggleButton.module.scss";
 
 interface CommonProps {
   label?: ReactNode;
-  selected: boolean;
+  selected?: boolean;
   variant?: "ghost" | "outline";
   size?: "s" | "m" | "l";
   radius?:
@@ -21,7 +21,7 @@ interface CommonProps {
     | "top-right"
     | "bottom-right"
     | "bottom-left";
-  justifyContent?: "flex-start" | "center" | "flex-end" | "space-between";
+  justifyContent?: "start" | "center" | "end" | "space-between";
   fillWidth?: boolean;
   weight?: "default" | "strong";
   truncate?: boolean;
@@ -39,7 +39,7 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
   (
     {
       label,
-      selected,
+      selected = false,
       variant = "ghost",
       size = "m",
       radius,
@@ -87,15 +87,18 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
         {prefixIcon && <Icon name={prefixIcon} size={size === "l" ? "s" : "xs"} />}
         {(label || children) && (
           <Flex
+            fillWidth={fillWidth}
+            horizontal={justifyContent}
             padding={size === "s" ? "2" : "4"}
             textWeight={weight}
             textSize={size === "l" ? "m" : "s"}
             className="font-label"
+            position="static"
           >
             {label || children}
           </Flex>
         )}
-        {suffixIcon && <Icon name={suffixIcon} size={size === "l" ? "m" : "s"} />}
+        {suffixIcon && <Icon name={suffixIcon} size={size === "l" ? "s" : "xs"} />}
       </ElementType>
     );
   },

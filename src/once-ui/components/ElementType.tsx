@@ -5,6 +5,7 @@ import { Flex } from "./Flex";
 interface ElementTypeProps {
   href?: string;
   onClick?: () => void;
+  onLinkClick?: () => void;
   children: ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -14,7 +15,7 @@ interface ElementTypeProps {
 const isExternalLink = (url: string) => /^https?:\/\//.test(url);
 
 const ElementType = forwardRef<HTMLElement, ElementTypeProps>(
-  ({ href, type, onClick, children, className, style, ...props }, ref) => {
+  ({ href, type, onClick, onLinkClick, children, className, style, ...props }, ref) => {
     if (href) {
       const isExternal = isExternalLink(href);
       if (isExternal) {
@@ -26,6 +27,7 @@ const ElementType = forwardRef<HTMLElement, ElementTypeProps>(
             ref={ref as React.Ref<HTMLAnchorElement>}
             className={className}
             style={style}
+            onClick={() => onLinkClick?.()}
             {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
           >
             {children}
@@ -38,6 +40,7 @@ const ElementType = forwardRef<HTMLElement, ElementTypeProps>(
           ref={ref as React.Ref<HTMLAnchorElement>}
           className={className}
           style={style}
+          onClick={() => onLinkClick?.()}
           {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
           {children}
@@ -69,7 +72,7 @@ const ElementType = forwardRef<HTMLElement, ElementTypeProps>(
         {children}
       </Flex>
     );
-  }
+  },
 );
 
 ElementType.displayName = "ElementType";

@@ -28,21 +28,13 @@ const renderContent = (content: SideContent, clipPath: string) => {
   }
 
   return (
-    <Flex
-      fill
-      position="absolute"
-      style={{ clipPath }}
-    >
+    <Flex fill position="absolute" style={{ clipPath }}>
       {content.src}
     </Flex>
   );
 };
 
-export const CompareImage = ({
-  leftContent,
-  rightContent,
-  ...rest
-}: CompareImageProps) => {
+export const CompareImage = ({ leftContent, rightContent, ...rest }: CompareImageProps) => {
   const [position, setPosition] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
@@ -98,8 +90,8 @@ export const CompareImage = ({
       style={{ touchAction: "none" }}
       {...rest}
     >
-        {renderContent(leftContent, `inset(0 ${100 - position}% 0 0)`)}
-        {renderContent(rightContent, `inset(0 0 0 ${position}%)`)}
+      {renderContent(leftContent, `inset(0 ${100 - position}% 0 0)`)}
+      {renderContent(rightContent, `inset(0 0 0 ${position}%)`)}
 
       {/* Hit area and visible line */}
       <Flex
@@ -115,12 +107,7 @@ export const CompareImage = ({
         onMouseDown={handleMouseDown}
         onTouchStart={handleMouseDown}
       >
-        <Flex
-          width="1"
-          fillHeight
-          background="neutral-strong"
-          zIndex={2}
-        />
+        <Flex width="1" fillHeight background="neutral-strong" zIndex={2} />
       </Flex>
       <IconButton
         icon="chevronsLeftRight"

@@ -26,7 +26,7 @@ interface CommonProps {
   suffixIcon?: string;
   loading?: boolean;
   fillWidth?: boolean;
-  justifyContent?: "flex-start" | "center" | "flex-end" | "space-between";
+  justifyContent?: "start" | "center" | "end" | "space-between";
   children?: ReactNode;
   href?: string;
   className?: string;

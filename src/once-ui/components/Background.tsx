@@ -182,7 +182,6 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         top="0"
         left="0"
         zIndex={0}
-        position="relative"
         overflow="hidden"
         style={{
           ...maskStyle(),
@@ -239,12 +238,13 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             pointerEvents="none"
             className={styles.lines}
             opacity={lines.opacity}
-            style={{
-              "--lines-angle": `${lines.angle ?? 45}deg`,
-              "--lines-color": `var(--${lines.color ?? "brand-on-background-weak"})`,
-              "--lines-thickness": `${lines.thickness ?? 0.5}px`,
-              "--lines-spacing": `var(--static-space-${lines.size ?? "24"})`,
-              background: `
+            style={
+              {
+                "--lines-angle": `${lines.angle ?? 45}deg`,
+                "--lines-color": `var(--${lines.color ?? "brand-on-background-weak"})`,
+                "--lines-thickness": `${lines.thickness ?? 0.5}px`,
+                "--lines-spacing": `var(--static-space-${lines.size ?? "24"})`,
+                background: `
                 repeating-linear-gradient(
                   var(--lines-angle),
                   var(--static-transparent),
@@ -253,7 +253,8 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
                   var(--lines-color) var(--lines-spacing)
                 )
               `,
-            } as React.CSSProperties}
+              } as React.CSSProperties
+            }
           />
         )}
         {grid.display && (

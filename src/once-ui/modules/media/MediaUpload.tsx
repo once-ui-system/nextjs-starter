@@ -129,7 +129,6 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
 
     return (
       <Flex
-        position="relative"
         transition="micro-medium"
         overflow="hidden"
         cursor="interactive"

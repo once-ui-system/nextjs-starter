@@ -283,7 +283,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
               gap="4"
             >
               <Flex fillWidth horizontal="space-between" gap="8">
-                {typeof title === 'string' ? (
+                {typeof title === "string" ? (
                   <Heading id="dialog-title" variant="heading-strong-l">
                     {title}
                   </Heading>

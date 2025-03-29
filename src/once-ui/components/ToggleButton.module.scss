@@ -12,7 +12,7 @@
   
     &:hover, &:focus {
         background: var(--neutral-alpha-weak);
-        border-color: var(--neutral-alpha-medium);
+        border-color: var(--neutral-alpha-weak);
     }
   
     &.selected {
@@ -52,5 +52,5 @@
 }
 
 .outline {
-    border-color: var(--neutral-alpha-medium);
+    border-color: var(--neutral-alpha-weak);
 }

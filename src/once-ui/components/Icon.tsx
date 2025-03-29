@@ -33,29 +33,6 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
     },
     ref,
   ) => {
-    const IconComponent: IconType | undefined = iconLibrary[name];
-
-    if (!IconComponent) {
-      console.warn(`Icon "${name}" does not exist in the library.`);
-      return null;
-    }
-
-    if (onBackground && onSolid) {
-      console.warn(
-        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied.",
-      );
-    }
-
-    let colorClass = "color-inherit";
-
-    if (onBackground) {
-      const [scheme, weight] = onBackground.split("-") as [ColorScheme, ColorWeight];
-      colorClass = `${scheme}-on-background-${weight}`;
-    } else if (onSolid) {
-      const [scheme, weight] = onSolid.split("-") as [ColorScheme, ColorWeight];
-      colorClass = `${scheme}-on-solid-${weight}`;
-    }
-
     const [isTooltipVisible, setTooltipVisible] = useState(false);
     const [isHover, setIsHover] = useState(false);
 
@@ -72,15 +49,35 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       return () => clearTimeout(timer);
     }, [isHover]);
 
+    const IconComponent: IconType | undefined = iconLibrary[name];
+
+    if (!IconComponent) {
+      console.warn(`Icon "${name}" does not exist in the library.`);
+      return null;
+    }
+
+    if (onBackground && onSolid) {
+      console.warn(
+        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied.",
+      );
+    }
+
+    let colorClass = "color-inherit";
+    if (onBackground) {
+      const [scheme, weight] = onBackground.split("-") as [ColorScheme, ColorWeight];
+      colorClass = `${scheme}-on-background-${weight}`;
+    } else if (onSolid) {
+      const [scheme, weight] = onSolid.split("-") as [ColorScheme, ColorWeight];
+      colorClass = `${scheme}-on-solid-${weight}`;
+    }
+
     return (
       <Flex
         inline
         fit
-        position="relative"
         as="span"
         ref={ref}
         className={classNames(colorClass, styles.icon, styles[size])}
-        role={decorative ? "presentation" : undefined}
         aria-hidden={decorative ? "true" : undefined}
         aria-label={decorative ? undefined : name}
         onMouseEnter={() => setIsHover(true)}
