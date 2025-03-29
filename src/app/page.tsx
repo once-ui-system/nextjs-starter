@@ -952,6 +952,7 @@ export default function Home() {
                 href={link.href}
                 padding="40"
                 gap="8"
+                background="page"
                 direction="column"
                 borderRight={index < links.length - 1 ? "neutral-alpha-weak" : undefined}
                 border={undefined}
