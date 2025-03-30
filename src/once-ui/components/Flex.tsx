@@ -28,6 +28,8 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
     {
       as: Component = "div",
       inline,
+      dark,
+      light,
       direction,
       tabletDirection,
       mobileDirection,
@@ -61,7 +63,7 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       marginX,
       marginY,
       gap,
-      position,
+      position = "relative",
       center,
       width,
       height,
@@ -228,8 +230,14 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       overflowX && `overflow-x-${overflowX}`,
       overflowY && `overflow-y-${overflowY}`,
       flex && `flex-${flex}`,
-      horizontal && ((direction === "row" || direction === "row-reverse" || direction === undefined) ? `justify-${horizontal}` : `align-${horizontal}`),
-      vertical && ((direction === "row" || direction === "row-reverse" || direction === undefined) ? `align-${vertical}` : `justify-${vertical}`),
+      horizontal &&
+        (direction === "row" || direction === "row-reverse" || direction === undefined
+          ? `justify-${horizontal}`
+          : `align-${horizontal}`),
+      vertical &&
+        (direction === "row" || direction === "row-reverse" || direction === undefined
+          ? `align-${vertical}`
+          : `justify-${vertical}`),
       center && "center",
       fit && "fit",
       fitWidth && "fit-width",
@@ -246,6 +254,8 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       zIndex && `z-index-${zIndex}`,
       textType && `font-${textType}`,
       cursor && `cursor-${cursor}`,
+      dark && "dark-flex",
+      light && "light-flex",
       colorClass,
       className,
       ...variantClasses,

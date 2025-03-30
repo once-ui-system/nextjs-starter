@@ -5,19 +5,19 @@ import classNames from "classnames";
 import { headers } from "next/headers";
 import { Metadata } from "next";
 
-import { baseURL, style, meta, og, schema, social } from "@/once-ui/resources/config";
-import { Background, Column, Flex, ToastProvider } from "@/once-ui/components";
+import { baseURL, style, meta, og, schema, social } from "@/app/resources/config";
+import { Background, Column, Flex, ToastProvider, ThemeProvider } from "@/once-ui/components";
 
-import { Inter } from "next/font/google";
-import { Roboto_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 
-const primary = Inter({
+const primary = Geist({
   variable: "--font-primary",
   subsets: ["latin"],
   display: "swap",
 });
 
-const code = Roboto_Mono({
+const code = Geist_Mono({
   variable: "--font-code",
   subsets: ["latin"],
   display: "swap",
@@ -48,11 +48,11 @@ export async function generateMetadata(): Promise<Metadata> {
       description: og.description,
       url: "https://" + baseURL,
       images: [
-				{
-					url: og.image,
-					alt: og.title,
-				},
-			],
+        {
+          url: og.image,
+          alt: og.title,
+        },
+      ],
       type: og.type as
         | "website"
         | "article"
@@ -68,11 +68,11 @@ export async function generateMetadata(): Promise<Metadata> {
         | "video.other",
     },
     twitter: {
-			card: 'summary_large_image',
-			title: og.title,
-			description: og.description,
-			images: [og.image],
-		},
+      card: "summary_large_image",
+      title: og.title,
+      description: og.description,
+      images: [og.image],
+    },
     metadataBase,
   };
 }
@@ -95,6 +95,7 @@ export default function RootLayout({
 }>) {
   return (
     <Flex
+      suppressHydrationWarning
       as="html"
       lang="en"
       fillHeight
@@ -103,7 +104,6 @@ export default function RootLayout({
       data-brand={style.brand}
       data-accent={style.accent}
       data-border={style.border}
-      data-theme={style.theme}
       data-solid={style.solid}
       data-solid-style={style.solidStyle}
       data-surface={style.surface}
@@ -123,38 +123,60 @@ export default function RootLayout({
             __html: JSON.stringify(schemaData),
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'system';
+                  const root = document.documentElement;
+                  if (theme === 'system') {
+                    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                  } else {
+                    root.setAttribute('data-theme', theme);
+                  }
+                } catch (e) {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
+              })();
+            `,
+          }}
+        />
       </head>
-      <ToastProvider>
-        <Column as="body" fillWidth  margin="0" padding="0">
-          <Background
-            position="absolute"
-            mask={{
-              x: 100,
-              y: 0,
-              radius: 100,
-            }}
-            gradient={{
-              display: true,
-              x: 100,
-              y: 60,
-              width: 70,
-              height: 50,
-              tilt: -40,
-              opacity: 90,
-              colorStart: "accent-background-strong",
-              colorEnd: "page-background",
-            }}
-            grid={{
-              display: true,
-              opacity: 100,
-              width: "0.25rem",
-              color: "neutral-alpha-medium",
-              height: "0.25rem",
-            }}
-          />
-          {children}
-        </Column>
-      </ToastProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <Column as="body" fillWidth margin="0" padding="0">
+            <Background
+              position="absolute"
+              mask={{
+                x: 100,
+                y: 0,
+                radius: 100,
+              }}
+              gradient={{
+                display: true,
+                x: 100,
+                y: 60,
+                width: 70,
+                height: 50,
+                tilt: -40,
+                opacity: 90,
+                colorStart: "accent-background-strong",
+                colorEnd: "page-background",
+              }}
+              grid={{
+                display: true,
+                opacity: 100,
+                width: "0.25rem",
+                color: "neutral-alpha-medium",
+                height: "0.25rem",
+              }}
+            />
+            {children}
+          </Column>
+        </ToastProvider>
+      </ThemeProvider>
     </Flex>
   );
 }
