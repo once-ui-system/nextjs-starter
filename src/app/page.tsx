@@ -92,31 +92,22 @@ export default function Home() {
             
             <Row fill gap="32" mobileDirection="column">
               {/* Bar Graph */}
-              <Column fill>
-              <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" padding="32" gap="24">
-                  <Heading as="h3" variant="heading-default-m">
-                    Revenue
-                  </Heading>
-                  <BarGraph
-                  hideAxisTitles
-                  hideLabels
-                  height={20}
-                    barColor="success"
-                    tooltipTitle="Revenue"
-                    xAxisTitle="Month"
-                    yAxisTitle="USD"
-                    hideYAxisLabels={false}
-                    data={[
-                      { name: "Jan", value: 4500, startDate: "Jan", endDate: "January" },
-                      { name: "Feb", value: 5200, startDate: "Feb", endDate: "February" },
-                      { name: "Mar", value: 4900, startDate: "Mar", endDate: "March" },
-                      { name: "Apr", value: 6300, startDate: "Apr", endDate: "April" },
-                      { name: "May", value: 5900, startDate: "May", endDate: "May" },
-                      { name: "Jun", value: 8200, startDate: "Jun", endDate: "June" },
-                    ]}
-                  />
-                </Column>
-              </Column>
+              <BarGraph
+                title="Revenue"
+                description="How much dough we made"
+                hideLabels
+                tooltipTitle="Revenue"
+                xAxisTitle="Month"
+                yAxisTitle="USD"
+                data={[
+                  { name: "Jan", value: 4500, startDate: "Jan", endDate: "January" },
+                  { name: "Feb", value: 5200, startDate: "Feb", endDate: "February" },
+                  { name: "Mar", value: 4900, startDate: "Mar", endDate: "March" },
+                  { name: "Apr", value: 6300, startDate: "Apr", endDate: "April" },
+                  { name: "May", value: 5900, startDate: "May", endDate: "May" },
+                  { name: "Jun", value: 8200, startDate: "Jun", endDate: "June" },
+                ]}
+              />
               
               {/* Line Graph */}
               <Column fillWidth>
