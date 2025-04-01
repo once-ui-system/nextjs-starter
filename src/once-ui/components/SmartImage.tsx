@@ -3,7 +3,7 @@
 import React, { CSSProperties, useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
-import { Flex, Skeleton } from "./";
+import { Flex, Skeleton } from ".";
 
 export interface SmartImageProps extends React.ComponentProps<typeof Flex> {
   aspectRatio?: string;
