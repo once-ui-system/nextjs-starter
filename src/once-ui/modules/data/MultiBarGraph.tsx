@@ -10,7 +10,9 @@ import {
   Legend,
 } from "recharts";
 
-import { SpacingToken } from "../../types";
+import moment from "moment";
+
+import { SpacingToken, ColorScheme, ColorWeight } from "../../types";
 
 
 import styles from "./MultiBarGraph.module.scss";
@@ -81,9 +83,12 @@ interface MultiBarGraphProps extends React.ComponentProps<typeof Flex> {
    * When true, hides the Y axis  title
    * @default false
    */
+  timeFormat?: string;
+
+   isTimeSeries?: boolean;
 }
 
-const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
+const CustomTooltip = ({ active, payload, tooltipTitle, barLabels, isTimeSeries, timeFormat }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
@@ -94,14 +99,12 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
           horizontal="center"
           padding="8"
         >
-          <Text
+            <Text
             style={{ fontWeight: "600" }}
             onBackground="neutral-strong"
-          >
-            {data.startDate && data.endDate
-              ? `${data.startDate} - ${data.endDate}`
-              : data.name}
-          </Text>
+            >
+            {isTimeSeries ? moment(data.endDate || data.name).format(timeFormat) : (data.endDate?.toLocaleString() || data.name)}
+            </Text>
         </Flex>
         <Flex padding="s" direction="column">
           {payload.map((entry: any, index: number) => (
@@ -111,7 +114,10 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels }: any) => {
               onBackground="neutral-strong"
               style={{ color: entry.color }}
             >
-              {`${barLabels?.[index] || entry.dataKey}: ${entry.value.toLocaleString()}`}
+              {`${isTimeSeries 
+              ? (barLabels?.[index] || moment(entry.dataKey).format(timeFormat))
+              : (barLabels?.[index] || entry.dataKey)
+              }: ${isTimeSeries ? moment(entry.value).format(timeFormat) : entry.value.toLocaleString()}`}
             </Text>
           ))}
         </Flex>
@@ -141,6 +147,8 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
   hideYAxisTitle = false,
   hideAxisTitles = false,
   hideLabels = false,
+  isTimeSeries = false,
+  timeFormat,
   ...flexProps
 }) => {
 
@@ -192,6 +200,8 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                 fill: "var(--neutral-on-background-weak)",
               fontSize: 12,
               }}
+              tickFormatter = {format => isTimeSeries ? moment(format).format(timeFormat) : format}
+              domain={['auto', 'auto']}
               hide={hideLabels || hideXAxisLabels}
               label={
               xAxisTitle && !hideXAxisTitle && !hideAxisTitles
@@ -230,6 +240,8 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                 <CustomTooltip
                   tooltipTitle={tooltipTitle}
                   barLabels={barLabels}
+                  isTimeSeries={isTimeSeries}
+                  timeFormat={timeFormat}
                 />
               }
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
