@@ -41,7 +41,6 @@ export * from "./Line";
 export * from "./Logo";
 export * from "./LogoCloud";
 export * from "./MegaMenu";
-export * from "./MultiBarGraph"
 export * from "./NavIcon";
 export * from "./NumberInput";
 export * from "./Option";
