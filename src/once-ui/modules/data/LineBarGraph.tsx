@@ -12,8 +12,8 @@ import {
   Area,
 } from "recharts";
 import styles from "./LineBarGraph.module.scss";
-import { Flex, Heading } from ".";
-import { SpacingToken, ColorScheme, ColorWeight } from "../types";
+import { Flex, Heading } from "../../components";
+import { SpacingToken } from "../../types";
 
 
 interface DataPoint {

@@ -6,21 +6,21 @@ import {
   YAxis,
   ResponsiveContainer,
   CartesianGrid,
-  Tooltip
+  Tooltip,
 } from "recharts";
 
-import { SpacingToken, ColorScheme, ColorWeight } from "../types";
+import { SpacingToken } from "../../types";
 
 import styles from "./BarGraph.module.scss";
-import { Text, Flex, Heading, Line } from "."; // Import Text component from OnceUI
-import classNames from "classnames"; // Import classNames for conditional styling
+import { Text, Flex, Heading } from "../../components";
+import classNames from "classnames";
 
 interface DataPoint {
   name: string;
   value: number;
   startDate: string;
   endDate: string;
-  color?: string; // Optional color prop, if needed
+  color?: string;
 }
 
 type BarColor = "success" | "danger" | "purple";

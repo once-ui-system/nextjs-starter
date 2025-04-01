@@ -1,9 +1,9 @@
 import { Column, Heading, Text, Button, Logo, Badge, Line, LetterFx, Row } from "@/once-ui/components";
-import { BarGraph } from "@/once-ui/components/BarGraph";
-import { LineBarGraph } from "@/once-ui/components/LineBarGraph";
-import { LineGraph } from "@/once-ui/components/LineGraph";
-import { MultiBarGraph } from "@/once-ui/components/MultiBarGraph";
-import { PieChart } from "@/once-ui/components/PieChart";
+import { BarGraph } from "@/once-ui/modules/data/BarGraph";
+import { LineBarGraph } from "@/once-ui/modules/data/LineBarGraph";
+import { LineGraph } from "@/once-ui/modules/data/LineGraph";
+import { MultiBarGraph } from "@/once-ui/modules/data/MultiBarGraph";
+import { PieChart } from "@/once-ui/modules/data/PieChart";
 
 export default function Home() {
   return (
