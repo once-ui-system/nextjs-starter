@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import {
   BarChart,
   Bar,
@@ -11,76 +10,68 @@ import {
 } from "recharts";
 
 import { SpacingToken } from "../../types";
-
-import styles from "./BarGraph.module.scss";
-import { Text, Flex, Heading } from "../../components"; // Import Text component from OnceUI
+import { Text, Flex, Column } from "../../components";
 
 interface DataPoint {
   name: string;
   value: number;
   startDate: string;
   endDate: string;
-  color?: string; // Optional color prop, if needed
+  color?: string;
 }
 
 type BarColor = "success" | "danger" | "purple";
 
 interface BarGraphProps extends React.ComponentProps<typeof Flex> {
   data: DataPoint[];
-  xAxisKey?: string; // Allows customization of the x-axis data key
-  yAxisKey?: string; // Allows customization of the y-axis data key
-  barColor?: BarColor; // Prop for bar color
-  /**
-   * Size of the bar graph.
-   * @default "m"
-   */
+  xAxisKey?: string;
+  yAxisKey?: string;
+  barColor?: BarColor;
   barWidth?: SpacingToken | "fill" | number | string;
-  blur?: boolean; // Controls backdrop blur effect
-  title?: string; // Title for the bar graph
-  tooltipTitle?: string; // Title for the tooltip
-  /** Hide X-axis labels */
+  blur?: boolean;
+  title?: string;
+  description?: string;
+  tooltipTitle?: string;
   hideXAxisLabels?: boolean;
-  /** Hide Y-axis labels */
   hideYAxisLabels?: boolean;
-  /** Hide both X and Y axis labels */
   hideLabels?: boolean;
-  /** Title for X-axis */
   xAxisTitle?: string;
-  /** Title for Y-axis */
   yAxisTitle?: string;
-  /** Hide X-axis title */
   hideXAxisTitle?: boolean;
-  /** Hide Y-axis title */
   hideYAxisTitle?: boolean;
-  /** Hide both X and Y axis titles */
   hideAxisTitles?: boolean;
-
-  timeFormat?: string; // Format for date display
-  isTimeSeries?: boolean; // Flag for time series data
 }
 
-const CustomTooltip = ({ active, payload, tooltipTitle, timeFormat, isTimeSeries }: any) => {
+const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <Flex className={styles.tooltip} minWidth={8} background="surface" radius="l" border="neutral-alpha-medium" direction="column">
+      <Column
+        minWidth={8}
+        background="surface"
+        radius="m"
+        border="neutral-alpha-medium">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
-          horizontal="center"
-          padding="8"
+          paddingY="8"
+          paddingX="12"
         >
           <Text
-            style={{ fontWeight: "500" }}
+            variant="label-strong-s"
             onBackground="neutral-strong"
-          >{isTimeSeries ? moment(data.name).format(timeFormat) : data.name}</Text>
-        </Flex>
-        <Flex padding="s">
-          <Text onBackground="neutral-strong">
-            {`${tooltipTitle}: ${data.value.toLocaleString()}`}
+          >
+            {xAxisTitle && `${xAxisTitle}: `}{data.endDate}
           </Text>
         </Flex>
-      </Flex>
+        <Flex
+          paddingY="8"
+          paddingX="12">
+          <Text onBackground="neutral-strong" variant="label-default-s">
+            {tooltipTitle && `${tooltipTitle}: `}{data.value.toLocaleString()}
+          </Text>
+        </Flex>
+      </Column>
     );
   }
   return null;
@@ -95,7 +86,7 @@ const BarGraph: React.FC<BarGraphProps> = ({
   blur = false,
   border,
   title,
-  radius,
+  description,
   tooltipTitle,
   background,
   hideXAxisLabels = false,
@@ -106,62 +97,54 @@ const BarGraph: React.FC<BarGraphProps> = ({
   hideXAxisTitle = false,
   hideYAxisTitle = false,
   hideAxisTitles = false,
-  timeFormat = "YYYY-MM-DD",
-  isTimeSeries = false,
-  ...flexProps
+  ...flex
 }) => {
-
-
-  const barColorMap = {
-    success: "var(--success-solid-strong)",
-    danger: "var(--danger-solid-strong)",
-    purple: "#8a63d2",
-  };
-
-  const barSolidColor = barColorMap[barColor];
-
   return (
-    <Flex
-      fill
-      fillHeight
-      radius={radius}
-      border={border}
-      align="center"
-      direction="column"
-      vertical="center"
-      background={background}
-      className={blur ? styles.blur : undefined}
-      {...flexProps}
+    <Column
+      fillWidth
+      height={24}
+      radius="l"
+      background="surface"
+      border="neutral-alpha-medium"
+      data-viz="categorical"
+      {...flex}
     >
-      <Flex
-        borderBottom={border}
+      <Column
+        borderBottom="neutral-alpha-medium"
         fillWidth
-        align="center"
+        paddingX="20"
+        paddingY="12"
+        gap="4"
         vertical="center"
-        horizontal="center"
       >
-        <Heading padding="s">{title}</Heading>
-      </Flex>
-      <Flex padding={title ? "s" : "2"} fill>
+        {title && (
+          <Text variant="heading-strong-m">
+            {title}
+          </Text>
+        )}
+        {description && (
+          <Text variant="label-default-s" onBackground="neutral-weak">
+            {description}
+          </Text>
+        )}
+      </Column>
+      <Flex fill>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
-            margin={{  left: 10, bottom: 15 }}
+            margin={{ left: 0, bottom: 0 }}
             barGap={4}
           >
             <CartesianGrid
               strokeDasharray="2 2"
               horizontal={true}
               vertical={false}
-              stroke="var(--neutral-border-medium)" // Use neutral border color
+              stroke="var(--neutral-border-medium)"
             />
             <XAxis
               dataKey={xAxisKey}
               axisLine={false}
               tickLine={false}
-
-              tickFormatter = {format => isTimeSeries ? moment(format).format(timeFormat) : format}
-              domain = {['auto', 'auto']}
               tick={hideXAxisLabels || hideLabels ? false : {
                 fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,
@@ -174,45 +157,43 @@ const BarGraph: React.FC<BarGraphProps> = ({
               }
             />
             <YAxis
-              axisLine={false}
+              allowDataOverflow
+              axisLine={{
+                stroke: "var(--neutral-alpha-medium)",
+              }}
               tickLine={false}
+              padding={{ top: 40 }}
               tick={{
                 fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,
                }}
-               width={yAxisTitle ? 40 : 0}
+              width={yAxisTitle ? 64 : 0}
               label={
                 yAxisTitle && !hideYAxisTitle && !hideAxisTitles
                   ? { 
-                      value: yAxisTitle, 
-                      angle: -90, // Rotate the label 90 degrees counter-clockwise
-                      position: 'left', 
-                      fontWeight: "500",
-                      dx: 5, // Move label to the left
-                      dy: -20, // Adjust vertical position
+                      value: yAxisTitle,
+                      position: 'insideTop',
+                      offset: 10,
+                      fontSize: 12,
                       fill: "var(--neutral-on-background-medium)" 
                     }
                   : undefined
               }
             />
             <Tooltip
-              content={<CustomTooltip tooltipTitle={tooltipTitle} xAxisTitle={xAxisTitle} timeFormat={timeFormat}  isTimeSeries={isTimeSeries}/>}
+              content={<CustomTooltip tooltipTitle={tooltipTitle} xAxisTitle={xAxisTitle} />}
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
-              wrapperClassName={styles.tooltipWrapper} // Apply styles to the tooltip wrapper
             />
             <defs>
               <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
                 {[
-                  { offset: "0%", opacity: 0.8 },
-                  { offset: "35%", opacity: 0.6 },
-                  { offset: "70%", opacity: 0.3 },
-                  { offset: "95%", opacity: 0.1 },
+                  { offset: "0%", opacity: 0.6 },
                   { offset: "100%", opacity: 0 },
                 ].map(({ offset, opacity }) => (
                   <stop
                     key={offset}
                     offset={offset}
-                    stopColor={barSolidColor}
+                    stopColor="var(--data-solid-100)"
                     stopOpacity={opacity}
                   />
                 ))}
@@ -221,29 +202,29 @@ const BarGraph: React.FC<BarGraphProps> = ({
             <Bar
               dataKey={yAxisKey}
               fill="url(#barGradient)"
-              stroke={barSolidColor}
+              stroke="var(--data-solid-100)"
               strokeWidth={1}
               barSize={
               barWidth === "fill"
                 ? "100%"
                 : barWidth === "xs"
-                ? 6
-                : barWidth === "s"
                 ? 12
+                : barWidth === "s"
+                ? 16
                 : barWidth === "m"
-                ? 20
+                ? 24
                 : barWidth === "l"
                 ? 40
                 : barWidth === "xl"
-                ? 50
+                ? 64
                 : barWidth
               }
-              radius={[6, 6, 0, 0]}
+              radius={[4, 4, 4, 4]}
             />
           </BarChart>
         </ResponsiveContainer>
       </Flex>
-    </Flex>
+    </Column>
   );
 };
 
