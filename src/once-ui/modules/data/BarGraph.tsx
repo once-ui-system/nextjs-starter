@@ -10,10 +10,10 @@ import {
   Tooltip,
 } from "recharts";
 
-import { SpacingToken, ColorScheme, ColorWeight } from "../../types";
+import { SpacingToken } from "../../types";
 
 import styles from "./BarGraph.module.scss";
-import { Text, Flex, Heading, Line } from "../../components"; // Import Text component from OnceUI
+import { Text, Flex, Heading } from "../../components"; // Import Text component from OnceUI
 
 interface DataPoint {
   name: string;
