@@ -10,11 +10,11 @@ import {
   Legend,
 } from "recharts";
 
-import { SpacingToken, ColorScheme, ColorWeight } from "../types";
+import { SpacingToken } from "../../types";
 
 
 import styles from "./MultiBarGraph.module.scss";
-import { Text, Flex, Heading } from ".";
+import { Text, Flex, Heading } from "../../components";
 
 // Data structure supporting multiple values
 interface MultiBarDataPoint {
