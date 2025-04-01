@@ -10,7 +10,7 @@ import {
   TooltipProps,
 } from "recharts";
 import styles from "./LineGraph.module.scss";
-import { Flex, Heading } from ".";
+import { Flex, Heading } from "../../components";
 
 interface DataPoint {
   name: string;

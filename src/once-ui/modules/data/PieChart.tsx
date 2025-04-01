@@ -8,7 +8,7 @@ import {
   Legend,
 } from "recharts";
 import styles from "./PieChart.module.scss";
-import { Flex, Heading } from ".";
+import { Flex, Heading } from "../../components";
 
 interface DataPoint {
   name: string;

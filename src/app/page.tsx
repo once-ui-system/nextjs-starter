@@ -43,11 +43,11 @@ import {
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 
-import { BarGraph } from "@/once-ui/components/BarGraph";
-import { LineGraph } from "@/once-ui/components/LineGraph";
-import { MultiBarGraph } from "@/once-ui/components/MultiBarGraph";
-import { LineBarGraph } from "@/once-ui/components/LineBarGraph";
-import { PieChart } from "@/once-ui/components/PieChart";
+import { BarGraph } from "@/once-ui/modules/data/BarGraph";
+import { LineGraph } from "@/once-ui/modules/data/LineGraph";
+import { MultiBarGraph } from "@/once-ui/modules/data/MultiBarGraph";
+import { LineBarGraph } from "@/once-ui/modules/data/LineBarGraph";
+import { PieChart } from "@/once-ui/modules/data/PieChart";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("");
@@ -989,8 +989,7 @@ export default function Home() {
                     User Activity
                   </Heading>
                   <LineGraph
-                  hideAxisTitles
-                    height={20}
+                    hideAxisTitles
                     xAxisTitle="Week"
                     yAxisTitle="Users"
                     value1="Desktop"
@@ -1040,8 +1039,7 @@ export default function Home() {
                     Conversions vs Traffic
                   </Heading>
                   <LineBarGraph
-                  hideAxisTitles
-                    height={20}
+                    hideAxisTitles
                     lineColorVariant="info"
                     showArea={true}
                     xAxisTitle="Day"
