@@ -7,12 +7,11 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   Tooltip,
-  Legend,
 } from "recharts";
 
 import moment from "moment";
 
-import { SpacingToken, ColorScheme, ColorWeight } from "../../types";
+import { SpacingToken } from "../../types";
 
 
 import styles from "./MultiBarGraph.module.scss";
