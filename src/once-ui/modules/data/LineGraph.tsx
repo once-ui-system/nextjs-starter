@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment'
 import {
   AreaChart,
   Area,
@@ -13,10 +14,11 @@ import styles from "./LineGraph.module.scss";
 import { Flex, Heading } from "../../components";
 
 interface DataPoint {
-  name: string;
+  name: string | number | Date;
   value1: number;
   value2: number;
   value3: number;
+  [key: string]: any; // Allow for flexible data structure
 }
 
 interface LineGraphProps extends React.ComponentProps<typeof Flex> {
@@ -77,10 +79,24 @@ interface LineGraphProps extends React.ComponentProps<typeof Flex> {
   allDashed?: boolean,
 
   fixedYRange?: [number, number]; // [min, max] for y-axis
+  
   /**
-   * Show tick lines on the X-axis when true
+   * Whether the X axis contains date/time values
    * @default false
    */
+  isTimeAxis?: boolean;
+  
+  /**
+  
+  /**
+   * Format for displaying times in tooltip and axis (when time is present)
+   * @default "HH:mm"
+   */
+  timeFormat?: string;
+   
+  isTimeSeries?: boolean; // Whether the X axis contains date/time values
+
+  curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural" ; // Type of curve for the line
 }
 
 interface CustomTooltipProps extends TooltipProps<number, string> {
@@ -91,8 +107,12 @@ interface CustomTooltipProps extends TooltipProps<number, string> {
   yAxisKey1?: string;
   yAxisKey2?: string;
   yAxisKey3?: string;
-  xAxisTitle?: string; // Add this property
+  xAxisTitle?: string;
+  isTimeSeries?: boolean;
+  timeFormat?: string;
 }
+
+
 
 const CustomTooltip = ({
   active,
@@ -105,9 +125,13 @@ const CustomTooltip = ({
   yAxisKey1 = "value1",
   yAxisKey2 = "value2",
   yAxisKey3 = "value3",
-  xAxisTitle = "", // Add default value
+  xAxisTitle = "",
+  isTimeSeries = false,
+  timeFormat = "MMM dd, yyyy",
 }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
+
+      
     return (
       <Flex className={styles.tooltip} background="surface" radius="l" border="neutral-alpha-medium" direction="column">
         <Flex
@@ -119,7 +143,7 @@ const CustomTooltip = ({
           padding="4"
         >
             <p className={styles.label}>
-              {tooltipTitle ? tooltipTitle : `${xAxisTitle}: ${label}`}
+                {tooltipTitle ?? xAxisTitle}: {isTimeSeries ? moment(label).format(timeFormat) : label.toLocaleString()}
             </p>
         </Flex>
         <Flex padding="xs" direction="column" horizontal="center" vertical="center">
@@ -167,9 +191,15 @@ const LineGraph: React.FC<LineGraphProps> = ({
   hideYAxisLabels = false,
   hideLabels = false,
   fixedYRange,
+  isTimeAxis = false,
+  timeFormat = "MMM dd, yyyy",
+  isTimeSeries = false,
+  curveType = "linear",
   ...flexProps
 }) => {
- 
+  
+
+
 
   return (
     <Flex
@@ -198,7 +228,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
-            margin={{  left: 10, bottom: 15 }}
+            margin={{ left: 10, bottom: 15 }}
           >
             <defs>
               <linearGradient id="colorValue1" x1="0" y1="0" x2="0" y2="1">
@@ -232,12 +262,15 @@ const LineGraph: React.FC<LineGraphProps> = ({
               }}
               label={
                 xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle,  fontWeight: "500", position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
+                  ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
                   : undefined
               }
               axisLine={false}
               tickLine={false}
               hide={hideXAxisLabels || hideLabels}
+              tickFormatter = {format => isTimeSeries ? moment(format).format(timeFormat) : format}
+              domain = {['auto', 'auto']}
+              
             />
             <YAxis
               stroke="var(--neutral-background-strong)"
@@ -260,7 +293,6 @@ const LineGraph: React.FC<LineGraphProps> = ({
                     }
                   : undefined
               }
-
               axisLine={false}
               hide={hideYAxisLabels || hideLabels}
               domain={fixedYRange ? fixedYRange : undefined}
@@ -275,7 +307,9 @@ const LineGraph: React.FC<LineGraphProps> = ({
                   yAxisKey1={yAxisKey1}
                   yAxisKey2={yAxisKey2}
                   yAxisKey3={yAxisKey3}
-                  xAxisTitle={xAxisTitle} // Add this prop
+                  xAxisTitle={xAxisTitle}
+                  timeFormat={timeFormat}
+                  isTimeSeries={isTimeSeries}
                 />
               }
               contentStyle={{
@@ -286,7 +320,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
               }}
             />
             <Area
-              type="linear"
+              type={curveType}
               dataKey={yAxisKey1}
               stroke="#047857"
               strokeWidth={1.5}
@@ -295,7 +329,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
               fill="url(#colorValue1)"
             />
             <Area
-              type="linear"
+              type={curveType}
               dataKey={yAxisKey2}
               strokeDasharray={allDashed || secondDashed ? "5 5" : "0"}
               stroke="#991b1b"
@@ -304,7 +338,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
               fill="url(#colorValue2)"
             />
             <Area
-              type="linear"
+              type={curveType}
               dataKey={yAxisKey3}
               strokeDasharray={allDashed || thirdDashed ? "5 5" : "0"}
               stroke="#6c5ce7"
