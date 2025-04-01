@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import {
   ComposedChart,
   Line,
@@ -13,7 +14,7 @@ import {
 } from "recharts";
 import styles from "./LineBarGraph.module.scss";
 import { Flex, Heading } from "../../components";
-import { SpacingToken } from "../../types";
+import { SpacingToken, ColorScheme, ColorWeight } from "../../types";
 
 
 interface DataPoint {
@@ -90,9 +91,16 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
    * @default false
    */
   showLegend?: boolean;
+
+  timeFormat?: string; // Format for date display
+
+  isTimeSeries?: boolean; // Whether the X axis contains date/time values
+
+  curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural" ; // Type of curve for the line
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+
+const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat }: any) => {
   if (active && payload && payload.length) {
     return (
       <Flex className={styles.tooltip} minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
@@ -102,7 +110,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
           horizontal="center"
           padding="8"
         >
-          <p className={styles.label}>{label}</p>
+          <p className={styles.label}>{isTimeSeries ? moment(label).format(timeFormat) : label.toLocaleString()}</p>
         </Flex>
         <Flex padding="s" direction="column">
           {payload.map((entry: any, index: number) => (
@@ -146,7 +154,10 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
   hideXAxisTitle = false,
   hideYAxisTitle = false,
   hideAxisTitles = false,
+  timeFormat = "YYYY-MM-DD",
+  isTimeSeries = false,
   showLegend = false,
+  curveType = "monotone", // Default curve type
   ...flexProps
 }) => {
  
@@ -230,6 +241,8 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
               dataKey={xAxisKey}
               axisLine={false}
               tickLine={false}
+              tickFormatter = {format => isTimeSeries ? moment(format).format(timeFormat) : format}
+              domain={['auto', 'auto']}
               tick={hideXAxisLabels || hideLabels ? false : {
                 fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,
@@ -267,7 +280,7 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
               hide={false}
             />
             <Tooltip
-              content={<CustomTooltip />}
+              content={<CustomTooltip isTimeSeries={isTimeSeries} timeFormat={timeFormat} />}
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
               wrapperClassName={styles.tooltipWrapper}
             />
@@ -303,7 +316,7 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
             
             {showArea ? (
               <Area
-                type="monotone"
+                type={curveType}
                 dataKey={lineDataKey}
                 name={lineName}
                 stroke={finalLineColor}

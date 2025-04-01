@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import {
   BarChart,
   Bar,
@@ -9,18 +10,17 @@ import {
   Tooltip,
 } from "recharts";
 
-import { SpacingToken } from "../../types";
+import { SpacingToken, ColorScheme, ColorWeight } from "../../types";
 
 import styles from "./BarGraph.module.scss";
-import { Text, Flex, Heading } from "../../components";
-import classNames from "classnames";
+import { Text, Flex, Heading, Line } from "../../components"; // Import Text component from OnceUI
 
 interface DataPoint {
   name: string;
   value: number;
   startDate: string;
   endDate: string;
-  color?: string;
+  color?: string; // Optional color prop, if needed
 }
 
 type BarColor = "success" | "danger" | "purple";
@@ -54,9 +54,12 @@ interface BarGraphProps extends React.ComponentProps<typeof Flex> {
   hideYAxisTitle?: boolean;
   /** Hide both X and Y axis titles */
   hideAxisTitles?: boolean;
+
+  timeFormat?: string; // Format for date display
+  isTimeSeries?: boolean; // Flag for time series data
 }
 
-const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
+const CustomTooltip = ({ active, payload, tooltipTitle, timeFormat, isTimeSeries }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
@@ -70,7 +73,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
           <Text
             style={{ fontWeight: "500" }}
             onBackground="neutral-strong"
-          >{`${xAxisTitle}: ${data.endDate}`}</Text>
+          >{isTimeSeries ? moment(data.name).format(timeFormat) : data.name}</Text>
         </Flex>
         <Flex padding="s">
           <Text onBackground="neutral-strong">
@@ -103,6 +106,8 @@ const BarGraph: React.FC<BarGraphProps> = ({
   hideXAxisTitle = false,
   hideYAxisTitle = false,
   hideAxisTitles = false,
+  timeFormat = "YYYY-MM-DD",
+  isTimeSeries = false,
   ...flexProps
 }) => {
 
@@ -154,6 +159,9 @@ const BarGraph: React.FC<BarGraphProps> = ({
               dataKey={xAxisKey}
               axisLine={false}
               tickLine={false}
+
+              tickFormatter = {format => isTimeSeries ? moment(format).format(timeFormat) : format}
+              domain = {['auto', 'auto']}
               tick={hideXAxisLabels || hideLabels ? false : {
                 fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,
@@ -188,7 +196,7 @@ const BarGraph: React.FC<BarGraphProps> = ({
               }
             />
             <Tooltip
-              content={<CustomTooltip tooltipTitle={tooltipTitle} xAxisTitle={xAxisTitle} />}
+              content={<CustomTooltip tooltipTitle={tooltipTitle} xAxisTitle={xAxisTitle} timeFormat={timeFormat}  isTimeSeries={isTimeSeries}/>}
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
               wrapperClassName={styles.tooltipWrapper} // Apply styles to the tooltip wrapper
             />
