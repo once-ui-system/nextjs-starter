@@ -75,7 +75,6 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       <Flex
         inline
         fit
-        position="relative"
         as="span"
         ref={ref}
         className={classNames(colorClass, styles.icon, styles[size])}
