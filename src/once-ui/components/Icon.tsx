@@ -2,15 +2,15 @@
 
 import React, { forwardRef, useState, useEffect, ReactNode } from "react";
 import classNames from "classnames";
-import { IconType } from "react-icons";
-import { iconLibrary } from "../icons";
+import { IconType, } from "react-icons";
+import { iconLibrary, IconName } from "../icons";
 import { ColorScheme, ColorWeight } from "../types";
 import { Flex, Tooltip } from ".";
 import styles from "./Icon.module.scss";
 import iconStyles from "./IconButton.module.scss";
 
 interface IconProps extends React.ComponentProps<typeof Flex> {
-  name: string;
+  name: IconName;
   onBackground?: `${ColorScheme}-${ColorWeight}`;
   onSolid?: `${ColorScheme}-${ColorWeight}`;
   size?: "xs" | "s" | "m" | "l" | "xl";
