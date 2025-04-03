@@ -1,0 +1,9 @@
+/* SlideAccordion.module.scss */
+.expandTransition {
+  transition: width 550ms cubic-bezier(0.33, 1, 0.68, 1), 
+              opacity 350ms ease-in-out;
+  will-change: width, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}
