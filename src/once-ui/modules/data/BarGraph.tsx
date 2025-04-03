@@ -145,6 +145,7 @@ const BarGraph: React.FC<BarGraphProps> = ({
               dataKey={xAxisKey}
               axisLine={false}
               tickLine={false}
+              height={hideXAxisLabels || hideLabels ? 0 : 50}
               tick={hideXAxisLabels || hideLabels ? false : {
                 fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,
@@ -152,7 +153,7 @@ const BarGraph: React.FC<BarGraphProps> = ({
               
               label={
                 xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -20, fill: "var(--neutral-on-background-medium)" }
+                  ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -23, fill: "var(--neutral-on-background-medium)" }
                   : undefined
               }
             />
