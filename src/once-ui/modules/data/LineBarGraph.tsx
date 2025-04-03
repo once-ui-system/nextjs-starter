@@ -112,12 +112,12 @@ const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat }: any
           horizontal="center"
           padding="8"
         >
-          <Text>{isTimeSeries ? moment(label).format(timeFormat) : label.toLocaleString()}</Text>
+          <Text variant="label-strong-s">{isTimeSeries ? moment(label).format(timeFormat) : label.toLocaleString()}</Text>
         </Flex>
-        <Flex padding="s" direction="column">
+        <Flex padding="8" direction="column">
           {payload.map((entry: any, index: number) => (
             <Text
-             variant="label-strong-s"
+             variant="label-default-s"
               key={`item-${index}`}
               style={{ color: entry.color }}
             >

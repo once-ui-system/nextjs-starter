@@ -165,6 +165,7 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
       align="center"
       direction="column"
       vertical="center"
+      data-viz="categorical"
       background={background}
       {...flexProps}
     >
