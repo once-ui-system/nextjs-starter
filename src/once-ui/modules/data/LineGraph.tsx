@@ -272,6 +272,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
                             fill: "var(--neutral-on-background-weak)",
                             fontSize: 12,
                           }}
+
                           
                           label={
                             xAxisTitle && !hideXAxisTitle && !hideAxisTitles
@@ -328,7 +329,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
             <Area
               type={curveType}
               dataKey={yAxisKey1}
-              stroke="#047857"
+              stroke="var(--data-solid-100)"
               strokeWidth={1.5}
               strokeDasharray={allDashed || firstDashed ? "5 5" : "0"}
               fillOpacity={1}
@@ -338,7 +339,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
               type={curveType}
               dataKey={yAxisKey2}
               strokeDasharray={allDashed || secondDashed ? "5 5" : "0"}
-              stroke="#991b1b"
+              stroke="var(--data-solid-500)"
               strokeWidth={1.5}
               fillOpacity={1}
               fill="url(#colorValue2)"
@@ -347,7 +348,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
               type={curveType}
               dataKey={yAxisKey3}
               strokeDasharray={allDashed || thirdDashed ? "5 5" : "0"}
-              stroke="#6c5ce7"
+              stroke="var(--data-solid-300)"
               strokeWidth={1.5}
               fillOpacity={1}
               fill="url(#colorValue3)"
