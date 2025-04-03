@@ -118,7 +118,7 @@ const BarGraph: React.FC<BarGraphProps> = ({
         vertical="center"
       >
         {title && (
-          <Text variant="heading-strong-m">
+          <Text variant="heading-strong-s">
             {title}
           </Text>
         )}
@@ -136,10 +136,9 @@ const BarGraph: React.FC<BarGraphProps> = ({
             barGap={4}
           >
             <CartesianGrid
-              strokeDasharray="2 2"
               horizontal={true}
               vertical={false}
-              stroke="var(--neutral-border-medium)"
+              stroke="var(--neutral-alpha-weak)"
             />
             <XAxis
               dataKey={xAxisKey}
