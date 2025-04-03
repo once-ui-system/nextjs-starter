@@ -180,14 +180,13 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
 
   return (
     <Flex
-      fill
-      radius="l"
-      border={border}
-      align="center"
-      direction="column"
-      vertical="center"
-      background={background}
-      className={blur ? styles.blur : undefined}
+    direction="column"
+    fillHeight
+    fillWidth
+    height={24}
+    border={border}
+    radius="l"
+    data-viz="categorical"
       {...flexProps}
     >
       {title && (
@@ -207,11 +206,12 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
               )}
               </Column>
             )}
-      <Flex padding={title ? "s" : "2"} fill>
+      <Flex fill>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={data}
-            margin={{ left: 10, bottom: 15 }}
+            margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
+            barGap={4}
           >
             <defs>
               {/* Bar gradient */}
@@ -249,43 +249,41 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
               dataKey={xAxisKey}
               axisLine={false}
               tickLine={false}
-              tickFormatter = {format => isTimeSeries ? moment(format).format(timeFormat) : format}
-              domain={['auto', 'auto']}
+              height={hideXAxisLabels ? 0 : 50}
               tick={hideXAxisLabels || hideLabels ? false : {
                 fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,
               }}
+              
               label={
                 xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle,  fontWeight: "500", position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
+                  ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -23, fill: "var(--neutral-on-background-medium)" }
                   : undefined
               }
-              // Make sure to always show the grid even if labels are hidden
-              hide={false}
             />
             <YAxis
-              tick={{
-                fontSize: 12,
-                fill: "var(--neutral-on-background-weak)",
-               }}
-              axisLine={false}
+              allowDataOverflow
+              axisLine={{
+                stroke: "var(--neutral-alpha-medium)",
+              }}
               tickLine={false}
-              width={yAxisTitle ? 50 : 0}
+              padding={{ top: 40 }}
+              tick={{
+                fill: "var(--neutral-on-background-weak)",
+                fontSize: 12,
+               }}
+              width={yAxisTitle ? 54 : 0}
               label={
                 yAxisTitle && !hideYAxisTitle && !hideAxisTitles
                   ? { 
-                      value: yAxisTitle, 
-                      angle: -90, // Rotate the label 90 degrees counter-clockwise
-                      position: 'left', 
-                      fontWeight: "500",
-                      dx: 0, // Move label to the left
-                      dy: -20, // Adjust vertical position
+                      value: yAxisTitle,
+                      position: 'insideTop',
+                      offset: 10,
+                      fontSize: 12,
                       fill: "var(--neutral-on-background-medium)" 
                     }
                   : undefined
               }
-              // Make sure to always show the grid even if labels are hidden
-              hide={false}
             />
             <Tooltip
               content={<CustomTooltip isTimeSeries={isTimeSeries} timeFormat={timeFormat} />}
