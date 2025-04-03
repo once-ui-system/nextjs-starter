@@ -221,7 +221,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
   gap="4"
 >
       {title && (
-                <Text variant="heading-strong-m">
+                <Text variant="heading-strong-s">
                   {title}
                 </Text>
               )}
@@ -256,9 +256,8 @@ const LineGraph: React.FC<LineGraphProps> = ({
               </linearGradient>
             </defs>
             <CartesianGrid
-              strokeDasharray="4 2"
               vertical={true}
-              stroke="var(--neutral-alpha-medium)"
+              stroke="var(--neutral-alpha-weak)"
               horizontal={true}
             />
             <XAxis
