@@ -11,7 +11,7 @@ import {
   TooltipProps,
 } from "recharts";
 import styles from "./LineGraph.module.scss";
-import { Flex, Heading } from "../../components";
+import { Flex, Column, Text } from "../../components";
 
 interface DataPoint {
   name: string | number | Date;
@@ -35,6 +35,7 @@ interface LineGraphProps extends React.ComponentProps<typeof Flex> {
    */
   blur?: boolean;
   title?: string;
+  description?: string;
   tooltipTitle?: string;
   value1?: string;
   value2?: string;
@@ -177,11 +178,11 @@ const LineGraph: React.FC<LineGraphProps> = ({
   blur = false,
   border,
   title,
+  description,
   value1,
   value2,
   value3,
   tooltipTitle,
-  radius,
   background,
   firstDashed = false,
   secondDashed = false,
@@ -205,7 +206,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
     <Flex
       fill
       fillHeight
-      radius={radius}
+      radius="l"
       border={border}
       align="center"
       horizontal="center"
@@ -215,20 +216,28 @@ const LineGraph: React.FC<LineGraphProps> = ({
       className={blur ? styles.blur : undefined}
       {...flexProps}
     >
-      <Flex
-        borderBottom={border}
-        fillWidth
-        align="center"
-        vertical="center"
-        horizontal="center"
-      >
-        <Heading padding="s">{title}</Heading>
-      </Flex>
-      <Flex fill padding={title ? "s" : "2"} className={styles.graph}>
+      {title && (
+  <Column fillWidth borderBottom={border} horizontal="start" paddingX="20"
+  paddingY="12"
+  gap="4"
+>
+      {title && (
+                <Text variant="heading-strong-m">
+                  {title}
+                </Text>
+              )}
+              {description && (
+                <Text variant="label-default-s" onBackground="neutral-weak">
+                  {description}
+                </Text>
+              )}
+              </Column>
+            )}
+      <Flex fill className={styles.graph}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
-            margin={{ left: 10, bottom: 15 }}
+            margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
           >
             <defs>
               <linearGradient id="colorValue1" x1="0" y1="0" x2="0" y2="1">
@@ -254,49 +263,45 @@ const LineGraph: React.FC<LineGraphProps> = ({
               horizontal={true}
             />
             <XAxis
-              dataKey={xAxisKey}
-              stroke="var(--neutral-background-medium)"
-              tick={{
-                fill: "var(--neutral-on-background-weak)",
-                fontSize: 11,
-              }}
-              label={
-                xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
-                  : undefined
-              }
-              axisLine={false}
-              tickLine={false}
-              hide={hideXAxisLabels || hideLabels}
-              tickFormatter = {format => isTimeSeries ? moment(format).format(timeFormat) : format}
-              domain = {['auto', 'auto']}
-              
-            />
-            <YAxis
-              stroke="var(--neutral-background-strong)"
-              tick={{
-                fill: "var(--neutral-on-background-weak)",
-                fontSize: 11,
-              }}
-              tickLine={false}
-              width={yAxisTitle ? 40 : 0}
-              label={
-                yAxisTitle && !hideYAxisTitle && !hideAxisTitles
-                  ? { 
-                      value: yAxisTitle, 
-                      fontWeight: "500",
-                      angle: -90, // Rotate the label 90 degrees counter-clockwise
-                      position: 'left', 
-                      dx: 5, // Move label to the left
-                      dy: -20, // Adjust vertical position
-                      fill: "var(--neutral-on-background-medium)" 
-                    }
-                  : undefined
-              }
-              axisLine={false}
-              hide={hideYAxisLabels || hideLabels}
-              domain={fixedYRange ? fixedYRange : undefined}
-            />
+                          dataKey={xAxisKey}
+                          axisLine={false}
+                          tickLine={false}
+                          height={hideXAxisLabels || hideLabels ? 0 : 50}
+                          tick={hideXAxisLabels || hideLabels ? false : {
+                            fill: "var(--neutral-on-background-weak)",
+                            fontSize: 12,
+                          }}
+                          
+                          label={
+                            xAxisTitle && !hideXAxisTitle && !hideAxisTitles
+                              ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -23, fill: "var(--neutral-on-background-medium)" }
+                              : undefined
+                          }
+                        />
+                        <YAxis
+                          allowDataOverflow
+                          axisLine={{
+                            stroke: "var(--neutral-alpha-medium)",
+                          }}
+                          tickLine={false}
+                          padding={{ top: 40 }}
+                          tick={{
+                            fill: "var(--neutral-on-background-weak)",
+                            fontSize: 12,
+                           }}
+                          width={yAxisTitle ? 54 : 0}
+                          label={
+                            yAxisTitle && !hideYAxisTitle && !hideAxisTitles
+                              ? { 
+                                  value: yAxisTitle,
+                                  position: 'insideTop',
+                                  offset: 10,
+                                  fontSize: 12,
+                                  fill: "var(--neutral-on-background-medium)" 
+                                }
+                              : undefined
+                          }
+                        />
             <Tooltip
               content={
                 <CustomTooltip

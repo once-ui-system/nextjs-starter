@@ -959,7 +959,6 @@ export default function Home() {
               <BarGraph
                 title="Revenue"
                 description="How much dough we made"
-                hideLabels
                 border="neutral-alpha-medium"
                 tooltipTitle="Revenue"
                 xAxisTitle="Month"
@@ -976,12 +975,11 @@ export default function Home() {
               
               {/* Line Graph */}
               <Column fillWidth>
-                <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" padding="32" gap="24">
-                  <Heading as="h3" variant="heading-default-m">
-                    User Activity
-                  </Heading>
+                <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <LineGraph
-                    hideAxisTitles
+                    title="Page Visits Per Week"
+                    description="How many users visited our page"
+                    border="neutral-alpha-medium"
                     xAxisTitle="Week"
                     yAxisTitle="Users"
                     value1="Desktop"
@@ -1007,8 +1005,8 @@ export default function Home() {
                 <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <MultiBarGraph
                   border="neutral-alpha-medium"
-                  title="Revenue"
-                description="How much dough we made"
+                  title="Quarterly Revenue"
+                description="How much dough we made per quarter in 2023 and 2024"
                     data={[
                       { name: "Q1", value1: 35000, value2: 45000, value3: 30000 },
                       { name: "Q2", value1: 42000, value2: 48000, value3: 36000 },
@@ -1026,8 +1024,8 @@ export default function Home() {
               <Column fillWidth>
                 <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <LineBarGraph
-                  title="Revenue"
-                description="How much dough we made"
+                  title="Traffic Per Weekday"
+                description="How many users we had per weekday"
                     border="neutral-alpha-medium"
                     lineColorVariant="info"
                     showArea={true}
