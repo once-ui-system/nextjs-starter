@@ -15,7 +15,7 @@ import { SpacingToken } from "../../types";
 
 
 import styles from "./MultiBarGraph.module.scss";
-import { Text, Flex, Heading } from "../../components";
+import { Text, Flex, Heading, Column } from "../../components";
 
 // Data structure supporting multiple values
 interface MultiBarDataPoint {
@@ -39,6 +39,7 @@ interface MultiBarGraphProps extends React.ComponentProps<typeof Flex> {
   barWidth?: SpacingToken | "fill" | number | string;
   blur?: boolean;
   title?: string;
+  description?: string;
   tooltipTitle?: string;
   /**
    * When true, hides labels on the X axis
@@ -99,6 +100,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels, isTimeSeries,
           padding="8"
         >
             <Text
+            variant="label-strong-s"
             style={{ fontWeight: "600" }}
             onBackground="neutral-strong"
             >
@@ -108,8 +110,8 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels, isTimeSeries,
         <Flex padding="s" direction="column">
           {payload.map((entry: any, index: number) => (
             <Text
+              variant="label-strong-s"
               key={`value-${index}`}
-              className={styles.value}
               onBackground="neutral-strong"
               style={{ color: entry.color }}
             >
@@ -134,7 +136,7 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
   blur = false,
   border,
   title,
-  radius,
+  description,
   tooltipTitle,
   barLabels,
   background,
@@ -158,7 +160,7 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
   return (
     <Flex
       fill
-      radius={radius}
+      radius="l"
       border={border}
       align="center"
       direction="column"
@@ -167,16 +169,24 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
       className={blur ? styles.blur : undefined}
       {...flexProps}
     >
+
+{title && (
+  <Column fillWidth borderBottom={border} horizontal="start" paddingX="20"
+  paddingY="12"
+  gap="4"
+>
       {title && (
-        <Flex
-          borderBottom={border}
-          fillWidth
-          align="center"
-          horizontal="center"
-        >
-          <Heading padding="s">{title}</Heading>
-        </Flex>
-      )}
+                <Text variant="heading-strong-m">
+                  {title}
+                </Text>
+              )}
+              {description && (
+                <Text variant="label-default-s" onBackground="neutral-weak">
+                  {description}
+                </Text>
+              )}
+              </Column>
+            )}
       <Flex padding={title ? "s" : "2"} fill>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart

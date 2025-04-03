@@ -40,6 +40,7 @@ interface BarGraphProps extends React.ComponentProps<typeof Flex> {
   hideXAxisTitle?: boolean;
   hideYAxisTitle?: boolean;
   hideAxisTitles?: boolean;
+  xAxisHeight?: number;
 }
 
 const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
@@ -84,11 +85,10 @@ const BarGraph: React.FC<BarGraphProps> = ({
   barColor = "success",
   barWidth = "fill",
   blur = false,
-  border,
+  border = "neutral-alpha-weak",
   title,
   description,
   tooltipTitle,
-  background,
   hideXAxisLabels = false,
   hideYAxisLabels = false,
   hideLabels = false,
@@ -97,20 +97,20 @@ const BarGraph: React.FC<BarGraphProps> = ({
   hideXAxisTitle = false,
   hideYAxisTitle = false,
   hideAxisTitles = false,
+  xAxisHeight = 10,
   ...flex
 }) => {
   return (
     <Column
       fillWidth
       height={24}
+      border={border}
       radius="l"
-      background="surface"
-      border="neutral-alpha-medium"
       data-viz="categorical"
-      {...flex}
+      {...flex} 
     >
       <Column
-        borderBottom="neutral-alpha-medium"
+        borderBottom={border}
         fillWidth
         paddingX="20"
         paddingY="12"
@@ -152,7 +152,7 @@ const BarGraph: React.FC<BarGraphProps> = ({
               
               label={
                 xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: 0, fill: "var(--neutral-on-background-medium)" }
+                  ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -20, fill: "var(--neutral-on-background-medium)" }
                   : undefined
               }
             />
