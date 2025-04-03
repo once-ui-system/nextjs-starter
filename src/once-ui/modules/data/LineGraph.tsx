@@ -148,13 +148,13 @@ const CustomTooltip = ({
             </Text>
         </Flex>
         <Flex padding="8" direction="column" horizontal="center" vertical="center">
-            <Text variant="label-default-s" style={{ color: "var(--success-solid-strong)" }}>
+            <Text variant="label-default-s" style={{ color: "var(--data-solid-100)" }}>
             {`${key1}: ${Number(payload[0].value).toLocaleString()}`}
             </Text>
-            <Text variant="label-default-s" style={{ color: "var(--danger-solid-strong)" }}>
+            <Text variant="label-default-s" style={{ color: "var(--data-solid-500)" }}>
             {`${key2}: ${Number(payload[1].value).toLocaleString()}`}
             </Text>
-            <Text variant="label-default-s" style={{ color: "#6c5ce7" }}>
+            <Text variant="label-default-s" style={{ color: "var(--data-solid-300)" }}>
             {`${key3}: ${Number(payload[2].value).toLocaleString()}`}
           </Text>
         </Flex>
@@ -209,6 +209,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
       radius="l"
       border={border}
       align="center"
+      data-viz="categorical"
       horizontal="center"
       direction="column"
       vertical="center"
@@ -241,19 +242,19 @@ const LineGraph: React.FC<LineGraphProps> = ({
           >
             <defs>
               <linearGradient id="colorValue1" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="25%" stopColor="var(--success-solid-strong)" stopOpacity={0.5} />
-                <stop offset="40%" stopColor="var(--success-solid-strong)" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="var(--success-solid-strong)" stopOpacity={0.05} />
+                <stop offset="25%" stopColor="var(--data-solid-100)" stopOpacity={0.5} />
+                <stop offset="40%" stopColor="var(--data-solid-100)" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="var(--data-solid-100)" stopOpacity={0.05} />
               </linearGradient>
               <linearGradient id="colorValue2" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="25%" stopColor="var(--danger-solid-strong)" stopOpacity={0.5} />
-                <stop offset="40%" stopColor="var(--danger-solid-strong)" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="var(--danger-solid-strong)" stopOpacity={0.05} />
+                <stop offset="25%" stopColor="var(--data-solid-500)" stopOpacity={0.5} />
+                <stop offset="40%" stopColor="var(--data-solid-500)" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="var(--data-solid-500)" stopOpacity={0.05} />
               </linearGradient>
               <linearGradient id="colorValue3" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="25%" stopColor="#6c5ce7" stopOpacity={0.5} />
-                <stop offset="40%" stopColor="#6c5ce7" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#6c5ce7" stopOpacity={0.05} />
+                <stop offset="25%" stopColor="var(--data-solid-300)" stopOpacity={0.5} />
+                <stop offset="40%" stopColor="var(--data-solid-300)" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="var(--data-solid-300)" stopOpacity={0.05} />
               </linearGradient>
             </defs>
             <CartesianGrid
