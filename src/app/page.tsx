@@ -96,6 +96,7 @@ export default function Home() {
                 title="Revenue"
                 description="How much dough we made"
                 hideLabels
+                border="neutral-alpha-medium"
                 tooltipTitle="Revenue"
                 xAxisTitle="Month"
                 yAxisTitle="USD"
@@ -140,11 +141,11 @@ export default function Home() {
             <Row fillWidth gap="32" mobileDirection="column">
               {/* Multi Bar Graph */}
               <Column fillWidth>
-                <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" padding="32" gap="24">
-                  <Heading as="h3" variant="heading-default-m">
-                    Quarterly Comparison
-                  </Heading>
+                <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <MultiBarGraph
+                  border="neutral-alpha-medium"
+                  title="Revenue"
+                description="How much dough we made"
                   hideAxisTitles
                     height={20}
                     data={[
@@ -162,13 +163,13 @@ export default function Home() {
               
               {/* Line Bar Graph */}
               <Column fillWidth>
-                <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" padding="32" gap="24">
-                  <Heading as="h3" variant="heading-default-m">
-                    Conversions vs Traffic
-                  </Heading>
+                <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <LineBarGraph
-                  hideAxisTitles
+                    hideAxisTitles
                     height={20}
+                    title="Revenue"
+                    description="How much dough we made"
+                    border="neutral-alpha-medium"
                     lineColorVariant="info"
                     showArea={true}
                     xAxisTitle="Day"

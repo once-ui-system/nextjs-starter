@@ -13,7 +13,7 @@ import {
   Area,
 } from "recharts";
 import styles from "./LineBarGraph.module.scss";
-import { Flex, Heading } from "../../components";
+import { Flex, Column, Text } from "../../components";
 import { SpacingToken } from "../../types";
 
 
@@ -97,6 +97,8 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
   isTimeSeries?: boolean; // Whether the X axis contains date/time values
 
   curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural" ; // Type of curve for the line
+
+  description?: string;
 }
 
 
@@ -110,17 +112,17 @@ const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat }: any
           horizontal="center"
           padding="8"
         >
-          <p className={styles.label}>{isTimeSeries ? moment(label).format(timeFormat) : label.toLocaleString()}</p>
+          <Text>{isTimeSeries ? moment(label).format(timeFormat) : label.toLocaleString()}</Text>
         </Flex>
         <Flex padding="s" direction="column">
           {payload.map((entry: any, index: number) => (
-            <p
+            <Text
+             variant="label-strong-s"
               key={`item-${index}`}
-              className={styles.value}
               style={{ color: entry.color }}
             >
               {`${entry.name.toLocaleString()}: ${entry.value.toLocaleString()}`}
-            </p>
+            </Text>
           ))}
         </Flex>
       </Flex>
@@ -141,9 +143,9 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
   dashedLine = false,
   border,
   title,
+  description,
   lineColorVariant = "info", // Options: "info", "success", "danger", "purple"
   barColor = "var(--success-solid-strong)",
-  radius,
   background,
   showArea = true,
   hideXAxisLabels = false,
@@ -179,7 +181,7 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
   return (
     <Flex
       fill
-      radius={radius}
+      radius="l"
       border={border}
       align="center"
       direction="column"
@@ -189,16 +191,22 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
       {...flexProps}
     >
       {title && (
-        <Flex
-          borderBottom={border}
-          fillWidth
-          align="center"
-          vertical="center"
-          horizontal="center"
-        >
-          <Heading padding="s">{title}</Heading>
-        </Flex>
-      )}
+  <Column fillWidth borderBottom={border} horizontal="start" paddingX="20"
+  paddingY="12"
+  gap="4"
+>
+      {title && (
+                <Text variant="heading-strong-m">
+                  {title}
+                </Text>
+              )}
+              {description && (
+                <Text variant="label-default-s" onBackground="neutral-weak">
+                  {description}
+                </Text>
+              )}
+              </Column>
+            )}
       <Flex padding={title ? "s" : "2"} fill>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
