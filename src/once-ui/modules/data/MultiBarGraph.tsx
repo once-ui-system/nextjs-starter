@@ -176,7 +176,7 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
   gap="4"
 >
       {title && (
-                <Text variant="heading-strong-m">
+                <Text variant="heading-strong-s">
                   {title}
                 </Text>
               )}
@@ -195,10 +195,9 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
             barGap={4}
             >
             <CartesianGrid
-              strokeDasharray="2 2"
               horizontal={true}
               vertical={false}
-              stroke="var(--neutral-border-medium)"
+              stroke="var(--neutral-alpha-weak)"
             />
                       <XAxis
                         dataKey={xAxisKey}
