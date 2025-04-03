@@ -134,20 +134,19 @@ const CustomTooltip = ({
 
       
     return (
-      <Flex className={styles.tooltip} background="surface" radius="l" border="neutral-alpha-medium" direction="column">
+      <Flex background="surface" radius="l" border="neutral-alpha-medium" direction="column">
         <Flex
           minWidth={8}
           borderBottom="neutral-alpha-medium"
           fillWidth
           vertical="center"
-          horizontal="center"
           padding="4"
         >
             <Text variant="label-strong-s">
                 {tooltipTitle ?? xAxisTitle}: {isTimeSeries ? moment(label).format(timeFormat) : label.toLocaleString()}
             </Text>
         </Flex>
-        <Flex padding="8" direction="column" horizontal="center" vertical="center">
+        <Flex padding="8" direction="column" vertical="center">
             <Text variant="label-default-s" style={{ color: "var(--data-solid-100)" }}>
             {`${key1}: ${Number(payload[0].value).toLocaleString()}`}
             </Text>
@@ -205,7 +204,6 @@ const LineGraph: React.FC<LineGraphProps> = ({
   return (
     <Flex
       fill
-      fillHeight
       radius="l"
       border={border}
       align="center"
@@ -234,7 +232,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
               )}
               </Column>
             )}
-      <Flex fill className={styles.graph}>
+      <Flex fill>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
@@ -305,6 +303,10 @@ const LineGraph: React.FC<LineGraphProps> = ({
                           }
                         />
             <Tooltip
+              cursor={{
+                stroke: "var(--neutral-border-strong)",
+                strokeWidth: 1,
+              }}
               content={
                 <CustomTooltip
                   tooltipTitle={tooltipTitle}
@@ -319,39 +321,42 @@ const LineGraph: React.FC<LineGraphProps> = ({
                   isTimeSeries={isTimeSeries}
                 />
               }
-              contentStyle={{
-                backgroundColor: "#0f0f13",
-                border: "1px solid rgba(255,255,255,0.05)",
-                borderRadius: "4px",
-                color: "rgba(255,255,255,0.7)",
-              }}
             />
             <Area
               type={curveType}
               dataKey={yAxisKey1}
               stroke="var(--data-solid-100)"
-              strokeWidth={1.5}
+              strokeWidth={1}
               strokeDasharray={allDashed || firstDashed ? "5 5" : "0"}
               fillOpacity={1}
               fill="url(#colorValue1)"
+              activeDot={{
+                stroke: "var(--static-transparent)"
+              }}
             />
             <Area
               type={curveType}
               dataKey={yAxisKey2}
               strokeDasharray={allDashed || secondDashed ? "5 5" : "0"}
               stroke="var(--data-solid-500)"
-              strokeWidth={1.5}
+              strokeWidth={1}
               fillOpacity={1}
               fill="url(#colorValue2)"
+              activeDot={{
+                stroke: "var(--static-transparent)"
+              }}
             />
             <Area
               type={curveType}
               dataKey={yAxisKey3}
               strokeDasharray={allDashed || thirdDashed ? "5 5" : "0"}
               stroke="var(--data-solid-900)"
-              strokeWidth={1.5}
+              strokeWidth={1}
               fillOpacity={1}
               fill="url(#colorValue3)"
+              activeDot={{
+                stroke: "var(--static-transparent)"
+              }}
             />
           </AreaChart>
         </ResponsiveContainer>
