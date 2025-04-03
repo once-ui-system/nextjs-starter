@@ -18,7 +18,7 @@ interface DataPoint {
   value1: number;
   value2: number;
   value3: number;
-  [key: string]: any; // Allow for flexible data structure
+  [key: string]: any;
 }
 
 interface LineGraphProps extends React.ComponentProps<typeof Flex> {
@@ -154,7 +154,7 @@ const CustomTooltip = ({
             <Text variant="label-default-s" style={{ color: "var(--data-solid-500)" }}>
             {`${key2}: ${Number(payload[1].value).toLocaleString()}`}
             </Text>
-            <Text variant="label-default-s" style={{ color: "var(--data-solid-300)" }}>
+            <Text variant="label-default-s" style={{ color: "var(--data-solid-900)" }}>
             {`${key3}: ${Number(payload[2].value).toLocaleString()}`}
           </Text>
         </Flex>
@@ -252,15 +252,15 @@ const LineGraph: React.FC<LineGraphProps> = ({
                 <stop offset="95%" stopColor="var(--data-solid-500)" stopOpacity={0.05} />
               </linearGradient>
               <linearGradient id="colorValue3" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="25%" stopColor="var(--data-solid-300)" stopOpacity={0.5} />
-                <stop offset="40%" stopColor="var(--data-solid-300)" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="var(--data-solid-300)" stopOpacity={0.05} />
+                <stop offset="25%" stopColor="var(--data-solid-900)" stopOpacity={0.5} />
+                <stop offset="40%" stopColor="var(--data-solid-900)" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="var(--data-solid-900)" stopOpacity={0.05} />
               </linearGradient>
             </defs>
             <CartesianGrid
-              strokeDasharray="2 2"
+              strokeDasharray="4 2"
               vertical={true}
-              stroke="var(--neutral-background-strong)"
+              stroke="var(--neutral-alpha-medium)"
               horizontal={true}
             />
             <XAxis
@@ -348,7 +348,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
               type={curveType}
               dataKey={yAxisKey3}
               strokeDasharray={allDashed || thirdDashed ? "5 5" : "0"}
-              stroke="var(--data-solid-300)"
+              stroke="var(--data-solid-900)"
               strokeWidth={1.5}
               fillOpacity={1}
               fill="url(#colorValue3)"

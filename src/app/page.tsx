@@ -977,6 +977,7 @@ export default function Home() {
               <Column fillWidth>
                 <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <LineGraph
+                    data-viz="divergent"
                     title="Page Visits Per Week"
                     description="How many users visited our page"
                     border="neutral-alpha-medium"
@@ -1024,6 +1025,7 @@ export default function Home() {
               <Column fillWidth>
                 <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <LineBarGraph
+                  data-viz="divergent"
                   title="Traffic Per Weekday"
                 description="How many users we had per weekday"
                     border="neutral-alpha-medium"
