@@ -115,9 +115,9 @@ export const PieChart: React.FC<PieChartProps> = ({
 }) => {
   const colorMap = {
     info: "var(--info-solid-strong)",
-    success: "var(--success-solid-strong)",
-    danger: "var(--danger-solid-strong)",
-    purple: "#6c5ce7"
+    success: "var(--data-solid-100)",
+    danger: "var(--data-solid-500)",
+    purple: "var(--data-solid-300)",
   };
 
   // Generate unique IDs for each gradient
@@ -128,6 +128,7 @@ export const PieChart: React.FC<PieChartProps> = ({
   return (
     <Flex
       fill
+      data-viz="categorical"
       radius={radius}
       border={border}
       align="center"
