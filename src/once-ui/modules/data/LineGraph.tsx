@@ -143,20 +143,20 @@ const CustomTooltip = ({
           horizontal="center"
           padding="4"
         >
-            <p className={styles.label}>
+            <Text variant="label-strong-s">
                 {tooltipTitle ?? xAxisTitle}: {isTimeSeries ? moment(label).format(timeFormat) : label.toLocaleString()}
-            </p>
+            </Text>
         </Flex>
-        <Flex padding="xs" direction="column" horizontal="center" vertical="center">
-            <p className={styles.value} style={{ color: "var(--success-solid-strong)" }}>
+        <Flex padding="8" direction="column" horizontal="center" vertical="center">
+            <Text variant="label-default-s" style={{ color: "var(--success-solid-strong)" }}>
             {`${key1}: ${Number(payload[0].value).toLocaleString()}`}
-            </p>
-            <p className={styles.value} style={{ color: "var(--danger-solid-strong)" }}>
+            </Text>
+            <Text variant="label-default-s" style={{ color: "var(--danger-solid-strong)" }}>
             {`${key2}: ${Number(payload[1].value).toLocaleString()}`}
-            </p>
-            <p className={styles.value} style={{ color: "#6c5ce7" }}>
+            </Text>
+            <Text variant="label-default-s" style={{ color: "#6c5ce7" }}>
             {`${key3}: ${Number(payload[2].value).toLocaleString()}`}
-          </p>
+          </Text>
         </Flex>
       </Flex>
     );
