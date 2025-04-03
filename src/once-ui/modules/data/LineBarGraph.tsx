@@ -145,7 +145,6 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
   title,
   description,
   lineColorVariant = "info", // Options: "info", "success", "danger", "purple"
-  barColor = "var(--success-solid-strong)",
   background,
   showArea = true,
   hideXAxisLabels = false,
@@ -226,7 +225,7 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
                   <stop
                     key={offset}
                     offset={offset}
-                    stopColor={barColor}
+                    stopColor="var(--data-solid-100)"
                     stopOpacity={opacity}
                   />
                 ))}
@@ -300,7 +299,7 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
               dataKey={barDataKey}
               name={barName}
               fill={`url(#${barGradientId})`}
-              stroke={barColor}
+              stroke="var(--data-solid-100)"
               strokeWidth={1}
               radius={[4, 4, 0, 0]}
               barSize={

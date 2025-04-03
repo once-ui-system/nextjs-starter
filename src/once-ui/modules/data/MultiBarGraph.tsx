@@ -155,7 +155,7 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
 
 
   // Using the same colors from LineGraph
-  const barColors = ["var(--success-solid-strong)", "var(--danger-solid-strong)", "#6c5ce7"]; // green, red, purple
+  const barColors = ["var(--data-solid-100)", "var(--data-solid-500)", "var(--data-solid-300)"]; // green, red, purple
 
   return (
     <Flex
