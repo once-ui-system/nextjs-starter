@@ -249,7 +249,7 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
               dataKey={xAxisKey}
               axisLine={false}
               tickLine={false}
-              height={hideXAxisLabels ? 0 : 50}
+              height={hideXAxisLabels || hideLabels ? 0 : 50}
               tick={hideXAxisLabels || hideLabels ? false : {
                 fill: "var(--neutral-on-background-weak)",
                 fontSize: 12,

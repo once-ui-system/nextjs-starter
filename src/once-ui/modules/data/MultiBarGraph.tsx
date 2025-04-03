@@ -107,10 +107,10 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels, isTimeSeries,
             {isTimeSeries ? moment(data.endDate || data.name).format(timeFormat) : (data.endDate?.toLocaleString() || data.name)}
             </Text>
         </Flex>
-        <Flex padding="s" direction="column">
+        <Flex padding="8" gap="4" direction="column">
           {payload.map((entry: any, index: number) => (
             <Text
-              variant="label-strong-s"
+              variant="label-default-s"
               key={`value-${index}`}
               onBackground="neutral-strong"
               style={{ color: entry.color }}
@@ -208,7 +208,7 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                           fontSize: 12,
                         }}
 
-                        height={hideXAxisLabels || hideLabels ? 0 : 40}
+                        height={hideXAxisLabels || hideLabels ? 0 : 50}
                         label={
                           xAxisTitle && !hideXAxisTitle && !hideAxisTitles
                             ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -23, fill: "var(--neutral-on-background-medium)" }
