@@ -1009,8 +1009,6 @@ export default function Home() {
                   border="neutral-alpha-medium"
                   title="Revenue"
                 description="How much dough we made"
-                  hideAxisTitles
-                    height={20}
                     data={[
                       { name: "Q1", value1: 35000, value2: 45000, value3: 30000 },
                       { name: "Q2", value1: 42000, value2: 48000, value3: 36000 },
@@ -1030,7 +1028,6 @@ export default function Home() {
                   <LineBarGraph
                   title="Revenue"
                 description="How much dough we made"
-                    hideAxisTitles
                     border="neutral-alpha-medium"
                     lineColorVariant="info"
                     showArea={true}

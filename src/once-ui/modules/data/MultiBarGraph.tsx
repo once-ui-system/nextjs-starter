@@ -166,7 +166,6 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
       direction="column"
       vertical="center"
       background={background}
-      className={blur ? styles.blur : undefined}
       {...flexProps}
     >
 
@@ -187,13 +186,12 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
               )}
               </Column>
             )}
-      <Flex padding={title ? "s" : "2"} fill>
+      <Flex fill>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
-            margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
-            barGap={4} // Small gap between bars in the same group
-            barCategoryGap={1} // Control spacing between different groups (x-axis categories)
+            margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
+            barGap={4}
             >
             <CartesianGrid
               strokeDasharray="2 2"
@@ -201,49 +199,46 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
               vertical={false}
               stroke="var(--neutral-border-medium)"
             />
-            <XAxis
-              dataKey={xAxisKey}
-              axisLine={false}
-              tickLine={false}
-              tick={{
-                fill: "var(--neutral-on-background-weak)",
-              fontSize: 12,
-              }}
-              tickFormatter = {format => isTimeSeries ? moment(format).format(timeFormat) : format}
-              domain={['auto', 'auto']}
-              hide={hideLabels || hideXAxisLabels}
-              label={
-              xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                ? { value: xAxisTitle,               fontWeight: "500",
-                  position: 'bottom', offset: -2, fill: "var(--neutral-on-background-medium)" }
-                : undefined
-              }
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{
-                fill: "var(--neutral-on-background-weak)",
-              fontSize: 12,
-              }}
-              width={yAxisTitle ? 40 : 0} // Adjust width based on number of bars
-              label={
-                yAxisTitle && !hideYAxisTitle && !hideAxisTitles
-                  ? { 
-                      value: yAxisTitle, 
-                      angle: -90, // Rotate the label 90 degrees counter-clockwise
-                      position: 'left', 
-                      fontWeight: "500",
-                      dx: 0, // Move label to the left
-                      dy: -20, // Adjust vertical position
-                      fill: "var(--neutral-on-background-medium)" 
-                    }
-                  : undefined
-              }
-              domain={[0, "auto"]} // Start from 0, auto-scale the upper bound
-              allowDataOverflow={false} // Prevent data from exceeding the domain
-              hide={hideLabels || hideYAxisLabels}
-            />
+                      <XAxis
+                        dataKey={xAxisKey}
+                        axisLine={false}
+                        tickLine={false}
+                        tick={hideXAxisLabels || hideLabels ? false : {
+                          fill: "var(--neutral-on-background-weak)",
+                          fontSize: 12,
+                        }}
+
+                        height={hideXAxisLabels || hideLabels ? 0 : 40}
+                        label={
+                          xAxisTitle && !hideXAxisTitle && !hideAxisTitles
+                            ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -23, fill: "var(--neutral-on-background-medium)" }
+                            : undefined
+                        }
+                      />
+                      <YAxis
+                        allowDataOverflow
+                        axisLine={{
+                          stroke: "var(--neutral-alpha-medium)",
+                        }}
+                        tickLine={false}
+                        padding={{ top: 40 }}
+                        tick={{
+                          fill: "var(--neutral-on-background-weak)",
+                          fontSize: 12,
+                         }}
+                        width={yAxisTitle ? 54 : 0}
+                        label={
+                          yAxisTitle && !hideYAxisTitle && !hideAxisTitles
+                            ? { 
+                                value: yAxisTitle,
+                                position: 'insideTop',
+                                offset: 10,
+                                fontSize: 12,
+                                fill: "var(--neutral-on-background-medium)" 
+                              }
+                            : undefined
+                        }
+                      />
             <Tooltip
               content={
                 <CustomTooltip
