@@ -318,6 +318,7 @@ export const KbarContent: React.FC<KbarContentProps> = ({ isOpen, onClose, items
             ref={inputRef}
             hasPrefix={<Icon name="search" size="xs" />}
             radius="none"
+            autoComplete="off"
             style={{
               marginTop: "-1px",
               marginLeft: "-1px",

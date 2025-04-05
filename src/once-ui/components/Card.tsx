@@ -35,6 +35,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           transition="macro-medium"
           border="neutral-medium"
           cursor="interactive"
+          align="left"
           className={styles.card}
           onClick={onClick}
           {...rest}
