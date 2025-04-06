@@ -1,117 +1,110 @@
 [data-theme="dark"] [data-viz="categorical"] {
-  --data-solid-100: var(--scheme-green-600);
-  --data-alpha-100: var(--scheme-green-600-30);
+  --data-blue: var(--scheme-blue-500);
 
-  --data-solid-200: var(--scheme-aqua-600);
-  --data-alpha-200: var(--scheme-aqua-600-30);
+  --data-green: var(--scheme-green-500);
 
-  --data-solid-300: var(--scheme-violet-600);
-  --data-alpha-300: var(--scheme-violet-600-30);
+  --data-aqua: var(--scheme-aqua-500);
 
-  --data-solid-400: var(--scheme-orange-600);
-  --data-alpha-400: var(--scheme-orange-600-30);
+  --data-violet: var(--scheme-violet-500);
 
-  --data-solid-500: var(--scheme-red-500);
-  --data-alpha-500: var(--scheme-red-600-30);
+  --data-orange: var(--scheme-orange-500);
 
-  --data-solid-600: var(--scheme-purple-600);
-  --data-alpha-600: var(--scheme-purple-600-30);
+  --data-red: var(--scheme-red-500);
 
-  --data-solid-700: var(--scheme-blue-600);
-  --data-alpha-700: var(--scheme-blue-600-30);
+  --data-purple: var(--scheme-purple-500);
 
-  --data-solid-800: var(--scheme-blue-600);
-  --data-alpha-800: var(--scheme-blue-600-30);
+  --data-magenta: var(--scheme-magenta-500);
 
-  --data-solid-900: var(--scheme-blue-600);
-  --data-alpha-900: var(--scheme-blue-600-30);
+  --data-moss: var(--scheme-moss-500);
+
+  --data-emerald: var(--scheme-emerald-500);
 }
 
 [data-theme="light"] [data-viz="categorical"] {
-  --data-solid-100: var(--scheme-green-600);
-  --data-alpha-100: var(--scheme-green-600-30);
+  --data-green: var(--scheme-green-400);
+  --data-green-alpha: var(--scheme-green-500-30);
 
-  --data-solid-200: var(--scheme-green-400);
-  --data-alpha-200: var(--scheme-green-400-30);
+  --data-aqua: var(--scheme-aqua-400);
+  --data-aqua-alpha: var(--scheme-aqua-500-30);
 
-  --data-solid-300: var(--scheme-aqua-400);
-  --data-alpha-300: var(--scheme-aqua-400-30);
+  --data-violet: var(--scheme-violet-400);
+  --data-violet-alpha: var(--scheme-violet-500-30);
 
-  --data-solid-400: var(--scheme-violet-400);
-  --data-alpha-400: var(--scheme-violet-400-30);
+  --data-orange: var(--scheme-orange-400);
+  --data-orange-alpha: var(--scheme-orange-500-30);
 
-  --data-solid-500: var(--scheme-orange-400);
-  --data-alpha-500: var(--scheme-orange-400-30);
+  --data-red: var(--scheme-red-400);
+  --data-red-alpha: var(--scheme-red-500-30);
 
-  --data-solid-600: var(--scheme-red-400);
-  --data-alpha-600: var(--scheme-red-400-30);
+  --data-purple: var(--scheme-purple-400);
+  --data-purple-alpha: var(--scheme-purple-500-30);
 
-  --data-solid-700: var(--scheme-purple-400);
-  --data-alpha-700: var(--scheme-purple-400-30);
+  --data-magenta: var(--scheme-magenta-400);
+  --data-magenta-alpha: var(--scheme-magenta-500-30);
 
-  --data-solid-800: var(--scheme-purple-400);
-  --data-alpha-800: var(--scheme-purple-400-30);
+  --data-moss: var(--scheme-moss-400);
+  --data-moss-alpha: var(--scheme-moss-500-30);
 
-  --data-solid-900: var(--scheme-purple-400);
-  --data-alpha-900: var(--scheme-purple-400-30);
+  --data-emerald: var(--scheme-emerald-400);
+  --data-emerald-alpha: var(--scheme-emerald-500-30);
 }
 
 [data-theme="dark"] [data-viz="divergent"] {
   --data-solid-100: var(--scheme-red-500);
   --data-alpha-100: var(--scheme-green-700-30);
 
-  --data-solid-200: var(--scheme-orange-600);
-  --data-alpha-200: var(--scheme-aqua-600-30);
+  --data-solid-200: var(--scheme-orange-500);
+  --data-alpha-200: var(--scheme-aqua-500-30);
 
   --data-solid-300: var(--scheme-yellow-700);
-  --data-alpha-300: var(--scheme-violet-600-30);
+  --data-alpha-300: var(--scheme-violet-500-30);
 
   --data-solid-400: var(--scheme-yellow-800);
-  --data-alpha-400: var(--scheme-orange-600-30);
+  --data-alpha-400: var(--scheme-orange-500-30);
 
   --data-solid-500: var(--scheme-yellow-900);
   --data-alpha-500: var(--scheme-red-700-30);
 
-  --data-solid-600: var(--scheme-moss-1000);
-  --data-alpha-600: var(--scheme-purple-700-30);
+  --data-solid-500: var(--scheme-moss-1000);
+  --data-alpha-500: var(--scheme-purple-700-30);
 
   --data-solid-700: var(--scheme-moss-900);
-  --data-alpha-700: var(--scheme-blue-600-30);
+  --data-alpha-700: var(--scheme-blue-500-30);
 
   --data-solid-800: var(--scheme-aqua-800);
-  --data-alpha-800: var(--scheme-blue-600-30);
+  --data-alpha-800: var(--scheme-blue-500-30);
 
   --data-solid-900: var(--scheme-cyan-700);
-  --data-alpha-900: var(--scheme-blue-600-30);
+  --data-alpha-900: var(--scheme-blue-500-30);
 }
 
 [data-theme="light"] [data-viz="divergent"] {
   --data-solid-100: var(--scheme-red-500);
   --data-alpha-100: var(--scheme-green-700-30);
 
-  --data-solid-200: var(--scheme-orange-600);
-  --data-alpha-200: var(--scheme-aqua-600-30);
+  --data-solid-200: var(--scheme-orange-500);
+  --data-alpha-200: var(--scheme-aqua-500-30);
 
   --data-solid-300: var(--scheme-yellow-700);
-  --data-alpha-300: var(--scheme-violet-600-30);
+  --data-alpha-300: var(--scheme-violet-500-30);
 
   --data-solid-400: var(--scheme-yellow-800);
-  --data-alpha-400: var(--scheme-orange-600-30);
+  --data-alpha-400: var(--scheme-orange-500-30);
 
   --data-solid-500: var(--scheme-yellow-900);
   --data-alpha-500: var(--scheme-red-700-30);
 
-  --data-solid-600: var(--scheme-moss-1000);
-  --data-alpha-600: var(--scheme-purple-700-30);
+  --data-solid-500: var(--scheme-moss-1000);
+  --data-alpha-500: var(--scheme-purple-700-30);
 
   --data-solid-700: var(--scheme-moss-900);
-  --data-alpha-700: var(--scheme-blue-600-30);
+  --data-alpha-700: var(--scheme-blue-500-30);
 
   --data-solid-800: var(--scheme-aqua-800);
-  --data-alpha-800: var(--scheme-blue-600-30);
+  --data-alpha-800: var(--scheme-blue-500-30);
 
   --data-solid-900: var(--scheme-cyan-700);
-  --data-alpha-900: var(--scheme-blue-600-30);
+  --data-alpha-900: var(--scheme-blue-500-30);
 }
 
 [data-theme="dark"] [data-viz="sequential"] {
@@ -130,8 +123,8 @@
   --data-solid-500: var(--scheme-blue-500);
   --data-alpha-500: var(--scheme-blue-400-30);
 
-  --data-solid-600: var(--scheme-blue-600);
-  --data-alpha-600: var(--scheme-blue-400-30);
+  --data-solid-500: var(--scheme-blue-500);
+  --data-alpha-500: var(--scheme-blue-400-30);
 
   --data-solid-700: var(--scheme-blue-700);
   --data-alpha-700: var(--scheme-blue-400-30);
@@ -159,8 +152,8 @@
   --data-solid-500: var(--scheme-blue-500);
   --data-alpha-500: var(--scheme-blue-400-30);
 
-  --data-solid-600: var(--scheme-blue-600);
-  --data-alpha-600: var(--scheme-blue-400-30);
+  --data-solid-500: var(--scheme-blue-500);
+  --data-alpha-500: var(--scheme-blue-400-30);
 
   --data-solid-700: var(--scheme-blue-700);
   --data-alpha-700: var(--scheme-blue-400-30);

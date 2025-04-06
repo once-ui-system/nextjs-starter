@@ -43,9 +43,9 @@ import {
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 
-import { BarGraph } from "@/once-ui/modules/data/BarGraph";
-import { LineGraph } from "@/once-ui/modules/data/LineGraph";
-import { MultiBarGraph } from "@/once-ui/modules/data/MultiBarGraph";
+import { BarGraph } from "@/once-ui/modules/data/BarChart";
+import { LineChart } from "@/once-ui/modules/data/LineChart";
+import { GroupedBarChart } from "@/once-ui/modules/data/GroupedBarChart";
 import { LineBarGraph } from "@/once-ui/modules/data/LineBarGraph";
 import { PieChart } from "@/once-ui/modules/data/PieChart";
 
@@ -957,12 +957,11 @@ export default function Home() {
             <Row fill gap="32" mobileDirection="column">
               {/* Bar Graph */}
               <BarGraph
-                title="Revenue"
+                title="Company revenue in Q2 2025"
+                legend
                 description="How much dough we made"
-                border="neutral-alpha-medium"
-                tooltipTitle="Revenue"
-                xAxisTitle="Month"
-                yAxisTitle="USD"
+                tooltip="Revenue"
+                color="emerald"
                 data={[
                   { name: "Jan", value: 4500, startDate: "Jan", endDate: "January" },
                   { name: "Feb", value: 5200, startDate: "Feb", endDate: "February" },
@@ -976,24 +975,22 @@ export default function Home() {
               {/* Line Graph */}
               <Column fillWidth>
                 <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
-                  <LineGraph
-                    data-viz="divergent"
+                  <LineChart
                     title="Page Visits Per Week"
                     description="How many users visited our page"
-                    border="neutral-alpha-medium"
                     xAxisTitle="Week"
                     yAxisTitle="Users"
-                    value1="Desktop"
-                    value2="Mobile"
-                    value3="Tablet"
+                    legend
+                    yAxisKeys={["Revenue", "Profit", "Loss"]}
+                    labels="both"
                     data={[
-                      { name: "W1", value1: 2100, value2: 1400, value3: 5500 },
-                      { name: "W2", value1: 2200, value2: 4398, value3: 3200 },
-                      { name: "W3", value1: 2000, value2: 1200, value3: 6500 },
-                      { name: "W4", value1: 3780, value2: 1108, value3: 1700 },
-                      { name: "W5", value1: 5990, value2: 1800, value3: 2100 },
-                      { name: "W6", value1: 4000, value2: 2400, value3: 3000 },
-                      { name: "W7", value1: 5000, value2: 3000, value3: 4000 },
+                      { name: "W1", Revenue: 2100, Profit: 1400, Loss: 5500 },
+                      { name: "W2", Revenue: 2200, Profit: 4398, Loss: 3200 },
+                      { name: "W3", Revenue: 2000, Profit: 1200, Loss: 6500 },
+                      { name: "W4", Revenue: 3780, Profit: 1108, Loss: 1700 },
+                      { name: "W5", Revenue: 5990, Profit: 1800, Loss: 2100 },
+                      { name: "W6", Revenue: 4000, Profit: 2400, Loss: 3000 },
+                      { name: "W7", Revenue: 5000, Profit: 3000, Loss: 4000 },
                     ]}
                   />
                 </Column>
@@ -1004,7 +1001,7 @@ export default function Home() {
               {/* Multi Bar Graph */}
               <Column fillWidth>
                 <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
-                  <MultiBarGraph
+                  <GroupedBarChart
                   border="neutral-alpha-medium"
                   title="Quarterly Revenue"
                 description="How much dough we made per quarter in 2023 and 2024"
@@ -1025,10 +1022,8 @@ export default function Home() {
               <Column fillWidth>
                 <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <LineBarGraph
-                  data-viz="divergent"
                   title="Traffic Per Weekday"
-                description="How many users we had per weekday"
-                    border="neutral-alpha-medium"
+                  description="How many users we had per weekday"
                     lineColorVariant="info"
                     showArea={true}
                     xAxisTitle="Day"

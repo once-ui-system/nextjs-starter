@@ -12,7 +12,6 @@ import {
   Legend,
   Area,
 } from "recharts";
-import styles from "./LineBarGraph.module.scss";
 import { Flex, Column, Text } from "../../components";
 import { SpacingToken } from "../../types";
 
@@ -105,7 +104,7 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
 const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat }: any) => {
   if (active && payload && payload.length) {
     return (
-      <Flex className={styles.tooltip} minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
+      <Flex minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
@@ -193,7 +192,7 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
   paddingY="12"
   gap="4"
 >
-      {title && (
+      {(title || description) && (
                 <Text variant="heading-strong-s">
                   {title}
                 </Text>
@@ -286,7 +285,6 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
             <Tooltip
               content={<CustomTooltip isTimeSeries={isTimeSeries} timeFormat={timeFormat} />}
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
-              wrapperClassName={styles.tooltipWrapper}
             />
             {showLegend && (
               <Legend
