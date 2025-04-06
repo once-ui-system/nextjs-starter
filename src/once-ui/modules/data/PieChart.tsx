@@ -7,7 +7,6 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import styles from "./PieChart.module.scss";
 import { Flex, Heading } from "../../components";
 
 interface DataPoint {
@@ -73,18 +72,17 @@ interface PieChartProps extends React.ComponentProps<typeof Flex> {
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
-      <Flex className={styles.tooltip} minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
+      <Flex minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
           horizontal="center"
           padding="8"
         >
-          <p className={styles.label}>{payload[0].name}</p>
+          <p>{payload[0].name}</p>
         </Flex>
         <Flex padding="s" direction="column">
           <p
-            className={styles.value}
             style={{ color: payload[0].fill }}
           >
             {`Value: ${payload[0].value}`}
@@ -135,7 +133,6 @@ export const PieChart: React.FC<PieChartProps> = ({
       direction="column"
       vertical="center"
       background={background}
-      className={blur ? styles.blur : undefined}
       {...flexProps}
     >
       {title && (
@@ -198,7 +195,6 @@ export const PieChart: React.FC<PieChartProps> = ({
             </Pie>
             <Tooltip 
               content={<CustomTooltip />}
-              wrapperClassName={styles.tooltipWrapper}
             />
             {showLegend && (
               <Legend

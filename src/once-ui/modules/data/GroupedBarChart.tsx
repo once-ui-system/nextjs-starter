@@ -13,8 +13,6 @@ import moment from "moment";
 
 import { SpacingToken } from "../../types";
 
-
-import styles from "./MultiBarGraph.module.scss";
 import { Text, Flex, Heading, Column } from "../../components";
 
 // Data structure supporting multiple values
@@ -27,7 +25,7 @@ interface MultiBarDataPoint {
   endDate?: string;
 }
 
-interface MultiBarGraphProps extends React.ComponentProps<typeof Flex> {
+interface GroupedBarChartProps extends React.ComponentProps<typeof Flex> {
   data: MultiBarDataPoint[];
   xAxisKey?: string;
   yAxisKeys?: string[]; // Keys for multiple bars
@@ -92,7 +90,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels, isTimeSeries,
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <Flex className={styles.tooltip} minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
+      <Flex minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
         <Flex
           borderBottom="neutral-alpha-medium"
           fillWidth
@@ -128,7 +126,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, barLabels, isTimeSeries,
   return null;
 };
 
-const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
+const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   data,
   xAxisKey = "name",
   yAxisKeys = ["value1", "value2", "value3"],
@@ -249,7 +247,6 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                 />
               }
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
-              wrapperClassName={styles.tooltipWrapper}
             />
 
             {/* Define gradients for each bar color */}
@@ -264,9 +261,6 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                   y2="1"
                 >
                   <stop offset="5%" stopColor={color} stopOpacity={0.8} />
-                  <stop offset="35%" stopColor={color} stopOpacity={0.6} />
-                  <stop offset="70%" stopColor={color} stopOpacity={0.3} />
-                  <stop offset="95%" stopColor={color} stopOpacity={0.1} />
                   <stop offset="100%" stopColor={color} stopOpacity={0} />
                 </linearGradient>
               ))}
@@ -284,19 +278,19 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
                 radius={[6, 6, 0, 0]}
                 barSize={
                   barWidth === "fill"
-                    ? "98%"
-                    : barWidth === "xs"
-                    ? 6
-                    : barWidth === "s"
-                    ? 12
-                    : barWidth === "m"
-                    ? 20
-                    : barWidth === "l"
-                    ? 40
-                    : barWidth === "xl"
-                    ? 50
-                    : barWidth
-                  }
+                  ? "100%"
+                  : barWidth === "xs"
+                  ? 12
+                  : barWidth === "s"
+                  ? 16
+                  : barWidth === "m"
+                  ? 24
+                  : barWidth === "l"
+                  ? 40
+                  : barWidth === "xl"
+                  ? 64
+                  : barWidth
+                }
                 isAnimationActive={false}
               />
             ))}
@@ -307,7 +301,7 @@ const MultiBarGraph: React.FC<MultiBarGraphProps> = ({
   );
 };
 
-MultiBarGraph.displayName = "MultiBarGraph";
+GroupedBarChart.displayName = "GroupedBarChart";
 
-export { MultiBarGraph };
-export type { MultiBarGraphProps };
+export { GroupedBarChart };
+export type { GroupedBarChartProps };
