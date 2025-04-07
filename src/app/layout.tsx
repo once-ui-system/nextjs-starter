@@ -3,10 +3,10 @@ import "@/once-ui/tokens/index.scss";
 
 import classNames from "classnames";
 import { headers } from "next/headers";
-import { Metadata } from "next";
 
-import { baseURL, style, meta, og, schema, social } from "@/app/resources/config";
-import { Background, Column, Flex, ToastProvider, ThemeProvider } from "@/once-ui/components";
+import { baseURL, meta, og, schema, style } from "@/app/resources/config";
+import { Background, Column, Flex, ThemeProvider, ToastProvider } from "@/once-ui/components";
+import { Meta, Schema } from "@/once-ui/modules";
 
 import { Geist } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
@@ -36,57 +36,15 @@ const tertiary: FontConfig | undefined = undefined;
 /*
  */
 
-export async function generateMetadata(): Promise<Metadata> {
-  const host = (await headers()).get("host");
-  const metadataBase = host ? new URL(`https://${host}`) : undefined;
-
-  return {
+export async function generateMetadata() {
+  return Meta.generate({
     title: meta.title,
     description: meta.description,
-    openGraph: {
-      title: og.title,
-      description: og.description,
-      url: "https://" + baseURL,
-      images: [
-        {
-          url: og.image,
-          alt: og.title,
-        },
-      ],
-      type: og.type as
-        | "website"
-        | "article"
-        | "book"
-        | "profile"
-        | "music.song"
-        | "music.album"
-        | "music.playlist"
-        | "music.radio_station"
-        | "video.movie"
-        | "video.episode"
-        | "video.tv_show"
-        | "video.other",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: og.title,
-      description: og.description,
-      images: [og.image],
-    },
-    metadataBase,
-  };
+    baseURL,
+    path: "/",
+    image: og.image
+  });
 }
-
-const schemaData = {
-  "@context": "https://schema.org",
-  "@type": schema.type,
-  url: "https://" + baseURL,
-  logo: schema.logo,
-  name: schema.name,
-  description: schema.description,
-  email: schema.email,
-  sameAs: Object.values(social).filter(Boolean),
-};
 
 export default function RootLayout({
   children,
@@ -116,13 +74,15 @@ export default function RootLayout({
         tertiary ? tertiary.variable : "",
       )}
     >
+      <Schema
+        as="organization"
+        title={schema.name}
+        description={schema.description}
+        baseURL={baseURL}
+        path="/"
+        image={schema.logo}
+      />
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schemaData),
-          }}
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
