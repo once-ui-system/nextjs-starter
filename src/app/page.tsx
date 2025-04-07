@@ -978,19 +978,21 @@ export default function Home() {
                   <LineChart
                     title="Page Visits Per Week"
                     description="How many users visited our page"
-                    xAxisTitle="Week"
-                    yAxisTitle="Users"
                     legend
-                    yAxisKeys={["Revenue", "Profit", "Loss"]}
-                    labels="both"
+                    labels="x"
+                    series={[
+                      { key: "Revenue", color: "emerald" },
+                      { key: "Profit", color: "violet" },
+                      { key: "Loss", color: "blue" }
+                    ]}
                     data={[
-                      { name: "W1", Revenue: 2100, Profit: 1400, Loss: 5500 },
-                      { name: "W2", Revenue: 2200, Profit: 4398, Loss: 3200 },
-                      { name: "W3", Revenue: 2000, Profit: 1200, Loss: 6500 },
-                      { name: "W4", Revenue: 3780, Profit: 1108, Loss: 1700 },
-                      { name: "W5", Revenue: 5990, Profit: 1800, Loss: 2100 },
-                      { name: "W6", Revenue: 4000, Profit: 2400, Loss: 3000 },
-                      { name: "W7", Revenue: 5000, Profit: 3000, Loss: 4000 },
+                      { week: "W1", Revenue: 2100, Profit: 1400, Loss: 5500 },
+                      { week: "W2", Revenue: 2200, Profit: 4398, Loss: 3200 },
+                      { week: "W3", Revenue: 2000, Profit: 1200, Loss: 6500 },
+                      { week: "W4", Revenue: 3780, Profit: 1108, Loss: 1700 },
+                      { week: "W5", Revenue: 5990, Profit: 1800, Loss: 2100 },
+                      { week: "W6", Revenue: 4000, Profit: 2400, Loss: 3000 },
+                      { week: "W7", Revenue: 5000, Profit: 3000, Loss: 4000 },
                     ]}
                   />
                 </Column>
