@@ -13,21 +13,22 @@ import {
 import { Flex, Column, Text, Row } from "../../components";
 
 interface DataPoint {
-  name: string | number | Date;
-  [key: string]: any;
+  [key: string]: string | number | Date;
+}
+
+interface SeriesConfig {
+  key: string;
+  color?: string;
 }
 
 interface LineChartProps extends React.ComponentProps<typeof Flex> {
   data: DataPoint[];
-  xAxisKey?: string;
-  yAxisKeys?: string[];
+  series: SeriesConfig[];
   colors?: string[];
   title?: string;
   description?: string;
   legend?: boolean;
   tooltip?: string;
-  xAxisTitle?: string;
-  yAxisTitle?: string;
   labels?: "x" | "y" | "both";
   curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural";
   isTimeSeries?: boolean;
@@ -100,7 +101,7 @@ const CustomLegend = ({ payload, labels, colors = defaultColors }: any) => {
         vertical="center" 
         position="absolute"
         gap="16"
-        left={(labels === "x" || labels === "both") ? "80" : "8"}
+        left={(labels === "y" || labels === "both") ? "80" : "12"}
         top="12"
       >
         {payload.map((entry: any, index: number) => (
@@ -128,22 +129,32 @@ const CustomLegend = ({ payload, labels, colors = defaultColors }: any) => {
 
 const LineChart: React.FC<LineChartProps> = ({
   data,
-  xAxisKey = "name",
-  xAxisTitle = "",
-  yAxisTitle = "",
-  yAxisKeys = ["value"],
+  series,
   colors = defaultColors,
   border = "neutral-medium",
-  legend = false,
   title,
   description,
+  legend = false,
   tooltip,
   labels = "both",
   curveType = "natural",
   isTimeSeries = false,
-  timeFormat = "MMM dd, yyyy",
+  timeFormat,
   ...flex
 }) => {
+  // Auto-detect series from first data point if not provided
+  const seriesKeys = series.map(s => s.key);
+  const autoSeries = series || Object.keys(data[0] || {})
+    .filter(key => !seriesKeys.includes(key))
+    .map((key, index) => ({
+      key,
+      color: colors[index]
+    }));
+
+  const xAxisKey = Object.keys(data[0] || {}).find(key => 
+    !seriesKeys.includes(key)
+  ) || 'name';
+  
   return (
     <Flex
       fill
@@ -175,10 +186,10 @@ const LineChart: React.FC<LineChartProps> = ({
             margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
           >
             <defs>
-              {yAxisKeys.map((key, index) => (
-                <linearGradient key={key} id={`color${key}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={`var(--data-${colors[index]})`} stopOpacity={0.8} />
-                  <stop offset="100%" stopColor={`var(--data-${colors[index]})`} stopOpacity={0} />
+              {autoSeries.map(({ key, color }) => (
+                <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={`var(--data-${color})`} stopOpacity={0.8} />
+                  <stop offset="100%" stopColor={`var(--data-${color})`} stopOpacity={0} />
                 </linearGradient>
               ))}
             </defs>
@@ -241,19 +252,19 @@ const LineChart: React.FC<LineChartProps> = ({
                 />
               }
             />
-            {yAxisKeys.map((key, index) => (
+            {autoSeries.map(({ key, color }) => (
               <Area
                 key={key}
                 type={curveType}
                 dataKey={key}
                 name={key}
-                stroke={`var(--data-${colors[index]})`}
+                stroke={`var(--data-${color})`}
                 strokeWidth={1}
                 fillOpacity={1}
-                fill={`url(#color${key})`}
                 activeDot={{
                   stroke: "var(--static-transparent)"
                 }}
+                fill={`url(#color-${key})`}
               />
             ))}
           </AreaChart>
