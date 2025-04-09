@@ -1006,7 +1006,7 @@ export default function Home() {
                   <GroupedBarChart
                   border="neutral-alpha-medium"
                   title="Quarterly Revenue"
-                description="How much dough we made per quarter in 2023 and 2024"
+                  description="How much dough we made per quarter in 2023 and 2024"
                     data={[
                       { name: "Q1", value1: 35000, value2: 45000, value3: 30000 },
                       { name: "Q2", value1: 42000, value2: 48000, value3: 36000 },
@@ -1026,8 +1026,9 @@ export default function Home() {
                   <LineBarGraph
                   title="Traffic Per Weekday"
                   description="How many users we had per weekday"
-                    lineColorVariant="info"
                     showArea={true}
+                    legend
+                    labels="both"
                     xAxisTitle="Day"
                     yAxisTitle="Count"
                     lineName="Traffic"
