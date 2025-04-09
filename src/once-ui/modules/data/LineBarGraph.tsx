@@ -12,15 +12,11 @@ import {
   Legend,
   Area,
 } from "recharts";
-import { Flex, Column, Text } from "../../components";
+import { Flex, Column, Text, Row } from "../../components";
 import { SpacingToken } from "../../types";
 
-
 interface DataPoint {
-  name: string;
-  lineValue: number;
-  barValue: number;
-  [key: string]: any; // Allow for additional properties
+  [key: string]: string | number | Date;
 }
 
 interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
@@ -30,100 +26,111 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
   barDataKey?: string;
   lineName?: string;
   barName?: string;
-  /**
-   * Size of the graph.
-   * @default "m"
-   */
-  barWidth?: SpacingToken | "fill" | number | string;
-  blur?: boolean;
-  title?: string;
   lineColor?: string;
-  lineColorVariant?: "info" | "success" | "danger" | "purple"; // Add color variant prop
   barColor?: string;
-  /**
-   * Show area under the line
-   * @default true
-   */
+  barWidth?: SpacingToken | "fill" | number;
   showArea?: boolean;
-  /**
-   * Hide X-axis labels when true
-   * @default false
-   */
-  hideXAxisLabels?: boolean;
-
-  dashedLine?: boolean;
-  /**
-   * Hide Y-axis labels when true
-   * @default false
-   */
-  hideYAxisLabels?: boolean;
-  /**
-   * Hide both X and Y axis labels when true
-   * @default false
-   */
-  hideLabels?: boolean;
-  /**
-   * Title for X-axis
-   */
-  xAxisTitle?: string;
-  /**
-   * Title for Y-axis
-   */
-  yAxisTitle?: string;
-  /**
-   * Hide X-axis title
-   * @default false
-   */
-  hideXAxisTitle?: boolean;
-  /**
-   * Hide Y-axis title
-   * @default false
-   */
-  hideYAxisTitle?: boolean;
-  /**
-   * Hide both X and Y axis titles
-   * @default false
-   */
-  hideAxisTitles?: boolean;
-  /**
-   * Hide legend
-   * @default false
-   */
-  showLegend?: boolean;
-
-  timeFormat?: string; // Format for date display
-
-  isTimeSeries?: boolean; // Whether the X axis contains date/time values
-
-  curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural" ; // Type of curve for the line
-
+  labels?: "x" | "y" | "both" | "none";
+  title?: string;
   description?: string;
+  legend?: boolean;
+  dashedLine?: boolean;
+  curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural";
+  isTimeSeries?: boolean;
+  timeFormat?: string;
+  xAxisTitle?: string;
+  yAxisTitle?: string;
 }
 
+const defaultColors = {
+  line: "blue",
+  bar: "green"
+};
 
-const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat }: any) => {
+const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat = "MMM DD, YYYY" }: any) => {
   if (active && payload && payload.length) {
     return (
-      <Flex minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
+      <Column
+        minWidth={8}
+        gap="8"
+        background="surface"
+        radius="m"
+        border="neutral-alpha-medium">
         <Flex
-          borderBottom="neutral-alpha-medium"
           fillWidth
-          horizontal="center"
-          padding="8"
+          paddingTop="8"
+          paddingX="12"
         >
-          <Text variant="label-strong-s">{isTimeSeries ? moment(label).format(timeFormat) : label.toLocaleString()}</Text>
+          <Text
+            variant="label-default-s"
+            onBackground="neutral-strong"
+          >
+            {isTimeSeries ? moment(label).format(timeFormat) : label}
+          </Text>
         </Flex>
-        <Flex padding="8" direction="column">
+        <Column
+          fillWidth
+          horizontal="space-between"
+          paddingBottom="8"
+          paddingX="12"
+          gap="4">
           {payload.map((entry: any, index: number) => (
-            <Text
-             variant="label-default-s"
-              key={`item-${index}`}
-              style={{ color: entry.color }}
-            >
-              {`${entry.name.toLocaleString()}: ${entry.value.toLocaleString()}`}
-            </Text>
+            <Row key={index} horizontal="space-between" fillWidth gap="16">
+              <Row vertical="center" gap="8">
+                <Flex
+                  style={{
+                    backgroundClip: "padding-box",
+                    border: `1px solid ${entry.stroke || entry.color}`,
+                    background: `linear-gradient(to bottom, ${entry.stroke || entry.color} 0%, transparent 100%)`
+                  }}
+                  minWidth="12"
+                  minHeight="12"
+                  radius="xs"
+                />
+                <Text onBackground="neutral-weak" variant="label-default-s">
+                  {entry.name}
+                </Text>
+              </Row>
+              <Text onBackground="neutral-strong" variant="label-default-s">
+                {typeof entry.value === 'number' ? entry.value.toLocaleString() : entry.value}
+              </Text>
+            </Row>
           ))}
-        </Flex>
+        </Column>
+      </Column>
+    );
+  }
+  return null;
+};
+
+const CustomLegend = ({ payload, labels }: any) => {
+  if (payload && payload.length) {
+    return (
+      <Flex 
+      horizontal="start" 
+      vertical="center" 
+      position="absolute"
+      gap="16"
+      left={(labels === "y" || labels === "both") ? "80" : "12"}
+      top="12"
+      >
+        {payload.map((entry: any, index: number) => (
+          <Flex key={index} vertical="center" gap="8">
+            <Flex
+              style={{
+                backgroundClip: "padding-box",
+                border: `1px solid ${entry.stroke || entry.color}`,
+                background: `linear-gradient(to bottom, ${entry.stroke || entry.color} 0%, transparent 100%)`
+              }}
+              minWidth="16"
+              minHeight="16"
+              radius="s"
+            />
+            <Text variant="label-default-s">
+              {entry.value}
+            </Text>
+          </Flex>
+        ))}
       </Flex>
     );
   }
@@ -137,73 +144,56 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
   barDataKey = "barValue",
   lineName = "Line",
   barName = "Bar",
+  lineColor = defaultColors.line,
+  barColor = defaultColors.bar,
   barWidth = "fill",
-  blur = false,
+  showArea = true,
   dashedLine = false,
-  border,
+  labels = "both",
+  border = "neutral-medium",
   title,
   description,
-  lineColorVariant = "info", // Options: "info", "success", "danger", "purple"
-  background,
-  showArea = true,
-  hideXAxisLabels = false,
-  hideYAxisLabels = false,
-  hideLabels = false,
+  legend = false,
+  curveType = "monotone",
+  isTimeSeries = false,
+  timeFormat = "YYYY-MM-DD",
   xAxisTitle,
   yAxisTitle,
-  hideXAxisTitle = false,
-  hideYAxisTitle = false,
-  hideAxisTitles = false,
-  timeFormat = "YYYY-MM-DD",
-  isTimeSeries = false,
-  showLegend = false,
-  curveType = "monotone", // Default curve type
   ...flexProps
 }) => {
- 
+  // Generate unique IDs for gradients
+  const lineGradientId = `colorLine-${React.useId()}`;
+  const barGradientId = `barGradient-${React.useId()}`;
 
-  // Generate a unique ID for each gradient
-  const lineGradientId = `colorLine-${Math.random().toString(36).substring(2, 9)}`;
-  const barGradientId = `barGradient-${Math.random().toString(36).substring(2, 9)}`;
-
-  const colorMap = {
-    info: "var(--info-solid-strong)",
-    success: "var(--success-solid-strong)",
-    danger: "var(--danger-solid-strong)",
-    purple: "#6c5ce7"
-  };
-
-  // Use the variant to determine the color
-  const finalLineColor = lineColorVariant ? colorMap[lineColorVariant] : "var(--info-solid-strong)";
+  // Get the final colors with CSS variables
+  const finalLineColor = `var(--data-${lineColor})`;
+  const finalBarColor = `var(--data-${barColor})`;
 
   return (
     <Flex
-    direction="column"
-    fillHeight
-    fillWidth
-    height={24}
-    border={border}
-    radius="l"
-    data-viz="categorical"
+      direction="column"
+      fillHeight
+      fillWidth
+      height={24}
+      border={border}
+      radius="l"
+      data-viz="categorical"
       {...flexProps}
     >
-      {title && (
-  <Column fillWidth borderBottom={border} horizontal="start" paddingX="20"
-  paddingY="12"
-  gap="4"
->
       {(title || description) && (
-                <Text variant="heading-strong-s">
-                  {title}
-                </Text>
-              )}
-              {description && (
-                <Text variant="label-default-s" onBackground="neutral-weak">
-                  {description}
-                </Text>
-              )}
-              </Column>
-            )}
+        <Column fillWidth borderBottom={border} horizontal="start" paddingX="20" paddingY="12" gap="4">
+          {title && (
+            <Text variant="heading-strong-s">
+              {title}
+            </Text>
+          )}
+          {description && (
+            <Text variant="label-default-s" onBackground="neutral-weak">
+              {description}
+            </Text>
+          )}
+        </Column>
+      )}
       <Flex fill>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
@@ -214,26 +204,14 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
             <defs>
               {/* Bar gradient */}
               <linearGradient id={barGradientId} x1="0" y1="0" x2="0" y2="1">
-                {[
-                  { offset: "0%", opacity: 0.8 },
-                  { offset: "35%", opacity: 0.6 },
-                  { offset: "70%", opacity: 0.3 },
-                  { offset: "95%", opacity: 0.1 },
-                  { offset: "100%", opacity: 0 },
-                ].map(({ offset, opacity }) => (
-                  <stop
-                    key={offset}
-                    offset={offset}
-                    stopColor="var(--data-solid-100)"
-                    stopOpacity={opacity}
-                  />
-                ))}
+                <stop offset="0%" stopColor={finalBarColor} stopOpacity={0.8} />
+                <stop offset="70%" stopColor={finalBarColor} stopOpacity={0.3} />
+                <stop offset="100%" stopColor={finalBarColor} stopOpacity={0} />
               </linearGradient>
               
-              {/* Line gradient - similar to LineGraph component */}
+              {/* Line gradient */}
               <linearGradient id={lineGradientId} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="25%" stopColor={finalLineColor} stopOpacity={0.5} />
-                <stop offset="40%" stopColor={finalLineColor} stopOpacity={0.4} />
                 <stop offset="95%" stopColor={finalLineColor} stopOpacity={0.05} />
               </linearGradient>
             </defs>
@@ -242,61 +220,69 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
               vertical={false}
               stroke="var(--neutral-alpha-weak)"
             />
-            <XAxis
-              dataKey={xAxisKey}
-              axisLine={false}
-              tickLine={false}
-              height={hideXAxisLabels || hideLabels ? 0 : 50}
-              tick={hideXAxisLabels || hideLabels ? false : {
-                fill: "var(--neutral-on-background-weak)",
-                fontSize: 12,
-              }}
-              
-              label={
-                xAxisTitle && !hideXAxisTitle && !hideAxisTitles
-                  ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -23, fill: "var(--neutral-on-background-medium)" }
-                  : undefined
-              }
-            />
-            <YAxis
-              allowDataOverflow
-              axisLine={{
-                stroke: "var(--neutral-alpha-medium)",
-              }}
-              tickLine={false}
-              padding={{ top: 40 }}
-              tick={{
-                fill: "var(--neutral-on-background-weak)",
-                fontSize: 12,
-               }}
-              width={yAxisTitle ? 54 : 0}
-              label={
-                yAxisTitle && !hideYAxisTitle && !hideAxisTitles
-                  ? { 
-                      value: yAxisTitle,
-                      position: 'insideTop',
-                      offset: 10,
-                      fontSize: 12,
-                      fill: "var(--neutral-on-background-medium)" 
-                    }
-                  : undefined
-              }
-            />
-            <Tooltip
-              content={<CustomTooltip isTimeSeries={isTimeSeries} timeFormat={timeFormat} />}
-              cursor={{ fill: "rgba(255,255,255,0.05)" }}
-            />
-            {showLegend && (
+            {legend && (
               <Legend
-                verticalAlign="top"
-                wrapperStyle={{ paddingBottom: 10 }}
+                content={<CustomLegend labels={labels} />}
+                wrapperStyle={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  margin: 0
+                }}
               />
             )}
+            {(labels === "x" || labels === "both") && (
+              <XAxis
+                dataKey={xAxisKey}
+                axisLine={false}
+                tickLine={false}
+                height={xAxisTitle ? 50 : 0}
+                tick={{
+                  fill: "var(--neutral-on-background-weak)",
+                  fontSize: 11,
+                }}
+                label={
+                  xAxisTitle
+                    ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -23, fill: "var(--neutral-on-background-medium)" }
+                    : undefined
+                }
+              />
+            )}
+            {(labels === "y" || labels === "both") && (
+              <YAxis
+                allowDataOverflow
+                axisLine={{
+                  stroke: "var(--neutral-alpha-medium)",
+                }}
+                tickLine={false}
+                padding={{ top: 40 }}
+                tick={{
+                  fill: "var(--neutral-on-background-weak)",
+                  fontSize: 11,
+                }}
+                width={yAxisTitle ? 54 : 0}
+                label={
+                  yAxisTitle
+                    ? { 
+value: yAxisTitle,
+position: 'insideTop',
+offset: 10,
+                      fontSize: 12,
+fill: "var(--neutral-on-background-medium)" 
+}
+                    : undefined
+                }
+              />
+            )}
+            <Tooltip
+              content={<CustomTooltip isTimeSeries={isTimeSeries} timeFormat={timeFormat}  />}
+              cursor={{ fill: "rgba(255,255,255,0.05)" }}
+            />
             <Bar
               dataKey={barDataKey}
               name={barName}
               fill={`url(#${barGradientId})`}
-              stroke="var(--data-solid-100)"
+              stroke={finalBarColor}
               strokeWidth={1}
               radius={[4, 4, 0, 0]}
               barSize={
@@ -331,10 +317,11 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
               />
             ) : (
               <Line
-                type="monotone"
+                type={curveType}
                 dataKey={lineDataKey}
                 name={lineName}
                 stroke={finalLineColor}
+                strokeDasharray={dashedLine ? "5 5" : "0"}
                 strokeWidth={2}
                 dot={{ r: 4, fill: finalLineColor }}
                 activeDot={{ r: 6, fill: finalLineColor }}
