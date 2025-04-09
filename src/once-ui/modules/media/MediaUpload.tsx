@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, forwardRef, useEffect } from "react";
 import Compressor from "compressorjs";
-import { Flex, Icon, SmartImage, Spinner, Text } from "@/once-ui/components";
+import { Flex, Icon, SmartImage, Spinner, Text } from "../../components";
 import styles from "./MediaUpload.module.scss";
 
 interface MediaUploadProps extends React.ComponentProps<typeof Flex> {

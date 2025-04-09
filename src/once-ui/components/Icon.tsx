@@ -2,8 +2,8 @@
 
 import React, { forwardRef, useState, useEffect, ReactNode } from "react";
 import classNames from "classnames";
-import { IconType } from "react-icons";
-import { iconLibrary, IconName } from "../icons";
+import { IconType, } from "react-icons";
+import { iconLibrary, IconName } from "../icons"; 
 import { ColorScheme, ColorWeight } from "../types";
 import { Flex, Tooltip } from ".";
 import styles from "./Icon.module.scss";
@@ -31,10 +31,21 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       tooltipPosition = "top",
       ...rest
     },
-    ref
+    ref,
   ) => {
+    const IconComponent: IconType | undefined = iconLibrary[name];
     const [isTooltipVisible, setTooltipVisible] = useState(false);
     const [isHover, setIsHover] = useState(false);
+    
+    let colorClass = "";
+    
+    if (onBackground) {
+      const [scheme, weight] = onBackground.split("-") as [ColorScheme, ColorWeight];
+      colorClass = `${scheme}-on-background-${weight}`;
+    } else if (onSolid) {
+      const [scheme, weight] = onSolid.split("-") as [ColorScheme, ColorWeight];
+      colorClass = `${scheme}-on-solid-${weight}`;
+    }
 
     useEffect(() => {
       let timer: NodeJS.Timeout;
@@ -49,8 +60,6 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       return () => clearTimeout(timer);
     }, [isHover]);
 
-    const IconComponent: IconType | undefined = iconLibrary[name];
-
     if (!IconComponent) {
       console.warn(`Icon "${name}" does not exist in the library.`);
       return null;
@@ -58,17 +67,8 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
 
     if (onBackground && onSolid) {
       console.warn(
-        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied."
+        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied.",
       );
-    }
-
-    let colorClass = "color-inherit";
-    if (onBackground) {
-      const [scheme, weight] = onBackground.split("-") as [ColorScheme, ColorWeight];
-      colorClass = `${scheme}-on-background-${weight}`;
-    } else if (onSolid) {
-      const [scheme, weight] = onSolid.split("-") as [ColorScheme, ColorWeight];
-      colorClass = `${scheme}-on-solid-${weight}`;
     }
 
     return (
@@ -78,6 +78,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
         as="span"
         ref={ref}
         className={classNames(colorClass, styles.icon, styles[size])}
+        role={decorative ? "presentation" : undefined}
         aria-hidden={decorative ? "true" : undefined}
         aria-label={decorative ? undefined : name}
         onMouseEnter={() => setIsHover(true)}
@@ -86,17 +87,13 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       >
         <IconComponent />
         {tooltip && isTooltipVisible && (
-          <Flex
-            position="absolute"
-            zIndex={1}
-            className={iconStyles[tooltipPosition]}
-          >
+          <Flex position="absolute" zIndex={1} className={iconStyles[tooltipPosition]}>
             <Tooltip label={tooltip} />
           </Flex>
         )}
       </Flex>
     );
-  }
+  },
 );
 
 Icon.displayName = "Icon";
