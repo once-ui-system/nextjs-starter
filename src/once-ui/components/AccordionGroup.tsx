@@ -2,7 +2,7 @@ import React from "react";
 import { Column, Accordion, Line, Flex } from "@/once-ui/components";
 
 export type AccordionItem = {
-  title: string;
+  title: React.ReactNode;
   content: React.ReactNode;
 };
 
