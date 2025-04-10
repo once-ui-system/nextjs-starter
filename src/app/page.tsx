@@ -1004,6 +1004,7 @@ export default function Home() {
               <Column fillWidth>
                 <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <GroupedBarChart
+                  legend
                   border="neutral-alpha-medium"
                   title="Quarterly Revenue"
                   description="How much dough we made per quarter in 2023 and 2024"
@@ -1013,8 +1014,6 @@ export default function Home() {
                       { name: "Q3", value1: 55000, value2: 51000, value3: 40000 },
                       { name: "Q4", value1: 75000, value2: 52000, value3: 48000 },
                     ]}
-                    xAxisTitle="Quarter"
-                    yAxisTitle="USD"
                     barLabels={["2023", "2024", "Projected"]}
                   />
                 </Column>
