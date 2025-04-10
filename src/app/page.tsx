@@ -959,6 +959,9 @@ export default function Home() {
               <BarGraph
                 title="Company revenue in Q2 2025"
                 legend
+                labels="both"
+                yAxisTitle="Count"
+                xAxisTitle="Month"
                 description="How much dough we made"
                 tooltip="Revenue"
                 color="emerald"
@@ -1005,6 +1008,7 @@ export default function Home() {
                 <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
                   <GroupedBarChart
                   legend
+                  yAxisTitle="Count"
                   border="neutral-alpha-medium"
                   title="Quarterly Revenue"
                   description="How much dough we made per quarter in 2023 and 2024"

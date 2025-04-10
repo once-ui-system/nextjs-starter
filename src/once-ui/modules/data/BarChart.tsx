@@ -114,6 +114,7 @@ const BarGraph: React.FC<BarChartProps> = ({
   data,
   xAxisKey = "name",
   yAxisKey = "value",
+  yAxisTitle,
   barWidth = "fill",
   border = "neutral-medium",
   color = "blue",
@@ -188,21 +189,32 @@ const BarGraph: React.FC<BarChartProps> = ({
                 }}
               />
             )}
-            {labels === "y" || labels === "both" && (
-              <YAxis
-                allowDataOverflow
-                axisLine={{
-                  stroke: "var(--neutral-alpha-weak)",
-                }}
-                tickLine={false}
-                padding={{ top: 40 }}
-                tick={{
-                  fill: "var(--neutral-on-background-weak)",
-                  fontSize: 12,
-                }}
-                width={64}
-              />
-            )}
+            {(labels === "y" || labels === "both") && (
+                                      <YAxis
+                                        allowDataOverflow
+                                        axisLine={{
+                                          stroke: "var(--neutral-alpha-medium)",
+                                        }}
+                                        tickLine={false}
+                                        padding={{ top: 40 }}
+                                        tick={{
+                                          fill: "var(--neutral-on-background-weak)",
+                                          fontSize: 11,
+                                        }}
+                                        width={yAxisTitle ? 54 : 0}
+                                        label={
+                                          yAxisTitle
+                                            ? { 
+                        value: yAxisTitle,
+                        position: 'insideTop',
+                        offset: 10,
+                                              fontSize: 12,
+                        fill: "var(--neutral-on-background-medium)" 
+                        }
+                                            : undefined
+                                        }
+                                      />
+                                    )}
             <Tooltip
               content={<CustomTooltip tooltipTitle={tooltip} />}
               cursor={{ fill: "var(--neutral-alpha-weak)" }}
