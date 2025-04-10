@@ -37,6 +37,7 @@ interface GroupedBarChartProps extends React.ComponentProps<typeof Flex> {
   xAxisKey?: string;
   yAxisKeys?: string[];
   barLabels?: string[];
+  yAxisTitle?: string;
   barWidth?: SpacingToken | "fill" | number | string;
   isTimeSeries?: boolean;
   timeFormat?: string;
@@ -154,6 +155,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   isTimeSeries = false,
   timeFormat,
   title,
+  yAxisTitle,
   description,
   legend = false,
   tooltipTitle,
@@ -222,17 +224,31 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
               />
             )}
             {(labels === "y" || labels === "both") && (
-              <YAxis
-                allowDataOverflow
-                axisLine={{ stroke: "var(--neutral-alpha-medium)" }}
-                tickLine={false}
-                padding={{ top: 40 }}
-                tick={{
-                  fill: "var(--neutral-on-background-weak)",
-                  fontSize: 12,
-                }}
-              />
-            )}
+                          <YAxis
+                            allowDataOverflow
+                            axisLine={{
+                              stroke: "var(--neutral-alpha-medium)",
+                            }}
+                            tickLine={false}
+                            padding={{ top: 40 }}
+                            tick={{
+                              fill: "var(--neutral-on-background-weak)",
+                              fontSize: 11,
+                            }}
+                            width={yAxisTitle ? 54 : 0}
+                            label={
+                              yAxisTitle
+                                ? { 
+            value: yAxisTitle,
+            position: 'insideTop',
+            offset: 10,
+                                  fontSize: 12,
+            fill: "var(--neutral-on-background-medium)" 
+            }
+                                : undefined
+                            }
+                          />
+                        )}
             <Tooltip
               content={
                 <CustomTooltip
