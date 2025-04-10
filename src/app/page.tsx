@@ -1028,7 +1028,7 @@ export default function Home() {
                   description="How many users we had per weekday"
                     showArea={true}
                     legend
-                    labels="both"
+                    labels="y"
                     xAxisTitle="Day"
                     yAxisTitle="Count"
                     lineName="Traffic"
