@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { Flex, Heading } from "../../components";
+import { Flex, Heading, Text, Column,Row } from "../../components";
 
 interface DataPoint {
   name: string;
@@ -17,11 +17,6 @@ interface DataPoint {
 
 interface PieChartProps extends React.ComponentProps<typeof Flex> {
   data: DataPoint[];
-  /**
-   * Color variants for pie slices (will cycle through these)
-   * @default ["info", "success", "danger", "purple"]
-   */
-  colorVariants?: ("info" | "success" | "danger" | "purple")[];
   /**
    * Apply blur effect
    * @default false
@@ -67,28 +62,42 @@ interface PieChartProps extends React.ComponentProps<typeof Flex> {
    * @default true
    */
   useGradients?: boolean;
+
+  defaultColors?: string[];
 }
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
-      <Flex minWidth={8} background="surface" border="neutral-alpha-medium" direction="column">
+      <Column
+        minWidth={8}
+        gap="8"
+         paddingBottom="8"
+        background="surface"
+        radius="m"
+        border="neutral-alpha-medium">
         <Flex
-          borderBottom="neutral-alpha-medium"
           fillWidth
-          horizontal="center"
-          padding="8"
+          paddingTop="8"
+          horizontal="start"
+          paddingX="12"
+          direction="column"
         >
-          <p>{payload[0].name}</p>
-        </Flex>
-        <Flex padding="s" direction="column">
-          <p
+          <Text variant="label-default-s"
+            onBackground="neutral-strong" paddingBottom="8">{payload[0].name}</Text>
+        <Row horizontal="space-between" fillWidth>
+          <Text
+          onBackground="neutral-weak" variant="label-default-s"
             style={{ color: payload[0].fill }}
           >
+            </Text>
+            <Text
+            onBackground="neutral-strong" variant="label-default-s">
             {`Value: ${payload[0].value}`}
-          </p>
-        </Flex>
+          </Text>
+        </Row>
       </Flex>
+      </Column>
     );
   }
   return null;
@@ -96,7 +105,7 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 export const PieChart: React.FC<PieChartProps> = ({
   data,
-  colorVariants = ["info", "success", "danger", "purple"],
+  defaultColors = ['blue', 'green', 'aqua', 'violet', 'orange', 'red', 'purple', 'magenta', 'moss', 'emerald'],
   blur = false,
   border,
   title,
@@ -111,12 +120,8 @@ export const PieChart: React.FC<PieChartProps> = ({
   useGradients = true,
   ...flexProps
 }) => {
-  const colorMap = {
-    info: "var(--info-solid-strong)",
-    success: "var(--data-solid-100)",
-    danger: "var(--data-solid-500)",
-    purple: "var(--data-solid-300)",
-  };
+  // Convert defaults into CSS var() references
+  const colorPalette = defaultColors.map((c) => `var(--data-${c})`);
 
   // Generate unique IDs for each gradient
   const gradientIds = data.map((_, index) => 
@@ -151,20 +156,20 @@ export const PieChart: React.FC<PieChartProps> = ({
           <RechartsPieChart>
             <defs>
               {data.map((entry, index) => {
-                const baseColor = entry.color || colorMap[colorVariants[index % colorVariants.length]];
+                const baseColor = entry.color || colorPalette[index % colorPalette.length];
                 return (
-                  <radialGradient 
-                    key={`gradient-${index}`} 
-                    id={gradientIds[index]} 
-                    cx="50%" 
-                    cy="50%" 
-                    r="100%" 
-                    fx="50%" 
+                  <radialGradient
+                    key={`gradient-${index}`}
+                    id={gradientIds[index]}
+                    cx="50%"
+                    cy="50%"
+                    r="100%"
+                    fx="50%"
                     fy="50%"
                   >
-                     <stop offset="25%" stopColor={baseColor} stopOpacity={0.5} />
-                <stop offset="40%" stopColor={baseColor} stopOpacity={0.4} />
-                <stop offset="95%" stopColor={baseColor} stopOpacity={0.05} />
+                    <stop offset="25%" stopColor={baseColor} stopOpacity={0.5} />
+                    <stop offset="40%" stopColor={baseColor} stopOpacity={0.4} />
+                    <stop offset="95%" stopColor={baseColor} stopOpacity={0.05} />
                   </radialGradient>
                 );
               })}
@@ -182,7 +187,7 @@ export const PieChart: React.FC<PieChartProps> = ({
               stroke="none"
             >
               {data.map((entry, index) => {
-                const baseColor = entry.color || colorMap[colorVariants[index % colorVariants.length]];
+                const baseColor = entry.color || colorPalette[index % colorPalette.length];
                 return (
                   <Cell 
                     key={`cell-${index}`} 
