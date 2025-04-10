@@ -47,8 +47,11 @@ const defaultColors = {
   bar: "green"
 };
 
-const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat = "MMM DD, YYYY" }: any) => {
+const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat = "MMM DD, YYYY", xAxisKey }: any) => {
   if (active && payload && payload.length) {
+    // Get the proper label from the payload data instead of using the default label
+    const displayLabel = payload[0]?.payload?.[xAxisKey] || label;
+    
     return (
       <Column
         minWidth={8}
@@ -65,7 +68,7 @@ const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat = "MMM
             variant="label-default-s"
             onBackground="neutral-strong"
           >
-            {isTimeSeries ? moment(label).format(timeFormat) : label}
+            {isTimeSeries ? moment(displayLabel).format(timeFormat) : displayLabel}
           </Text>
         </Flex>
         <Column
@@ -275,7 +278,7 @@ fill: "var(--neutral-on-background-medium)"
               />
             )}
             <Tooltip
-              content={<CustomTooltip isTimeSeries={isTimeSeries} timeFormat={timeFormat}  />}
+              content={<CustomTooltip isTimeSeries={isTimeSeries} timeFormat={timeFormat} xAxisKey={xAxisKey} />}
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
             />
             <Bar
