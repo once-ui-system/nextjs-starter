@@ -63,7 +63,6 @@ const meta = {
 const og = {
   title: meta.title,
   description: meta.description,
-  type: "website",
   image: "/images/cover.jpg",
 };
 

@@ -91,7 +91,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ menuGroups, className, ...re
 
   // Check if a menu item should be selected based on the current path
   const isSelected = (href?: string) => {
-    if (!href) return false;
+    if (!href || !pathname) return false;
     return pathname.startsWith(href);
   };
 

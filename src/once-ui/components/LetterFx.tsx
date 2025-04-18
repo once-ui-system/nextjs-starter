@@ -100,7 +100,7 @@ const LetterFx = forwardRef<HTMLSpanElement, LetterFxProps>(
     const originalText = useRef<string>(typeof children === "string" ? children : "");
 
     const eventHandler = useCallback(() => {
-      return createEventHandler(
+      createEventHandler(
         originalText.current,
         setText,
         inProgress,
@@ -108,7 +108,7 @@ const LetterFx = forwardRef<HTMLSpanElement, LetterFxProps>(
         speed,
         charset,
         trigger === "instant" ? setHasAnimated : undefined,
-      );
+      )();
     }, [inProgress, speed, charset, trigger, setHasAnimated]);
 
     useEffect(() => {
