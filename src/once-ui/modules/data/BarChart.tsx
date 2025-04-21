@@ -1,13 +1,13 @@
 import React from "react";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-  CartesianGrid,
-  Tooltip,
-  Legend,
+  BarChart as RechartsBarChart,
+  Bar as RechartsBar,
+  XAxis as RechartsXAxis,
+  YAxis as RechartsYAxis,
+  ResponsiveContainer as RechartsResponsiveContainer,
+  CartesianGrid as RechartsCartesianGrid,
+  Tooltip as RechartsTooltip,
+  Legend as RechartsLegend,
 } from "recharts";
 
 import { TShirtSizes } from "../../types";
@@ -35,7 +35,7 @@ interface BarChartProps extends React.ComponentProps<typeof Flex> {
   labels?: "x" | "y" | "both";
 }
 
-const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
+const Tooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
@@ -76,7 +76,7 @@ const CustomTooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
   return null;
 };
 
-const CustomLegend = ({ payload, labels, color }: any) => {
+const Legend = ({ payload, labels, color }: any) => {
   if (payload && payload.length) {
     return (
       <Flex 
@@ -110,7 +110,7 @@ const CustomLegend = ({ payload, labels, color }: any) => {
   return null;
 };
 
-const BarGraph: React.FC<BarChartProps> = ({
+const BarChart: React.FC<BarChartProps> = ({
   data,
   xAxisKey = "name",
   yAxisKey = "value",
@@ -154,19 +154,19 @@ const BarGraph: React.FC<BarChartProps> = ({
         )}
       </Column>
       <Flex fill>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
+        <RechartsResponsiveContainer width="100%" height="100%">
+          <RechartsBarChart
             data={data}
             margin={{ left: 0, right: 0, bottom: 0 }}
           >
-            <CartesianGrid
+            <RechartsCartesianGrid
               horizontal={true}
               vertical={false}
               stroke="var(--neutral-alpha-weak)"
             />
             {legend && (
-              <Legend
-                content={<CustomLegend color={color} />}
+              <RechartsLegend
+                content={<Legend color={color} />}
                 wrapperStyle={{
                   position: 'absolute',
                   top: 0,
@@ -176,7 +176,7 @@ const BarGraph: React.FC<BarChartProps> = ({
               />
             )}
             {labels === "x" || labels === "both" && (
-              <XAxis
+              <RechartsXAxis
                 dataKey={xAxisKey}
                 axisLine={{
                   stroke: "var(--neutral-alpha-weak)",
@@ -190,7 +190,7 @@ const BarGraph: React.FC<BarChartProps> = ({
               />
             )}
             {(labels === "y" || labels === "both") && (
-                                      <YAxis
+                                      <RechartsYAxis
                                         allowDataOverflow
                                         axisLine={{
                                           stroke: "var(--neutral-alpha-medium)",
@@ -215,8 +215,8 @@ const BarGraph: React.FC<BarChartProps> = ({
                                         }
                                       />
                                     )}
-            <Tooltip
-              content={<CustomTooltip tooltipTitle={tooltip} />}
+            <RechartsTooltip
+              content={<Tooltip tooltipTitle={tooltip} />}
               cursor={{ fill: "var(--neutral-alpha-weak)" }}
             />
             <defs>
@@ -234,7 +234,7 @@ const BarGraph: React.FC<BarChartProps> = ({
                 ))}
               </linearGradient>
             </defs>
-            <Bar
+            <RechartsBar
               dataKey={yAxisKey}
               fill="url(#barGradient)"
               stroke={`var(--data-${color})`}
@@ -256,14 +256,14 @@ const BarGraph: React.FC<BarChartProps> = ({
               }
               radius={[4, 4, 4, 4]}
             />
-          </BarChart>
-        </ResponsiveContainer>
+          </RechartsBarChart>
+        </RechartsResponsiveContainer>
       </Flex>
     </Column>
   );
 };
 
-BarGraph.displayName = "BarGraph";
+BarChart.displayName = "BarChart";
 
-export { BarGraph };
+export { BarChart };
 export type { BarChartProps };

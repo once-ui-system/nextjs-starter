@@ -43,7 +43,7 @@ import {
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 
-import { BarGraph } from "@/once-ui/modules/data/BarChart";
+import { BarChart } from "@/once-ui/modules/data/BarChart";
 import { LineChart } from "@/once-ui/modules/data/LineChart";
 import { GroupedBarChart } from "@/once-ui/modules/data/GroupedBarChart";
 import { LineBarGraph } from "@/once-ui/modules/data/LineBarGraph";
@@ -956,7 +956,7 @@ export default function Home() {
             
             <Row fill gap="32" mobileDirection="column">
               {/* Bar Graph */}
-              <BarGraph
+              <BarChart
                 title="Company revenue in Q2 2025"
                 legend
                 labels="both"
@@ -1058,11 +1058,10 @@ export default function Home() {
                     Revenue
                   </Heading>
                   <PieChart
-                  fill
-                  height={20}
-                  showLegend={true}
-                  innerRadius="70%" 
-                  colorVariants={["info", "success", "danger", "purple"]} 
+                    fill
+                    height={20}
+                    showLegend={true}
+                    innerRadius="70%"
                     data = {[
                       { name: 'Category A', value: 400 },
                       { name: 'Category B', value: 300 },
