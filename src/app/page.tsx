@@ -1,3 +1,4 @@
+// Example page: delete the content or rework the blocks
 "use client";
 
 import React, { useState } from "react";
@@ -106,7 +107,7 @@ export default function Home() {
         zIndex={3}
         pattern={{
           display: true,
-          size: "4",
+          size: "2",
         }}
         position="fixed"
         top="0"
