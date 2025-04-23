@@ -15,6 +15,10 @@ export async function generateMetadata() {
     description: meta.home.description,
     baseURL: baseURL,
     path: meta.home.path,
+    canonical: meta.home.canonical,
+    image: meta.home.image,
+    robots: meta.home.robots,
+    alternates: meta.home.alternates,
   });
 }
 
@@ -55,6 +59,7 @@ export default function RootLayout({
       />
       <head>
         <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: <It's not dynamic nor a security issue.>
           dangerouslySetInnerHTML={{
             __html: `
               (function() {

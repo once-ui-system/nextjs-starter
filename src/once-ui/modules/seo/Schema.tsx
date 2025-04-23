@@ -48,6 +48,7 @@ export function Schema({
 
   const schemaType = schemaTypeMap[as];
 
+  // biome-ignore lint/suspicious/noExplicitAny: <cause why not, we love any in typescript..>
   const schema: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": schemaType,
@@ -91,6 +92,7 @@ export function Schema({
     <Script
       id={`schema-${as}-${path}`}
       type="application/ld+json"
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: <It's not dynamic nor a security issue.>
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(schema),
       }}

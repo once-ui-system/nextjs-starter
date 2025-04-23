@@ -86,6 +86,11 @@ const meta = {
     title: "Once UI for Next.js",
     description: "An open-source design system and component library for Next.js that emphasizes easy styling and accessibility in UI development.",
     image: "/og/home.jpg",
+    canonical: "https://once-ui.com",
+    robots: "index,follow",
+    alternates: [
+      { href: "https://once-ui.com", hrefLang: "en" },
+    ],
   },
   // add more routes and reference them in page.tsx
 };

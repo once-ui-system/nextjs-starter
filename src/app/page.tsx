@@ -1,7 +1,8 @@
 // Example page: delete the content or rework the blocks
 "use client";
 
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 
 import {
   Heading,
@@ -29,7 +30,7 @@ import {
   Fade,
   StatusIndicator,
   DateRangePicker,
-  DateRange,
+  type DateRange,
   TiltFx,
   HoloFx,
   IconButton,
@@ -906,7 +907,7 @@ export default function Home() {
                 maxWidth={40}
                 codeInstances={[
                   {
-                    code: `git clone https://github.com/once-ui-system/nextjs-starter.git`,
+                    code: "git clone https://github.com/once-ui-system/nextjs-starter.git",
                     language: "tsx",
                     label: "tsx",
                   },
@@ -944,11 +945,11 @@ export default function Home() {
           </Row>
         </Row>
         <Row fillWidth overflow="hidden">
-          <Row maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Row>
+          <Row maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium" />
           <Row fillWidth border="neutral-alpha-weak" mobileDirection="column">
             {links.map((link, index) => (
               <Card
-                key={index}
+                key={link.href}
                 fillWidth
                 href={link.href}
                 padding="40"
@@ -970,7 +971,7 @@ export default function Home() {
               </Card>
             ))}
           </Row>
-          <Row maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium"></Row>
+          <Row maxWidth="32" borderTop="neutral-alpha-weak" borderBottom="neutral-medium" />
         </Row>
         <Row
           position="relative"
@@ -1023,11 +1024,9 @@ export default function Home() {
         base={isSecondDialogOpen}
         onHeightChange={(height) => setFirstDialogHeight(height)}
         footer={
-          <>
-            <Button variant="secondary" onClick={() => setIsFirstDialogOpen(false)}>
-              Close
-            </Button>
-          </>
+          <Button variant="secondary" onClick={() => setIsFirstDialogOpen(false)}>
+            Close
+          </Button>
         }
       >
         <Column paddingTop="24" fillWidth gap="24">
