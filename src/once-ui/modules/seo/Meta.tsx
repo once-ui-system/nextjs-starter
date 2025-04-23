@@ -43,8 +43,8 @@ export function generateMetadata({
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
 
   const ogImage = image
-    ? `${normalizedBaseURL}${image.startsWith("/") ? image : `/${image}`}`
-    : `${normalizedBaseURL}/og?title=${encodeURIComponent(title)}`;
+    ? `${image.startsWith("/") ? image : `/${image}`}`
+    : `/og?title=${encodeURIComponent(title)}`;
 
   const url = canonical || `${normalizedBaseURL}${normalizedPath}`;
 
@@ -53,7 +53,9 @@ export function generateMetadata({
     robotsContent = `${noindex ? "noindex" : "index"},${nofollow ? "nofollow" : "follow"}`;
   }
 
+
   return {
+    metadataBase: new URL(normalizedBaseURL.startsWith('https://') ? normalizedBaseURL : `https://${normalizedBaseURL}`),
     title,
     description,
     openGraph: {
