@@ -118,6 +118,8 @@ export const DateRangeInput: React.FC<DateRangeInputProps> = ({
             onOpenChange={
                 setIsOpen
             }
+            minWidth={40}
+            floatingPlacement={"bottom"}
         />
     );
 };
