@@ -1,0 +1,160 @@
+.techStackContainer {
+  overflow-y: auto;
+  width: 100%;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  perspective: 1000px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.scrollContent {
+  padding-right: var(--spacing-m);
+
+  @media (max-width: 768px) {
+    padding-right: 0;
+  }
+}
+
+@mixin smoothTransition($properties, $duration: 0.3s) {
+  transition: all $duration cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-property: $properties;
+}
+
+.techStackItem {
+  background: var(--surface-background);
+  border-left: 1px solid rgba(33, 150, 243, 0.8);
+  backdrop-filter: blur(4px);
+  @include smoothTransition(border-color box-shadow);
+
+  &:hover {
+    border-left-color: #42A5F5;
+    box-shadow: 0 8px 15px -5px rgba(33, 150, 243, 0.2);
+  }
+}
+
+.hover3D {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+  &:hover {
+    transform: translateY(-5px) rotateX(3deg) rotateY(2deg);
+    box-shadow: 0 25px 50px -12px rgba(var(--color-tech-rgb), 0.25);
+  }
+}
+
+.glow {
+  filter: drop-shadow(0 0 8px rgba(var(--color-tech-rgb), 0.4));
+}
+
+.pulse {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; filter: drop-shadow(0 0 12px rgba(var(--color-tech-rgb), 0.6)); }
+  100% { opacity: 0.8; }
+}
+
+.certTag {
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1);
+    z-index: 2;
+  }
+}
+
+.achievementPulse {
+  position: relative;
+  padding: var(--spacing-s);
+  border-radius: var(--radius-l);
+  background: rgba(var(--color-tech-rgb), 0.1);
+
+  .pulseCircle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    animation: radar-pulse 3s infinite;
+    border: 2px solid var(--color-tech);
+  }
+}
+
+@keyframes radar-pulse {
+  0% { opacity: 0; transform: scale(0.95); }
+  50% { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.05); }
+}
+
+.skillCard {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+                      45deg,
+                      rgba(var(--color-tech-rgb), 0.1) 0%,
+                      rgba(var(--color-tech-rgb), 0) 50%
+      );
+      animation: shine 1.5s;
+    }
+  }
+}
+
+@keyframes shine {
+  100% {
+    transform: translate(100%, 100%);
+  }
+}
+
+.indexBadge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-tech);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.progressHover {
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.skillTag {
+  transition: transform 0.2s ease, background 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(var(--color-tech-rgb), 0.15);
+  }
+}
+
+.expertBadge {
+  padding: var(--spacing-xs);
+  background: rgba(var(--color-tech-rgb), 0.1);
+  border-radius: var(--radius-s);
+  margin-top: var(--spacing-s);
+}

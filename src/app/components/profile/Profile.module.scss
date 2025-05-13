@@ -1,0 +1,208 @@
+
+@keyframes enterAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceHint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+@mixin smoothTransition($properties, $duration: 0.3s) {
+  transition: all $duration cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-property: $properties;
+}
+
+.timelineContainer {
+  height: 360px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.timelineItem {
+  @include smoothTransition(transform opacity);
+
+  &:hover {
+    transform: translateX(5px) scale(1.01);
+    opacity: 1 !important;
+    z-index: 2;
+  }
+}
+
+.milestoneCard {
+  width: 100%;
+  min-height: 160px;
+  background: var(--surface-background);
+  border-left: 1px solid rgba(33, 150, 243, 0.8);
+  backdrop-filter: blur(4px);
+  @include smoothTransition(border-color box-shadow);
+
+  &:hover {
+    border-left-color: #42A5F5;
+    box-shadow: 0 8px 15px -5px rgba(33, 150, 243, 0.2);
+  }
+}
+
+.textEntrance {
+  animation: enterAnimation 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  &--delayed {
+    animation-delay: 0.3s;
+  }
+}
+
+.detailedText {
+  line-height: 1.6;
+
+  p {
+    margin-bottom: 0.8rem;
+  }
+
+  ul {
+    padding-left: 1rem;
+    margin: 0.8rem 0;
+
+    li {
+      margin-bottom: 0.4rem;
+      position: relative;
+      padding-left: 1rem;
+
+      &::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--accent-alpha-medium);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .timelineContainer {
+    max-height: 260px;
+  }
+
+  .milestoneCard {
+    min-height: 120px !important;
+    padding: 10px !important;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+.textEntrance {
+  animation: slideIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+
+  &.delayed {
+    animation-delay: 0.3s;
+  }
+}
+
+.animatedHighlight {
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-alpha-medium);
+    transition: width 0.4s ease-out;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+.detailedText {
+  line-height: 1.1;
+  padding: 1rem 0;
+
+  ul {
+    padding-left: 1rem;
+    margin: 0.5rem 0;
+
+    li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1rem;
+
+      &::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        display: none;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.bounceAnimation {
+  animation: bounce 2s infinite;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.clickableIcon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.scrollHint {
+  opacity: 0.8;
+  animation: float 3s ease-in-out infinite;
+
+  .bounce {
+    animation: bounce 1.5s infinite;
+  }
+}
+
+.scrollHint {
+  opacity: 0.8;
+  animation: float 2s ease-in-out infinite;
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+  }
+}

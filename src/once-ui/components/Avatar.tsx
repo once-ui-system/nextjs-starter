@@ -4,9 +4,11 @@ import React, { forwardRef } from "react";
 
 import { Skeleton, Icon, Text, StatusIndicator, Flex, SmartImage } from ".";
 import styles from "./Avatar.module.scss";
+import {RadiusNest, RadiusSize} from "@/once-ui/types";
 
 interface AvatarProps extends React.ComponentProps<typeof Flex> {
   size?: "xs" | "s" | "m" | "l" | "xl" | number;
+  radius?: RadiusSize | `${RadiusSize}-${RadiusNest}`;
   value?: string;
   src?: string;
   loading?: boolean;
@@ -36,7 +38,7 @@ const statusIndicatorSizeMapping: Record<"xs" | "s" | "m" | "l" | "xl", "s" | "m
 
 const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
   (
-    { size = "m", value, src, loading, empty, statusIndicator, className, style = {}, ...rest },
+    { size = "m", value, radius = "full", src, loading, empty, statusIndicator, className, style = {}, ...rest },
     ref,
   ) => {
     const sizeInRem = typeof size === "number" ? `${size}rem` : undefined;
@@ -87,7 +89,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
       if (src) {
         return (
           <SmartImage
-            radius="full"
+            radius={radius}
             src={src}
             fill
             alt="Avatar"
@@ -120,7 +122,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         role="img"
         horizontal="center"
         vertical="center"
-        radius="full"
+        radius={radius}
         border="neutral-strong"
         background="surface"
         style={sizeStyle}

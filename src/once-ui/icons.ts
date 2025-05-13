@@ -28,14 +28,26 @@ import {
   HiCheckCircle,
   HiOutlineShieldCheck,
   HiOutlineSparkles,
-  HiOutlineComputerDesktop,
+  HiOutlineComputerDesktop, HiOutlineCloud, HiOutlineCpuChip, HiOutlineCommandLine, HiOutlineServer,
 } from "react-icons/hi2";
 
 import { RiVisaLine } from "react-icons/ri";
 
-import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa6";
+import {FaAmazon, FaAngular, FaDiscord, FaGitAlt, FaGithub, FaGoogle, FaJava, FaReact, FaRocket} from "react-icons/fa6";
 
 import { LuChevronsLeftRight } from "react-icons/lu";
+import {
+  SiAngular,
+  SiDocker, SiGooglecloud, SiGraphql,
+  SiHibernate,
+  SiKubernetes,
+  SiMongodb,
+  SiMysql, SiNginx, SiNodedotjs,
+  SiPostgresql, SiReact, SiRedis,
+  SiSpring,
+  SiTypescript, SiVuedotjs
+} from "react-icons/si";
+import {HiOutlineDatabase} from "react-icons/hi";
 
 export const iconLibrary: Record<string, IconType> = {
   chevronUp: HiChevronUp,
@@ -70,7 +82,27 @@ export const iconLibrary: Record<string, IconType> = {
   visa: RiVisaLine,
   security: HiOutlineShieldCheck,
   sparkle: HiOutlineSparkles,
-  computer: HiOutlineComputerDesktop
+  computer: HiOutlineComputerDesktop,
+  java: FaJava,
+  spring: SiSpring,
+  hibernate: SiHibernate,
+  typescript: SiTypescript,
+  postgres: SiPostgresql,
+  mysql: SiMysql,
+  mongo: SiMongodb,
+  docker: SiDocker,
+  kubernetes: SiKubernetes,
+  aws: FaAmazon,
+  gcp: SiGooglecloud,
+  react: SiReact,
+  angular: SiAngular,
+  vue: SiVuedotjs,
+  node: SiNodedotjs,
+  graphql: SiGraphql,
+  redis: SiRedis,
+  nginx: SiNginx,
+  git: FaGitAlt,
+  rocket: FaRocket
 };
 
 export type IconLibrary = typeof iconLibrary;

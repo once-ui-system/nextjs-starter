@@ -45,8 +45,8 @@
         display: none;
     }
 
-    --icon: url('/trademark/icon-dark.svg');
-    --type: url('/trademark/type-dark.svg');
+    //--icon: url('/images/icon-dark.svg');
+    --type: url('/images/brand/icon.svg');
     
     --page-background:              var(--neutral-background-weak);
     --backdrop:                     var(--static-black-medium);
@@ -243,8 +243,8 @@
         display: grid;
     }
 
-    --icon: url('/trademark/icon-light.svg');
-    --type: url('/trademark/type-light.svg');
+    //--icon: url('/trademark/icon-light.svg');
+    --type: url('/images/brand/icon.svg');
 
     --page-background:              var(--neutral-background-weak);
     --backdrop:                     var(--static-white-medium);

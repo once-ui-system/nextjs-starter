@@ -1,0 +1,44 @@
+.glitchText {
+  position: relative;
+  display: inline-block;
+
+  &::before, &::after {
+    content: 'Digitale Lösungen mit Herz';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+  }
+
+  &::before {
+    left: 2px;
+    text-shadow: -1px 0 var(--brand-solid-medium);
+    clip-path: inset(0 0 0 0);
+    animation: glitch-anim-1 5s infinite linear alternate-reverse;
+  }
+
+  &::after {
+    left: -2px;
+    text-shadow: 1px 0 var(--accent-solid-medium);
+    clip-path: inset(0 0 0 0);
+    animation: glitch-anim-2 5s infinite linear alternate-reverse;
+  }
+}
+
+@keyframes glitch-anim-1 {
+  0%, 5%, 10%, 15%, 20%, 25%, 100% { clip-path: inset(0 0 0 0); }
+  7% { clip-path: inset(13% 0 39% 0); }
+  12% { clip-path: inset(25% 0 61% 0); }
+  17% { clip-path: inset(47% 0 38% 0); }
+  22% { clip-path: inset(64% 0 14% 0); }
+}
+
+@keyframes glitch-anim-2 {
+  0%, 5%, 10%, 15%, 20%, 25%, 100% { clip-path: inset(0 0 0 0); }
+  7% { clip-path: inset(42% 0 28% 0); }
+  12% { clip-path: inset(18% 0 51% 0); }
+  17% { clip-path: inset(54% 0 9% 0); }
+  22% { clip-path: inset(35% 0 68% 0); }
+}

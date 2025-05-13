@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ToggleButton, Scroller, Flex } from ".";
 import type { ToggleButtonProps } from "./ToggleButton";
 

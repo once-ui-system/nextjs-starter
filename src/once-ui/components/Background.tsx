@@ -58,11 +58,23 @@ interface LinesProps {
   color?: string;
 }
 
+interface ParticleProps {
+  display?: boolean;
+  density?: number;
+  color?: string;
+  size?: SpacingToken;
+  speed?: number;
+  interactive?: boolean;
+  interactionRadius?: number;
+  opacity?: DisplayProps["opacity"];
+}
+
 interface BackgroundProps extends React.ComponentProps<typeof Flex> {
   gradient?: GradientProps;
   dots?: DotsProps;
   grid?: GridProps;
   lines?: LinesProps;
+  particle?: ParticleProps;
   mask?: MaskProps;
   className?: string;
   style?: React.CSSProperties;
@@ -76,6 +88,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       dots = {},
       grid = {},
       lines = {},
+      particle = {},
       mask = {},
       children,
       className,
@@ -161,6 +174,129 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       return {};
     };
 
+    useEffect(() => {
+      if (!particle.display || !backgroundRef.current) return;
+
+      const container = backgroundRef.current;
+      const particles: HTMLElement[] = [];
+      const particleTargets = new Map<HTMLElement, { x: number; y: number }>();
+      const initialPositions = new Map<HTMLElement, { x: number; y: number }>();
+      let mousePosition = { x: -1000, y: -1000 };
+      let animationFrameId: number;
+
+      const {
+        color = 'brand-on-background-weak',
+        size = '2',
+        speed = 0.3,
+        interactive = false,
+        interactionRadius = 20,
+        opacity = 100,
+        density = 100
+      } = particle;
+
+      const parsedSize = `var(--static-space-${size})`;
+      const parsedOpacity = `${opacity}%`;
+      const movementSpeed = speed * 0.08;
+      const repulsionStrength = 0.15 * (speed || 1);
+
+      const handleMouseMove = (e: MouseEvent) => {
+        const rect = container.getBoundingClientRect();
+        mousePosition = {
+          x: ((e.clientX - rect.left) / rect.width) * 100,
+          y: ((e.clientY - rect.top) / rect.height) * 100
+        };
+      };
+
+      const createParticle = () => {
+        const particleEl = document.createElement("div");
+        particleEl.style.position = "absolute";
+        particleEl.style.width = parsedSize;
+        particleEl.style.height = parsedSize;
+        particleEl.style.background = `var(--${color})`;
+        particleEl.style.borderRadius = "50%";
+        particleEl.style.pointerEvents = "none";
+        particleEl.style.opacity = parsedOpacity;
+        particleEl.style.transition = "transform 0.4s ease-out, opacity 0.6s ease-out";
+
+        const initialX = 10 + Math.random() * 80;
+        const initialY = 10 + Math.random() * 80;
+
+        particleEl.style.left = `${initialX}%`;
+        particleEl.style.top = `${initialY}%`;
+
+        initialPositions.set(particleEl, { x: initialX, y: initialY });
+        particleTargets.set(particleEl, { x: initialX, y: initialY });
+
+        container.appendChild(particleEl);
+        particles.push(particleEl);
+        return particleEl;
+      };
+
+      const updateParticles = () => {
+        particles.forEach((particleEl, index) => {
+          const currentTarget = particleTargets.get(particleEl);
+          const initial = initialPositions.get(particleEl);
+          if (!currentTarget || !initial) return;
+
+          const currentX = parseFloat(particleEl.style.left);
+          const currentY = parseFloat(particleEl.style.top);
+
+          const time = Date.now() * 0.001 * speed;
+          const baseNoiseX = Math.sin(time + index) * 0.5;
+          const baseNoiseY = Math.cos(time + index * 1.2) * 0.5;
+
+          let targetX = initial.x + baseNoiseX;
+          let targetY = initial.y + baseNoiseY;
+
+          if (interactive) {
+            const dx = mousePosition.x - currentX;
+            const dy = mousePosition.y - currentY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < interactionRadius) {
+              const force = (interactionRadius - distance) * repulsionStrength;
+              const angle = Math.atan2(dy, dx);
+
+              targetX -= Math.cos(angle) * force;
+              targetY -= Math.sin(angle) * force;
+            }
+          }
+
+          targetX = Math.max(5, Math.min(95, targetX));
+          targetY = Math.max(5, Math.min(95, targetY));
+
+          particleTargets.set(particleEl, {
+            x: targetX,
+            y: targetY
+          });
+
+          particleEl.style.left = `${currentX + (targetX - currentX) * movementSpeed}%`;
+          particleEl.style.top = `${currentY + (targetY - currentY) * movementSpeed}%`;
+        });
+
+        animationFrameId = requestAnimationFrame(updateParticles);
+      };
+
+      if (interactive) {
+        document.addEventListener('mousemove', handleMouseMove);
+      }
+
+      for (let i = 0; i < density; i++) {
+        createParticle();
+      }
+
+      updateParticles();
+
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        cancelAnimationFrame(animationFrameId);
+        particles.forEach(particleEl => {
+          particleEl.remove();
+          particleTargets.delete(particleEl);
+          initialPositions.delete(particleEl);
+        });
+      };
+    }, [particle.display, particle.color, particle.size, particle.speed, particle.interactive, particle.interactionRadius, particle.opacity, particle.density]);
     const remap = (
       value: number,
       inputMin: number,
@@ -178,7 +314,13 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       <Flex
         ref={backgroundRef}
         fill
-        className={classNames(mask && styles.mask, className)}
+        className={
+          classNames(
+              mask && styles.mask,
+              particle.display && styles.particles,
+              className
+          )
+        }
         top="0"
         left="0"
         zIndex={0}
@@ -189,6 +331,21 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         }}
         {...rest}
       >
+        <style jsx>{`
+          @keyframes float {
+            0%, 100% {
+              transform: translate(0, 0) scale(1);
+              opacity: ${particle.opacity ?? 30}%;
+            }
+            50% {
+              transform: translate(
+                  ${Math.random() * 4 - 2}px,
+                  ${Math.random() * 4 - 2}px
+              ) scale(0.98);
+              opacity: ${(particle.opacity ?? 30) * 0.9}%;
+            }
+          }
+        `}</style>
         {gradient.display && (
           <Flex
             position="absolute"
