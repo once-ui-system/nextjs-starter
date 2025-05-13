@@ -96,6 +96,10 @@
         padding-top: 0;
     }
 
+    &.textarea.labelAsPlaceholder {
+        padding-top: var(--static-space-12);
+    }
+
     &:not(.labelAsPlaceholder) {
         padding-top: var(--static-space-16);
     }

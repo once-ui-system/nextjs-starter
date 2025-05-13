@@ -1,9 +1,9 @@
 # Once UI for Next.js
 
-A thoughtfully crafted design system that eliminates complexity while maximizing flexibility.
+A design system for indie builders who move fast and break limits without neglecting quality.
 
 
-![Once UI](public/images/cover.jpg)
+![Once UI](public/images/og/home.jpg)
 
 # Features
 
