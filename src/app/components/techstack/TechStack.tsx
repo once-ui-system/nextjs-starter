@@ -58,9 +58,19 @@ const TECH_STACK = [
 
 export const TechStack = () => {
     const techStackRef = useRef<HTMLDivElement>(null);
-    const autoScrollEnabled = useRef(true);
-    const isHovered = useRef(false);
     const [isMobile, setIsMobile] = useState(false);
+    const animationRef = useRef<{
+        startTime: number;
+        baseScroll: number;
+        speed: number;
+        rafId: number | null;
+    }>({
+        startTime: 0,
+        baseScroll: 0,
+        speed: 2,
+        rafId: null
+    });
+
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -73,41 +83,59 @@ export const TechStack = () => {
         const container = techStackRef.current;
         if (!container) return;
 
-        let animationFrame: number;
-        const startTime = Date.now();
-        const baseDuration = 45000; // 45 seconds for full scroll
-
-        const animateScroll = () => {
-            if (!autoScrollEnabled.current) {
-                animationFrame = requestAnimationFrame(animateScroll);
-                return;
+        const animate = (timestamp: number) => {
+            if (!animationRef.current.startTime) {
+                animationRef.current.startTime = timestamp;
             }
 
-            const elapsed = Date.now() - startTime;
-            const speedFactor = isHovered.current ? 0.6 : 1; // 40% slower on hover
-            const adjustedElapsed = elapsed * speedFactor;
-
-            const progress = (adjustedElapsed % baseDuration) / baseDuration;
+            // Calculate time difference with speed adjustment
+            const delta = (timestamp - animationRef.current.startTime) * animationRef.current.speed;
+            const progress = delta / 15000; // Total animation duration
             const easeProgress = 0.5 * (1 - Math.cos(2 * Math.PI * progress));
 
             const maxScroll = container.scrollHeight - container.clientHeight;
             container.scrollTop = easeProgress * maxScroll;
 
-            animationFrame = requestAnimationFrame(animateScroll);
+            animationRef.current.rafId = requestAnimationFrame(animate);
         };
 
-        // Prevent manual scrolling
-        const handleWheel = (e: WheelEvent) => e.preventDefault();
-        const handleTouchMove = (e: TouchEvent) => e.preventDefault();
-        container.addEventListener('wheel', handleWheel, { passive: false });
-        container.addEventListener('touchmove', handleTouchMove, { passive: false });
+        const handleHoverStart = () => {
+            const container = techStackRef.current;
+            if (!container) return;
 
-        animationFrame = requestAnimationFrame(animateScroll);
+            // Smoothly transition speed
+            animationRef.current.startTime = performance.now() -
+                ((container.scrollTop / (container.scrollHeight - container.clientHeight)) * 15000) /
+                animationRef.current.speed;
+            animationRef.current.speed = 0.6;
+        };
+
+        const handleWheel = (e: WheelEvent) => e.preventDefault();
+        const handleHoverEnd = () => {
+            const container = techStackRef.current;
+            if (!container) return;
+
+            // Smoothly transition back to normal speed
+            animationRef.current.startTime = performance.now() -
+                ((container.scrollTop / (container.scrollHeight - container.clientHeight)) * 15000 / animationRef.current.speed);
+            animationRef.current.speed = 1;
+        };
+
+        container.addEventListener('wheel', handleWheel);
+        container.addEventListener('mouseenter', handleHoverStart);
+        container.addEventListener('mouseleave', handleHoverEnd);
+
+        animationRef.current.rafId = requestAnimationFrame(animate);
 
         return () => {
-            cancelAnimationFrame(animationFrame);
+
+
+            if (animationRef.current.rafId) {
+                cancelAnimationFrame(animationRef.current.rafId);
+            }
             container.removeEventListener('wheel', handleWheel);
-            container.removeEventListener('touchmove', handleTouchMove);
+            container.removeEventListener('mouseenter', handleHoverStart);
+            container.removeEventListener('mouseleave', handleHoverEnd);
         };
     }, []);
 
@@ -130,8 +158,6 @@ export const TechStack = () => {
                 ref={techStackRef}
                 className={styles.techStackContainer}
                 style={{ height: isMobile ? '70vh' : '60vh' }}
-                onMouseEnter={() => isHovered.current = true}
-                onMouseLeave={() => isHovered.current = false}
             >
                 <Grid columns={2} tabletColumns={1} gap="m" fill>
                     {TECH_STACK.map((tech, index) => (

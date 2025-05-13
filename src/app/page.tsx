@@ -12,16 +12,16 @@ export default function Home() {
           <Background
             position="absolute"
             mask={{
-              x: 100,
-              y: 0,
-              radius: 400,
+              x: 0,
+              y: 50,
+              radius: 200,
             }}
             gradient={{
               display: true,
               x: 150,
-              y: 100,
-              width: 150,
-              height: 100,
+              y: 0,
+              width: 350,
+              height: 300,
               tilt: -90,
               opacity: 100,
               colorStart: "accent-background-strong",
@@ -29,10 +29,10 @@ export default function Home() {
             }}
             particle={{
               display: true,
-              density: 500,
+              density: 750,
               interactive: true,
-              interactionRadius: 10,
-              speed: 3,
+              interactionRadius: 12,
+              speed: 2,
               opacity: 100,
             }}
           />
@@ -43,7 +43,6 @@ export default function Home() {
             <Column fitHeight maxWidth={80}>
                 <Profile/>
             </Column>
-          {/*<About />*/}
         </Column>
     )
 }

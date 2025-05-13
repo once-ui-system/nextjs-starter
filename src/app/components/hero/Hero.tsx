@@ -92,6 +92,7 @@ const Hero = () => {
 				<TechCarousel
 					items={techStack}
 					center
+					margin="xs"
 					gap="xs"
 				/>
 				<Column>
