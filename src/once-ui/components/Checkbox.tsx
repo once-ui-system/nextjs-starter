@@ -84,8 +84,8 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLInputElement, CheckboxP
             borderRadius: "min(var(--static-space-4), var(--radius-xs))",
           }}
           role="checkbox"
-          position="relative"
           tabIndex={0}
+          cursor={disabled ? "not-allowed" : undefined}
           horizontal="center"
           vertical="center"
           radius="xs"
@@ -110,7 +110,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLInputElement, CheckboxP
           {(controlledIsChecked !== undefined ? controlledIsChecked : isChecked) &&
             !isIndeterminate && (
               <Flex className={styles.icon}>
-                <Icon onSolid="brand-strong" name="check" size="xs" />
+                <Icon onSolid="brand-strong" name="checkbox" size="xs" />
               </Flex>
             )}
           {isIndeterminate && (
@@ -119,7 +119,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLInputElement, CheckboxP
             </Flex>
           )}
         </Flex>
-        {props.label && <InteractiveDetails id={checkboxId} {...props} onClick={toggleItem} />}
+        {props.label && <InteractiveDetails disabled={disabled} id={checkboxId} {...props} onClick={toggleItem} />}
       </Flex>
     );
   },

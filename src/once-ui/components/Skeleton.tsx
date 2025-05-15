@@ -4,7 +4,7 @@ import React, { forwardRef } from "react";
 import classNames from "classnames";
 
 import styles from "./Skeleton.module.scss";
-import { Flex } from "./Flex";
+import { Flex } from ".";
 
 interface SkeletonProps extends React.ComponentProps<typeof Flex> {
   shape: "line" | "circle" | "block";
@@ -16,7 +16,7 @@ interface SkeletonProps extends React.ComponentProps<typeof Flex> {
 }
 
 const Skeleton: React.FC<SkeletonProps> = forwardRef<HTMLDivElement, SkeletonProps>(
-  ({ shape = "line", width, height, delay, style, className, ...props }, ref) => {
+  ({ shape = "line", width = "m", height = "m", delay, style, className, ...props }, ref) => {
     return (
       <Flex
         {...props}

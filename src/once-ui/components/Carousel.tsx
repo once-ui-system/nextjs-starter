@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, RevealFx, Scroller, SmartImage } from ".";
+import { Flex, RevealFx, Scroller, Media } from ".";
 import { useEffect, useState, useRef } from "react";
 
 interface Image {
@@ -87,7 +87,7 @@ const Carousel: React.FC<CarouselProps> = ({
         aspectRatio={aspectRatio}
         speed="fast"
       >
-        <SmartImage
+        <Media
           sizes={sizes}
           priority
           radius="l"
@@ -108,6 +108,7 @@ const Carousel: React.FC<CarouselProps> = ({
             <Flex gap="4" paddingX="s" fillWidth horizontal="center">
               {images.map((_, index) => (
                 <Flex
+                  radius="full"
                   key={index}
                   onClick={() => handleControlClick(index)}
                   style={{
@@ -135,10 +136,10 @@ const Carousel: React.FC<CarouselProps> = ({
                   }}
                   cursor="interactive"
                   padding="4"
-                  width="80"
+                  aspectRatio={aspectRatio}
                   height="80"
                 >
-                  <SmartImage
+                  <Media
                     alt={image.alt}
                     aspectRatio="1 / 1"
                     sizes="120px"

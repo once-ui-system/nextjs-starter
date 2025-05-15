@@ -5,7 +5,7 @@ import classNames from "classnames";
 import styles from "./Arrow.module.scss";
 import { Flex } from ".";
 
-interface ArrowProps {
+interface ArrowProps extends React.ComponentProps<typeof Flex> {
   trigger: string;
   scale?: number;
   color?: "onBackground" | "onSolid";
@@ -19,6 +19,7 @@ const Arrow: React.FC<ArrowProps> = ({
   color = "onBackground",
   style,
   className,
+  ...flex
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -47,22 +48,22 @@ const Arrow: React.FC<ArrowProps> = ({
   return (
     <Flex
       ref={ref}
-      position="relative"
-      vertical="center"
-      horizontal="center"
+      center
       className={classNames(styles.arrowContainer, className)}
       style={{
         transform: `scale(${scale})`,
         ...style,
       }}
+      {...flex}
     >
-      <Flex className={classNames(styles.arrow, styles[color])} height={0.1} />
       <Flex
+        radius="full"
         position="absolute"
         className={classNames(styles.arrowHead, styles[color])}
         height={0.0875}
       />
       <Flex
+        radius="full"
         position="absolute"
         className={classNames(styles.arrowHead, styles[color])}
         height={0.0875}

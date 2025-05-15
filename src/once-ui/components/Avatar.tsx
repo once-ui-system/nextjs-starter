@@ -2,7 +2,7 @@
 
 import React, { forwardRef } from "react";
 
-import { Skeleton, Icon, Text, StatusIndicator, Flex, SmartImage } from ".";
+import { Skeleton, Icon, Text, StatusIndicator, Flex, Media } from ".";
 import styles from "./Avatar.module.scss";
 
 interface AvatarProps extends React.ComponentProps<typeof Flex> {
@@ -77,7 +77,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
             onBackground="neutral-medium"
             name="person"
             size="m"
-            style={typeof size === "number" ? { fontSize: `${size}rem` } : undefined}
+            style={typeof size === "number" ? { fontSize: `${size / 3}rem` } : undefined}
             className={styles.icon}
             aria-label="Empty avatar"
           />
@@ -86,7 +86,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
 
       if (src) {
         return (
-          <SmartImage
+          <Media
             radius="full"
             src={src}
             fill

@@ -18,18 +18,3 @@
 .column {
     overflow-y: auto;
 }
-
-.scrollButton {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-}
-
-.scrollButtonPrev {
-    left: var(--static-space-4);
-}
-
-.scrollButtonNext {
-    right: var(--static-space-4);
-}

@@ -6,7 +6,7 @@ import "./CodeHighlight.css";
 import "./LineNumber.css";
 import styles from "./CodeBlock.module.scss";
 
-import { Flex, Button, IconButton, Scroller, Row, StyleOverlay } from "../../components";
+import { Flex, Button, IconButton, Scroller, Row, StyleOverlay } from "@/once-ui/components";
 
 import Prism from "prismjs";
 import "prismjs/plugins/line-highlight/prism-line-highlight";
@@ -16,7 +16,7 @@ import "prismjs/components/prism-css";
 import "prismjs/components/prism-typescript";
 import "prismjs/components/prism-tsx";
 import classNames from "classnames";
-import { SpacingToken } from "../../types";
+import { SpacingToken } from "@/once-ui/types";
 
 type CodeInstance = {
   code: string | { content: string; error: string | null };
@@ -29,8 +29,8 @@ interface CodeBlockProps extends React.ComponentProps<typeof Flex> {
   codeHeight?: number;
   fillHeight?: boolean;
   previewPadding?: SpacingToken;
-  codeInstances?: CodeInstance[];
-  codePreview?: ReactNode;
+  codes?: CodeInstance[];
+  preview?: ReactNode;
   copyButton?: boolean;
   styleButton?: boolean;
   reloadButton?: boolean;
@@ -47,8 +47,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   codeHeight,
   fillHeight,
   previewPadding = "l",
-  codeInstances = [],
-  codePreview,
+  codes = [],
+  preview,
   copyButton = true,
   styleButton = false,
   reloadButton = false,
@@ -65,24 +65,38 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   const [selectedInstance, setSelectedInstance] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const { code, language, label } = codeInstances[selectedInstance] || {
+  const { code, language, label } = codes[selectedInstance] || {
     code: "",
     language: "",
     label: "Select code",
   };
 
   useEffect(() => {
-    if (codeRef.current && codeInstances.length > 0) {
+    if (codeRef.current && codes.length > 0) {
       Prism.highlightAll();
     }
-  }, [code, codeInstances.length]);
+  }, [code, codes.length]);
 
   useEffect(() => {
     if (isFullscreen) {
       document.body.style.overflow = "hidden";
+      
+      const handleEscKey = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          setIsFullscreen(false);
+        }
+      };
+      
+      document.addEventListener("keydown", handleEscKey);
+      
+      return () => {
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", handleEscKey);
+      };
     } else {
       document.body.style.overflow = "";
     }
+    
     return () => {
       document.body.style.overflow = "";
     };
@@ -90,7 +104,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
 
   const [copyIcon, setCopyIcon] = useState<string>("clipboard");
   const handleCopy = () => {
-    if (codeInstances.length > 0 && code) {
+    if (codes.length > 0 && code) {
       navigator.clipboard
         .writeText(typeof code === "string" ? code : code.content)
         .then(() => {
@@ -112,7 +126,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   };
 
   const handleContent = (selectedLabel: string) => {
-    const index = codeInstances.findIndex((instance) => instance.label === selectedLabel);
+    const index = codes.findIndex((instance) => instance.label === selectedLabel);
     if (index !== -1) {
       setSelectedInstance(index);
     }
@@ -140,7 +154,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       style={style}
       {...rest}
     >
-      {(codeInstances.length > 1 || (copyButton && !compact)) && (
+      {(codes.length > 1 || (copyButton && !compact)) && (
         <Flex
           borderBottom="neutral-medium"
           zIndex={2}
@@ -149,9 +163,9 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           horizontal="space-between"
           gap="16"
         >
-          {codeInstances.length > 1 ? (
+          {codes.length > 1 ? (
             <Scroller paddingX="4">
-              {codeInstances.map((instance, index) => (
+              {codes.map((instance, index) => (
                 <Row paddingY="4" paddingRight="2" key={index}>
                   <Button
                     className="mr-2"
@@ -175,7 +189,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
               textVariant="label-default-s"
               onBackground="neutral-strong"
             >
-              {codeInstances[0].label}
+              {codes[0].label}
             </Row>
           )}
           {!compact && (
@@ -206,7 +220,9 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                     size: "m",
                     variant: "tertiary",
                   }}
-                />
+                >
+                  <IconButton icon="sparkle" />
+                </StyleOverlay>
               )}
               {copyButton && (
                 <IconButton
@@ -222,7 +238,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           )}
         </Flex>
       )}
-      {codePreview && (
+      {preview && (
         <Flex
           key={refreshKey}
           padding={previewPadding}
@@ -230,14 +246,14 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           horizontal="center"
           overflowY="auto"
         >
-          {Array.isArray(codePreview)
-            ? codePreview.map((item, index) => <React.Fragment key={index}>{item}</React.Fragment>)
-            : codePreview}
+          {Array.isArray(preview)
+            ? preview.map((item, index) => <React.Fragment key={index}>{item}</React.Fragment>)
+            : preview}
         </Flex>
       )}
-      {codeInstances.length > 0 && code && (
+      {codes.length > 0 && code && (
         <Flex
-          borderTop={!compact && codePreview ? "neutral-medium" : undefined}
+          borderTop={!compact && preview ? "neutral-medium" : undefined}
           fillWidth
           fillHeight={fillHeight}
         >

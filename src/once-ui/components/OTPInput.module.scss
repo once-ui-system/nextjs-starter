@@ -1,7 +1,7 @@
 .inputs {
   font-size: var(--font-size-heading-xl);
   transition: border-color 0.2s, box-shadow 0.2s;
-  width: var(--static-space-48);
+  min-width: var(--static-space-48);
   max-width: var(--static-space-48);
 
   input {

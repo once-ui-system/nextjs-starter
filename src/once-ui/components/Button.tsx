@@ -27,7 +27,7 @@ interface CommonProps {
   suffixIcon?: IconName;
   loading?: boolean;
   fillWidth?: boolean;
-  justifyContent?: "start" | "center" | "end" | "space-between";
+  horizontal?: "start" | "center" | "end" | "space-between";
   children?: ReactNode;
   href?: string;
   className?: string;
@@ -36,10 +36,8 @@ interface CommonProps {
   arrowIcon?: boolean;
 }
 
-export type ButtonProps = CommonProps &
-  React.ButtonHTMLAttributes<HTMLButtonElement>;
-export type AnchorProps = CommonProps &
-  React.AnchorHTMLAttributes<HTMLAnchorElement>;
+export type ButtonProps = CommonProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
+export type AnchorProps = CommonProps & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
   (
@@ -54,7 +52,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       suffixIcon,
       loading = false,
       fillWidth = false,
-      justifyContent = "center",
+      horizontal = "center",
       href,
       id,
       arrowIcon = false,
@@ -62,7 +60,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       style,
       ...props
     },
-    ref
+    ref,
   ) => {
     const iconSize = size === "l" ? "s" : size === "m" ? "s" : "xs";
     const radiusSize = size === "s" || size === "m" ? "m" : "l";
@@ -79,17 +77,17 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
           radius === "none"
             ? "radius-none"
             : radius
-            ? `radius-${radiusSize}-${radius}`
-            : `radius-${radiusSize}`,
+              ? `radius-${radiusSize}-${radius}`
+              : `radius-${radiusSize}`,
           "text-decoration-none",
           "button",
           "cursor-interactive",
           {
             ["fill-width"]: fillWidth,
             ["fit-width"]: !fillWidth,
-            ["justify-" + justifyContent]: justifyContent,
+            ["justify-" + horizontal]: horizontal,
           },
-          className
+          className,
         )}
         style={style}
         {...props}
@@ -120,7 +118,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
         {suffixIcon && <Icon name={suffixIcon} size={iconSize} />}
       </ElementType>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

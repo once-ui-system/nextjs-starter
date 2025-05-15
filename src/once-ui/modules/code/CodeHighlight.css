@@ -1,3 +1,7 @@
+.token.plain-text {
+  color: var(--neutral-on-background-strong);
+}
+
 .token.comment,
 .token.prolog,
 .token.doctype,
@@ -22,8 +26,11 @@
   color: var(--code-green);
 }
 
+.token.attr-name {
+  color: var(--code-orange);
+}
+
 .token.selector,
-.token.attr-name,
 .token.string,
 .token.char,
 .token.builtin,

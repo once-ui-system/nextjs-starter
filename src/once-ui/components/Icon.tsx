@@ -2,8 +2,8 @@
 
 import React, { forwardRef, useState, useEffect, ReactNode } from "react";
 import classNames from "classnames";
-import { IconType, } from "react-icons";
-import { iconLibrary, IconName } from "../icons"; 
+import { IconType } from "react-icons";
+import { iconLibrary, IconName } from "../icons";
 import { ColorScheme, ColorWeight } from "../types";
 import { Flex, Tooltip } from ".";
 import styles from "./Icon.module.scss";
@@ -17,6 +17,8 @@ interface IconProps extends React.ComponentProps<typeof Flex> {
   decorative?: boolean;
   tooltip?: ReactNode;
   tooltipPosition?: "top" | "bottom" | "left" | "right";
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 const Icon = forwardRef<HTMLDivElement, IconProps>(
@@ -29,23 +31,14 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       decorative = true,
       tooltip,
       tooltipPosition = "top",
+      className,
+      style,
       ...rest
     },
     ref,
   ) => {
-    const IconComponent: IconType | undefined = iconLibrary[name];
     const [isTooltipVisible, setTooltipVisible] = useState(false);
     const [isHover, setIsHover] = useState(false);
-    
-    let colorClass = "";
-    
-    if (onBackground) {
-      const [scheme, weight] = onBackground.split("-") as [ColorScheme, ColorWeight];
-      colorClass = `${scheme}-on-background-${weight}`;
-    } else if (onSolid) {
-      const [scheme, weight] = onSolid.split("-") as [ColorScheme, ColorWeight];
-      colorClass = `${scheme}-on-solid-${weight}`;
-    }
 
     useEffect(() => {
       let timer: NodeJS.Timeout;
@@ -60,6 +53,8 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       return () => clearTimeout(timer);
     }, [isHover]);
 
+    const IconComponent: IconType | undefined = iconLibrary[name];
+
     if (!IconComponent) {
       console.warn(`Icon "${name}" does not exist in the library.`);
       return null;
@@ -71,18 +66,27 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       );
     }
 
+    let colorClass = "color-inherit";
+    if (onBackground) {
+      const [scheme, weight] = onBackground.split("-") as [ColorScheme, ColorWeight];
+      colorClass = `${scheme}-on-background-${weight}`;
+    } else if (onSolid) {
+      const [scheme, weight] = onSolid.split("-") as [ColorScheme, ColorWeight];
+      colorClass = `${scheme}-on-solid-${weight}`;
+    }
+
     return (
       <Flex
         inline
         fit
         as="span"
         ref={ref}
-        className={classNames(colorClass, styles.icon, styles[size])}
-        role={decorative ? "presentation" : undefined}
+        className={classNames(colorClass, styles.icon, styles[size], className)}
         aria-hidden={decorative ? "true" : undefined}
         aria-label={decorative ? undefined : name}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
+        style={style}
         {...rest}
       >
         <IconComponent />

@@ -1,7 +1,6 @@
 import classNames from "classnames";
-import { Flex, Text } from ".";
+import { Flex, Text, ElementType } from ".";
 import styles from "./Option.module.scss";
-import { ElementType } from "./ElementType";
 import React, { forwardRef } from "react";
 
 export interface OptionProps {

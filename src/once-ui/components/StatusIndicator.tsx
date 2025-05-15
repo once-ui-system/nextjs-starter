@@ -3,7 +3,7 @@
 import React, { forwardRef } from "react";
 import classNames from "classnames";
 import styles from "./StatusIndicator.module.scss";
-import { Flex } from "./Flex";
+import { Flex } from ".";
 
 interface StatusIndicatorProps extends React.ComponentProps<typeof Flex> {
   size?: "s" | "m" | "l";
@@ -29,7 +29,7 @@ interface StatusIndicatorProps extends React.ComponentProps<typeof Flex> {
 
 const StatusIndicator = forwardRef<HTMLDivElement, StatusIndicatorProps>(
   (
-    { size = "m", color, ariaLabel = `${color} status indicator`, className, style, ...rest },
+    { size = "m", color = "blue", ariaLabel = `${color} status indicator`, className, style, ...rest },
     ref,
   ) => {
     return (

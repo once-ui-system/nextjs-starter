@@ -1,12 +1,12 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Toaster } from "./Toaster";
+import { Toaster } from ".";
 
 interface Toast {
   id: string;
   variant: "success" | "danger";
-  message: string;
+  message: ReactNode;
   action?: ReactNode;
 }
 
@@ -29,6 +29,7 @@ export const useToast = () => {
 const ToastProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
+  // Use the same Toast interface type for the state
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const addToast = (toast: Omit<Toast, "id">) => {
