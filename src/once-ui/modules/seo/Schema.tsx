@@ -1,6 +1,6 @@
 import React from "react";
 import Script from "next/script";
-import { social } from "@/app/resources/config";
+import { social } from "@/app/resources/once-ui.config";
 
 export interface SchemaProps {
   as: "website" | "article" | "blogPosting" | "techArticle" | "webPage" | "organization";
