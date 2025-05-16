@@ -1,22 +1,19 @@
-import React, {
-	forwardRef,
-	useState,
-	useCallback,
-	useRef,
-	useLayoutEffect,
-	useEffect,
-} from "react";
-import { Flex } from "@/once-ui/components";
+"use client";
 
-interface FlipCardProps {
-	direction?: "horizontal" | "vertical";
+import React, {useState, useEffect, forwardRef, ComponentProps, useRef, useLayoutEffect, useCallback} from "react";
+import classNames from "classnames";
+import {Flex} from "@/once-ui/components";
+
+interface FlipCardProps extends React.ComponentProps<typeof Flex> {
+	flipDirection?: "horizontal" | "vertical";
 	timing?: number;
-	children: [React.ReactNode, React.ReactNode];
-	style?: React.CSSProperties;
 	flipped?: boolean;
 	onFlip?: (flipped: boolean) => void;
 	disableClickFlip?: boolean;
 	autoFlipInterval?: number;
+	children: [React.ReactNode, React.ReactNode];
+	className?: string;
+	style?: React.CSSProperties;
 }
 
 function isInteractiveElement(target: EventTarget | null): boolean {
@@ -42,30 +39,29 @@ function isInteractiveElement(target: EventTarget | null): boolean {
 	return false;
 }
 
-export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
-	(
-		{
-			direction = "horizontal",
-			timing = 2000,
-			children,
-			style,
-			flipped,
-			onFlip,
-			disableClickFlip = false,
-			autoFlipInterval,
-			...props
-		},
-		ref
-	) => {
+const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
+	({
+		 flipDirection = "horizontal",
+		 timing = 2000,
+		 flipped,
+		 onFlip,
+		 disableClickFlip = false,
+		 autoFlipInterval,
+		 children,
+		 className,
+		 style,
+		 ...rest
+	 }, ref) => {
+		const [loading, setLoading] = useState(false);
 		const [internalFlipped, setInternalFlipped] = useState(false);
 		const isFlipped = flipped !== undefined ? flipped : internalFlipped;
-		
+
 		const cardRef = useRef<HTMLDivElement>(null);
 		const frontRef = useRef<HTMLDivElement>(null);
 		const backRef = useRef<HTMLDivElement>(null);
-		
+
 		const [cardHeight, setCardHeight] = useState<number | undefined>(undefined);
-		
+
 		useLayoutEffect(() => {
 			const measure = () => {
 				const front = frontRef.current;
@@ -86,10 +82,10 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 				roBack.disconnect();
 			};
 		}, [isFlipped, children]);
-		
+
 		useEffect(() => {
 			if (!autoFlipInterval) return;
-			
+
 			const interval = setInterval(() => {
 				setInternalFlipped(prev => {
 					const newState = !prev;
@@ -97,10 +93,10 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 					return newState;
 				});
 			}, autoFlipInterval * 1000);
-			
+
 			return () => clearInterval(interval);
 		}, [autoFlipInterval, onFlip]);
-		
+
 		const handleFlip = useCallback(
 			(fromArrow = false) => {
 				if (autoFlipInterval) return;
@@ -110,7 +106,7 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 			},
 			[autoFlipInterval, flipped, onFlip, isFlipped, disableClickFlip]
 		);
-		
+
 		const handleCardClick = (e: React.MouseEvent) => {
 			const clickedElement = e.target as HTMLElement;
 			const isArrowClick = !!clickedElement.closest('.flipcard-arrow-btn');
@@ -118,7 +114,7 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 			if (disableClickFlip) return;
 			handleFlip();
 		};
-		
+
 		const handleKeyDown = (e: React.KeyboardEvent) => {
 			if (disableClickFlip) return;
 			if (e.key === "Enter" || e.key === " ") {
@@ -126,7 +122,7 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 				handleFlip();
 			}
 		};
-		
+
 		const renderFace = (
 			content: React.ReactNode,
 			refObj: React.RefObject<HTMLDivElement | null>,
@@ -143,7 +139,7 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 					backfaceVisibility: "hidden",
 					cursor: disableClickFlip ? "pointer" : "auto",
 					transform: isBack
-						? direction === "vertical"
+						? flipDirection === "vertical"
 							? "rotateX(180deg)"
 							: "rotateY(180deg)"
 						: undefined,
@@ -152,15 +148,18 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 				{content}
 			</Flex>
 		);
-		
+
+		if (!Array.isArray(children) || children.length !== 2) {
+			throw new Error("FlipCard requires exactly two children: [front, back]");
+		}
+
 		return (
 			<Flex
 				ref={(node) => {
 					cardRef.current = node as HTMLDivElement;
 					if (typeof ref === "function") ref(node as HTMLDivElement);
 					else if (ref)
-						(ref as React.MutableRefObject<HTMLDivElement | null>).current =
-							node as HTMLDivElement;
+						(ref as React.MutableRefObject<HTMLDivElement | null>).current = node as HTMLDivElement;
 				}}
 				position="relative"
 				center
@@ -171,7 +170,7 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 					transformStyle: "preserve-3d",
 					transition: `transform ${timing}ms cubic-bezier(0.22, 1, 0.36, 1)`,
 					transform: isFlipped
-						? direction === "vertical"
+						? flipDirection === "vertical"
 							? "rotateX(180deg)"
 							: "rotateY(180deg)"
 						: "none",
@@ -180,7 +179,7 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 				aria-pressed={isFlipped}
 				onClick={handleCardClick}
 				onKeyDown={handleKeyDown}
-				{...props}
+				{...rest}
 			>
 				{renderFace(children[0], frontRef, false)}
 				{renderFace(children[1], backRef, true)}
@@ -189,4 +188,5 @@ export const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 	}
 );
 
-FlipCard.displayName = "FlipCard";
+FlipCard.displayName = "Component";
+export { FlipCard };

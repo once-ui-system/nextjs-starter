@@ -1,12 +1,6 @@
 "use client";
 
-import {
-    Card,
-    Grid,
-    Icon,
-    Tag,
-    RevealFx, Heading, Text, Column, Row, Flex
-} from "@/once-ui/components";
+import {Card, Column, Flex, Grid, Heading, Icon, RevealFx, Row, Tag, Text} from "@/once-ui/components";
 import {useEffect, useRef, useState} from "react";
 import styles from "./TechStack.module.scss";
 import {ProgressRing} from "@/app/components/progressring/ProgressRing";
@@ -60,17 +54,14 @@ export const TechStack = () => {
     const techStackRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
     const animationRef = useRef<{
-        startTime: number;
-        baseScroll: number;
-        speed: number;
         rafId: number | null;
+        speed: number;
+        phase: number;
     }>({
-        startTime: 0,
-        baseScroll: 0,
-        speed: 2,
-        rafId: null
+        rafId: null,
+        speed: 1.2,
+        phase: 0
     });
-
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -84,56 +75,38 @@ export const TechStack = () => {
         if (!container) return;
 
         const animate = (timestamp: number) => {
-            if (!animationRef.current.startTime) {
-                animationRef.current.startTime = timestamp;
-            }
-
-            // Calculate time difference with speed adjustment
-            const delta = (timestamp - animationRef.current.startTime) * animationRef.current.speed;
-            const progress = delta / 15000; // Total animation duration
-            const easeProgress = 0.5 * (1 - Math.cos(2 * Math.PI * progress));
-
             const maxScroll = container.scrollHeight - container.clientHeight;
-            container.scrollTop = easeProgress * maxScroll;
+            animationRef.current.phase += 0.002 * animationRef.current.speed;
+
+            container.scrollTop = Math.abs(Math.sin(animationRef.current.phase)) * maxScroll;
 
             animationRef.current.rafId = requestAnimationFrame(animate);
         };
 
         const handleHoverStart = () => {
-            const container = techStackRef.current;
-            if (!container) return;
+            animationRef.current.speed = 0.4;
+        };
 
-            // Smoothly transition speed
-            animationRef.current.startTime = performance.now() -
-                ((container.scrollTop / (container.scrollHeight - container.clientHeight)) * 15000) /
-                animationRef.current.speed;
-            animationRef.current.speed = 0.6;
+        const handleHoverEnd = () => {
+            animationRef.current.speed = 1.2;
         };
 
         const handleWheel = (e: WheelEvent) => e.preventDefault();
-        const handleHoverEnd = () => {
-            const container = techStackRef.current;
-            if (!container) return;
-
-            // Smoothly transition back to normal speed
-            animationRef.current.startTime = performance.now() -
-                ((container.scrollTop / (container.scrollHeight - container.clientHeight)) * 15000 / animationRef.current.speed);
-            animationRef.current.speed = 1;
-        };
+        const handleTouch = (e: TouchEvent) => e.preventDefault();
 
         container.addEventListener('wheel', handleWheel);
+        container.addEventListener('touchmove', handleTouch);
         container.addEventListener('mouseenter', handleHoverStart);
         container.addEventListener('mouseleave', handleHoverEnd);
 
         animationRef.current.rafId = requestAnimationFrame(animate);
 
         return () => {
-
-
             if (animationRef.current.rafId) {
                 cancelAnimationFrame(animationRef.current.rafId);
             }
             container.removeEventListener('wheel', handleWheel);
+            container.removeEventListener('touchmove', handleTouch);
             container.removeEventListener('mouseenter', handleHoverStart);
             container.removeEventListener('mouseleave', handleHoverEnd);
         };
