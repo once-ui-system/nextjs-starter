@@ -22,15 +22,11 @@ function isInteractiveElement(target: EventTarget | null): boolean {
 		if (!(el instanceof HTMLElement)) break;
 		const tag = el.tagName.toLowerCase();
 		if (
-			tag === "button" ||
+			tag === "button" && el.classList.contains("flipcard-button") ||
 			tag === "a" ||
 			tag === "input" ||
 			tag === "textarea" ||
-			tag === "select" ||
-			tag === "label" ||
-			el.hasAttribute("tabindex") ||
-			el.getAttribute("role") === "button" ||
-			el.getAttribute("role") === "link"
+			tag === "select"
 		) {
 			return true;
 		}
@@ -109,6 +105,8 @@ const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 
 		const handleCardClick = (e: React.MouseEvent) => {
 			const clickedElement = e.target as HTMLElement;
+
+			if (isInteractiveElement(clickedElement)) return;
 			const isArrowClick = !!clickedElement.closest('.flipcard-arrow-btn');
 			if (isArrowClick) return;
 			if (disableClickFlip) return;
@@ -176,6 +174,7 @@ const FlipCard = forwardRef<HTMLDivElement, FlipCardProps>(
 						: "none",
 				}}
 				role="button"
+				className="flipcard-button"
 				aria-pressed={isFlipped}
 				onClick={handleCardClick}
 				onKeyDown={handleKeyDown}

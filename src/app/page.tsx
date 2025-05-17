@@ -44,7 +44,7 @@ export default function Home() {
             <Column fitHeight maxWidth={80}>
                 <Profile/>
             </Column>
-            <Column fitHeight maxWidth={80}>
+            <Column fitHeight maxWidth={70}>
                 <PricingSection/>
             </Column>
         </Column>

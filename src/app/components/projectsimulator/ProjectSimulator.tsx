@@ -1,25 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, {ChangeEvent, useState} from "react";
 import {
     Background,
+    Badge,
     Button,
     Card,
-    Column,
+    Column, Dialog,
     Flex,
-    Grid,
     Heading,
-    Icon, Line,
+    Icon, Input, Line,
     Row, Scroller,
     SegmentedControl,
-    Text,
-    Tooltip
+    Text, Textarea,
 } from "@/once-ui/components";
-import {Slider} from "@/app/components/slider/Slider";
-import {FlipCard} from "@/app/components/flipcard/FlipCard";
+import styles from "./ProjectSimulator.module.scss"
 
 const PricingSection = () => {
     const [activeFilter, setActiveFilter] = useState("webdesign");
-    const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+    const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+    const [showDialog, setShowDialog] = useState(false);
+    const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+
+    const toggleProduct = (id: number) => {
+        setSelectedProducts(prev =>
+            prev.includes(id) ? prev.filter(pid => pid !== id) : [...prev, id]
+        );
+    };
+
+    const handleInputChange = (field: keyof typeof form) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setForm({ ...form, [field]: e.target.value });
+    };
 
     const filters = [
         { id: "all", label: "Alle Pakete" },
@@ -204,20 +214,19 @@ const PricingSection = () => {
         }
     ];
 
+    const selectedDetails = products.filter(p => selectedProducts.includes(p.id));
+
     return (
-        <Flex fill direction="column" center paddingTop="xl" marginTop="xl">
-            <Column center padding="s" fill>
-                <Flex gap="s" horizontal="center" vertical="center">
-                    <Icon name="sparkle" size="m" />
-                    <Heading as="h1">
-                        Entdecke unsere Angebote
-                    </Heading>
-                    <Icon name="sparkle" size="m"/>
+        <Flex fill direction="column" center paddingTop="xl" marginTop="xl" transition="macro-long">
+            <Column center fill>
+                <Flex horizontal="center" vertical="center">
+                    <Heading variant="display-strong-xs">Entdecke unsere Angebote</Heading>
                 </Flex>
-                <Text variant="body-strong-m" align="center">
+                <Text variant="body-strong-m">
                     Wähle das passende Paket für deine Anforderungen
                 </Text>
             </Column>
+
             <Column fill center padding="m">
                 <SegmentedControl
                     selected={activeFilter}
@@ -228,106 +237,207 @@ const PricingSection = () => {
                     onToggle={(filter) => setActiveFilter(filter)}
                 />
             </Column>
+
             <Flex fitHeight fillWidth center gap="m" margin="m" padding="m">
-                <Scroller
-                    direction="row"
-                    center
-                >
+                <Scroller direction="row" center>
                     <Flex fill gap="xl" minHeight={40} maxHeight={40} direction="row">
-                    {products
-                        .filter(product => activeFilter === "all" || product.category === activeFilter)
-                        .map((product) => (
-                            <FlipCard
-                                minHeight={40}
-                                maxHeight={40}
-                                minWidth={25}
-                                maxWidth={25}
-                            >
+                        {products
+                            .filter(product => activeFilter === "all" || product.category === activeFilter)
+                            .map(product => (
                                 <Card
+                                    key={product.id}
                                     height={40}
                                     width={25}
-                                    padding="xl"
+                                    padding="48"
                                     radius="xl"
                                     direction="column"
-                                    key={product.id}
-                                    shadow={hoveredCard === product.id.toString() ? "xl" : "s"}
-                                    onMouseEnter={() => setHoveredCard(product.id.toString())}
-                                    onMouseLeave={() => setHoveredCard(null)}
+                                    shadow="s"
+                                    onBackground="brand-strong"
+                                    background="info-medium"
                                     border={product.popular ? "accent-alpha-medium" : "surface"}
                                 >
-                                    <Flex fill center direction="column" vertical="start" horizontal="start">
+                                    {selectedProducts.includes(product.id) && (
+                                    <Background
+                                        position="absolute"
+                                        radius="xl"
+                                        mask={{
+                                            x: 50,
+                                            y: 100,
+                                            radius: 40,
+                                        }}
+                                        gradient={{
+                                            display: true,
+                                            x: 0,
+                                            y: 0,
+                                            width: 0,
+                                            height: 0,
+                                            tilt: 0,
+                                            opacity: 60,
+                                            colorStart: "page-background",
+                                            colorEnd: "accent-alpha-strong"
+                                        }}
+                                    />
+                                    )}
+                                    <Flex
+                                        fill
+                                        center
+                                        direction="column"
+                                        vertical="start"
+                                        horizontal="start"
+                                        onClick={() => toggleProduct(product.id)}
+                                    >
                                         <Column fill horizontal="end" position="absolute" bottom="0" right="0">
-                                            <Text
-                                                onBackground="brand-weak"
-                                            >
+                                            <Text onBackground="info-weak">
                                                 {filters.find(f => f.id === product.category)?.label || product.category}
                                             </Text>
                                         </Column>
 
-                                        <Flex fill vertical="start" horizontal="start" direction="column" gap="m">
-                                            <Column minHeight={4}>
-                                                <Heading as="h4">{product.title}</Heading>
-                                                <Text variant="body-default-xs">{product.description}</Text>
+                                        <Flex fill vertical="start" horizontal="start" direction="column" gap="l">
+                                            <Column minHeight={4} gap="xs">
+                                                <Heading as="h3">{product.title}</Heading>
+                                                <Text variant="body-default-s">{product.description}</Text>
                                             </Column>
-                                            <Line/>
+                                            <Line />
                                             <Column fillWidth center>
                                                 {product.price && (
-                                                    <Row gap="xs" fillWidth center>
-                                                        <Text variant="body-default-xl">{product.price}</Text>
-                                                    </Row>
+                                                    <Text variant="body-default-l">{product.price}</Text>
                                                 )}
                                                 {!product.price && product.note && (
                                                     <Text variant="body-default-s">{product.note}</Text>
                                                 )}
                                             </Column>
-                                            <Line marginY="xs"/>
+                                            <Line />
 
-                                            <Column fill gap="s" vertical="center" horizontal="start">
+                                            <Column fill gap="m" vertical="start" horizontal="start">
                                                 {product.features.map((feature, idx) => (
                                                     <Row key={idx} gap="xs" center>
-                                                        <Icon
-                                                            name="checkCircle"
-                                                            size="s"
-                                                        />
+                                                        <Icon name="checkCircle" size="s" />
                                                         <Column>
-                                                            <Text
-                                                                variant="body-default-s"
-                                                            >
-                                                                {feature.title}
-                                                            </Text>
-                                                            <Text
-                                                                variant="body-default-xs"
-                                                            >
-                                                                {feature.desc}
-                                                            </Text>
+                                                            <Text variant="body-default-s">{feature.title}</Text>
+                                                            <Text variant="body-default-xs">{feature.desc}</Text>
                                                         </Column>
                                                     </Row>
                                                 ))}
                                             </Column>
                                         </Flex>
                                     </Flex>
+                                    <Column horizontal="end" fillWidth position="absolute" top="16" right="16">
+                                        <Icon
+                                            name = {selectedProducts.includes(product.id) ? "minus" : "plus"}
+                                            transition="macro-medium"
+                                        />
+                                    </Column>
                                 </Card>
-                                <Card
-                                    height={40}
-                                    width={25}
-                                    padding="xl"
-                                    radius="xl"
-                                    direction="column"
-                                    key={product.id}
-                                    shadow={hoveredCard === product.id.toString() ? "xl" : "s"}
-                                    onMouseEnter={() => setHoveredCard(product.id.toString())}
-                                    onMouseLeave={() => setHoveredCard(null)}
-                                    border={product.popular ? "accent-alpha-medium" : "surface"}
-                                >
-
-                                </Card>
-                            </FlipCard>
                             ))}
-                        </Flex>
+                    </Flex>
                 </Scroller>
             </Flex>
+
+            <Dialog
+                title="Produktanfrage"
+                isOpen={showDialog}
+                onClose={() => setShowDialog(false)}
+                transition="macro-medium"
+            >
+                <Column padding="xl" gap="xl">
+                    <Column gap="xs">
+                        <Heading as="h3" variant="heading-strong-l">📝 Zusammenfassung deiner Auswahl</Heading>
+                        <Text variant="body-default-s" onBackground="info-weak">
+                            Du hast <strong>{selectedDetails.length}</strong> Paket{selectedDetails.length > 1 ? "e" : ""} ausgewählt.
+                        </Text>
+                    </Column>
+
+                    <Card padding="m" radius="l" shadow="s" background="surface" border="accent-alpha-medium">
+                        <Column gap="m">
+                            {selectedDetails.map(product => (
+                                <Row key={product.id} gap="s" align="center">
+                                    <Icon name="dot" size="s" />
+                                    <Text variant="body-default-m">
+                                        {product.title} – {product.price || product.note}
+                                    </Text>
+                                </Row>
+                            ))}
+                            <Line />
+                            <Text variant="body-default-s" onBackground="info-weak">
+                                Gesamtpreis:{" "}
+                                <strong>
+                                    {selectedDetails
+                                        .map(p => p.price)
+                                        .filter(Boolean)
+                                        .join(", ") || "auf Anfrage"}
+                                </strong>
+                            </Text>
+                        </Column>
+                    </Card>
+
+                    <Column gap="m">
+                        <Input
+                            id="name"
+                            label="👤 Dein Name"
+                            value={form.name}
+                            onChange={handleInputChange("name")}
+                            placeholder="Max Mustermann"
+                        />
+                        <Input
+                            id="email"
+                            label="📧 E-Mail-Adresse"
+                            value={form.email}
+                            onChange={handleInputChange("email")}
+                            type="email"
+                        />
+                        <Input
+                            id="phone"
+                            label="📞 Telefonnummer"
+                            value={form.phone}
+                            onChange={handleInputChange("phone")}
+                            type="tel"
+                        />
+                        <Textarea
+                            id="information"
+                            label="💬 Sonstige Informationen"
+                            value={form.message}
+                            onChange={handleInputChange("message")}
+                        />
+                    </Column>
+
+                    <Column gap="xs" paddingTop="s">
+                        <Button
+                            label="Anfrage jetzt absenden"
+                            size="l"
+                            suffixIcon="sparkle"
+                            onClick={() => {
+                                console.log({ selectedProducts: selectedDetails, ...form });
+                                setShowDialog(false);
+                            }}
+                        />
+                        <Text variant="body-default-xs" onBackground="info-weak" align="center">
+                            Deine Daten werden nur zur Bearbeitung deiner Anfrage verwendet. Keine Weitergabe an Dritte.
+                        </Text>
+                    </Column>
+                </Column>
+            </Dialog>
+
+
+            {selectedProducts.length > 0 && (
+                <Column
+                    position="fixed"
+                    bottom="0"
+                    right="16"
+                    padding="m"
+                    margin="m"
+                    zIndex={10}
+                >
+                    <Button
+                        size="l"
+                        suffixIcon="messageCircle"
+                        label={`Jetzt anfragen (${selectedProducts.length} ${selectedProducts.length === 1 ? 'Paket' : 'Pakete'})`}
+                        onClick={() => setShowDialog(true)}
+                        className={styles.requestButton}
+                    />
+                </Column>
+            )}
         </Flex>
-    )
+    );
 };
 
 export default PricingSection;
