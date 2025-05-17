@@ -178,7 +178,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 variant="label-default-m"
                 htmlFor={id}
                 className={classNames(styles.label, styles.inputLabel, {
-                  [styles.floating]: isFocused || isFilled,
+                  [styles.floating]: isFocused || isFilled || placeholder,
                 })}
               >
                 {label}
