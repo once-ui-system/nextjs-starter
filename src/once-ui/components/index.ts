@@ -56,6 +56,7 @@ export * from "./Select";
 export * from "./Skeleton";
 export * from "./Media";
 export * from "./SmartLink";
+export * from "./SlideAccordion";
 export * from "./Spinner";
 export * from "./StatusIndicator";
 export * from "./StylePanel";
