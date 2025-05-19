@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Flex, SmartImage, IconButton } from ".";
+import { Flex, Media, IconButton } from ".";
 import styles from "./CompareImage.module.scss";
 
 interface SideContent {
@@ -17,7 +17,7 @@ interface CompareImageProps extends React.ComponentProps<typeof Flex> {
 const renderContent = (content: SideContent, clipPath: string) => {
   if (typeof content.src === "string") {
     return (
-      <SmartImage
+      <Media
         src={content.src}
         alt={content.alt || ""}
         fill
@@ -34,7 +34,7 @@ const renderContent = (content: SideContent, clipPath: string) => {
   );
 };
 
-export const CompareImage = ({ leftContent, rightContent, ...rest }: CompareImageProps) => {
+const CompareImage = ({ leftContent, rightContent, ...rest }: CompareImageProps) => {
   const [position, setPosition] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
@@ -82,14 +82,7 @@ export const CompareImage = ({ leftContent, rightContent, ...rest }: CompareImag
   }, []);
 
   return (
-    <Flex
-      position="relative"
-      ref={containerRef}
-      aspectRatio="16/9"
-      fillWidth
-      style={{ touchAction: "none" }}
-      {...rest}
-    >
+    <Flex ref={containerRef} aspectRatio="16/9" fillWidth style={{ touchAction: "none" }} {...rest}>
       {renderContent(leftContent, `inset(0 ${100 - position}% 0 0)`)}
       {renderContent(rightContent, `inset(0 0 0 ${position}%)`)}
 
@@ -124,3 +117,4 @@ export const CompareImage = ({ leftContent, rightContent, ...rest }: CompareImag
 };
 
 CompareImage.displayName = "CompareImage";
+export { CompareImage };

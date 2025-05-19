@@ -29,22 +29,6 @@
 }
 
 [data-theme="dark"] {
-    .dark-flex {
-        display: flex;
-    }
-
-    .dark-grid {
-        display: grid;
-    }
-
-    .light-flex {
-        display: none;
-    }
-
-    .light-grid {
-        display: none;
-    }
-
     --icon: url('/trademark/icon-dark.svg');
     --type: url('/trademark/type-dark.svg');
     
@@ -224,25 +208,26 @@
     --success-alpha-strong:         var(--function-success-600-50);
     --success-alpha-medium:         var(--function-success-600-30);
     --success-alpha-weak:           var(--function-success-600-10);
-}
 
-[data-theme="light"] {
     .dark-flex {
-        display: none;
-    }
-
-    .dark-grid {
-        display: none;
-    }
-
-    .light-flex {
         display: flex;
     }
 
-    .light-grid {
+    .dark-grid {
         display: grid;
     }
 
+    .light-flex {
+        display: none;
+    }
+
+    .light-grid {
+        display: none;
+    }
+}
+
+[data-theme="light"] {
+    /* Move all CSS variable declarations above nested rules */
     --icon: url('/trademark/icon-light.svg');
     --type: url('/trademark/type-light.svg');
 
@@ -422,6 +407,22 @@
     --success-alpha-strong:         var(--function-success-600-50);
     --success-alpha-medium:         var(--function-success-600-30);
     --success-alpha-weak:           var(--function-success-600-10);
+    
+    .dark-flex {
+        display: none;
+    }
+
+    .dark-grid {
+        display: none;
+    }
+
+    .light-flex {
+        display: flex;
+    }
+
+    .light-grid {
+        display: grid;
+    }
 }
 
 [data-solid-style="plastic"] {

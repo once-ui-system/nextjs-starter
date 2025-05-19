@@ -19,7 +19,7 @@ interface DialogProps extends Omit<React.ComponentProps<typeof Flex>, "title"> {
   onClose: () => void;
   title: ReactNode | string;
   description?: ReactNode;
-  children: ReactNode;
+  children?: ReactNode;
   footer?: ReactNode;
   base?: boolean;
   stack?: boolean;
@@ -235,6 +235,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
           }}
         >
           <Flex
+            position="unset"
             className={classNames(styles.dialog, {
               [styles.open]: isAnimating,
             })}

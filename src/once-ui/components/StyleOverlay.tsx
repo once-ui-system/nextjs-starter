@@ -6,10 +6,11 @@ import styles from "./StyleOverlay.module.scss";
 
 interface StyleOverlayProps extends React.ComponentProps<typeof Flex> {
   iconButtonProps?: Partial<React.ComponentProps<typeof IconButton>>;
+  children: React.ReactNode;
 }
 
 const StyleOverlay = forwardRef<HTMLDivElement, StyleOverlayProps>(
-  ({ iconButtonProps, ...rest }, ref) => {
+  ({ iconButtonProps, children, ...rest }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const togglePanel = () => {
@@ -18,7 +19,11 @@ const StyleOverlay = forwardRef<HTMLDivElement, StyleOverlayProps>(
 
     return (
       <Flex ref={ref} position="static">
-        <IconButton variant="primary" onClick={togglePanel} icon="sparkle" {...iconButtonProps} />
+        {!isOpen && (
+          <Flex onClick={togglePanel}>
+            {children}
+          </Flex>
+        )}
         <Flex
           as="aside"
           zIndex={3}

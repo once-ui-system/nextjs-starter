@@ -17,6 +17,8 @@ interface IconProps extends React.ComponentProps<typeof Flex> {
   decorative?: boolean;
   tooltip?: ReactNode;
   tooltipPosition?: "top" | "bottom" | "left" | "right";
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 const Icon = forwardRef<HTMLDivElement, IconProps>(
@@ -29,9 +31,11 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       decorative = true,
       tooltip,
       tooltipPosition = "top",
+      className,
+      style,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const [isTooltipVisible, setTooltipVisible] = useState(false);
     const [isHover, setIsHover] = useState(false);
@@ -58,7 +62,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
 
     if (onBackground && onSolid) {
       console.warn(
-        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied."
+        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied.",
       );
     }
 
@@ -77,26 +81,23 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
         fit
         as="span"
         ref={ref}
-        className={classNames(colorClass, styles.icon, styles[size])}
+        className={classNames(colorClass, styles.icon, styles[size], className)}
         aria-hidden={decorative ? "true" : undefined}
         aria-label={decorative ? undefined : name}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
+        style={style}
         {...rest}
       >
         <IconComponent />
         {tooltip && isTooltipVisible && (
-          <Flex
-            position="absolute"
-            zIndex={1}
-            className={iconStyles[tooltipPosition]}
-          >
+          <Flex position="absolute" zIndex={1} className={iconStyles[tooltipPosition]}>
             <Tooltip label={tooltip} />
           </Flex>
         )}
       </Flex>
     );
-  }
+  },
 );
 
 Icon.displayName = "Icon";

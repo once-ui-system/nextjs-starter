@@ -47,18 +47,23 @@
     &.line {
         &.h-xs {
             height: var(--static-space-8);
+            min-height: var(--static-space-8);
         }
         &.h-s {
             height: var(--static-space-12);
+            min-height: var(--static-space-12);
         }
         &.h-m {
             height: var(--static-space-16);
+            min-height: var(--static-space-16);
         }
         &.h-l {
             height: var(--static-space-20);
+            min-height: var(--static-space-20);
         }
         &.h-xl {
             height: var(--static-space-24);
+            min-height: var(--static-space-24);
         }
 
         &.w-xs {
@@ -83,23 +88,33 @@
 
         &.w-xs {
             width: var(--static-space-20);
+            min-width: var(--static-space-20);
             height: var(--static-space-20);
+            min-height: var(--static-space-20);
         }
         &.w-s {
             width: var(--static-space-24);
+            min-width: var(--static-space-24);
             height: var(--static-space-24);
+            min-height: var(--static-space-24);
         }
         &.w-m {
             width: var(--static-space-32);
+            min-width: var(--static-space-32);
             height: var(--static-space-32);
+            min-height: var(--static-space-32);
         }
         &.w-l {
             width: var(--static-space-40);
+            min-width: var(--static-space-40);
             height: var(--static-space-40);
+            min-height: var(--static-space-40);
         }
         &.w-xl {
             width: var(--static-space-160);
+            min-width: var(--static-space-160);
             height: var(--static-space-160);
+            min-height: var(--static-space-160);
         }
     }
 }

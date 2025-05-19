@@ -1,10 +1,10 @@
 "use client";
 
-import { Row } from "./Row";
-import { IconButton } from "./IconButton";
+import { Flex, Row, IconButton } from ".";
 import { useState, ReactNode } from "react";
+import styles from "./Table.module.scss";
 
-type TableProps = {
+type TableProps = React.ComponentProps<typeof Flex> & {
   data: {
     headers: {
       content: ReactNode;
@@ -16,7 +16,7 @@ type TableProps = {
   onRowClick?: (rowIndex: number) => void;
 };
 
-function Table({ data, onRowClick }: TableProps) {
+function Table({ data, onRowClick, ...flex }: TableProps) {
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: "ascending" | "descending";
@@ -84,7 +84,7 @@ function Table({ data, onRowClick }: TableProps) {
     <tr
       key={index}
       onClick={onRowClick ? () => onRowClick(index) : undefined}
-      className={onRowClick ? "cursor-interactive hover-row" : ""}
+      className={onRowClick ? "cursor-interactive " + styles.hover : ""}
       style={onRowClick ? { transition: "background-color 0.2s ease" } : undefined}
     >
       {row.map((cell, cellIndex) => (
@@ -104,6 +104,7 @@ function Table({ data, onRowClick }: TableProps) {
       overflowX="auto"
       marginTop="8"
       marginBottom="16"
+      {...flex}
     >
       <style jsx>{`
         .hover-row:hover {

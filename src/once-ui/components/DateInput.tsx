@@ -5,7 +5,8 @@ import { Input, DropdownWrapper, Flex, DatePicker } from ".";
 
 interface DateInputProps extends Omit<React.ComponentProps<typeof Input>, "onChange" | "value"> {
   id: string;
-  label: string;
+  label?: string;
+  placeholder?: string;
   value?: Date;
   onChange?: (date: Date) => void;
   minHeight?: number;
@@ -32,6 +33,7 @@ const formatDate = (date: Date, timePicker: boolean) => {
 export const DateInput: React.FC<DateInputProps> = ({
   id,
   label,
+  placeholder,
   value,
   onChange,
   error,
@@ -67,12 +69,12 @@ export const DateInput: React.FC<DateInputProps> = ({
 
   const trigger = (
     <Input
-      className="cursor-interactive"
       style={{
         textOverflow: "ellipsis",
       }}
       id={id}
       label={label}
+      placeholder={placeholder}
       value={inputValue}
       error={error}
       readOnly
@@ -96,6 +98,7 @@ export const DateInput: React.FC<DateInputProps> = ({
       isOpen={isOpen}
       onOpenChange={setIsOpen}
       className={className}
+      closeAfterClick={!timePicker}
       style={{ ...style }}
     />
   );

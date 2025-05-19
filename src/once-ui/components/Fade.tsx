@@ -6,12 +6,13 @@ import styles from "./Fade.module.scss";
 import { Flex } from ".";
 import { ColorScheme, ColorWeight, SpacingToken } from "../types";
 
-type BaseColor =
+export type BaseColor =
   | `${ColorScheme}-${ColorWeight}`
   | `${ColorScheme}-alpha-${ColorWeight}`
   | "surface"
   | "overlay"
-  | "page";
+  | "page"
+  | "transparent";
 
 interface FadeProps extends React.ComponentProps<typeof Flex> {
   className?: string;
@@ -45,6 +46,7 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
       if (base === "page") return "var(--page-background)";
       if (base === "surface") return "var(--surface-background)";
       if (base === "overlay") return "var(--backdrop)";
+      if (base === "transparent") return "var(--static-transparent)";
 
       const [scheme, weight] = base.includes("alpha") ? base.split("-alpha-") : base.split("-");
 

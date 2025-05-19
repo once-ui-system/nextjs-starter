@@ -1,4 +1,28 @@
-const baseURL = "demo.once-ui.com";
+// IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
+const baseURL = "https://demo.once-ui.com";
+
+// Import and set font for each variant
+import { Geist } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
+
+const primaryFont = Geist({
+  variable: "--font-primary",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const monoFont = Geist_Mono({
+  variable: "--font-code",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const font = {
+  primary: primaryFont,
+  secondary: primaryFont,
+  tertiary: primaryFont,
+  code: monoFont,
+};
 
 // default customization applied to the HTML in the main layout.tsx
 const style = {
@@ -34,37 +58,41 @@ const effects = {
   },
   dots: {
     display: true,
-    size: 2,
+    size: "2",
     color: "brand-on-background-weak",
-    opacity: 20,
+    opacity: 40,
   },
   lines: {
     display: false,
     color: "neutral-alpha-weak",
     opacity: 100,
+    thickness: 1,
+    angle: 45,
+    size: "8",
   },
   grid: {
     display: false,
     color: "neutral-alpha-weak",
-    width: "24",
-    height: "24",
     opacity: 100,
+    width: "2",
+    height: "2",
   },
 };
 
-// default metadata
+// metadata for pages
 const meta = {
-  title: "Once UI for Next.js",
-  description:
-    "An open-source design system and component library for Next.js that emphasizes easy styling and accessibility in UI development.",
-};
-
-// default open graph data
-const og = {
-  title: meta.title,
-  description: meta.description,
-  type: "website",
-  image: "/images/cover.jpg",
+  home: {
+    path: "/",
+    title: "Once UI for Next.js",
+    description: "An open-source design system and component library for Next.js that emphasizes easy styling and accessibility in UI development.",
+    image: "/og/home.jpg",
+    canonical: "https://once-ui.com",
+    robots: "index,follow",
+    alternates: [
+      { href: "https://once-ui.com", hrefLang: "en" },
+    ],
+  },
+  // add more routes and reference them in page.tsx
 };
 
 // default schema data
@@ -72,7 +100,7 @@ const schema = {
   logo: "",
   type: "Organization",
   name: "Once UI",
-  description: meta.description,
+  description: meta.home.description,
   email: "lorant@once-ui.com",
 };
 
@@ -83,4 +111,4 @@ const social = {
   discord: "https://discord.com/invite/5EyAQ4eNdS",
 };
 
-export { baseURL, style, meta, og, schema, social, effects };
+export { baseURL, font, style, meta, schema, social, effects };

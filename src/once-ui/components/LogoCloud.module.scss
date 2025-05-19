@@ -4,6 +4,25 @@
     transform-origin: center;
 }
 
+.staticLogo {
+    animation: fadeIn 1s ease-out forwards;
+    will-change: opacity, filter, transform;
+    transform-origin: center;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        filter: blur(1.5rem);
+        transform: scale(0.2);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1);
+    }
+}
+
 @keyframes fadeInOut {
     0% {
         opacity: 0;

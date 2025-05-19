@@ -5,14 +5,14 @@ import { Heading, Flex, IconButton, useToast } from "@/once-ui/components";
 
 import styles from "./HeadingLink.module.scss";
 
-interface HeadingLinkProps {
+interface HeadingLinkProps extends React.ComponentProps<typeof Heading> {
   id: string;
   as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   children: React.ReactNode;
   style?: React.CSSProperties;
 }
 
-export const HeadingLink: React.FC<HeadingLinkProps> = ({ id, as, children, style }) => {
+export const HeadingLink: React.FC<HeadingLinkProps> = ({ id, as, children, style, ...heading }) => {
   const { addToast } = useToast();
 
   const copyURL = (id: string): void => {
@@ -52,7 +52,7 @@ export const HeadingLink: React.FC<HeadingLinkProps> = ({ id, as, children, styl
       vertical="center"
       gap="8"
     >
-      <Heading className={styles.text} id={id} variant={variant} as={as}>
+      <Heading className={styles.text} id={id} variant={variant} as={as} {...heading}>
         {children}
       </Heading>
       <IconButton

@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useRef, useState, forwardRef, useEffect } from "react";
 import Compressor from "compressorjs";
-import { Flex, Icon, SmartImage, Spinner, Text } from "@/once-ui/components";
+import { Flex, Icon, Media, Spinner, Text } from "@/once-ui/components";
 import styles from "./MediaUpload.module.scss";
 
 interface MediaUploadProps extends React.ComponentProps<typeof Flex> {
@@ -107,6 +109,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
         quality: quality,
         maxWidth: resizeMaxWidth,
         maxHeight: resizeMaxHeight,
+        convertSize: 400 * 1024,
         width: resizeWidth,
         height: resizeHeight,
         success(compressedFile) {
@@ -129,6 +132,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
 
     return (
       <Flex
+        style={{ isolation: "isolate" }}
         transition="micro-medium"
         overflow="hidden"
         cursor="interactive"
@@ -148,7 +152,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
         {!loading && (
           <>
             {previewImage ? (
-              <SmartImage
+              <Media
                 style={{
                   cursor: "pointer",
                   filter: uploading ? "grayscale(1)" : "",

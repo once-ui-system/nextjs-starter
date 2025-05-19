@@ -2,8 +2,7 @@
 
 import React, { forwardRef, ReactNode } from "react";
 import classNames from "classnames";
-import { Icon } from ".";
-import { ElementType } from "./ElementType";
+import { Icon, ElementType } from ".";
 import { IconName } from "../icons";
 
 interface CommonProps {
@@ -19,8 +18,7 @@ interface CommonProps {
   className?: string;
 }
 
-export type SmartLinkProps = CommonProps &
-  React.AnchorHTMLAttributes<HTMLAnchorElement>;
+export type SmartLinkProps = CommonProps & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
   (
@@ -37,7 +35,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     const content = (
       <>
@@ -56,12 +54,15 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
           "fill-width": fillWidth,
           "fit-width": !fillWidth,
           "px-2 mx-2": !unstyled,
-        }
+        },
       ),
       style: !unstyled
         ? {
             ...(selected && {
               textDecoration: "underline",
+              textUnderlineOffset: "0.3em",
+              textUnderlineThickness: "var(--static-space-1)",
+              color: "var(--neutral-on-background-strong)"
             }),
             ...style,
           }
@@ -77,7 +78,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
         {content}
       </ElementType>
     );
-  }
+  },
 );
 
 SmartLink.displayName = "SmartLink";

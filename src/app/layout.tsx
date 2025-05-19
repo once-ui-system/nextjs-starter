@@ -2,91 +2,25 @@ import "@/once-ui/styles/index.scss";
 import "@/once-ui/tokens/index.scss";
 
 import classNames from "classnames";
-import { headers } from "next/headers";
-import { Metadata } from "next";
 
-import { baseURL, style, meta, og, schema, social } from "@/app/resources/config";
+import { baseURL, style, meta, font, effects } from "@/app/resources/once-ui.config";
 import { Background, Column, Flex, ToastProvider, ThemeProvider } from "@/once-ui/components";
 
-import { Geist } from "next/font/google";
-import { Geist_Mono } from "next/font/google";
+import { opacity, SpacingToken } from "@/once-ui/types";
+import { Meta, Schema } from "@/once-ui/modules";
 
-const primary = Geist({
-  variable: "--font-primary",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const code = Geist_Mono({
-  variable: "--font-code",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-type FontConfig = {
-  variable: string;
-};
-
-/*
-	Replace with code for secondary and tertiary fonts
-	from https://once-ui.com/customize
-*/
-const secondary: FontConfig | undefined = undefined;
-const tertiary: FontConfig | undefined = undefined;
-/*
- */
-
-export async function generateMetadata(): Promise<Metadata> {
-  const host = (await headers()).get("host");
-  const metadataBase = host ? new URL(`https://${host}`) : undefined;
-
-  return {
-    title: meta.title,
-    description: meta.description,
-    openGraph: {
-      title: og.title,
-      description: og.description,
-      url: "https://" + baseURL,
-      images: [
-        {
-          url: og.image,
-          alt: og.title,
-        },
-      ],
-      type: og.type as
-        | "website"
-        | "article"
-        | "book"
-        | "profile"
-        | "music.song"
-        | "music.album"
-        | "music.playlist"
-        | "music.radio_station"
-        | "video.movie"
-        | "video.episode"
-        | "video.tv_show"
-        | "video.other",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: og.title,
-      description: og.description,
-      images: [og.image],
-    },
-    metadataBase,
-  };
+export async function generateMetadata() {
+  return Meta.generate({
+    title: meta.home.title,
+    description: meta.home.description,
+    baseURL: baseURL,
+    path: meta.home.path,
+    canonical: meta.home.canonical,
+    image: meta.home.image,
+    robots: meta.home.robots,
+    alternates: meta.home.alternates,
+  });
 }
-
-const schemaData = {
-  "@context": "https://schema.org",
-  "@type": schema.type,
-  url: "https://" + baseURL,
-  logo: schema.logo,
-  name: schema.name,
-  description: schema.description,
-  email: schema.email,
-  sameAs: Object.values(social).filter(Boolean),
-};
 
 export default function RootLayout({
   children,
@@ -110,20 +44,22 @@ export default function RootLayout({
       data-transition={style.transition}
       data-scaling={style.scaling}
       className={classNames(
-        primary.variable,
-        code.variable,
-        secondary ? secondary.variable : "",
-        tertiary ? tertiary.variable : "",
+        font.primary.variable,
+        font.secondary.variable,
+        font.tertiary.variable,
+        font.code.variable,
       )}
     >
+      <Schema
+        as="webPage"
+        baseURL={baseURL}
+        title={meta.home.title}
+        description={meta.home.description}
+        path={meta.home.path}
+      />
       <head>
         <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schemaData),
-          }}
-        />
-        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: <It's not dynamic nor a security issue.>
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
@@ -150,27 +86,42 @@ export default function RootLayout({
             <Background
               position="absolute"
               mask={{
-                x: 100,
-                y: 0,
-                radius: 100,
+                x: effects.mask.x,
+                y: effects.mask.y,
+                radius: effects.mask.radius,
+                cursor: effects.mask.cursor
               }}
               gradient={{
-                display: true,
-                x: 100,
-                y: 60,
-                width: 70,
-                height: 50,
-                tilt: -40,
-                opacity: 90,
-                colorStart: "accent-background-strong",
-                colorEnd: "page-background",
+                display: effects.gradient.display,
+                opacity: effects.gradient.opacity as opacity,
+                x: effects.gradient.x,
+                y: effects.gradient.y,
+                width: effects.gradient.width,
+                height: effects.gradient.height,
+                tilt: effects.gradient.tilt,
+                colorStart: effects.gradient.colorStart,
+                colorEnd: effects.gradient.colorEnd,
+              }}
+              dots={{
+                display: effects.dots.display,
+                opacity: effects.dots.opacity as opacity,
+                size: effects.dots.size as SpacingToken,
+                color: effects.dots.color,
               }}
               grid={{
-                display: true,
-                opacity: 100,
-                width: "0.25rem",
-                color: "neutral-alpha-medium",
-                height: "0.25rem",
+                display: effects.grid.display,
+                opacity: effects.grid.opacity as opacity,
+                color: effects.grid.color,
+                width: effects.grid.width,
+                height: effects.grid.height,
+              }}
+              lines={{
+                display: effects.lines.display,
+                opacity: effects.lines.opacity as opacity,
+                size: effects.lines.size as SpacingToken,
+                thickness: effects.lines.thickness,
+                angle: effects.lines.angle,
+                color: effects.lines.color,
               }}
             />
             {children}

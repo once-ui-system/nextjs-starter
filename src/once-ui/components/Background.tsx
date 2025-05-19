@@ -2,7 +2,7 @@
 
 import React, { CSSProperties, forwardRef, useEffect, useRef, useState } from "react";
 import { SpacingToken } from "../types";
-import { Flex } from "./Flex";
+import { Flex } from ".";
 import { DisplayProps } from "../interfaces";
 import styles from "./Background.module.scss";
 import classNames from "classnames";
@@ -240,10 +240,10 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             opacity={lines.opacity}
             style={
               {
-                "--lines-angle": `${lines.angle ?? 45}deg`,
+                "--lines-angle": `${lines.angle ?? -45}deg`,
                 "--lines-color": `var(--${lines.color ?? "brand-on-background-weak"})`,
-                "--lines-thickness": `${lines.thickness ?? 0.5}px`,
-                "--lines-spacing": `var(--static-space-${lines.size ?? "24"})`,
+                "--lines-thickness": `${lines.thickness ?? 1}px`,
+                "--lines-spacing": `var(--static-space-${lines.size ?? "8"})`,
                 background: `
                 repeating-linear-gradient(
                   var(--lines-angle),
