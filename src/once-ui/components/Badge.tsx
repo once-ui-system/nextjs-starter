@@ -7,7 +7,7 @@ import styles from "./Badge.module.scss";
 import { IconName } from "../icons";
 import classNames from "classnames";
 
-interface BadgeProps extends React.ComponentProps<typeof Flex> {
+export interface BadgeProps extends React.ComponentProps<typeof Flex> {
   title?: string;
   icon?: IconName;
   arrow?: boolean;
