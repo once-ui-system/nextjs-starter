@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import moment from 'moment'
 import {
   AreaChart,
@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { Flex, Column, Text, Row } from "../../components";
+import { Flex, Column, Text, Row, DateRangeInput, DateRange, Button, DateRangePicker, DropdownWrapper, IconButton } from "../../components";
 
 interface DataPoint {
   [key: string]: string | number | Date;
@@ -33,6 +33,8 @@ interface LineChartProps extends React.ComponentProps<typeof Flex> {
   curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural";
   isTimeSeries?: boolean;
   timeFormat?: string;
+  dateRange?: DateRange;
+  onDateRangeChange?: (range: DateRange) => void;
 }
 
 const defaultColors = ['blue', 'green', 'aqua', 'violet', 'orange', 'red', 'purple', 'magenta', 'moss', 'emerald'];
@@ -140,8 +142,17 @@ const LineChart: React.FC<LineChartProps> = ({
   curveType = "natural",
   isTimeSeries = false,
   timeFormat,
+  dateRange: initialDateRange,
+  onDateRangeChange,
   ...flex
 }) => {
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(initialDateRange);
+  const [showDateRangeSelectorUI, setShowDateRangeSelectorUI] = useState(false);
+
+  useEffect(() => {
+    setSelectedDateRange(initialDateRange);
+  }, [initialDateRange]);
+
   // Auto-detect series from first data point if not provided
   const seriesKeys = series.map(s => s.key);
   const autoSeries = series || Object.keys(data[0] || {})
@@ -154,6 +165,23 @@ const LineChart: React.FC<LineChartProps> = ({
   const xAxisKey = Object.keys(data[0] || {}).find(key => 
     !seriesKeys.includes(key)
   ) || 'name';
+
+  const filteredData = React.useMemo(() => {
+    if (isTimeSeries && selectedDateRange?.startDate && selectedDateRange?.endDate && xAxisKey) {
+      return data.filter(item => {
+        const itemDate = moment(item[xAxisKey] as string | Date);
+        return itemDate.isBetween(selectedDateRange.startDate, selectedDateRange.endDate, undefined, '[]');
+      });
+    }
+    return data;
+  }, [data, selectedDateRange, isTimeSeries, xAxisKey]);
+
+  const handleDateRangeChange = (newRange: DateRange) => {
+    setSelectedDateRange(newRange);
+    if (onDateRangeChange) {
+      onDateRangeChange(newRange);
+    }
+  };
   
   return (
     <Flex
@@ -169,20 +197,41 @@ const LineChart: React.FC<LineChartProps> = ({
     >
       {title && (
         <Column fillWidth borderBottom={border} horizontal="start" paddingX="20" paddingY="12" gap="4">
-          <Text variant="heading-strong-s">
-            {title}
-          </Text>
-          {description && (
-            <Text variant="label-default-s" onBackground="neutral-weak">
-              {description}
-            </Text>
-          )}
+          <Row fillWidth horizontal="space-between" vertical="center">
+            <Column>
+              <Text variant="heading-strong-s">
+                {title}
+              </Text>
+              {description && (
+                <Text variant="label-default-s" onBackground="neutral-weak">
+                  {description}
+                </Text>
+              )}
+            </Column>
+            {isTimeSeries && (
+              <Column horizontal="end">
+                <IconButton
+                  icon="calendar"
+                  onClick={() => setShowDateRangeSelectorUI(!showDateRangeSelectorUI)}
+                  variant="secondary"
+                  size="m"
+                />
+                {showDateRangeSelectorUI && (
+                <DropdownWrapper isOpen dropdown={<Column padding="16" gap="8">
+                    <DateRangePicker
+                      id="line-chart-date-range"
+                      value={selectedDateRange}
+                      onChange={handleDateRangeChange} /> </Column>} trigger={undefined}/>
+                )}
+              </Column>
+            )}
+          </Row>
         </Column>
       )}
       <Flex fill>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
-            data={data}
+            data={filteredData}
             margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
           >
             <defs>
@@ -277,4 +326,4 @@ const LineChart: React.FC<LineChartProps> = ({
 LineChart.displayName = "LineChart";
 
 export { LineChart };
-export type { LineChartProps };
+export type { LineChartProps, DataPoint, SeriesConfig };

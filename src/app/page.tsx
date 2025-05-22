@@ -983,20 +983,22 @@ export default function Home() {
                     description="How many users visited our page"
                     legend
                     labels="x"
+                    isTimeSeries
                     series={[
                       { key: "Revenue", color: "emerald" },
                       { key: "Profit", color: "violet" },
                       { key: "Loss", color: "blue" }
                     ]}
                     data={[
-                      { week: "W1", Revenue: 2100, Profit: 1400, Loss: 5500 },
-                      { week: "W2", Revenue: 2200, Profit: 4398, Loss: 3200 },
-                      { week: "W3", Revenue: 2000, Profit: 1200, Loss: 6500 },
-                      { week: "W4", Revenue: 3780, Profit: 1108, Loss: 1700 },
-                      { week: "W5", Revenue: 5990, Profit: 1800, Loss: 2100 },
-                      { week: "W6", Revenue: 4000, Profit: 2400, Loss: 3000 },
-                      { week: "W7", Revenue: 5000, Profit: 3000, Loss: 4000 },
+                      { week: "2024-01-01", Revenue: 2100, Profit: 1400, Loss: 5500 },
+                      { week: "2024-01-08", Revenue: 2200, Profit: 4398, Loss: 3200 },
+                      { week: "2024-01-15", Revenue: 2000, Profit: 1200, Loss: 6500 },
+                      { week: "2024-01-22", Revenue: 3780, Profit: 1108, Loss: 1700 },
+                      { week: "2024-01-29", Revenue: 5990, Profit: 1800, Loss: 2100 },
+                      { week: "2024-02-05", Revenue: 4000, Profit: 2400, Loss: 3000 },
+                      { week: "2024-02-12", Revenue: 5000, Profit: 3000, Loss: 4000 },
                     ]}
+                    timeFormat="YYYY-MM-DD"
                   />
                 </Column>
               </Column>
