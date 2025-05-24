@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   PieChart as RechartsPieChart,
@@ -5,9 +7,9 @@ import {
   Cell,
   Tooltip,
   ResponsiveContainer,
-  Legend,
+  Legend
 } from "recharts";
-import { Flex, Heading, Text, Column,Row } from "../../components";
+import { Flex, Heading, Text, Column, Row } from "../../components";
 
 interface DataPoint {
   name: string;
@@ -72,16 +74,14 @@ const CustomTooltip = ({ active, payload }: any) => {
       <Column
         minWidth={8}
         gap="8"
-         paddingBottom="8"
+        paddingBottom="8"
         background="surface"
         radius="m"
         border="neutral-alpha-medium">
-        <Flex
+        <Column
           fillWidth
           paddingTop="8"
-          horizontal="start"
           paddingX="12"
-          direction="column"
         >
           <Text variant="label-default-s"
             onBackground="neutral-strong" paddingBottom="8">{payload[0].name}</Text>
@@ -96,7 +96,7 @@ const CustomTooltip = ({ active, payload }: any) => {
             {`Value: ${payload[0].value}`}
           </Text>
         </Row>
-      </Flex>
+      </Column>
       </Column>
     );
   }
@@ -130,7 +130,8 @@ export const PieChart: React.FC<PieChartProps> = ({
 
   return (
     <Flex
-      fill
+      fillWidth
+      height={24}
       data-viz="categorical"
       radius={radius}
       border={border}

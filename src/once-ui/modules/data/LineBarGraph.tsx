@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import moment from "moment";
 import {
@@ -10,7 +12,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  Area,
+  Area
 } from "recharts";
 import { Flex, Column, Text, Row } from "../../components";
 import { SpacingToken } from "../../types";

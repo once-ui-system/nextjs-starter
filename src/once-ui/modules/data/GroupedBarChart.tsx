@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   BarChart,
@@ -7,14 +9,14 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   Tooltip,
-  Legend,
+  Legend
 } from "recharts";
 
 import moment from "moment";
 
 import { SpacingToken } from "../../types";
 
-import { Text, Flex, Heading, Column } from "../../components";
+import { Text, Flex, Column } from "../../components";
 
 // Data structure supporting multiple values
 interface MultiBarDataPoint {
@@ -175,6 +177,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
       direction="column"
       vertical="center"
       data-viz="categorical"
+      height={24}
       {...flexProps}
     >
       {(title || description) && (

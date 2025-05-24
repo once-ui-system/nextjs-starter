@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   BarChart as RechartsBarChart,
@@ -7,7 +9,7 @@ import {
   ResponsiveContainer as RechartsResponsiveContainer,
   CartesianGrid as RechartsCartesianGrid,
   Tooltip as RechartsTooltip,
-  Legend as RechartsLegend,
+  Legend as RechartsLegend
 } from "recharts";
 
 import { TShirtSizes } from "../../types";
@@ -175,7 +177,7 @@ const BarChart: React.FC<BarChartProps> = ({
                 }}
               />
             )}
-            {labels === "x" || labels === "both" && (
+            {(labels === "x" || labels === "both") && (
               <RechartsXAxis
                 dataKey={xAxisKey}
                 axisLine={{

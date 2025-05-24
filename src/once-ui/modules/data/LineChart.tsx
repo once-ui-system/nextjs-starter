@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import moment from 'moment'
 import {
@@ -8,9 +10,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
+  Legend
 } from "recharts";
-import { Flex, Column, Text, Row, DateRangeInput, DateRange, Button, DateRangePicker, DropdownWrapper, IconButton } from "../../components";
+import { Flex, Column, Text, Row, DateRange, DateRangePicker, DropdownWrapper, IconButton } from "../../components";
 
 interface DataPoint {
   [key: string]: string | number | Date;
@@ -193,6 +195,7 @@ const LineChart: React.FC<LineChartProps> = ({
       horizontal="center"
       direction="column"
       vertical="center"
+      height={24}
       {...flex}
     >
       {title && (
