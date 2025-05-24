@@ -25,20 +25,32 @@ interface MultiBarDataPoint {
   endDate?: string;
 }
 
+interface BarProps {
+  labels?: string[];
+  width?: SpacingToken | "fill" | number;
+}
+
+interface TimeProps {
+  series?: boolean;
+  format?: string;
+}
+
+interface TooltipProps {
+  title?: string;
+}
+
 interface GroupedBarChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
   data: MultiBarDataPoint[];
   labels?: "x" | "y" | "both" | "none";
   xAxisKey?: string;
   yAxisKeys?: string[];
-  barLabels?: string[];
   yAxisTitle?: string;
-  barWidth?: SpacingToken | "fill" | number | string;
-  isTimeSeries?: boolean;
-  timeFormat?: string;
   legend?: boolean;
   title?: React.ReactNode;
   description?: React.ReactNode;
-  tooltipTitle?: string;
+  bar?: BarProps;
+  time?: TimeProps;
+  tooltip?: TooltipProps;
 }
 
 const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
@@ -46,15 +58,14 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   labels = "both",
   xAxisKey = "name",
   yAxisKeys = ["value1", "value2", "value3"],
-  barLabels,
-  barWidth = "fill",
-  isTimeSeries = false,
-  timeFormat,
+  bar = { labels: [], width: "fill" },
+  time = { series: false, format: "" },
+  tooltip = { title: "" },
   title,
   yAxisTitle,
   description,
   legend = false,
-  tooltipTitle,
+  border = "neutral-medium",
   ...flex
 }) => {
   const barColors = [
@@ -66,16 +77,16 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   return (
     <Column
       fillWidth
-      radius="l"
-      vertical="center"
-      data-viz="categorical"
       height={24}
+      border={border}
+      radius="l"
+      data-viz="categorical"
       {...flex}
     >
       {(title || description) && (
         <Column
           fillWidth
-          borderBottom="neutral-medium"
+          borderBottom={border}
           paddingX="20"
           paddingY="12"
           gap="4"
@@ -106,8 +117,18 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
             />
             {legend && (
               <RechartsLegend
-                content={<Legend labels={labels} colors={barColors} />}
-                wrapperStyle={{ position: "absolute", top: 0, right: 0 }}
+                content={
+                  <Legend
+                    labels={labels}
+                    colors={barColors}
+                  />
+                }
+                wrapperStyle={{
+                  position: "absolute", 
+                  top: 0, 
+                  right: 0,
+                  margin: 0
+                }}
               />
             )}
             {(labels === "x" || labels === "both") && (
@@ -148,15 +169,16 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
               />
             )}
             <RechartsTooltip
+              cursor={{ fill: "var(--neutral-alpha-weak)" }}
               content={props => 
                 <Tooltip
                   {...props}
-                  isTimeSeries={isTimeSeries}
-                  timeFormat={timeFormat}
+                  isTimeSeries={time.series}
+                  timeFormat={time.format}
                   showColors={true}
+                  xAxisTitle={tooltip.title}
                 />
               }
-              cursor={{ fill: "rgba(255,255,255,0.05)" }}
             />
             <defs>
               {barColors.map((color, index) => (
@@ -168,7 +190,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   x2="0"
                   y2="1"
                 >
-                  <stop offset="5%" stopColor={color} stopOpacity={0.8} />
+                  <stop offset="0%" stopColor={color} stopOpacity={0.8} />
                   <stop offset="100%" stopColor={color} stopOpacity={0} />
                 </linearGradient>
               ))}
@@ -177,25 +199,25 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
               <RechartsBar
                 key={key}
                 dataKey={key}
-                name={barLabels?.[index] || key}
+                name={bar.labels?.[index] || key}
                 fill={`url(#barGradient${index})`}
                 stroke={barColors[index % barColors.length]}
                 strokeWidth={1}
-                radius={[6, 6, 0, 0]}
+                radius={[4, 4, 4, 4]}
                 barSize={
-                  barWidth === "fill"
+                  bar.width === "fill"
                     ? "100%"
-                    : barWidth === "xs"
+                    : bar.width === "xs"
                     ? 12
-                    : barWidth === "s"
+                    : bar.width === "s"
                     ? 16
-                    : barWidth === "m"
+                    : bar.width === "m"
                     ? 24
-                    : barWidth === "l"
+                    : bar.width === "l"
                     ? 40
-                    : barWidth === "xl"
+                    : bar.width === "xl"
                     ? 64
-                    : barWidth
+                    : bar.width
                 }
                 isAnimationActive={false}
               />

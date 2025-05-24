@@ -108,7 +108,7 @@ const LineChart: React.FC<LineChartProps> = ({
       {(title || description) && (
         <Column fillWidth borderBottom={border} paddingX="20" paddingY="12" gap="4">
           <Row fillWidth vertical="center">
-            <Column fillWidth>
+            <Column fillWidth gap="4">
               {title && (
                 <Text variant="heading-strong-s">
                   {title}
@@ -159,13 +159,19 @@ const LineChart: React.FC<LineChartProps> = ({
               ))}
             </defs>
             <RechartsCartesianGrid
-              vertical={true}
+              vertical
+              horizontal
               stroke="var(--neutral-alpha-weak)"
-              horizontal={true}
             />
             {legend && (
               <RechartsLegend
-                content={<Legend colors={colors} labels={labels} position="top" />}
+                content={
+                  <Legend 
+                    colors={colors} 
+                    labels={labels} 
+                    position="top" 
+                  />
+                }
                 wrapperStyle={{
                   position: 'absolute',
                   top: 0,
@@ -176,16 +182,16 @@ const LineChart: React.FC<LineChartProps> = ({
             )}
             {(labels === "x" || labels === "both") && (
               <RechartsXAxis
-                tickMargin={6}
-                dataKey={xAxisKey}
-                axisLine={{
-                  stroke: "var(--neutral-alpha-weak)",
-                }}
-                tickLine={false}
                 height={32}
+                tickMargin={6}
+                tickLine={false}
                 tick={{
                   fill: "var(--neutral-on-background-weak)",
                   fontSize: 11,
+                }}
+                dataKey={xAxisKey}
+                axisLine={{
+                  stroke: "var(--neutral-alpha-weak)",
                 }}
               />
             )}
@@ -211,11 +217,10 @@ const LineChart: React.FC<LineChartProps> = ({
               }}
               content={props => 
                 <Tooltip 
-                  {...props} 
-                  tooltip={tooltip}
                   isTimeSeries={isTimeSeries}
                   timeFormat={timeFormat}
-                  showColors={true}
+                  tooltip={tooltip}
+                  {...props}
                 />
               }
             />
@@ -226,12 +231,12 @@ const LineChart: React.FC<LineChartProps> = ({
                 dataKey={key}
                 name={key}
                 stroke={`var(--data-${color})`}
+                fill={`url(#color-${key})`}
                 strokeWidth={1}
                 fillOpacity={1}
                 activeDot={{
                   stroke: "var(--static-transparent)"
                 }}
-                fill={`url(#color-${key})`}
               />
             ))}
           </RechartsAreaChart>

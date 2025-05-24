@@ -60,7 +60,7 @@ const BarChart: React.FC<BarChartProps> = ({
       border={border}
       radius="l"
       data-viz="categorical"
-      {...flex} 
+      {...flex}
     >
       <Column
         borderBottom={border}
@@ -144,8 +144,14 @@ const BarChart: React.FC<BarChartProps> = ({
               />
             )}
             <RechartsTooltip
-              content={props => <Tooltip {...props} tooltip={tooltip} showColors={false} />}
               cursor={{ fill: "var(--neutral-alpha-weak)" }}
+              content={props => 
+                <Tooltip
+                  {...props}
+                  tooltip={tooltip}
+                  showColors={false}
+                />
+              }
             />
             <defs>
               <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">

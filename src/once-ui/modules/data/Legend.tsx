@@ -13,7 +13,8 @@ interface LegendProps {
 const Legend: React.FC<LegendProps> = ({
   payload,
   labels = "both",
-  position = "top"
+  position = "top",
+  colors
 }) => {
   if (!payload || !payload.length) {
     return null;
@@ -63,13 +64,15 @@ const Legend: React.FC<LegendProps> = ({
       style={positionStyle}
     >
       {payload.map((entry: any, index: number) => {
+        // Use colors prop if provided, otherwise use entry color
+        const color = colors && colors[index] ? colors[index] : (entry.stroke || entry.color);
         return (
           <Row key={index} vertical="center" gap="8">
             <Row
               style={{
                 backgroundClip: "padding-box",
-                border: `1px solid ${entry.stroke || entry.color}`,
-                background: `linear-gradient(to bottom, ${entry.stroke || entry.color} 0%, transparent 100%)`
+                border: `1px solid ${color}`,
+                background: `linear-gradient(to bottom, ${color} 0%, transparent 100%)`
               }}
               minWidth="16"
               minHeight="16"

@@ -20,10 +20,9 @@ interface DataPoint {
 
 interface PieChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
   data: DataPoint[];
-  blur?: boolean;
   title?: React.ReactNode;
   description?: React.ReactNode;
-  showLegend?: boolean;
+  legend?: boolean;
   innerRadius?: number | string;
   outerRadius?: number | string;
   dataKey?: string;
@@ -36,20 +35,17 @@ interface PieChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' 
 export const PieChart: React.FC<PieChartProps> = ({
   data,
   defaultColors = ['blue', 'green', 'aqua', 'violet', 'orange', 'red', 'purple', 'magenta', 'moss', 'emerald'],
-  blur = false,
-  border,
+  border = "neutral-medium",
   title,
   description,
-  radius,
-  background,
-  showLegend = false,
+  legend = false,
   innerRadius = "0",
   outerRadius = "90%",
   dataKey = "value",
   nameKey = "name",
   paddingAngle = 0,
   useGradients = true,
-  ...flexProps
+  ...flex
 }) => {
   const colorPalette = defaultColors.map((c) => `var(--data-${c})`);
 
@@ -61,25 +57,32 @@ export const PieChart: React.FC<PieChartProps> = ({
     <Column
       fillWidth
       height={24}
-      data-viz="categorical"
-      radius={radius}
       border={border}
-      background={background}
-      {...flexProps}
+      radius="l"
+      data-viz="categorical"
+      {...flex}
     >
-      <Column fillWidth>
-        {title && (
-          <Text variant="heading-strong-s">
-            {title}
-          </Text>
-        )}
-        {description && (
-          <Text variant="label-default-s" onBackground="neutral-weak">
-            {description}
-          </Text>
-        )}
-      </Column>
-      <Row padding={title ? "s" : "2"} fill>
+      {(title || description) && (
+        <Column
+          borderBottom={border}
+          fillWidth
+          paddingX="20"
+          paddingY="12"
+          gap="4"
+          vertical="center">
+          {title && (
+            <Text variant="heading-strong-s">
+              {title}
+            </Text>
+          )}
+          {description && (
+            <Text variant="label-default-s" onBackground="neutral-weak">
+              {description}
+            </Text>
+          )}
+        </Column>
+      )}
+      <Row fill paddingBottom="48">
         <RechartsResponsiveContainer width="100%" height="100%">
           <RechartsPieChart>
             <defs>
@@ -95,9 +98,8 @@ export const PieChart: React.FC<PieChartProps> = ({
                     fx="50%"
                     fy="50%"
                   >
-                    <stop offset="25%" stopColor={baseColor} stopOpacity={0.5} />
-                    <stop offset="40%" stopColor={baseColor} stopOpacity={0.4} />
-                    <stop offset="95%" stopColor={baseColor} stopOpacity={0.05} />
+                    <stop offset="0%" stopColor={baseColor} stopOpacity={1} />
+                    <stop offset="100%" stopColor={baseColor} stopOpacity={0} />
                   </radialGradient>
                 );
               })}
@@ -127,13 +129,22 @@ export const PieChart: React.FC<PieChartProps> = ({
               })}
             </RechartsPie>
             <RechartsTooltip 
-              content={props => <Tooltip {...props} showColors={true} />}
+              content={props => <Tooltip {...props} />}
             />
-            {showLegend && (
+            {legend && (
               <RechartsLegend
-                verticalAlign="bottom"
-                layout="horizontal"
-                wrapperStyle={{ paddingTop: 16 }}
+                content={(props) => (
+                  <Legend
+                    {...props}
+                    labels="both"
+                    colors={colorPalette}
+                  />
+                )}
+                wrapperStyle={{
+                  position: "absolute",
+                  right: 0,
+                  margin: 0
+                }}
               />
             )}
           </RechartsPieChart>

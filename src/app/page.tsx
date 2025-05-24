@@ -96,30 +96,32 @@ export default function Home() {
                   { name: "Q3", value1: 55000, value2: 51000, value3: 40000 },
                   { name: "Q4", value1: 75000, value2: 52000, value3: 48000 },
                 ]}
-                barLabels={["2023", "2024", "Projected"]}
+                bar={{
+                  labels: ["2023", "2024", "Projected"]
+                }}
               />
               
               {/* Line Bar Graph */}
               <LineBarChart
                   title="Traffic Per Weekday"
                   description="How many users we had per weekday"
-                    showArea
-                    legend
-                    labels="y"
-                    xAxisTitle="Day"
-                    yAxisTitle="Count"
-                    lineName="Traffic"
-                    barName="Conversions"
-                    data={[
-                      { name: "Mon", lineValue: 4500, barValue: 2190 },
-                      { name: "Tue", lineValue: 5200, barValue: 4230 },
-                      { name: "Wed", lineValue: 4800, barValue: 3250 },
-                      { name: "Thu", lineValue: 5900, barValue: 3280 },
-                      { name: "Fri", lineValue: 6800, barValue: 4320 },
-                      { name: "Sat", lineValue: 4800, barValue: 3190 },
-                      { name: "Sun", lineValue: 3900, barValue: 3170 },
-                    ]}
-                  />
+                  showArea
+                  legend
+                  labels="both"
+                  xAxisTitle="Day"
+                  yAxisTitle="Count"
+                  lineName="Traffic"
+                  barName="Conversions"
+                  data={[
+                    { name: "Mon", lineValue: 4500, barValue: 2190 },
+                    { name: "Tue", lineValue: 5200, barValue: 4230 },
+                    { name: "Wed", lineValue: 4800, barValue: 3250 },
+                    { name: "Thu", lineValue: 5900, barValue: 3280 },
+                    { name: "Fri", lineValue: 6800, barValue: 4320 },
+                    { name: "Sat", lineValue: 4800, barValue: 3190 },
+                    { name: "Sun", lineValue: 3900, barValue: 3170 },
+                  ]}
+                />
             </Row>
 
             <Row fillWidth gap="32" mobileDirection="column">
@@ -127,7 +129,7 @@ export default function Home() {
 
               <PieChart
                 title="Pie chart"
-                showLegend
+                legend
                 innerRadius="70%"
                 data = {[
                   { name: 'Category A', value: 400 },
@@ -138,7 +140,7 @@ export default function Home() {
               />
               
               <PieChart
-                showLegend
+                legend
                 data = {[
                   { name: 'Category A', value: 400 },
                   { name: 'Category B', value: 300 },

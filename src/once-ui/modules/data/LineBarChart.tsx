@@ -113,14 +113,13 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
               {/* Bar gradient */}
               <linearGradient id={barGradientId} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={finalBarColor} stopOpacity={0.8} />
-                <stop offset="70%" stopColor={finalBarColor} stopOpacity={0.3} />
                 <stop offset="100%" stopColor={finalBarColor} stopOpacity={0} />
               </linearGradient>
               
               {/* Line gradient */}
               <linearGradient id={lineGradientId} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="25%" stopColor={finalLineColor} stopOpacity={0.5} />
-                <stop offset="95%" stopColor={finalLineColor} stopOpacity={0.05} />
+                <stop offset="0%" stopColor={finalLineColor} stopOpacity={0.8} />
+                <stop offset="100%" stopColor={finalLineColor} stopOpacity={0} />
               </linearGradient>
             </defs>
             <RechartsCartesianGrid
@@ -130,8 +129,19 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
             />
             {legend && (
               <RechartsLegend
-                content={<Legend labels={labels} />}
-                wrapperStyle={{ position: "absolute", top: 0, right: 0 }}
+                content={
+                  <Legend 
+                    colors={[finalBarColor, finalLineColor]}
+                    labels={labels}
+                    position="top" 
+                  />
+                }
+                wrapperStyle={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  margin: 0
+                }}
               />
             )}
             {(labels === "x" || labels === "both") && (
@@ -163,7 +173,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                   fill: "var(--neutral-on-background-weak)",
                   fontSize: 11,
                 }}
-                width={yAxisTitle ? 54 : 0}
+                width={yAxisTitle ? 56 : 0}
                 label={
                   yAxisTitle
                     ? { 
@@ -178,8 +188,18 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
               />
             )}
             <RechartsTooltip
-              content={props => <Tooltip {...props} isTimeSeries={isTimeSeries} timeFormat={timeFormat} xAxisKey={xAxisKey} showColors={true} />}
-              cursor={{ fill: "rgba(255,255,255,0.05)" }}
+              cursor={{
+                stroke: "var(--neutral-border-strong)",
+                strokeWidth: 1,
+              }}
+              content={props =>
+                <Tooltip
+                  isTimeSeries={isTimeSeries}
+                  timeFormat={timeFormat}
+                  xAxisKey={xAxisKey}
+                  {...props}
+                />
+              }
             />
             <RechartsBar
               dataKey={barDataKey}
@@ -187,7 +207,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
               fill={`url(#${barGradientId})`}
               stroke={finalBarColor}
               strokeWidth={1}
-              radius={[4, 4, 0, 0]}
+              radius={[4, 4, 4, 4]}
               barSize={
                 barWidth === "fill"
                   ? "100%"
@@ -210,13 +230,14 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 type={curveType}
                 dataKey={lineDataKey}
                 name={lineName}
-                stroke={finalLineColor}
                 strokeDasharray={dashedLine ? "5 5" : "0"}
-                strokeWidth={2}
-                fillOpacity={1}
+                stroke={finalLineColor}
                 fill={`url(#${lineGradientId})`}
-                dot={{ r: 4, fill: finalLineColor }}
-                activeDot={{ r: 6, fill: finalLineColor }}
+                strokeWidth={1}
+                fillOpacity={1}
+                activeDot={{
+                  stroke: "var(--static-transparent)"
+                }}
               />
             ) : (
               <RechartsLine
@@ -225,9 +246,10 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 name={lineName}
                 stroke={finalLineColor}
                 strokeDasharray={dashedLine ? "5 5" : "0"}
-                strokeWidth={2}
-                dot={{ r: 4, fill: finalLineColor }}
-                activeDot={{ r: 6, fill: finalLineColor }}
+                strokeWidth={1}
+                activeDot={{
+                  stroke: "var(--static-transparent)"
+                }}
               />
             )}
           </RechartsComposedChart>
