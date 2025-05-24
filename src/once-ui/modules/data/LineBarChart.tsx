@@ -1,27 +1,27 @@
 "use client";
 
 import React from "react";
-import moment from "moment";
 import {
-  ComposedChart,
-  Line,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-  Area
+  ComposedChart as RechartsComposedChart,
+  Line as RechartsLine,
+  Bar as RechartsBar,
+  XAxis as RechartsXAxis,
+  YAxis as RechartsYAxis,
+  CartesianGrid as RechartsCartesianGrid,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer as RechartsResponsiveContainer,
+  Legend as RechartsLegend,
+  Area as RechartsArea
 } from "recharts";
 import { Flex, Column, Text, Row } from "../../components";
 import { SpacingToken } from "../../types";
+import { Tooltip, Legend } from "../";
 
 interface DataPoint {
   [key: string]: string | number | Date;
 }
 
-interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
+interface LineBarChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
   data: DataPoint[];
   xAxisKey?: string;
   lineDataKey?: string;
@@ -33,8 +33,8 @@ interface LineBarGraphProps extends React.ComponentProps<typeof Flex> {
   barWidth?: SpacingToken | "fill" | number;
   showArea?: boolean;
   labels?: "x" | "y" | "both" | "none";
-  title?: string;
-  description?: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
   legend?: boolean;
   dashedLine?: boolean;
   curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural";
@@ -49,100 +49,7 @@ const defaultColors = {
   bar: "green"
 };
 
-const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat = "MMM DD, YYYY", xAxisKey }: any) => {
-  if (active && payload && payload.length) {
-    // Get the proper label from the payload data instead of using the default label
-    const displayLabel = payload[0]?.payload?.[xAxisKey] || label;
-    
-    return (
-      <Column
-        minWidth={8}
-        gap="8"
-        background="surface"
-        radius="m"
-        border="neutral-alpha-medium">
-        <Flex
-          fillWidth
-          paddingTop="8"
-          paddingX="12"
-        >
-          <Text
-            variant="label-default-s"
-            onBackground="neutral-strong"
-          >
-            {isTimeSeries ? moment(displayLabel).format(timeFormat) : displayLabel}
-          </Text>
-        </Flex>
-        <Column
-          fillWidth
-          horizontal="space-between"
-          paddingBottom="8"
-          paddingX="12"
-          gap="4">
-          {payload.map((entry: any, index: number) => (
-            <Row key={index} horizontal="space-between" fillWidth gap="16">
-              <Row vertical="center" gap="8">
-                <Flex
-                  style={{
-                    backgroundClip: "padding-box",
-                    border: `1px solid ${entry.stroke || entry.color}`,
-                    background: `linear-gradient(to bottom, ${entry.stroke || entry.color} 0%, transparent 100%)`
-                  }}
-                  minWidth="12"
-                  minHeight="12"
-                  radius="xs"
-                />
-                <Text onBackground="neutral-weak" variant="label-default-s">
-                  {entry.name}
-                </Text>
-              </Row>
-              <Text onBackground="neutral-strong" variant="label-default-s">
-                {typeof entry.value === 'number' ? entry.value.toLocaleString() : entry.value}
-              </Text>
-            </Row>
-          ))}
-        </Column>
-      </Column>
-    );
-  }
-  return null;
-};
-
-const CustomLegend = ({ payload, labels }: any) => {
-  if (payload && payload.length) {
-    return (
-      <Flex 
-      horizontal="start" 
-      vertical="center" 
-      position="absolute"
-      gap="16"
-      left={(labels === "y" || labels === "both") ? "80" : "12"}
-      top="12"
-      >
-        {payload.map((entry: any, index: number) => (
-          <Flex key={index} vertical="center" gap="8">
-            <Flex
-              style={{
-                backgroundClip: "padding-box",
-                border: `1px solid ${entry.stroke || entry.color}`,
-                background: `linear-gradient(to bottom, ${entry.stroke || entry.color} 0%, transparent 100%)`
-              }}
-              minWidth="16"
-              minHeight="16"
-              radius="s"
-            />
-            <Text variant="label-default-s">
-              {entry.value}
-            </Text>
-          </Flex>
-        ))}
-      </Flex>
-    );
-  }
-  return null;
-};
-
-const LineBarGraph: React.FC<LineBarGraphProps> = ({
+const LineBarChart: React.FC<LineBarChartProps> = ({
   data,
   xAxisKey = "name",
   lineDataKey = "lineValue",
@@ -164,26 +71,22 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
   timeFormat = "YYYY-MM-DD",
   xAxisTitle,
   yAxisTitle,
-  ...flexProps
+  ...flex
 }) => {
-  // Generate unique IDs for gradients
   const lineGradientId = `colorLine-${React.useId()}`;
   const barGradientId = `barGradient-${React.useId()}`;
 
-  // Get the final colors with CSS variables
   const finalLineColor = `var(--data-${lineColor})`;
   const finalBarColor = `var(--data-${barColor})`;
 
   return (
-    <Flex
-      direction="column"
-      fillHeight
+    <Column
       fillWidth
       height={24}
       border={border}
       radius="l"
       data-viz="categorical"
-      {...flexProps}
+      {...flex}
     >
       {(title || description) && (
         <Column fillWidth borderBottom={border} horizontal="start" paddingX="20" paddingY="12" gap="4">
@@ -199,9 +102,9 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
           )}
         </Column>
       )}
-      <Flex fill>
-        <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart
+      <Row fill>
+        <RechartsResponsiveContainer width="100%" height="100%">
+          <RechartsComposedChart
             data={data}
             margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
             barGap={4}
@@ -220,24 +123,19 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
                 <stop offset="95%" stopColor={finalLineColor} stopOpacity={0.05} />
               </linearGradient>
             </defs>
-            <CartesianGrid
-              horizontal={true}
+            <RechartsCartesianGrid
+              horizontal
               vertical={false}
               stroke="var(--neutral-alpha-weak)"
             />
             {legend && (
-              <Legend
-                content={<CustomLegend labels={labels} />}
-                wrapperStyle={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  margin: 0
-                }}
+              <RechartsLegend
+                content={<Legend labels={labels} />}
+                wrapperStyle={{ position: "absolute", top: 0, right: 0 }}
               />
             )}
             {(labels === "x" || labels === "both") && (
-              <XAxis
+              <RechartsXAxis
                 dataKey={xAxisKey}
                 axisLine={false}
                 tickLine={false}
@@ -254,7 +152,7 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
               />
             )}
             {(labels === "y" || labels === "both") && (
-              <YAxis
+              <RechartsYAxis
                 allowDataOverflow
                 axisLine={{
                   stroke: "var(--neutral-alpha-medium)",
@@ -269,21 +167,21 @@ const LineBarGraph: React.FC<LineBarGraphProps> = ({
                 label={
                   yAxisTitle
                     ? { 
-value: yAxisTitle,
-position: 'insideTop',
-offset: 10,
+                      value: yAxisTitle,
+                      position: 'insideTop',
+                      offset: 10,
                       fontSize: 12,
-fill: "var(--neutral-on-background-medium)" 
-}
+                      fill: "var(--neutral-on-background-medium)" 
+                    }
                     : undefined
                 }
               />
             )}
-            <Tooltip
-              content={<CustomTooltip isTimeSeries={isTimeSeries} timeFormat={timeFormat} xAxisKey={xAxisKey} />}
+            <RechartsTooltip
+              content={props => <Tooltip {...props} isTimeSeries={isTimeSeries} timeFormat={timeFormat} xAxisKey={xAxisKey} showColors={true} />}
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
             />
-            <Bar
+            <RechartsBar
               dataKey={barDataKey}
               name={barName}
               fill={`url(#${barGradientId})`}
@@ -308,7 +206,7 @@ fill: "var(--neutral-on-background-medium)"
             />
             
             {showArea ? (
-              <Area
+              <RechartsArea
                 type={curveType}
                 dataKey={lineDataKey}
                 name={lineName}
@@ -321,7 +219,7 @@ fill: "var(--neutral-on-background-medium)"
                 activeDot={{ r: 6, fill: finalLineColor }}
               />
             ) : (
-              <Line
+              <RechartsLine
                 type={curveType}
                 dataKey={lineDataKey}
                 name={lineName}
@@ -332,14 +230,14 @@ fill: "var(--neutral-on-background-medium)"
                 activeDot={{ r: 6, fill: finalLineColor }}
               />
             )}
-          </ComposedChart>
-        </ResponsiveContainer>
-      </Flex>
-    </Flex>
+          </RechartsComposedChart>
+        </RechartsResponsiveContainer>
+      </Row>
+    </Column>
   );
 };
 
-LineBarGraph.displayName = "LineBarGraph";
+LineBarChart.displayName = "LineBarChart";
 
-export { LineBarGraph };
-export type { LineBarGraphProps };
+export { LineBarChart };
+export type { LineBarChartProps };

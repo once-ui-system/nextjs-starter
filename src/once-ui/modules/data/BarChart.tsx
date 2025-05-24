@@ -13,7 +13,8 @@ import {
 } from "recharts";
 
 import { TShirtSizes } from "../../types";
-import { Text, Flex, Column } from "../../components";
+import { Text, Flex, Column, Row } from "../../components";
+import { Tooltip, Legend } from "../";
 
 interface DataPoint {
   name: string;
@@ -23,94 +24,19 @@ interface DataPoint {
   color?: string;
 }
 
-interface BarChartProps extends React.ComponentProps<typeof Flex> {
+interface BarChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
   data: DataPoint[];
   xAxisKey?: string;
   yAxisKey?: string;
   barWidth?: TShirtSizes | "fill";
-  title?: string;
-  description?: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
   legend?: boolean;
   tooltip?: string;
   xAxisTitle?: string;
   yAxisTitle?: string;
   labels?: "x" | "y" | "both";
 }
-
-const Tooltip = ({ active, payload, tooltipTitle, xAxisTitle }: any) => {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload;
-    return (
-      <Column
-        minWidth={8}
-        gap="4"
-        background="surface"
-        radius="m"
-        border="neutral-alpha-medium">
-        <Flex
-          fillWidth
-          paddingTop="8"
-          paddingX="12"
-        >
-          <Text
-            variant="label-default-s"
-            onBackground="neutral-strong"
-          >
-            {xAxisTitle && `${xAxisTitle}: `}{data.endDate}
-          </Text>
-        </Flex>
-        <Flex
-          fillWidth
-          horizontal="space-between"
-          paddingBottom="8"
-          paddingX="12"
-          gap="8">
-          <Text onBackground="neutral-weak" variant="label-default-s">
-            {tooltipTitle && `${tooltipTitle} `}
-          </Text>
-          <Text onBackground="neutral-strong" variant="label-default-s">
-            {data.value.toLocaleString()}
-          </Text>
-        </Flex>
-      </Column>
-    );
-  }
-  return null;
-};
-
-const Legend = ({ payload, labels, color }: any) => {
-  if (payload && payload.length) {
-    return (
-      <Flex 
-        horizontal="start" 
-        vertical="center" 
-        position="absolute"
-        left={(labels === "x" || labels === "both") ? "8" : "80"}
-        top="12"
-      >
-        {payload.map((entry: any, index: number) => (
-          <Flex key={index} vertical="center" gap="8">
-            <Flex
-              style={{
-                backgroundClip: "padding-box",
-                border: `1px solid var(--data-${color})`,
-                background: `linear-gradient(to bottom, var(--data-${color}) 0%, transparent 100%)`
-              }}
-              minWidth="16"
-              minHeight="16"
-              border="neutral-alpha-medium"
-              radius="s"
-            />
-            <Text variant="label-default-s">
-              {entry.value}
-            </Text>
-          </Flex>
-        ))}
-      </Flex>
-    );
-  }
-  return null;
-};
 
 const BarChart: React.FC<BarChartProps> = ({
   data,
@@ -155,7 +81,7 @@ const BarChart: React.FC<BarChartProps> = ({
           </Text>
         )}
       </Column>
-      <Flex fill>
+      <Row fill>
         <RechartsResponsiveContainer width="100%" height="100%">
           <RechartsBarChart
             data={data}
@@ -168,7 +94,7 @@ const BarChart: React.FC<BarChartProps> = ({
             />
             {legend && (
               <RechartsLegend
-                content={<Legend color={color} />}
+                content={<Legend colors={[color]} labels={labels} position="top" />}
                 wrapperStyle={{
                   position: 'absolute',
                   top: 0,
@@ -192,33 +118,33 @@ const BarChart: React.FC<BarChartProps> = ({
               />
             )}
             {(labels === "y" || labels === "both") && (
-                                      <RechartsYAxis
-                                        allowDataOverflow
-                                        axisLine={{
-                                          stroke: "var(--neutral-alpha-medium)",
-                                        }}
-                                        tickLine={false}
-                                        padding={{ top: 40 }}
-                                        tick={{
-                                          fill: "var(--neutral-on-background-weak)",
-                                          fontSize: 11,
-                                        }}
-                                        width={yAxisTitle ? 54 : 0}
-                                        label={
-                                          yAxisTitle
-                                            ? { 
+              <RechartsYAxis
+                allowDataOverflow
+                padding={{ top: 40 }}
+                width={yAxisTitle ? 56 : 0}
+                tickLine={false}
+                tick={{
+                  fill: "var(--neutral-on-background-weak)",
+                  fontSize: 11,
+                }}
+                axisLine={{
+                  stroke: "var(--neutral-alpha-medium)",
+                }}
+                label={
+                  yAxisTitle
+                    ? { 
                         value: yAxisTitle,
                         position: 'insideTop',
                         offset: 10,
-                                              fontSize: 12,
+                        fontSize: 12,
                         fill: "var(--neutral-on-background-medium)" 
                         }
-                                            : undefined
-                                        }
-                                      />
-                                    )}
+                    : undefined
+                }
+              />
+            )}
             <RechartsTooltip
-              content={<Tooltip tooltipTitle={tooltip} />}
+              content={props => <Tooltip {...props} tooltip={tooltip} showColors={false} />}
               cursor={{ fill: "var(--neutral-alpha-weak)" }}
             />
             <defs>
@@ -260,7 +186,7 @@ const BarChart: React.FC<BarChartProps> = ({
             />
           </RechartsBarChart>
         </RechartsResponsiveContainer>
-      </Flex>
+      </Row>
     </Column>
   );
 };

@@ -10,7 +10,7 @@ import {
   Row,
 } from "@/once-ui/components";
 import { GroupedBarChart } from "@/once-ui/modules/data/GroupedBarChart";
-import { LineBarGraph } from "@/once-ui/modules/data/LineBarGraph";
+import { LineBarChart } from "@/once-ui/modules/data/LineBarChart";
 import { PieChart } from "@/once-ui/modules/data/PieChart";
 import { BarChart } from "@/once-ui/modules/data/BarChart";
 import { LineChart } from "@/once-ui/modules/data/LineChart";
@@ -82,30 +82,25 @@ export default function Home() {
           timeFormat="YYYY-MM-DD"
         />
             
-            <Row fillWidth gap="32" mobileDirection="column">
-              {/* Multi Bar Graph */}
-              <Column fillWidth>
-                <Column background="neutral-weak" fill direction="column" border="neutral-alpha-weak" radius="xl" gap="24">
-                  <GroupedBarChart
-                  legend
-                  yAxisTitle="Count"
-                  border="neutral-alpha-medium"
-                  title="Quarterly Revenue"
-                  description="How much dough we made per quarter in 2023 and 2024"
-                    data={[
-                      { name: "Q1", value1: 35000, value2: 45000, value3: 30000 },
-                      { name: "Q2", value1: 42000, value2: 48000, value3: 36000 },
-                      { name: "Q3", value1: 55000, value2: 51000, value3: 40000 },
-                      { name: "Q4", value1: 75000, value2: 52000, value3: 48000 },
-                    ]}
-                    barLabels={["2023", "2024", "Projected"]}
-                  />
-                </Column>
-              </Column>
+          <Row fillWidth gap="32" mobileDirection="column">
+            {/* Multi Bar Graph */}
+            <GroupedBarChart
+              legend
+              yAxisTitle="Count"
+              border="neutral-alpha-medium"
+              title="Quarterly Revenue"
+              description="How much dough we made per quarter in 2023 and 2024"
+                data={[
+                  { name: "Q1", value1: 35000, value2: 45000, value3: 30000 },
+                  { name: "Q2", value1: 42000, value2: 48000, value3: 36000 },
+                  { name: "Q3", value1: 55000, value2: 51000, value3: 40000 },
+                  { name: "Q4", value1: 75000, value2: 52000, value3: 48000 },
+                ]}
+                barLabels={["2023", "2024", "Projected"]}
+              />
               
-              {/* Line Bar Graph 
-                  */}
-              <LineBarGraph
+              {/* Line Bar Graph */}
+              <LineBarChart
                   title="Traffic Per Weekday"
                   description="How many users we had per weekday"
                     showArea

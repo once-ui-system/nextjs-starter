@@ -13,6 +13,7 @@
     "@floating-ui/react-dom": "^2.1.1",
     "classnames": "^2.5.1",
     "compressorjs": "^1.2.1",
+    "date-fns": "^4.1.0",
     "moment": "^2.30.1",
     "next": "15.2.3",
     "postcss": "^8.4.39",

@@ -3,105 +3,35 @@
 import React from "react";
 import {
   PieChart as RechartsPieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-  Legend
+  Pie as RechartsPie,
+  Cell as RechartsCell,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer as RechartsResponsiveContainer,
+  Legend as RechartsLegend
 } from "recharts";
-import { Flex, Heading, Text, Column, Row } from "../../components";
+import { Column, Flex, Row, Text } from "../../components";
+import { Tooltip, Legend } from "../";
 
 interface DataPoint {
   name: string;
   value: number;
-  color?: string; // Optional custom color for this slice
+  color?: string;
 }
 
-interface PieChartProps extends React.ComponentProps<typeof Flex> {
+interface PieChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
   data: DataPoint[];
-  /**
-   * Apply blur effect
-   * @default false
-   */
   blur?: boolean;
-  /**
-   * Title for the pie chart
-   */
-  title?: string;
-  /**
-   * Show legend below the chart
-   * @default false
-   */
+  title?: React.ReactNode;
+  description?: React.ReactNode;
   showLegend?: boolean;
-  /**
-   * Inner radius for creating donut chart (percentage or pixel value)
-   * Set to 0 for filled pie chart, or a value like "60%" for donut chart
-   * @default "0"
-   */
   innerRadius?: number | string;
-  /**
-   * Outer radius for the pie chart (percentage or pixel value)
-   * @default "90%"
-   */
   outerRadius?: number | string;
-  /**
-   * Data key for values
-   * @default "value"
-   */
   dataKey?: string;
-  /**
-   * Name key for labels
-   * @default "name"
-   */
   nameKey?: string;
-  /**
-   * Angle between slices
-   * @default 0
-   */
   paddingAngle?: number;
-  /**
-   * Use gradient fills for pie slices
-   * @default true
-   */
   useGradients?: boolean;
-
   defaultColors?: string[];
 }
-
-const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <Column
-        minWidth={8}
-        gap="8"
-        paddingBottom="8"
-        background="surface"
-        radius="m"
-        border="neutral-alpha-medium">
-        <Column
-          fillWidth
-          paddingTop="8"
-          paddingX="12"
-        >
-          <Text variant="label-default-s"
-            onBackground="neutral-strong" paddingBottom="8">{payload[0].name}</Text>
-        <Row horizontal="space-between" fillWidth>
-          <Text
-          onBackground="neutral-weak" variant="label-default-s"
-            style={{ color: payload[0].fill }}
-          >
-            </Text>
-            <Text
-            onBackground="neutral-strong" variant="label-default-s">
-            {`Value: ${payload[0].value}`}
-          </Text>
-        </Row>
-      </Column>
-      </Column>
-    );
-  }
-  return null;
-};
 
 export const PieChart: React.FC<PieChartProps> = ({
   data,
@@ -109,6 +39,7 @@ export const PieChart: React.FC<PieChartProps> = ({
   blur = false,
   border,
   title,
+  description,
   radius,
   background,
   showLegend = false,
@@ -120,40 +51,36 @@ export const PieChart: React.FC<PieChartProps> = ({
   useGradients = true,
   ...flexProps
 }) => {
-  // Convert defaults into CSS var() references
   const colorPalette = defaultColors.map((c) => `var(--data-${c})`);
 
-  // Generate unique IDs for each gradient
   const gradientIds = data.map((_, index) => 
     `pieGradient-${Math.random().toString(36).substring(2, 9)}-${index}`
   );
 
   return (
-    <Flex
+    <Column
       fillWidth
       height={24}
       data-viz="categorical"
       radius={radius}
       border={border}
-      align="center"
-      direction="column"
-      vertical="center"
       background={background}
       {...flexProps}
     >
-      {title && (
-        <Flex
-          borderBottom={border}
-          fillWidth
-          align="center"
-          vertical="center"
-          horizontal="center"
-        >
-          <Heading padding="s">{title}</Heading>
-        </Flex>
-      )}
-      <Flex padding={title ? "s" : "2"} fill>
-        <ResponsiveContainer width="100%" height="100%">
+      <Column fillWidth>
+        {title && (
+          <Text variant="heading-strong-s">
+            {title}
+          </Text>
+        )}
+        {description && (
+          <Text variant="label-default-s" onBackground="neutral-weak">
+            {description}
+          </Text>
+        )}
+      </Column>
+      <Row padding={title ? "s" : "2"} fill>
+        <RechartsResponsiveContainer width="100%" height="100%">
           <RechartsPieChart>
             <defs>
               {data.map((entry, index) => {
@@ -175,7 +102,7 @@ export const PieChart: React.FC<PieChartProps> = ({
                 );
               })}
             </defs>
-            <Pie
+            <RechartsPie
               data={data}
               cx="50%"
               cy="50%"
@@ -190,7 +117,7 @@ export const PieChart: React.FC<PieChartProps> = ({
               {data.map((entry, index) => {
                 const baseColor = entry.color || colorPalette[index % colorPalette.length];
                 return (
-                  <Cell 
+                  <RechartsCell 
                     key={`cell-${index}`} 
                     fill={useGradients ? `url(#${gradientIds[index]})` : baseColor} 
                     strokeWidth={1}
@@ -198,20 +125,20 @@ export const PieChart: React.FC<PieChartProps> = ({
                   />
                 );
               })}
-            </Pie>
-            <Tooltip 
-              content={<CustomTooltip />}
+            </RechartsPie>
+            <RechartsTooltip 
+              content={props => <Tooltip {...props} showColors={true} />}
             />
             {showLegend && (
-              <Legend
+              <RechartsLegend
                 verticalAlign="bottom"
                 layout="horizontal"
                 wrapperStyle={{ paddingTop: 16 }}
               />
             )}
           </RechartsPieChart>
-        </ResponsiveContainer>
-      </Flex>
-    </Flex>
+        </RechartsResponsiveContainer>
+      </Row>
+    </Column>
   );
 };

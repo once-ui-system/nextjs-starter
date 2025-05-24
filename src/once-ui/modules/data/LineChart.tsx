@@ -3,16 +3,17 @@
 import React, { useState, useEffect } from "react";
 import moment from 'moment'
 import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend
+  AreaChart as RechartsAreaChart,
+  Area as RechartsArea,
+  XAxis as RechartsXAxis,
+  YAxis as RechartsYAxis,
+  CartesianGrid as RechartsCartesianGrid,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer as RechartsResponsiveContainer,
+  Legend as RechartsLegend
 } from "recharts";
 import { Flex, Column, Text, Row, DateRange, DateRangePicker, DropdownWrapper, IconButton } from "../../components";
+import { Tooltip, Legend } from "../";
 
 interface DataPoint {
   [key: string]: string | number | Date;
@@ -23,12 +24,12 @@ interface SeriesConfig {
   color?: string;
 }
 
-interface LineChartProps extends React.ComponentProps<typeof Flex> {
+interface LineChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
   data: DataPoint[];
   series: SeriesConfig[];
   colors?: string[];
-  title?: string;
-  description?: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
   legend?: boolean;
   tooltip?: string;
   labels?: "x" | "y" | "both";
@@ -40,96 +41,6 @@ interface LineChartProps extends React.ComponentProps<typeof Flex> {
 }
 
 const defaultColors = ['blue', 'green', 'aqua', 'violet', 'orange', 'red', 'purple', 'magenta', 'moss', 'emerald'];
-
-const CustomTooltip = ({ active, payload, label, isTimeSeries, timeFormat = "MMM dd, yyyy" }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <Column
-        minWidth={8}
-        gap="8"
-        background="surface"
-        radius="m"
-        border="neutral-alpha-medium">
-        <Flex
-          fillWidth
-          paddingTop="8"
-          paddingX="12"
-        >
-          <Text
-            variant="label-default-s"
-            onBackground="neutral-strong"
-          >
-            {isTimeSeries ? moment(label).format(timeFormat) : label}
-          </Text>
-        </Flex>
-        <Column
-          fillWidth
-          horizontal="space-between"
-          paddingBottom="8"
-          paddingX="12"
-          gap="4">
-          {payload.map((entry: any, index: number) => (
-            <Row key={index} horizontal="space-between" fillWidth gap="16">
-              <Row vertical="center" gap="8">
-                <Flex
-                  style={{
-                    backgroundClip: "padding-box",
-                    border: `1px solid ${entry.stroke}`,
-                    background: `linear-gradient(to bottom, ${entry.stroke} 0%, transparent 100%)`
-                  }}
-                  minWidth="12"
-                  minHeight="12"
-                  radius="xs"
-                />
-                <Text onBackground="neutral-weak" variant="label-default-s">
-                  {entry.name}
-                </Text>
-              </Row>
-              <Text onBackground="neutral-strong" variant="label-default-s">
-                {entry.value.toLocaleString()}
-              </Text>
-            </Row>
-          ))}
-        </Column>
-      </Column>
-    );
-  }
-  return null;
-};
-
-const CustomLegend = ({ payload, labels, colors = defaultColors }: any) => {
-  if (payload && payload.length) {
-    return (
-      <Flex 
-        horizontal="start" 
-        vertical="center" 
-        position="absolute"
-        gap="16"
-        left={(labels === "y" || labels === "both") ? "80" : "12"}
-        top="12"
-      >
-        {payload.map((entry: any, index: number) => (
-          <Flex key={index} vertical="center" gap="8">
-            <Flex
-              style={{
-                backgroundClip: "padding-box",
-                border: `1px solid var(--data-${colors[index]})`,
-                background: `linear-gradient(to bottom, var(--data-${colors[index]}) 0%, transparent 100%)`
-              }}
-              minWidth="16"
-              minHeight="16"
-              radius="s"
-            />
-            <Text variant="label-default-s">
-              {entry.value}
-            </Text>
-          </Flex>
-        ))}
-      </Flex>
-    );
-  }
-  return null;
-};
 
 const LineChart: React.FC<LineChartProps> = ({
   data,
@@ -186,25 +97,23 @@ const LineChart: React.FC<LineChartProps> = ({
   };
   
   return (
-    <Flex
-      fill
+    <Column
+      fillWidth
       radius="l"
       border={border}
-      align="center"
       data-viz="categorical"
-      horizontal="center"
-      direction="column"
-      vertical="center"
       height={24}
       {...flex}
     >
-      {title && (
-        <Column fillWidth borderBottom={border} horizontal="start" paddingX="20" paddingY="12" gap="4">
-          <Row fillWidth horizontal="space-between" vertical="center">
-            <Column>
-              <Text variant="heading-strong-s">
-                {title}
-              </Text>
+      {(title || description) && (
+        <Column fillWidth borderBottom={border} paddingX="20" paddingY="12" gap="4">
+          <Row fillWidth vertical="center">
+            <Column fillWidth>
+              {title && (
+                <Text variant="heading-strong-s">
+                  {title}
+                </Text>
+              )}
               {description && (
                 <Text variant="label-default-s" onBackground="neutral-weak">
                   {description}
@@ -212,28 +121,32 @@ const LineChart: React.FC<LineChartProps> = ({
               )}
             </Column>
             {isTimeSeries && (
-              <Column horizontal="end">
-                <IconButton
-                  icon="calendar"
-                  onClick={() => setShowDateRangeSelectorUI(!showDateRangeSelectorUI)}
-                  variant="secondary"
-                  size="m"
-                />
-                {showDateRangeSelectorUI && (
-                <DropdownWrapper isOpen dropdown={<Column padding="16" gap="8">
-                    <DateRangePicker
-                      id="line-chart-date-range"
-                      value={selectedDateRange}
-                      onChange={handleDateRangeChange} /> </Column>} trigger={undefined}/>
-                )}
-              </Column>
+              <DropdownWrapper
+                isOpen={showDateRangeSelectorUI}
+                trigger={
+                  <IconButton
+                    icon="calendar"
+                    onClick={() => setShowDateRangeSelectorUI(!showDateRangeSelectorUI)}
+                    variant="secondary"
+                    size="m"
+                  />
+                }
+                dropdown={
+                <Column padding="16" gap="8">
+                  <DateRangePicker
+                    id="line-chart-date-range"
+                    value={selectedDateRange}
+                    onChange={handleDateRangeChange} />
+                </Column>
+                }
+              />
             )}
           </Row>
         </Column>
       )}
-      <Flex fill>
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
+      <Row fill>
+        <RechartsResponsiveContainer width="100%" height="100%">
+          <RechartsAreaChart
             data={filteredData}
             margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
           >
@@ -245,14 +158,14 @@ const LineChart: React.FC<LineChartProps> = ({
                 </linearGradient>
               ))}
             </defs>
-            <CartesianGrid
+            <RechartsCartesianGrid
               vertical={true}
               stroke="var(--neutral-alpha-weak)"
               horizontal={true}
             />
             {legend && (
-              <Legend
-                content={<CustomLegend colors={colors} labels={labels} />}
+              <RechartsLegend
+                content={<Legend colors={colors} labels={labels} position="top" />}
                 wrapperStyle={{
                   position: 'absolute',
                   top: 0,
@@ -262,7 +175,7 @@ const LineChart: React.FC<LineChartProps> = ({
               />
             )}
             {(labels === "x" || labels === "both") && (
-              <XAxis
+              <RechartsXAxis
                 tickMargin={6}
                 dataKey={xAxisKey}
                 axisLine={{
@@ -277,7 +190,7 @@ const LineChart: React.FC<LineChartProps> = ({
               />
             )}
             {(labels === "y" || labels === "both") && (
-              <YAxis
+              <RechartsYAxis
                 allowDataOverflow
                 axisLine={{
                   stroke: "var(--neutral-alpha-weak)",
@@ -291,21 +204,23 @@ const LineChart: React.FC<LineChartProps> = ({
                 width={64}
               />
             )}
-            <Tooltip
+            <RechartsTooltip
               cursor={{
                 stroke: "var(--neutral-border-strong)",
                 strokeWidth: 1,
               }}
-              content={
-                <CustomTooltip
+              content={props => 
+                <Tooltip 
+                  {...props} 
                   tooltip={tooltip}
                   isTimeSeries={isTimeSeries}
                   timeFormat={timeFormat}
+                  showColors={true}
                 />
               }
             />
             {autoSeries.map(({ key, color }) => (
-              <Area
+              <RechartsArea
                 key={key}
                 type={curveType}
                 dataKey={key}
@@ -319,10 +234,10 @@ const LineChart: React.FC<LineChartProps> = ({
                 fill={`url(#color-${key})`}
               />
             ))}
-          </AreaChart>
-        </ResponsiveContainer>
-      </Flex>
-    </Flex>
+          </RechartsAreaChart>
+        </RechartsResponsiveContainer>
+      </Row>
+    </Column>
   );
 };
 

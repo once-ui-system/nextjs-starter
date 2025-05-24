@@ -7,3 +7,11 @@ export { HeadingNav } from "./navigation/HeadingNav";
 export { HeadingLink } from "./navigation/HeadingLink";
 export { MegaMenu } from "./navigation/MegaMenu";
 export { Kbar } from "./navigation/Kbar";
+
+export { BarChart } from "./data/BarChart";
+export { LineChart } from "./data/LineChart";
+export { PieChart } from "./data/PieChart";
+export { GroupedBarChart } from "./data/GroupedBarChart";
+export { LineBarChart } from "./data/LineBarChart";
+export { Tooltip } from "./data/Tooltip";
+export { Legend } from "./data/Legend";
