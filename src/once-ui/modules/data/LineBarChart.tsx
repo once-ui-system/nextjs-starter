@@ -195,7 +195,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 <Tooltip
                   isTimeSeries={isTimeSeries}
                   timeFormat={timeFormat}
-                  key={xAxisKey}
+                  dataKey={xAxisKey}
                   {...props}
                 />
               }

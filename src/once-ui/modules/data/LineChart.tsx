@@ -2,50 +2,22 @@
 
 import React, { useState, useEffect } from "react";
 import { isWithinInterval, parseISO } from 'date-fns';
+import { styles } from "./config";
 import {
   AreaChart as RechartsAreaChart,
   Area as RechartsArea,
-  XAxis as RechartsXAxis,
   YAxis as RechartsYAxis,
+  XAxis as RechartsXAxis,
   CartesianGrid as RechartsCartesianGrid,
   Tooltip as RechartsTooltip,
   ResponsiveContainer as RechartsResponsiveContainer,
   Legend as RechartsLegend
 } from "recharts";
-import { Flex, Column, Row, DateRange, Text } from "../../components";
-import { Tooltip, Legend } from "../";
-import { ChartHeader } from "./ChartHeader";
-import { LinearGradient } from "./Gradient";
+import { Column, Row, DateRange, Text } from "../../components";
+import { LinearGradient, ChartHeader, Tooltip, Legend, SeriesConfig, ChartProps } from ".";
 
-interface DataPoint {
-  [key: string]: string | number | Date | undefined;
-  label?: string;
-}
-
-interface SeriesConfig {
-  key: string;
-  color?: string;
-}
-
-interface DateConfig {
-  start?: Date;
-  end?: Date;
-  format?: string;
-  onChange?: (range: DateRange) => void;
-}
-
-interface LineChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
-  data: DataPoint[];
-  series: SeriesConfig[];
-  colors?: string[];
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  legend?: boolean;
-  tooltip?: string;
-  labels?: "x" | "y" | "both";
+interface LineChartProps extends ChartProps {
   curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural";
-  date?: DateConfig;
-  emptyState?: React.ReactNode;
 }
 
 const defaultColors = ['blue', 'green', 'aqua', 'violet', 'orange', 'red', 'purple', 'magenta', 'moss', 'emerald'];
@@ -53,16 +25,15 @@ const defaultColors = ['blue', 'green', 'aqua', 'violet', 'orange', 'red', 'purp
 const LineChart: React.FC<LineChartProps> = ({
   data,
   series,
-  colors = defaultColors,
   border = "neutral-medium",
   title,
   description,
   legend = false,
-  tooltip,
   labels = "both",
   curveType = "natural",
   date,
   emptyState,
+  variant = "gradient",
   ...flex
 }) => {
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
@@ -81,12 +52,14 @@ const LineChart: React.FC<LineChartProps> = ({
     }
   }, [date?.start, date?.end]);
 
-  const seriesKeys = series.map(s => s.key);
-  const autoSeries = series || Object.keys(data[0] || {})
+  // Convert series to array if it's a single object
+  const seriesArray = Array.isArray(series) ? series : [series];
+  const seriesKeys = seriesArray.map((s: SeriesConfig) => s.key);
+  const autoSeries = seriesArray.length > 0 ? seriesArray : Object.keys(data[0] || {})
     .filter(key => !seriesKeys.includes(key))
     .map((key, index) => ({
       key,
-      color: colors[index]
+      color: defaultColors[index]
     }));
 
   const xAxisKey = Object.keys(data[0] || {}).find(key => 
@@ -137,15 +110,15 @@ const LineChart: React.FC<LineChartProps> = ({
       height={24}
       {...flex}
     >
-      {(title || description || selectedDateRange) && (
-        <ChartHeader
-          title={title}
-          description={description}
-          borderBottom={border}
-          dateRange={selectedDateRange}
-          onDateRangeChange={handleDateRangeChange}
-        />
-      )}
+      <ChartHeader
+        title={title}
+        description={description}
+        borderBottom={border}
+        dateRange={selectedDateRange}
+        date={date}
+        onDateRangeChange={handleDateRangeChange}
+        presets={date?.presets}
+      />
       <Row fill>
         {!filteredData || filteredData.length === 0 ? (
           <Column fill center>
@@ -166,7 +139,8 @@ const LineChart: React.FC<LineChartProps> = ({
                 <LinearGradient
                   key={key}
                   id={`color-${key}`}
-                  color={color || colors[index % colors.length]}
+                  variant={variant}
+                  color={color || defaultColors[index % defaultColors.length]}
                 />
               ))}
             </defs>
@@ -180,7 +154,7 @@ const LineChart: React.FC<LineChartProps> = ({
                 content={(props) => {
                   const customPayload = autoSeries.map(({ key, color }, index) => ({
                     value: key,
-                    color: `var(--data-${color || colors[index % colors.length]})`
+                    color: `var(--data-${color || defaultColors[index % defaultColors.length]})`
                   }));
                   
                   return (
@@ -196,7 +170,7 @@ const LineChart: React.FC<LineChartProps> = ({
                   position: 'absolute',
                   top: 0,
                   right: 0,
-                  left: 8,
+                  left: 0,
                   margin: 0
                 }}
               />
@@ -205,14 +179,14 @@ const LineChart: React.FC<LineChartProps> = ({
               <RechartsXAxis
                 height={32}
                 tickMargin={6}
-                tickLine={false}
-                tick={{
-                  fill: "var(--neutral-on-background-weak)",
-                  fontSize: 11,
-                }}
                 dataKey={xAxisKey}
                 axisLine={{
-                  stroke: "var(--neutral-alpha-weak)",
+                  stroke: styles.axisLine.stroke,
+                }}
+                tickLine={styles.tickLine}
+                tick={{
+                  fill: styles.tick.fill,
+                  fontSize: styles.tick.fontSize,
                 }}
                 tickFormatter={(value) => {
                   const dataPoint = data.find(item => item[xAxisKey] === value);
@@ -222,17 +196,17 @@ const LineChart: React.FC<LineChartProps> = ({
             )}
             {(labels === "y" || labels === "both") && (
               <RechartsYAxis
-                allowDataOverflow
-                axisLine={{
-                  stroke: "var(--neutral-alpha-weak)",
-                }}
-                tickLine={false}
-                padding={{ top: 40 }}
-                tick={{
-                  fill: "var(--neutral-on-background-weak)",
-                  fontSize: 11,
-                }}
                 width={64}
+                padding={{ top: 40 }}
+                allowDataOverflow
+                tickLine={styles.tickLine}
+                tick={{
+                  fill: styles.tick.fill,
+                  fontSize: styles.tick.fontSize,
+                }}
+                axisLine={{
+                  stroke: styles.axisLine.stroke,
+                }}
               />
             )}
             <RechartsTooltip
@@ -244,7 +218,6 @@ const LineChart: React.FC<LineChartProps> = ({
                 <Tooltip 
                   isTimeSeries={selectedDateRange !== undefined}
                   timeFormat={date?.format}
-                  tooltip={tooltip}
                   {...props}
                 />
               }
@@ -255,12 +228,13 @@ const LineChart: React.FC<LineChartProps> = ({
                 type={curveType}
                 dataKey={key}
                 name={key}
-                stroke={`var(--data-${color || colors[index % colors.length]})`}
+                stroke={`var(--data-${color || defaultColors[index % defaultColors.length]})`}
                 fill={`url(#color-${key})`}
-                strokeWidth={1}
-                fillOpacity={1}
                 activeDot={{
-                  stroke: "var(--static-transparent)"
+                  r: 4,
+                  fill: `var(--data-${color || defaultColors[index % defaultColors.length]})`,
+                  stroke: "var(--background)",
+                  strokeWidth: 0,
                 }}
               />
             ))}
@@ -275,4 +249,4 @@ const LineChart: React.FC<LineChartProps> = ({
 LineChart.displayName = "LineChart";
 
 export { LineChart };
-export type { LineChartProps, DataPoint, SeriesConfig };
+export type { LineChartProps };

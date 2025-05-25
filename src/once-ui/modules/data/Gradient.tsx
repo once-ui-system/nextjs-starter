@@ -16,6 +16,7 @@ interface LinearGradientProps {
   x2?: string;
   y2?: string;
   stops?: GradientStop[];
+  variant?: "flat" | "gradient" | "outline";
 }
 
 interface RadialGradientProps {
@@ -27,12 +28,29 @@ interface RadialGradientProps {
   fx?: string;
   fy?: string;
   stops?: GradientStop[];
+  variant?: "flat" | "gradient" | "outline";
 }
 
-const defaultStops: GradientStop[] = [
-  { offset: "0%", opacity: 0.8 },
-  { offset: "100%", opacity: 0 }
-];
+const getStopsByVariant = (variant: "flat" | "gradient" | "outline" = "gradient"): GradientStop[] => {
+  switch (variant) {
+    case "flat":
+      return [
+        { offset: "0%", opacity: 0.4 },
+        { offset: "100%", opacity: 0.4 }
+      ];
+    case "outline":
+      return [
+        { offset: "0%", opacity: 0 },
+        { offset: "100%", opacity: 0 }
+      ];
+    case "gradient":
+    default:
+      return [
+        { offset: "0%", opacity: 0.8 },
+        { offset: "100%", opacity: 0 }
+      ];
+  }
+};
 
 export const LinearGradient: React.FC<LinearGradientProps> = ({
   id,
@@ -41,16 +59,18 @@ export const LinearGradient: React.FC<LinearGradientProps> = ({
   y1 = "0",
   x2 = "0",
   y2 = "1",
-  stops = defaultStops
+  stops,
+  variant = "gradient"
 }) => {
+  const gradientStops = stops || getStopsByVariant(variant);
   return (
     <linearGradient id={id} x1={x1} y1={y1} x2={x2} y2={y2}>
-      {stops.map(({ offset, opacity }) => (
+      {gradientStops.map((stop, index) => (
         <stop
-          key={offset}
-          offset={offset}
-          stopColor={color.startsWith("var(--") ? color : `var(--data-${color})`}
-          stopOpacity={opacity}
+          key={index}
+          offset={stop.offset}
+          stopColor={color}
+          stopOpacity={stop.opacity}
         />
       ))}
     </linearGradient>
@@ -65,16 +85,18 @@ export const RadialGradient: React.FC<RadialGradientProps> = ({
   r = "50%",
   fx = "50%",
   fy = "50%",
-  stops = defaultStops
+  stops,
+  variant = "gradient"
 }) => {
+  const gradientStops = stops || getStopsByVariant(variant);
   return (
     <radialGradient id={id} cx={cx} cy={cy} r={r} fx={fx} fy={fy}>
-      {stops.map(({ offset, opacity }) => (
+      {gradientStops.map((stop, index) => (
         <stop
-          key={offset}
-          offset={offset}
-          stopColor={color.startsWith("var(--") ? color : `var(--data-${color})`}
-          stopOpacity={opacity}
+          key={index}
+          offset={stop.offset}
+          stopColor={color}
+          stopOpacity={stop.opacity}
         />
       ))}
     </radialGradient>

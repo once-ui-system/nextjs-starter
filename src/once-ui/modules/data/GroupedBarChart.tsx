@@ -13,8 +13,9 @@ import {
 } from "recharts";
 
 import { SpacingToken } from "../../types";
-import { Text, Flex, Column, Row } from "../../components";
-import { Tooltip, Legend } from "../";
+import { Text, Column, Row } from "../../components";
+import { ChartProps, SeriesConfig, LinearGradient, Tooltip, Legend } from ".";
+import { styles } from "./config";
 
 interface MultiBarDataPoint {
   name: string;
@@ -26,7 +27,6 @@ interface MultiBarDataPoint {
 }
 
 interface BarProps {
-  labels?: string[];
   width?: SpacingToken | "fill" | number;
 }
 
@@ -35,44 +35,38 @@ interface TimeProps {
   format?: string;
 }
 
-interface TooltipProps {
-  title?: React.ReactNode;
-}
-
-interface GroupedBarChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
-  data: MultiBarDataPoint[];
-  labels?: "x" | "y" | "both" | "none";
+interface GroupedBarChartProps extends ChartProps {
   xAxisKey?: string;
-  yAxisKeys?: string[];
-  yAxisTitle?: string;
-  legend?: boolean;
-  title?: React.ReactNode;
-  description?: React.ReactNode;
   bar?: BarProps;
   time?: TimeProps;
-  tooltip?: TooltipProps;
 }
 
 const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   data,
   labels = "both",
   xAxisKey = "name",
-  yAxisKeys = ["value1", "value2", "value3"],
-  bar = { labels: [], width: "fill" },
+  series,
+  bar = { width: "l" },
   time = { series: false, format: "" },
-  tooltip = { title: undefined },
   title,
-  yAxisTitle,
   description,
   legend = false,
+  variant = "gradient",
   border = "neutral-medium",
   ...flex
 }) => {
-  const barColors = [
-    "var(--data-blue)",
-    "var(--data-green)",
-    "var(--data-orange)",
+  const seriesArray = Array.isArray(series) ? series : [series];
+  const seriesKeys = seriesArray.map((s: SeriesConfig) => s.key);
+  
+  const defaultColors = ['blue', 'green', 'violet', 'orange', 'red', 'cyan'];
+  
+  const autoSeries = seriesArray.length > 0 ? seriesArray : [
+    { key: "value1", color: defaultColors[0] },
+    { key: "value2", color: defaultColors[1] },
+    { key: "value3", color: defaultColors[2] }
   ];
+  
+  const barColors = autoSeries.map(s => `var(--data-${s.color || 'blue'})`);
 
   return (
     <Column
@@ -117,15 +111,23 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
             />
             {legend && (
               <RechartsLegend
-                content={
-                  <Legend
-                    labels={labels}
-                    colors={barColors}
-                  />
-                }
+                content={props => {
+                  const customPayload = autoSeries.map((series, index) => ({
+                    value: series.key,
+                    color: barColors[index]
+                  }));
+                  
+                  return (
+                    <Legend 
+                      payload={customPayload}
+                      labels={labels} 
+                      position="top" 
+                    />
+                  );
+                }}
                 wrapperStyle={{
-                  position: "absolute", 
-                  top: 0, 
+                  position: 'absolute',
+                  top: 0,
                   right: 0,
                   margin: 0
                 }}
@@ -137,8 +139,8 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                 axisLine={false}
                 tickLine={false}
                 tick={{
-                  fill: "var(--neutral-on-background-weak)",
-                  fontSize: 12,
+                  fill: styles.tick.fill,
+                  fontSize: styles.tick.fontSize,
                 }}
               />
             )}
@@ -146,26 +148,15 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
               <RechartsYAxis
                 allowDataOverflow
                 axisLine={{
-                  stroke: "var(--neutral-alpha-medium)",
+                  stroke: styles.axisLine.stroke,
                 }}
                 tickLine={false}
                 padding={{ top: 40 }}
                 tick={{
-                  fill: "var(--neutral-on-background-weak)",
-                  fontSize: 11,
+                  fill: styles.tick.fill,
+                  fontSize: styles.tick.fontSize,
                 }}
-                width={yAxisTitle ? 54 : 0}
-                label={
-                  yAxisTitle
-                    ? { 
-                      value: yAxisTitle,
-                      position: 'insideTop',
-                      offset: 10,
-                      fontSize: 12,
-                      fill: "var(--neutral-on-background-medium)" 
-                      }
-                    : undefined
-                }
+                width={64}
               />
             )}
             <RechartsTooltip
@@ -175,51 +166,43 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   showColors
                   isTimeSeries={time.series}
                   timeFormat={time.format}
-                  xAxisTitle={tooltip.title}
                   {...props}
                 />
               }
             />
             <defs>
               {barColors.map((color, index) => (
-                <linearGradient
+                <LinearGradient
                   id={`barGradient${index}`}
-                  key={index}
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop offset="0%" stopColor={color} stopOpacity={0.8} />
-                  <stop offset="100%" stopColor={color} stopOpacity={0} />
-                </linearGradient>
+                  color={color}
+                  variant={variant}
+                />
               ))}
             </defs>
-            {yAxisKeys.map((key, index) => (
+            {autoSeries.map((series, index) => (
               <RechartsBar
-                key={key}
-                dataKey={key}
-                name={bar.labels?.[index] || key}
+                key={series.key}
+                dataKey={series.key}
+                name={series.key}
                 fill={`url(#barGradient${index})`}
-                stroke={barColors[index % barColors.length]}
+                stroke={barColors[index]}
                 strokeWidth={1}
-                radius={[4, 4, 4, 4]}
                 barSize={
-                  bar.width === "fill"
+                  typeof bar.width === "string" && bar.width === "fill"
                     ? "100%"
-                    : bar.width === "xs"
+                    : typeof bar.width === "string" && bar.width === "xs"
                     ? 12
-                    : bar.width === "s"
+                    : typeof bar.width === "string" && bar.width === "s"
                     ? 16
-                    : bar.width === "m"
+                    : typeof bar.width === "string" && bar.width === "m"
                     ? 24
-                    : bar.width === "l"
+                    : typeof bar.width === "string" && bar.width === "l"
                     ? 40
-                    : bar.width === "xl"
+                    : typeof bar.width === "string" && bar.width === "xl"
                     ? 64
                     : bar.width
                 }
-                isAnimationActive={false}
+                radius={[4, 4, 4, 4]}
               />
             ))}
           </RechartsBarChart>

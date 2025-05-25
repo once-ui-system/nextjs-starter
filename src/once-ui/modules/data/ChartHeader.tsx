@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from "react";
 import moment from 'moment';
 import { Column, Text, Row, DateRange, DateRangePicker, DropdownWrapper, IconButton, Button, ToggleButton } from "../../components";
+import { DateConfig } from "./interfaces";
 
 interface ChartHeaderProps extends Omit<React.ComponentProps<typeof Column>, 'title' | 'description'> {
   title?: React.ReactNode;
   description?: React.ReactNode;
   dateRange?: DateRange;
+  date?: DateConfig;
   onDateRangeChange?: (range: DateRange) => void;
   presets?: boolean;
 }
@@ -16,10 +18,14 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
   title,
   description,
   dateRange,
+  date,
   onDateRangeChange,
   presets = true,
   ...flex
 }) => {
+  if (!title && !description && !dateRange && !date) {
+    return null;
+  }
   const [dateRangeOpen, setDateRangeOpen] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
 
@@ -117,7 +123,7 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
       <Row fillWidth vertical="center">
         <Column fillWidth gap="4">
           {title && (
-            <Text variant="heading-strong-s">
+            <Text variant="heading-strong-xs">
               {title}
             </Text>
           )}
@@ -162,6 +168,9 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
                   padding="16"
                   gap="24"
                   id="chart-date-range"
+                  maxDate={date?.max}
+                  minDate={date?.min}
+                  dual={date?.dual}
                   value={dateRange}
                   onChange={handleDateRangeChange}
                 />

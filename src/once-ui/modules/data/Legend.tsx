@@ -24,7 +24,7 @@ const Legend: React.FC<LegendProps> = ({
     switch (position) {
       case "top":
         return {
-          left: (labels === "y" || labels === "both") ? "80px" : "12px",
+          left: (labels === "y" || labels === "both") ? "88px" : "12px",
           top: "12px"
         };
       case "bottom":
@@ -47,7 +47,7 @@ const Legend: React.FC<LegendProps> = ({
         };
       default:
         return {
-          left: (labels === "y" || labels === "both") ? "80px" : "12px",
+          left: (labels === "y" || labels === "both") ? "88px" : "12px",
           top: "12px"
         };
     }

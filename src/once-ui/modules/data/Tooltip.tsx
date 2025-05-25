@@ -8,7 +8,7 @@ interface TooltipProps {
   active?: boolean;
   payload?: any[];
   label?: string;
-  key?: string;
+  dataKey?: string;
   tooltip?: React.ReactNode;
   isTimeSeries?: boolean;
   timeFormat?: string;
@@ -19,7 +19,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   active,
   payload,
   label,
-  key = "name",
+  dataKey = "name",
   tooltip,
   isTimeSeries = false,
   timeFormat = "MMM d",
@@ -30,7 +30,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   }
 
   const dataPoint = payload[0].payload;
-  const displayLabel = dataPoint?.[key as string] || label;
+  const displayLabel = dataPoint?.[dataKey] || label;
   
   const formattedLabel = isTimeSeries && displayLabel 
     ? formatDate(displayLabel, timeFormat) 

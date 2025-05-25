@@ -40,15 +40,14 @@ export default function Home() {
         </Button>
       </Column>
 
-      {/* Bar Chart */}
       <BarChart
         title="Company revenue in Q2 2025"
-        labels="both"
-        yAxisTitle="Count"
-        xAxisTitle="Month"
+        legend
         description="How much dough we made"
-        tooltip="Revenue"
-        color="emerald"
+        series={{
+          key: "Revenue",
+          color: "indigo"
+        }}
         data={[
           { name: "Jan", value: 4500, startDate: "Jan", endDate: "January" },
           { name: "Feb", value: 5200, startDate: "Feb", endDate: "February" },
@@ -62,16 +61,19 @@ export default function Home() {
       <LineChart
         title="Page Visits Per Week"
         description="How many users visited our page"
-        legend
         labels="both"
+        legend
         date={{
           start: new Date("2024-01-01"),
           end: new Date("2024-01-31"),
+          max: new Date(),
+          dual: false,
+          presets: true
         }}
         series={[
-          { key: "Revenue", color: "blue" },
-          { key: "Profit", color: "green" },
-          { key: "Loss", color: "red" }
+          { key: "Revenue", color: "cyan" },
+          { key: "Profit", color: "blue" },
+          { key: "Loss", color: "indigo" }
         ]}
         data={[
           { date: "2024-01-01", Revenue: 2100, Profit: 1400, Loss: 5500, label: format(parseISO("2024-01-01"), "MMM d") },
@@ -85,32 +87,30 @@ export default function Home() {
       />
             
           <Row fillWidth gap="32" mobileDirection="column">
-            {/* Multi Bar Graph */}
             <GroupedBarChart
               legend
-              yAxisTitle="Count"
-              border="neutral-alpha-medium"
-              title="Quarterly Revenue"
+              title="Quarterly revenue"
               description="How much dough we made per quarter in 2023 and 2024"
                 data={[
-                  { name: "Q1", value1: 35000, value2: 45000, value3: 30000 },
-                  { name: "Q2", value1: 42000, value2: 48000, value3: 36000 },
-                  { name: "Q3", value1: 55000, value2: 51000, value3: 40000 },
-                  { name: "Q4", value1: 75000, value2: 52000, value3: 48000 },
+                  { name: "Q1", Income: 35000, Expenses: 45000, Profit: 30000 },
+                  { name: "Q2", Income: 42000, Expenses: 48000, Profit: 36000 },
+                  { name: "Q3", Income: 55000, Expenses: 51000, Profit: 40000 },
+                  { name: "Q4", Income: 75000, Expenses: 52000, Profit: 48000 },
                 ]}
-                bar={{
-                  labels: ["2023", "2024", "Projected"]
-                }}
+                series={[
+                  { key: "Income", color: "blue" },
+                  { key: "Expenses", color: "green" },
+                  { key: "Profit", color: "violet" }
+                ]}
+                bar={{ width: "l" }}
               />
               
-              {/* Line Bar Graph */}
               <LineBarChart
                   title="Traffic Per Weekday"
                   description="How many users we had per weekday"
                   showArea
                   legend
                   labels="both"
-                  xAxisTitle="Day"
                   yAxisTitle="Count"
                   lineName="Traffic"
                   barName="Conversions"
