@@ -1,8 +1,40 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
-import { Column, Text, Row } from "../../components";
+import { Column, Text, Row, LetterFx } from "../../components";
+
+const ValueWithAnimation: React.FC<{ value: number }> = ({ value }) => {
+  const prevValueRef = useRef<number | null>(null);
+  const triggerRef = useRef<(() => void) | null>(null);
+  const initialRenderRef = useRef<boolean>(true);
+  
+  useEffect(() => {
+    if (initialRenderRef.current) {
+      initialRenderRef.current = false;
+      prevValueRef.current = value;
+      return;
+    }
+    
+    if (prevValueRef.current !== value && triggerRef.current) {
+      triggerRef.current();
+    }
+    
+    prevValueRef.current = value;
+  }, [value]);
+  
+  return (
+    <LetterFx 
+      trigger="custom"
+      charset={["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]}
+      onTrigger={(triggerFn) => {
+        triggerRef.current = triggerFn;
+      }}
+    >
+      {value.toLocaleString()}
+    </LetterFx>
+  );
+};
 
 interface TooltipProps {
   active?: boolean;
@@ -91,7 +123,7 @@ const Tooltip: React.FC<TooltipProps> = ({
             </Row>
             <Text onBackground="neutral-strong" variant="label-default-s">
               {typeof entry.value === 'number' 
-                ? entry.value.toLocaleString() 
+                ? <ValueWithAnimation value={entry.value} /> 
                 : entry.value}
             </Text>
           </Row>
