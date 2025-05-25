@@ -13,6 +13,7 @@ import { Column, Flex, Row } from "../../components";
 import { Tooltip, Legend } from "../";
 import { ChartHeader } from "./ChartHeader";
 import { RadialGradient } from "./Gradient";
+import { schemes } from "@/once-ui/types";
 
 interface DataPoint {
   name: string;
@@ -31,12 +32,10 @@ interface PieChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' 
   nameKey?: string;
   paddingAngle?: number;
   useGradients?: boolean;
-  defaultColors?: string[];
 }
 
 export const PieChart: React.FC<PieChartProps> = ({
   data,
-  defaultColors = ['blue', 'green', 'aqua', 'violet', 'orange', 'red', 'purple', 'magenta', 'moss', 'emerald'],
   border = "neutral-medium",
   title,
   description,
@@ -49,7 +48,7 @@ export const PieChart: React.FC<PieChartProps> = ({
   useGradients = true,
   ...flex
 }) => {
-  const colorPalette = defaultColors.map((c) => `var(--data-${c})`);
+  const colorPalette = schemes.map((c) => `var(--data-${c})`);
 
   const gradientIds = data.map((_, index) => 
     `pieGradient-${Math.random().toString(36).substring(2, 9)}-${index}`

@@ -40,23 +40,51 @@ export default function Home() {
         </Button>
       </Column>
 
-      <BarChart
-        title="Company revenue in Q2 2025"
-        legend
-        description="How much dough we made"
-        series={{
-          key: "Revenue",
-          color: "indigo"
-        }}
-        data={[
-          { name: "Jan", value: 4500, startDate: "Jan", endDate: "January" },
-          { name: "Feb", value: 5200, startDate: "Feb", endDate: "February" },
-          { name: "Mar", value: 4900, startDate: "Mar", endDate: "March" },
-          { name: "Apr", value: 6300, startDate: "Apr", endDate: "April" },
-          { name: "May", value: 5900, startDate: "May", endDate: "May" },
-          { name: "Jun", value: 8200, startDate: "Jun", endDate: "June" },
-        ]}
-      />
+      <Row fillWidth gap="32" mobileDirection="column">
+        <BarChart
+          title="Company revenue in Q2 2025"
+          legend
+          variant="flat"
+          description="How much dough we made"
+          series={{
+            key: "Revenue",
+            color: "contrast"
+          }}
+          date={{
+            start: new Date("2024-01-01"),
+            end: new Date("2024-01-31"),
+            max: new Date(),
+            dual: false,
+            presets: true
+          }}
+          data={[
+            { date: "2024-01-01", Revenue: 4500, label: "January" },
+            { date: "2024-02-01", Revenue: 5200, label: "February" },
+            { date: "2024-03-01", Revenue: 4900, label: "March" },
+            { date: "2024-04-01", Revenue: 6300, label: "April" },
+            { date: "2024-05-01", Revenue: 5900, label: "May" },
+            { date: "2024-06-01", Revenue: 9900, label: "June" },
+          ]}
+        />
+        
+        <BarChart
+          title="Product Sales by Category"
+          description="Non-date based example"
+          labels="x"
+          xAxisKey="name"
+          series={{
+            key: "Sales",
+            color: "blue"
+          }}
+          data={[
+            { name: "Electronics", Sales: 4500, label: "Electronics" },
+            { name: "Clothing", Sales: 3200, label: "Clothing" },
+            { name: "Food", Sales: 2900, label: "Food" },
+            { name: "Books", Sales: 1800, label: "Books" },
+            { name: "Toys", Sales: 2200, label: "Toys" },
+          ]}
+        />
+      </Row>
               
       <LineChart
         title="Page Visits Per Week"
@@ -98,11 +126,10 @@ export default function Home() {
                   { name: "Q4", Income: 75000, Expenses: 52000, Profit: 48000 },
                 ]}
                 series={[
-                  { key: "Income", color: "blue" },
-                  { key: "Expenses", color: "green" },
-                  { key: "Profit", color: "violet" }
+                  { key: "Income" },
+                  { key: "Expenses" },
+                  { key: "Profit" }
                 ]}
-                bar={{ width: "l" }}
               />
               
               <LineBarChart

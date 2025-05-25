@@ -15,12 +15,11 @@ import {
 } from "recharts";
 import { Column, Row, DateRange, Text } from "../../components";
 import { LinearGradient, ChartHeader, Tooltip, Legend, SeriesConfig, ChartProps } from ".";
+import { schemes } from "@/once-ui/types";
 
 interface LineChartProps extends ChartProps {
   curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural";
 }
-
-const defaultColors = ['blue', 'green', 'aqua', 'violet', 'orange', 'red', 'purple', 'magenta', 'moss', 'emerald'];
 
 const LineChart: React.FC<LineChartProps> = ({
   data,
@@ -52,15 +51,21 @@ const LineChart: React.FC<LineChartProps> = ({
     }
   }, [date?.start, date?.end]);
 
-  // Convert series to array if it's a single object
-  const seriesArray = Array.isArray(series) ? series : [series];
+  const seriesArray = Array.isArray(series) ? series : (series ? [series] : []);
   const seriesKeys = seriesArray.map((s: SeriesConfig) => s.key);
-  const autoSeries = seriesArray.length > 0 ? seriesArray : Object.keys(data[0] || {})
-    .filter(key => !seriesKeys.includes(key))
-    .map((key, index) => ({
-      key,
-      color: defaultColors[index]
-    }));
+  
+  const coloredSeriesArray = seriesArray.map((s, index) => ({
+    ...s,
+    color: s.color || schemes[index % schemes.length]
+  }));
+  
+  const autoSeries = seriesArray.length > 0 ? coloredSeriesArray : 
+    Object.keys(data[0] || {})
+      .filter(key => !seriesKeys.includes(key))
+      .map((key, index) => ({
+        key,
+        color: schemes[index % schemes.length]
+      }));
 
   const xAxisKey = Object.keys(data[0] || {}).find(key => 
     !seriesKeys.includes(key)
@@ -135,14 +140,18 @@ const LineChart: React.FC<LineChartProps> = ({
               margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
             >
             <defs>
-              {autoSeries.map(({ key, color }, index) => (
-                <LinearGradient
-                  key={key}
-                  id={`color-${key}`}
-                  variant={variant}
-                  color={color || defaultColors[index % defaultColors.length]}
-                />
-              ))}
+              {autoSeries.map(({ key, color }, index) => {
+                const colorValue = color || schemes[index % schemes.length];
+                const barColor = `var(--data-${colorValue})`;
+                return (
+                  <LinearGradient
+                    key={key}
+                    id={`color-${key}`}
+                    variant={variant}
+                    color={barColor}
+                  />
+                );
+              })}
             </defs>
             <RechartsCartesianGrid
               vertical
@@ -154,7 +163,7 @@ const LineChart: React.FC<LineChartProps> = ({
                 content={(props) => {
                   const customPayload = autoSeries.map(({ key, color }, index) => ({
                     value: key,
-                    color: `var(--data-${color || defaultColors[index % defaultColors.length]})`
+                    color: `var(--data-${color || schemes[index % schemes.length]})`
                   }));
                   
                   return (
@@ -222,22 +231,26 @@ const LineChart: React.FC<LineChartProps> = ({
                 />
               }
             />
-            {autoSeries.map(({ key, color }, index) => (
-              <RechartsArea
-                key={key}
-                type={curveType}
-                dataKey={key}
-                name={key}
-                stroke={`var(--data-${color || defaultColors[index % defaultColors.length]})`}
-                fill={`url(#color-${key})`}
-                activeDot={{
-                  r: 4,
-                  fill: `var(--data-${color || defaultColors[index % defaultColors.length]})`,
-                  stroke: "var(--background)",
-                  strokeWidth: 0,
-                }}
-              />
-            ))}
+            {autoSeries.map(({ key, color }, index) => {
+              const colorValue = color || schemes[index % schemes.length];
+              const barColor = `var(--data-${colorValue})`;
+              return (
+                <RechartsArea
+                  key={key}
+                  type={curveType}
+                  dataKey={key}
+                  name={key}
+                  stroke={barColor}
+                  fill={`url(#color-${key})`}
+                  activeDot={{
+                    r: 4,
+                    fill: barColor,
+                    stroke: "var(--background)",
+                    strokeWidth: 0,
+                  }}
+                />
+              );
+            })}
             </RechartsAreaChart>
           </RechartsResponsiveContainer>
         )}

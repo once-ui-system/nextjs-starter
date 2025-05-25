@@ -35,8 +35,8 @@ const getStopsByVariant = (variant: "flat" | "gradient" | "outline" = "gradient"
   switch (variant) {
     case "flat":
       return [
-        { offset: "0%", opacity: 0.4 },
-        { offset: "100%", opacity: 0.4 }
+        { offset: "0%", opacity: 1 },
+        { offset: "100%", opacity: 1 }
       ];
     case "outline":
       return [
@@ -46,7 +46,7 @@ const getStopsByVariant = (variant: "flat" | "gradient" | "outline" = "gradient"
     case "gradient":
     default:
       return [
-        { offset: "0%", opacity: 0.8 },
+        { offset: "0%", opacity: 1 },
         { offset: "100%", opacity: 0 }
       ];
   }

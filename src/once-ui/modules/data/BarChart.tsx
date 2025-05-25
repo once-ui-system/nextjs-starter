@@ -13,7 +13,7 @@ import {
 } from "recharts";
 
 import { TShirtSizes } from "../../types";
-import { Column, Row, DateRange } from "../../components";
+import { Column, Row, DateRange, Text } from "../../components";
 import { ChartHeader, LinearGradient, ChartProps, Tooltip, Legend } from ".";
 import { styles } from "./config";
 
@@ -21,13 +21,14 @@ interface BarChartProps extends ChartProps {
   xAxisKey?: string;
   yAxisKey?: string;
   barWidth?: TShirtSizes | "fill";
+  emptyState?: React.ReactNode;
 }
 
 const BarChart: React.FC<BarChartProps> = ({
   data,
   variant = "gradient",
-  xAxisKey = "name",
-  yAxisKey = "value",
+  xAxisKey = "date",
+  yAxisKey,
   barWidth = "fill",
   border = "neutral-medium",
   series,
@@ -36,6 +37,7 @@ const BarChart: React.FC<BarChartProps> = ({
   description,
   labels = "both",
   date,
+  emptyState,
   ...flex
 }) => {
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
@@ -61,9 +63,33 @@ const BarChart: React.FC<BarChartProps> = ({
     }
   };
 
-  const seriesConfig = series ? (Array.isArray(series) ? series[0] : series) : { key: yAxisKey, color: "blue" };
-  const seriesKey = seriesConfig.key || yAxisKey;
+  const seriesConfig = series ? (Array.isArray(series) ? series[0] : series) : { key: "Revenue", color: "blue" };
+  const seriesKey = seriesConfig.key || "Revenue";
   const seriesColor = seriesConfig.color || "blue";
+  const barColor = `var(--data-${seriesColor})`;
+  
+  const effectiveYAxisKey = seriesKey;
+
+  const filteredData = React.useMemo(() => {
+    if (!selectedDateRange || !data || data.length === 0 || !data[0]?.[xAxisKey]) {
+      return data;
+    }
+
+    return data.filter(item => {
+      try {
+        if (!item[xAxisKey] || !selectedDateRange.startDate || !selectedDateRange.endDate) {
+          return true;
+        }
+        const itemDate = new Date(item[xAxisKey] as string);
+        return itemDate >= selectedDateRange.startDate && 
+               itemDate <= selectedDateRange.endDate;
+      } catch (e) {
+        // If we can't parse the date, include the item
+        return true;
+      }
+    });
+  }, [data, selectedDateRange, xAxisKey]);
+
   return (
     <Column
       fillWidth
@@ -83,11 +109,20 @@ const BarChart: React.FC<BarChartProps> = ({
         presets={date?.presets}
       />
       <Row fill>
-        <RechartsResponsiveContainer width="100%" height="100%">
-          <RechartsBarChart
-            data={data}
-            margin={{ left: 0, right: 0, bottom: 0 }}
-          >
+        {!filteredData || filteredData.length === 0 ? (
+          <Column fill center>
+            {emptyState ? emptyState : (
+              <Text variant="label-default-s" onBackground="neutral-weak">
+                No data available for the selected period
+              </Text>
+            )}
+          </Column>
+        ) : (
+          <RechartsResponsiveContainer width="100%" height="100%">
+            <RechartsBarChart
+              data={filteredData}
+              margin={{ left: 0, right: 0, bottom: 0 }}
+            >
             <RechartsCartesianGrid
               horizontal={true}
               vertical={false}
@@ -98,7 +133,7 @@ const BarChart: React.FC<BarChartProps> = ({
                 content={(props) => {
                   const customPayload = [{
                     value: seriesKey,
-                    color: `var(--data-${seriesColor})`
+                    color: barColor
                   }];
                   
                   return (
@@ -119,21 +154,25 @@ const BarChart: React.FC<BarChartProps> = ({
             )}
             {(labels === "x" || labels === "both") && (
               <RechartsXAxis
+                height={32}
+                tickMargin={6}
                 dataKey={xAxisKey}
                 axisLine={{
-                  stroke: "var(--neutral-alpha-weak)",
+                  stroke: styles.axisLine.stroke,
                 }}
-                tickLine={false}
-                height={32}
+                tickLine={styles.tickLine}
                 tick={{
-                  fill: "var(--neutral-on-background-weak)",
-                  fontSize: 12,
+                  fill: styles.tick.fill,
+                  fontSize: styles.tick.fontSize,
+                }}
+                tickFormatter={(value) => {
+                  const dataPoint = data.find(item => item[xAxisKey] === value);
+                  return dataPoint?.label || value;
                 }}
               />
             )}
             {(labels === "y" || labels === "both") && (
               <RechartsYAxis
-                dataKey={yAxisKey}
                 width={64}
                 padding={{ top: 40 }}
                 allowDataOverflow
@@ -151,23 +190,25 @@ const BarChart: React.FC<BarChartProps> = ({
               cursor={{ fill: "var(--neutral-alpha-weak)" }}
               content={props => 
                 <Tooltip
-                  {...props}
-                  tooltip={seriesKey}
+                  isTimeSeries={selectedDateRange !== undefined}
+                  timeFormat={date?.format}
                   showColors={false}
+                  {...props}
                 />
               }
             />
             <defs>
               <LinearGradient 
-                id="barGradient"
+                key={`gradient-${seriesColor}`}
+                id={`barGradient${seriesColor}`}
                 variant={variant}
-                color={seriesColor}
+                color={barColor}
               />
             </defs>
             <RechartsBar
-              dataKey={yAxisKey}
-              fill="url(#barGradient)"
-              stroke={`var(--data-${seriesColor})`}
+              dataKey={effectiveYAxisKey}
+              fill={`url(#barGradient${seriesColor})`}
+              stroke={barColor}
               strokeWidth={1}
               barSize={
                 typeof barWidth === "string" && barWidth === "fill"
@@ -184,10 +225,11 @@ const BarChart: React.FC<BarChartProps> = ({
                   ? 64
                   : barWidth
               }
-              radius={[4, 4, 4, 4]}
+              radius={(barWidth === "fill" || barWidth === "xl") ? [10, 10, 10, 10] : [6, 6, 6, 6]}
             />
           </RechartsBarChart>
         </RechartsResponsiveContainer>
+        )}
       </Row>
     </Column>
   );

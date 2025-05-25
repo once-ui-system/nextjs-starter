@@ -12,7 +12,7 @@ import {
   Legend as RechartsLegend
 } from "recharts";
 
-import { SpacingToken } from "../../types";
+import { schemes, SpacingToken } from "../../types";
 import { Text, Column, Row } from "../../components";
 import { ChartProps, SeriesConfig, LinearGradient, Tooltip, Legend } from ".";
 import { styles } from "./config";
@@ -55,18 +55,22 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   border = "neutral-medium",
   ...flex
 }) => {
-  const seriesArray = Array.isArray(series) ? series : [series];
-  const seriesKeys = seriesArray.map((s: SeriesConfig) => s.key);
+  const seriesArray = Array.isArray(series) ? series : (series ? [series] : []);
+
+  const coloredSeriesArray = seriesArray.map((s, index) => ({
+    ...s,
+    color: s.color || schemes[index % schemes.length]
+  }));
   
-  const defaultColors = ['blue', 'green', 'violet', 'orange', 'red', 'cyan'];
+  const autoSeries = seriesArray.length > 0 ? coloredSeriesArray : 
+    Object.keys(data[0] || {})
+      .filter(key => key !== xAxisKey)
+      .map((key, index) => ({
+        key,
+        color: schemes[index % schemes.length]
+      }));
   
-  const autoSeries = seriesArray.length > 0 ? seriesArray : [
-    { key: "value1", color: defaultColors[0] },
-    { key: "value2", color: defaultColors[1] },
-    { key: "value3", color: defaultColors[2] }
-  ];
-  
-  const barColors = autoSeries.map(s => `var(--data-${s.color || 'blue'})`);
+  const barColors = autoSeries.map(s => `var(--data-${s.color})`);
 
   return (
     <Column
@@ -173,6 +177,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
             <defs>
               {barColors.map((color, index) => (
                 <LinearGradient
+                  key={`gradient-${index}`}
                   id={`barGradient${index}`}
                   color={color}
                   variant={variant}
@@ -202,7 +207,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                     ? 64
                     : bar.width
                 }
-                radius={[4, 4, 4, 4]}
+                radius={(bar.width === "fill" || bar.width === "xl") ? [10, 10, 10, 10] : [6, 6, 6, 6]}
               />
             ))}
           </RechartsBarChart>

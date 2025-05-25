@@ -18,6 +18,8 @@ export type StaticSpacingToken =
   | "128"
   | "160";
 
+export const schemes = ['blue', 'indigo', 'violet', 'magenta', 'pink', 'red', 'orange', 'yellow', 'moss', 'green', 'emerald', 'aqua', 'cyan'];
+
 export type Schemes =
   | "blue"
   | "indigo"

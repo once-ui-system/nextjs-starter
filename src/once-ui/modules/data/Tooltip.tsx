@@ -34,7 +34,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   
   const formattedLabel = isTimeSeries && displayLabel 
     ? formatDate(displayLabel, timeFormat) 
-    : dataPoint?.endDate || displayLabel;
+    : dataPoint?.label || dataPoint?.endDate || displayLabel;
     
   function formatDate(dateValue: string | Date, formatString: string) {
     try {

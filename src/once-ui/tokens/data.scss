@@ -1,16 +1,18 @@
 [data-theme="dark"] {
-  --data-blue:     var(--scheme-blue-500);
-  --data-indigo:   var(--scheme-indigo-500);
-  --data-green:    var(--scheme-green-500);
-  --data-aqua:     var(--scheme-aqua-500);
-  --data-violet:   var(--scheme-violet-500);
-  --data-orange:   var(--scheme-orange-500);
-  --data-red:      var(--scheme-red-500);
-  --data-cyan:     var(--scheme-cyan-500);
-  --data-magenta:  var(--scheme-magenta-500);
-  --data-moss:     var(--scheme-moss-500);
-  --data-emerald:  var(--scheme-emerald-500);
-  --data-yellow:   var(--scheme-yellow-500);
+  --data-blue:     var(--scheme-blue-400);
+  --data-indigo:   var(--scheme-indigo-400);
+  --data-green:    var(--scheme-green-400);
+  --data-aqua:     var(--scheme-aqua-400);
+  --data-violet:   var(--scheme-violet-400);
+  --data-orange:   var(--scheme-orange-400);
+  --data-red:      var(--scheme-red-400);
+  --data-cyan:     var(--scheme-cyan-400);
+  --data-magenta:  var(--scheme-magenta-400);
+  --data-moss:     var(--scheme-moss-400);
+  --data-emerald:  var(--scheme-emerald-400);
+  --data-yellow:   var(--scheme-yellow-400);
+  --data-gray:     var(--scheme-gray-400);
+  --data-contrast: var(--static-white);
 }
 
 [data-theme="light"] {
@@ -27,6 +29,8 @@
   --data-moss:     var(--scheme-moss-400);
   --data-emerald:  var(--scheme-emerald-400);
   --data-yellow:   var(--scheme-yellow-400);
+  --data-gray:     var(--scheme-gray-400);
+  --data-contrast: var(--static-black);
 }
 
 [data-theme="dark"] [data-viz="divergent"] {
