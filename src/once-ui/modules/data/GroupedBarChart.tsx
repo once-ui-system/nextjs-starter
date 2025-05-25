@@ -36,7 +36,7 @@ interface TimeProps {
 }
 
 interface TooltipProps {
-  title?: string;
+  title?: React.ReactNode;
 }
 
 interface GroupedBarChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
@@ -60,7 +60,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   yAxisKeys = ["value1", "value2", "value3"],
   bar = { labels: [], width: "fill" },
   time = { series: false, format: "" },
-  tooltip = { title: "" },
+  tooltip = { title: undefined },
   title,
   yAxisTitle,
   description,
@@ -172,11 +172,11 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
               cursor={{ fill: "var(--neutral-alpha-weak)" }}
               content={props => 
                 <Tooltip
-                  {...props}
+                  showColors
                   isTimeSeries={time.series}
                   timeFormat={time.format}
-                  showColors={true}
                   xAxisTitle={tooltip.title}
+                  {...props}
                 />
               }
             />

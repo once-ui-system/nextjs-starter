@@ -1,15 +1,14 @@
 "use client";
 
 import React from "react";
-import moment from "moment";
+import { format, parseISO } from "date-fns";
 import { Column, Text, Row } from "../../components";
 
 interface TooltipProps {
   active?: boolean;
   payload?: any[];
   label?: string;
-  xAxisKey?: string;
-  xAxisTitle?: string;
+  key?: string;
   tooltip?: React.ReactNode;
   isTimeSeries?: boolean;
   timeFormat?: string;
@@ -20,27 +19,31 @@ const Tooltip: React.FC<TooltipProps> = ({
   active,
   payload,
   label,
-  xAxisKey = "name",
-  xAxisTitle,
+  key = "name",
   tooltip,
   isTimeSeries = false,
-  timeFormat = "MMM DD, YYYY",
+  timeFormat = "MMM d",
   showColors = true
 }) => {
   if (!active || !payload || !payload.length) {
     return null;
   }
 
-  // Get the data point from the payload
   const dataPoint = payload[0].payload;
+  const displayLabel = dataPoint?.[key as string] || label;
   
-  // Get the proper label from the payload data
-  const displayLabel = dataPoint?.[xAxisKey] || label;
-  
-  // Format the label if it's a time series
   const formattedLabel = isTimeSeries && displayLabel 
-    ? moment(displayLabel).format(timeFormat) 
+    ? formatDate(displayLabel, timeFormat) 
     : dataPoint?.endDate || displayLabel;
+    
+  function formatDate(dateValue: string | Date, formatString: string) {
+    try {
+      const date = typeof dateValue === 'string' ? parseISO(dateValue) : dateValue;
+      return format(date, formatString || 'MMM d');
+    } catch (error) {
+      return dateValue;
+    }
+  }
 
   return (
     <Column
@@ -58,7 +61,7 @@ const Tooltip: React.FC<TooltipProps> = ({
           variant="label-default-s"
           onBackground="neutral-strong"
         >
-          {xAxisTitle && `${xAxisTitle}: `}{formattedLabel}
+          {formattedLabel}
         </Text>
       </Row>
       <Column

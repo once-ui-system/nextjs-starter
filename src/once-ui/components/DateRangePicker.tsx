@@ -30,8 +30,13 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   });
 
   const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  // Initialize with the startDate's month and year if available, otherwise use current date
+  const [currentMonth, setCurrentMonth] = useState(
+    value?.startDate ? value.startDate.getMonth() : new Date().getMonth()
+  );
+  const [currentYear, setCurrentYear] = useState(
+    value?.startDate ? value.startDate.getFullYear() : new Date().getFullYear()
+  );
 
   useEffect(() => {
     if (value) {
@@ -39,6 +44,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
         startDate: value.startDate,
         endDate: value.endDate,
       });
+      
+      // Update the current month and year when value changes and has a startDate
+      if (value.startDate) {
+        setCurrentMonth(value.startDate.getMonth());
+        setCurrentYear(value.startDate.getFullYear());
+      }
     }
   }, [value]);
 

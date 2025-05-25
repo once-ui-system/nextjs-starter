@@ -9,6 +9,7 @@ import {
   LetterFx,
   Row,
 } from "@/once-ui/components";
+import { format, parseISO } from "date-fns";
 import { GroupedBarChart } from "@/once-ui/modules/data/GroupedBarChart";
 import { LineBarChart } from "@/once-ui/modules/data/LineBarChart";
 import { PieChart } from "@/once-ui/modules/data/PieChart";
@@ -58,29 +59,30 @@ export default function Home() {
         ]}
       />
               
-      {/* Line Graph */}
-        <LineChart
-          title="Page Visits Per Week"
-          description="How many users visited our page"
-          legend
-          labels="x"
-          isTimeSeries
-          series={[
-            { key: "Revenue", color: "emerald" },
-            { key: "Profit", color: "violet" },
-            { key: "Loss", color: "blue" }
-          ]}
-          data={[
-            { name: "2024-01-01", Revenue: 2100, Profit: 1400, Loss: 5500 },
-            { name: "2024-01-08", Revenue: 2200, Profit: 4398, Loss: 3200 },
-            { name: "2024-01-15", Revenue: 2000, Profit: 1200, Loss: 6500 },
-            { name: "2024-01-22", Revenue: 3780, Profit: 1108, Loss: 1700 },
-            { name: "2024-01-29", Revenue: 5990, Profit: 1800, Loss: 2100 },
-            { name: "2024-02-05", Revenue: 4000, Profit: 2400, Loss: 3000 },
-            { name: "2024-02-12", Revenue: 5000, Profit: 3000, Loss: 4000 },
-          ]}
-          timeFormat="YYYY-MM-DD"
-        />
+      <LineChart
+        title="Page Visits Per Week"
+        description="How many users visited our page"
+        legend
+        labels="both"
+        date={{
+          start: new Date("2024-01-01"),
+          end: new Date("2024-01-31"),
+        }}
+        series={[
+          { key: "Revenue", color: "blue" },
+          { key: "Profit", color: "green" },
+          { key: "Loss", color: "red" }
+        ]}
+        data={[
+          { date: "2024-01-01", Revenue: 2100, Profit: 1400, Loss: 5500, label: format(parseISO("2024-01-01"), "MMM d") },
+          { date: "2024-01-08", Revenue: 2200, Profit: 4398, Loss: 3200, label: format(parseISO("2024-01-08"), "MMM d") },
+          { date: "2024-01-15", Revenue: 2000, Profit: 1200, Loss: 6500, label: format(parseISO("2024-01-15"), "MMM d") },
+          { date: "2024-01-22", Revenue: 3780, Profit: 1108, Loss: 1700, label: format(parseISO("2024-01-22"), "MMM d") },
+          { date: "2024-01-29", Revenue: 5990, Profit: 1800, Loss: 2100, label: format(parseISO("2024-01-29"), "MMM d") },
+          { date: "2024-02-05", Revenue: 4000, Profit: 2400, Loss: 3000, label: format(parseISO("2024-02-05"), "MMM d") },
+          { date: "2024-02-12", Revenue: 5000, Profit: 3000, Loss: 4000, label: format(parseISO("2024-02-12"), "MMM d") },
+        ]}
+      />
             
           <Row fillWidth gap="32" mobileDirection="column">
             {/* Multi Bar Graph */}

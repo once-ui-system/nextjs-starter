@@ -56,7 +56,8 @@ const Legend: React.FC<LegendProps> = ({
   const positionStyle = getPositionStyle();
 
   return (
-    <Row 
+    <Row
+      wrap
       horizontal={position === "left" || position === "right" ? "center" : "start"}
       vertical="center" 
       position="absolute"
@@ -64,7 +65,6 @@ const Legend: React.FC<LegendProps> = ({
       style={positionStyle}
     >
       {payload.map((entry: any, index: number) => {
-        // Use colors prop if provided, otherwise use entry color
         const color = colors && colors[index] ? colors[index] : (entry.stroke || entry.color);
         return (
           <Row key={index} vertical="center" gap="8">
@@ -78,7 +78,7 @@ const Legend: React.FC<LegendProps> = ({
               minHeight="16"
               radius="s"
             />
-            <Text variant="label-default-s">
+            <Text variant="label-default-s" wrap="nowrap">
               {entry.value}
             </Text>
           </Row>

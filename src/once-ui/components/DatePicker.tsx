@@ -206,11 +206,11 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         days.push(
           <Flex
             paddingY="2"
-            width="40"
-            height="40"
+            width={size === "s" ? "32" : size === "m" ? "40" : "48"}
+            height={size === "s" ? "32" : size === "m" ? "40" : "48"}
             key={`prev-${currentYear}-${currentMonth}-${i}`}
           >
-            <Button fillWidth weight="default" variant="tertiary" size="m" type="button" disabled>
+            <Button fillWidth weight="default" variant="tertiary" size={size} type="button" disabled>
               {prevMonthDay}
             </Button>
           </Flex>,
@@ -238,8 +238,8 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         days.push(
           <Flex paddingY="2" key={`day-${currentYear}-${currentMonth}-${day}`}>
             <Flex
-              width="40"
-              height="40"
+              width={size === "s" ? "32" : size === "m" ? "40" : "48"}
+              height={size === "s" ? "32" : size === "m" ? "40" : "48"}
               background={isInRange(currentDate) ? "neutral-alpha-weak" : undefined}
               borderTop={isInRange(currentDate) ? "neutral-alpha-weak" : "transparent"}
               borderBottom={isInRange(currentDate) ? "neutral-alpha-weak" : "transparent"}
@@ -250,7 +250,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
                 fillWidth
                 weight={isSelected ? "strong" : "default"}
                 variant={isSelected ? "primary" : "tertiary"}
-                size="m"
+                size={size}
                 onClick={(e: React.MouseEvent) => {
                   if (!isDisabled) {
                     if (timePicker) {
@@ -277,11 +277,11 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         days.push(
           <Flex
             marginTop="2"
-            width="40"
-            height="40"
+            width={size === "s" ? "32" : size === "m" ? "40" : "48"}
+            height={size === "s" ? "32" : size === "m" ? "40" : "48"}
             key={`next-${currentYear}-${currentMonth}-${i}`}
           >
-            <Button fillWidth weight="default" variant="tertiary" size="m" type="button" disabled>
+            <Button fillWidth weight="default" variant="tertiary" size={size} type="button" disabled>
               {i}
             </Button>
           </Flex>,
@@ -322,7 +322,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
               {previousMonth && (
                 <IconButton
                   variant="tertiary"
-                  size={size === "l" ? "l" : "m"}
+                  size={size}
                   icon="chevronLeft"
                   onClick={(event: any) => {
                     event.preventDefault();
@@ -344,7 +344,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
               {nextMonth && (
                 <IconButton
                   variant="tertiary"
-                  size={size === "l" ? "l" : "m"}
+                  size={size}
                   icon="chevronRight"
                   onClick={(event: any) => {
                     event.preventDefault();

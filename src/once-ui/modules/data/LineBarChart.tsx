@@ -16,6 +16,7 @@ import {
 import { Flex, Column, Text, Row } from "../../components";
 import { SpacingToken } from "../../types";
 import { Tooltip, Legend } from "../";
+import { LinearGradient } from "./Gradient";
 
 interface DataPoint {
   [key: string]: string | number | Date;
@@ -110,17 +111,15 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
             barGap={4}
           >
             <defs>
-              {/* Bar gradient */}
-              <linearGradient id={barGradientId} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={finalBarColor} stopOpacity={0.8} />
-                <stop offset="100%" stopColor={finalBarColor} stopOpacity={0} />
-              </linearGradient>
+              <LinearGradient
+                id={barGradientId}
+                color={finalBarColor}
+              />
               
-              {/* Line gradient */}
-              <linearGradient id={lineGradientId} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={finalLineColor} stopOpacity={0.8} />
-                <stop offset="100%" stopColor={finalLineColor} stopOpacity={0} />
-              </linearGradient>
+              <LinearGradient
+                id={lineGradientId}
+                color={finalLineColor}
+              />
             </defs>
             <RechartsCartesianGrid
               horizontal
@@ -196,7 +195,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 <Tooltip
                   isTimeSeries={isTimeSeries}
                   timeFormat={timeFormat}
-                  xAxisKey={xAxisKey}
+                  key={xAxisKey}
                   {...props}
                 />
               }

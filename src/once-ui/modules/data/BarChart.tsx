@@ -15,6 +15,7 @@ import {
 import { TShirtSizes } from "../../types";
 import { Text, Flex, Column, Row } from "../../components";
 import { Tooltip, Legend } from "../";
+import { LinearGradient } from "./Gradient";
 
 interface DataPoint {
   name: string;
@@ -154,19 +155,10 @@ const BarChart: React.FC<BarChartProps> = ({
               }
             />
             <defs>
-              <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                {[
-                  { offset: "0%", opacity: 0.8 },
-                  { offset: "100%", opacity: 0 },
-                ].map(({ offset, opacity }) => (
-                  <stop
-                    key={offset}
-                    offset={offset}
-                    stopColor={`var(--data-${color})`}
-                    stopOpacity={opacity}
-                  />
-                ))}
-              </linearGradient>
+              <LinearGradient 
+                id="barGradient" 
+                color={color}
+              />
             </defs>
             <RechartsBar
               dataKey={yAxisKey}

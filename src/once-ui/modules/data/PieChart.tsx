@@ -9,8 +9,10 @@ import {
   ResponsiveContainer as RechartsResponsiveContainer,
   Legend as RechartsLegend
 } from "recharts";
-import { Column, Flex, Row, Text } from "../../components";
+import { Column, Flex, Row } from "../../components";
 import { Tooltip, Legend } from "../";
+import { ChartHeader } from "./ChartHeader";
+import { RadialGradient } from "./Gradient";
 
 interface DataPoint {
   name: string;
@@ -63,44 +65,24 @@ export const PieChart: React.FC<PieChartProps> = ({
       {...flex}
     >
       {(title || description) && (
-        <Column
-          borderBottom={border}
-          fillWidth
-          paddingX="20"
-          paddingY="12"
-          gap="4"
-          vertical="center">
-          {title && (
-            <Text variant="heading-strong-s">
-              {title}
-            </Text>
-          )}
-          {description && (
-            <Text variant="label-default-s" onBackground="neutral-weak">
-              {description}
-            </Text>
-          )}
-        </Column>
+        <ChartHeader
+          title={title}
+          description={description}
+          border={border}
+        />
       )}
-      <Row fill paddingBottom="48">
+      <Row fill>
         <RechartsResponsiveContainer width="100%" height="100%">
           <RechartsPieChart>
             <defs>
               {data.map((entry, index) => {
                 const baseColor = entry.color || colorPalette[index % colorPalette.length];
                 return (
-                  <radialGradient
-                    key={`gradient-${index}`}
+                  <RadialGradient
                     id={gradientIds[index]}
-                    cx="50%"
-                    cy="50%"
-                    r="100%"
-                    fx="50%"
-                    fy="50%"
-                  >
-                    <stop offset="0%" stopColor={baseColor} stopOpacity={1} />
-                    <stop offset="100%" stopColor={baseColor} stopOpacity={0} />
-                  </radialGradient>
+                    key={`gradient-${index}`}
+                    color={baseColor}
+                  />
                 );
               })}
             </defs>
@@ -129,7 +111,7 @@ export const PieChart: React.FC<PieChartProps> = ({
               })}
             </RechartsPie>
             <RechartsTooltip 
-              content={props => <Tooltip {...props} />}
+              content={props => <Tooltip showColors={false} {...props} />}
             />
             {legend && (
               <RechartsLegend
@@ -137,13 +119,13 @@ export const PieChart: React.FC<PieChartProps> = ({
                   <Legend
                     {...props}
                     labels="both"
+                    position="bottom"
                     colors={colorPalette}
                   />
                 )}
                 wrapperStyle={{
-                  position: "absolute",
-                  right: 0,
-                  margin: 0
+                  position: "relative",
+                  bottom: "12px",
                 }}
               />
             )}

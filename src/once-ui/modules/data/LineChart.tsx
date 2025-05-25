@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import moment from 'moment'
+import { isWithinInterval, parseISO } from 'date-fns';
 import {
   AreaChart as RechartsAreaChart,
   Area as RechartsArea,
@@ -12,16 +12,26 @@ import {
   ResponsiveContainer as RechartsResponsiveContainer,
   Legend as RechartsLegend
 } from "recharts";
-import { Flex, Column, Text, Row, DateRange, DateRangePicker, DropdownWrapper, IconButton } from "../../components";
+import { Flex, Column, Row, DateRange, Text } from "../../components";
 import { Tooltip, Legend } from "../";
+import { ChartHeader } from "./ChartHeader";
+import { LinearGradient } from "./Gradient";
 
 interface DataPoint {
-  [key: string]: string | number | Date;
+  [key: string]: string | number | Date | undefined;
+  label?: string;
 }
 
 interface SeriesConfig {
   key: string;
   color?: string;
+}
+
+interface DateConfig {
+  start?: Date;
+  end?: Date;
+  format?: string;
+  onChange?: (range: DateRange) => void;
 }
 
 interface LineChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
@@ -34,10 +44,8 @@ interface LineChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title'
   tooltip?: string;
   labels?: "x" | "y" | "both";
   curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural";
-  isTimeSeries?: boolean;
-  timeFormat?: string;
-  dateRange?: DateRange;
-  onDateRangeChange?: (range: DateRange) => void;
+  date?: DateConfig;
+  emptyState?: React.ReactNode;
 }
 
 const defaultColors = ['blue', 'green', 'aqua', 'violet', 'orange', 'red', 'purple', 'magenta', 'moss', 'emerald'];
@@ -53,20 +61,26 @@ const LineChart: React.FC<LineChartProps> = ({
   tooltip,
   labels = "both",
   curveType = "natural",
-  isTimeSeries = false,
-  timeFormat,
-  dateRange: initialDateRange,
-  onDateRangeChange,
+  date,
+  emptyState,
   ...flex
 }) => {
-  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(initialDateRange);
-  const [showDateRangeSelectorUI, setShowDateRangeSelectorUI] = useState(false);
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
+    date?.start && date?.end ? {
+      startDate: date.start,
+      endDate: date.end
+    } : undefined
+  );
 
   useEffect(() => {
-    setSelectedDateRange(initialDateRange);
-  }, [initialDateRange]);
+    if (date?.start && date?.end) {
+      setSelectedDateRange({
+        startDate: date.start,
+        endDate: date.end
+      });
+    }
+  }, [date?.start, date?.end]);
 
-  // Auto-detect series from first data point if not provided
   const seriesKeys = series.map(s => s.key);
   const autoSeries = series || Object.keys(data[0] || {})
     .filter(key => !seriesKeys.includes(key))
@@ -80,19 +94,37 @@ const LineChart: React.FC<LineChartProps> = ({
   ) || 'name';
 
   const filteredData = React.useMemo(() => {
-    if (isTimeSeries && selectedDateRange?.startDate && selectedDateRange?.endDate && xAxisKey) {
-      return data.filter(item => {
-        const itemDate = moment(item[xAxisKey] as string | Date);
-        return itemDate.isBetween(selectedDateRange.startDate, selectedDateRange.endDate, undefined, '[]');
-      });
+    if (selectedDateRange?.startDate && selectedDateRange?.endDate && xAxisKey) {
+      const startDate = selectedDateRange.startDate;
+      const endDate = selectedDateRange.endDate;
+      
+      if (startDate instanceof Date && endDate instanceof Date) {
+        return data.filter(item => {
+          try {
+            const itemDateValue = item[xAxisKey];
+            if (!itemDateValue) return false;
+            
+            const itemDate = typeof itemDateValue === 'string' 
+              ? parseISO(itemDateValue) 
+              : itemDateValue as Date;
+            
+            return isWithinInterval(itemDate, {
+              start: startDate,
+              end: endDate
+            });
+          } catch (error) {
+            return false;
+          }
+        });
+      }
     }
     return data;
-  }, [data, selectedDateRange, isTimeSeries, xAxisKey]);
+  }, [data, selectedDateRange, xAxisKey]);
 
   const handleDateRangeChange = (newRange: DateRange) => {
     setSelectedDateRange(newRange);
-    if (onDateRangeChange) {
-      onDateRangeChange(newRange);
+    if (date?.onChange) {
+      date.onChange(newRange);
     }
   };
   
@@ -105,57 +137,37 @@ const LineChart: React.FC<LineChartProps> = ({
       height={24}
       {...flex}
     >
-      {(title || description) && (
-        <Column fillWidth borderBottom={border} paddingX="20" paddingY="12" gap="4">
-          <Row fillWidth vertical="center">
-            <Column fillWidth gap="4">
-              {title && (
-                <Text variant="heading-strong-s">
-                  {title}
-                </Text>
-              )}
-              {description && (
-                <Text variant="label-default-s" onBackground="neutral-weak">
-                  {description}
-                </Text>
-              )}
-            </Column>
-            {isTimeSeries && (
-              <DropdownWrapper
-                isOpen={showDateRangeSelectorUI}
-                trigger={
-                  <IconButton
-                    icon="calendar"
-                    onClick={() => setShowDateRangeSelectorUI(!showDateRangeSelectorUI)}
-                    variant="secondary"
-                    size="m"
-                  />
-                }
-                dropdown={
-                <Column padding="16" gap="8">
-                  <DateRangePicker
-                    id="line-chart-date-range"
-                    value={selectedDateRange}
-                    onChange={handleDateRangeChange} />
-                </Column>
-                }
-              />
-            )}
-          </Row>
-        </Column>
+      {(title || description || selectedDateRange) && (
+        <ChartHeader
+          title={title}
+          description={description}
+          borderBottom={border}
+          dateRange={selectedDateRange}
+          onDateRangeChange={handleDateRangeChange}
+        />
       )}
       <Row fill>
-        <RechartsResponsiveContainer width="100%" height="100%">
-          <RechartsAreaChart
-            data={filteredData}
-            margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
-          >
+        {!filteredData || filteredData.length === 0 ? (
+          <Column fill center>
+            {emptyState ? emptyState : (
+              <Text variant="label-default-s" onBackground="neutral-weak">
+                No data available for the selected period
+              </Text>
+            )}
+          </Column>
+        ) : (
+          <RechartsResponsiveContainer width="100%" height="100%">
+            <RechartsAreaChart
+              data={filteredData}
+              margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
+            >
             <defs>
-              {autoSeries.map(({ key, color }) => (
-                <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={`var(--data-${color})`} stopOpacity={0.8} />
-                  <stop offset="100%" stopColor={`var(--data-${color})`} stopOpacity={0} />
-                </linearGradient>
+              {autoSeries.map(({ key, color }, index) => (
+                <LinearGradient
+                  key={key}
+                  id={`color-${key}`}
+                  color={color || colors[index % colors.length]}
+                />
               ))}
             </defs>
             <RechartsCartesianGrid
@@ -165,17 +177,26 @@ const LineChart: React.FC<LineChartProps> = ({
             />
             {legend && (
               <RechartsLegend
-                content={
-                  <Legend 
-                    colors={colors} 
-                    labels={labels} 
-                    position="top" 
-                  />
-                }
+                content={(props) => {
+                  const customPayload = autoSeries.map(({ key, color }, index) => ({
+                    value: key,
+                    color: `var(--data-${color || colors[index % colors.length]})`
+                  }));
+                  
+                  return (
+                    <Legend 
+                      payload={customPayload}
+                      labels={labels} 
+                      position="top" 
+                    />
+                  );
+                }}
+                
                 wrapperStyle={{
                   position: 'absolute',
                   top: 0,
                   right: 0,
+                  left: 8,
                   margin: 0
                 }}
               />
@@ -192,6 +213,10 @@ const LineChart: React.FC<LineChartProps> = ({
                 dataKey={xAxisKey}
                 axisLine={{
                   stroke: "var(--neutral-alpha-weak)",
+                }}
+                tickFormatter={(value) => {
+                  const dataPoint = data.find(item => item[xAxisKey] === value);
+                  return dataPoint?.label || value;
                 }}
               />
             )}
@@ -217,20 +242,20 @@ const LineChart: React.FC<LineChartProps> = ({
               }}
               content={props => 
                 <Tooltip 
-                  isTimeSeries={isTimeSeries}
-                  timeFormat={timeFormat}
+                  isTimeSeries={selectedDateRange !== undefined}
+                  timeFormat={date?.format}
                   tooltip={tooltip}
                   {...props}
                 />
               }
             />
-            {autoSeries.map(({ key, color }) => (
+            {autoSeries.map(({ key, color }, index) => (
               <RechartsArea
                 key={key}
                 type={curveType}
                 dataKey={key}
                 name={key}
-                stroke={`var(--data-${color})`}
+                stroke={`var(--data-${color || colors[index % colors.length]})`}
                 fill={`url(#color-${key})`}
                 strokeWidth={1}
                 fillOpacity={1}
@@ -239,8 +264,9 @@ const LineChart: React.FC<LineChartProps> = ({
                 }}
               />
             ))}
-          </RechartsAreaChart>
-        </RechartsResponsiveContainer>
+            </RechartsAreaChart>
+          </RechartsResponsiveContainer>
+        )}
       </Row>
     </Column>
   );
