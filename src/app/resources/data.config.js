@@ -1,4 +1,5 @@
 const styles = {
+  variant: "flat", // flat | gradient | outline
   axisLine: {
     stroke: "var(--neutral-alpha-weak)",
   },

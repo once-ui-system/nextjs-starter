@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { isWithinInterval, parseISO } from 'date-fns';
-import { styles } from "./config";
+import { styles } from "../../../app/resources/data.config";
 import {
   AreaChart as RechartsAreaChart,
   Area as RechartsArea,
@@ -13,8 +13,8 @@ import {
   ResponsiveContainer as RechartsResponsiveContainer,
   Legend as RechartsLegend
 } from "recharts";
-import { Column, Row, DateRange, Text } from "../../components";
-import { LinearGradient, ChartHeader, Tooltip, Legend, SeriesConfig, ChartProps } from ".";
+import { Column, Row, DateRange, Text, Spinner } from "../../components";
+import { LinearGradient, ChartHeader, Tooltip, Legend, SeriesConfig, ChartProps, ChartStatus, ChartStyles } from ".";
 import { schemes } from "@/once-ui/types";
 
 interface LineChartProps extends ChartProps {
@@ -22,17 +22,18 @@ interface LineChartProps extends ChartProps {
 }
 
 const LineChart: React.FC<LineChartProps> = ({
-  data,
-  series,
-  border = "neutral-medium",
   title,
   description,
-  legend = false,
-  labels = "both",
-  curveType = "natural",
+  data,
+  series,
   date,
   emptyState,
-  variant = "gradient",
+  loading = false,
+  legend = false,
+  border = "neutral-medium",
+  labels = "both",
+  curveType = "natural",
+  variant = styles.variant,
   ...flex
 }) => {
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
@@ -125,15 +126,12 @@ const LineChart: React.FC<LineChartProps> = ({
         presets={date?.presets}
       />
       <Row fill>
-        {!filteredData || filteredData.length === 0 ? (
-          <Column fill center>
-            {emptyState ? emptyState : (
-              <Text variant="label-default-s" onBackground="neutral-weak">
-                No data available for the selected period
-              </Text>
-            )}
-          </Column>
-        ) : (
+        <ChartStatus 
+          loading={loading}
+          isEmpty={!filteredData || filteredData.length === 0}
+          emptyState={emptyState}
+        />
+        {!loading && filteredData && filteredData.length > 0 && (
           <RechartsResponsiveContainer width="100%" height="100%">
             <RechartsAreaChart
               data={filteredData}
@@ -142,13 +140,13 @@ const LineChart: React.FC<LineChartProps> = ({
             <defs>
               {autoSeries.map(({ key, color }, index) => {
                 const colorValue = color || schemes[index % schemes.length];
-                const barColor = `var(--data-${colorValue})`;
+                const lineColor = `var(--data-${colorValue})`;
                 return (
                   <LinearGradient
                     key={key}
                     id={`color-${key}`}
-                    variant={variant}
-                    color={barColor}
+                    variant={variant as ChartStyles}
+                    color={lineColor}
                   />
                 );
               })}
@@ -171,6 +169,7 @@ const LineChart: React.FC<LineChartProps> = ({
                       payload={customPayload}
                       labels={labels} 
                       position="top" 
+                      variant={variant as ChartStyles}
                     />
                   );
                 }}
@@ -225,6 +224,7 @@ const LineChart: React.FC<LineChartProps> = ({
               }}
               content={props => 
                 <Tooltip 
+                  variant={variant as ChartStyles}
                   isTimeSeries={selectedDateRange !== undefined}
                   timeFormat={date?.format}
                   {...props}
@@ -233,18 +233,18 @@ const LineChart: React.FC<LineChartProps> = ({
             />
             {autoSeries.map(({ key, color }, index) => {
               const colorValue = color || schemes[index % schemes.length];
-              const barColor = `var(--data-${colorValue})`;
+              const lineColor = `var(--data-${colorValue})`;
               return (
                 <RechartsArea
                   key={key}
                   type={curveType}
                   dataKey={key}
                   name={key}
-                  stroke={barColor}
+                  stroke={lineColor}
                   fill={`url(#color-${key})`}
                   activeDot={{
                     r: 4,
-                    fill: barColor,
+                    fill: lineColor,
                     stroke: "var(--background)",
                     strokeWidth: 0,
                   }}

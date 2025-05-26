@@ -3,6 +3,8 @@
 import React, { useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import { Column, Text, Row, LetterFx } from "../../components";
+import { Swatch } from "./Swatch";
+import { ChartStyles } from "./interfaces";
 
 const ValueWithAnimation: React.FC<{ value: number }> = ({ value }) => {
   const prevValueRef = useRef<number | null>(null);
@@ -45,6 +47,7 @@ interface TooltipProps {
   isTimeSeries?: boolean;
   timeFormat?: string;
   showColors?: boolean;
+  variant?: ChartStyles;
 }
 
 const Tooltip: React.FC<TooltipProps> = ({
@@ -55,7 +58,8 @@ const Tooltip: React.FC<TooltipProps> = ({
   tooltip,
   isTimeSeries = false,
   timeFormat = "MMM d",
-  showColors = true
+  showColors = true,
+  variant = "gradient"
 }) => {
   if (!active || !payload || !payload.length) {
     return null;
@@ -106,15 +110,10 @@ const Tooltip: React.FC<TooltipProps> = ({
           <Row key={index} horizontal="space-between" fillWidth gap="16">
             <Row vertical="center" gap="8">
               {showColors && (
-                <Row
-                  style={{
-                    backgroundClip: "padding-box",
-                    border: `1px solid ${entry.stroke || entry.color}`,
-                    background: `linear-gradient(to bottom, ${entry.stroke || entry.color} 0%, transparent 100%)`
-                  }}
-                  minWidth="12"
-                  minHeight="12"
-                  radius="xs"
+                <Swatch 
+                  color={entry.stroke || entry.color} 
+                  size="s"
+                  variant={variant}
                 />
               )}
               <Text onBackground="neutral-weak" variant="label-default-s">

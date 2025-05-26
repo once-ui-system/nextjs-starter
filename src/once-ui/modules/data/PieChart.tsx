@@ -14,6 +14,9 @@ import { Tooltip, Legend } from "../";
 import { ChartHeader } from "./ChartHeader";
 import { RadialGradient } from "./Gradient";
 import { schemes } from "@/once-ui/types";
+import { styles } from "@/app/resources/data.config";
+import { ChartStatus } from "./ChartStatus";
+import { ChartStyles } from "./interfaces";
 
 interface DataPoint {
   name: string;
@@ -32,6 +35,9 @@ interface PieChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' 
   nameKey?: string;
   paddingAngle?: number;
   useGradients?: boolean;
+  variant?: ChartStyles;
+  loading?: boolean;
+  emptyState?: React.ReactNode;
 }
 
 export const PieChart: React.FC<PieChartProps> = ({
@@ -46,6 +52,9 @@ export const PieChart: React.FC<PieChartProps> = ({
   nameKey = "name",
   paddingAngle = 0,
   useGradients = true,
+  variant = styles.variant,
+  loading = false,
+  emptyState,
   ...flex
 }) => {
   const colorPalette = schemes.map((c) => `var(--data-${c})`);
@@ -63,14 +72,17 @@ export const PieChart: React.FC<PieChartProps> = ({
       data-viz="categorical"
       {...flex}
     >
-      {(title || description) && (
-        <ChartHeader
-          title={title}
-          description={description}
-          border={border}
-        />
-      )}
+      <ChartHeader
+        title={title}
+        description={description}
+        borderBottom={border}
+      />
       <Row fill>
+        <ChartStatus 
+          loading={loading}
+          isEmpty={!data || data.length === 0}
+          emptyState={emptyState}
+        />
         <RechartsResponsiveContainer width="100%" height="100%">
           <RechartsPieChart>
             <defs>
@@ -110,13 +122,14 @@ export const PieChart: React.FC<PieChartProps> = ({
               })}
             </RechartsPie>
             <RechartsTooltip 
-              content={props => <Tooltip showColors={false} {...props} />}
+              content={props => <Tooltip showColors={false} variant={variant as ChartStyles} {...props} />}
             />
             {legend && (
               <RechartsLegend
                 content={(props) => (
                   <Legend
                     {...props}
+                    variant={variant as ChartStyles}
                     labels="both"
                     position="bottom"
                     colors={colorPalette}

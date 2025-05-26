@@ -2,19 +2,24 @@
 
 import React from "react";
 import { Row, Text } from "../../components";
+import { Swatch } from "./Swatch";
+import { styles } from "../../../app/resources/data.config";
+import { ChartStyles } from "./interfaces";
 
 interface LegendProps {
   payload?: any[];
   labels?: "x" | "y" | "both" | "none";
   colors?: string[];
   position?: "top" | "bottom" | "left" | "right";
+  variant?: ChartStyles;
 }
 
 const Legend: React.FC<LegendProps> = ({
   payload,
   labels = "both",
   position = "top",
-  colors
+  colors,
+  variant = styles.variant
 }) => {
   if (!payload || !payload.length) {
     return null;
@@ -68,15 +73,10 @@ const Legend: React.FC<LegendProps> = ({
         const color = colors && colors[index] ? colors[index] : (entry.stroke || entry.color);
         return (
           <Row key={index} vertical="center" gap="8">
-            <Row
-              style={{
-                backgroundClip: "padding-box",
-                border: `1px solid ${color}`,
-                background: `linear-gradient(to bottom, ${color} 0%, transparent 100%)`
-              }}
-              minWidth="16"
-              minHeight="16"
-              radius="s"
+            <Swatch 
+              color={color} 
+              size="m"
+              variant={variant as ChartStyles}
             />
             <Text variant="label-default-s" wrap="nowrap">
               {entry.value}

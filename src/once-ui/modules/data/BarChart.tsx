@@ -14,8 +14,8 @@ import {
 
 import { TShirtSizes } from "../../types";
 import { Column, Row, DateRange, Text } from "../../components";
-import { ChartHeader, LinearGradient, ChartProps, Tooltip, Legend } from ".";
-import { styles } from "./config";
+import { ChartHeader, LinearGradient, ChartProps, Tooltip, Legend, ChartStyles } from ".";
+import { styles } from "../../../app/resources/data.config";
 
 interface BarChartProps extends ChartProps {
   xAxisKey?: string;
@@ -26,7 +26,7 @@ interface BarChartProps extends ChartProps {
 
 const BarChart: React.FC<BarChartProps> = ({
   data,
-  variant = "gradient",
+  variant = styles.variant,
   xAxisKey = "date",
   yAxisKey,
   barWidth = "fill",
@@ -138,9 +138,10 @@ const BarChart: React.FC<BarChartProps> = ({
                   
                   return (
                     <Legend 
+                      position="top" 
                       payload={customPayload}
                       labels={labels} 
-                      position="top" 
+                      variant={variant as ChartStyles}
                     />
                   );
                 }}
@@ -193,6 +194,7 @@ const BarChart: React.FC<BarChartProps> = ({
                   isTimeSeries={selectedDateRange !== undefined}
                   timeFormat={date?.format}
                   showColors={false}
+                  variant={variant as ChartStyles}
                   {...props}
                 />
               }
@@ -201,7 +203,7 @@ const BarChart: React.FC<BarChartProps> = ({
               <LinearGradient 
                 key={`gradient-${seriesColor}`}
                 id={`barGradient${seriesColor}`}
-                variant={variant}
+                variant={variant as "gradient" | "flat" | "outline"}
                 color={barColor}
               />
             </defs>

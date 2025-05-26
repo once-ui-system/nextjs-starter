@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
+import { styles } from "../../../app/resources/data.config";
+import { ChartStyles } from "./interfaces";
 
 interface GradientStop {
   offset: string;
   opacity: number;
-  variant?: "flat" | "gradient" | "outline";
+  variant?: ChartStyles;
 }
 
 interface LinearGradientProps {
@@ -16,7 +18,7 @@ interface LinearGradientProps {
   x2?: string;
   y2?: string;
   stops?: GradientStop[];
-  variant?: "flat" | "gradient" | "outline";
+  variant?: ChartStyles;
 }
 
 interface RadialGradientProps {
@@ -28,10 +30,10 @@ interface RadialGradientProps {
   fx?: string;
   fy?: string;
   stops?: GradientStop[];
-  variant?: "flat" | "gradient" | "outline";
+  variant?: ChartStyles;
 }
 
-const getStopsByVariant = (variant: "flat" | "gradient" | "outline" = "gradient"): GradientStop[] => {
+const getStopsByVariant = (variant: ChartStyles = "gradient"): GradientStop[] => {
   switch (variant) {
     case "flat":
       return [
@@ -60,9 +62,9 @@ export const LinearGradient: React.FC<LinearGradientProps> = ({
   x2 = "0",
   y2 = "1",
   stops,
-  variant = "gradient"
+  variant = styles.variant
 }) => {
-  const gradientStops = stops || getStopsByVariant(variant);
+  const gradientStops = stops || getStopsByVariant(variant as ChartStyles);
   return (
     <linearGradient id={id} x1={x1} y1={y1} x2={x2} y2={y2}>
       {gradientStops.map((stop, index) => (
@@ -86,9 +88,9 @@ export const RadialGradient: React.FC<RadialGradientProps> = ({
   fx = "50%",
   fy = "50%",
   stops,
-  variant = "gradient"
+  variant = styles.variant
 }) => {
-  const gradientStops = stops || getStopsByVariant(variant);
+  const gradientStops = stops || getStopsByVariant(variant as ChartStyles);
   return (
     <radialGradient id={id} cx={cx} cy={cy} r={r} fx={fx} fy={fy}>
       {gradientStops.map((stop, index) => (

@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { isWithinInterval, parseISO } from 'date-fns';
 import {
   ComposedChart as RechartsComposedChart,
-  Line as RechartsLine,
   Bar as RechartsBar,
   XAxis as RechartsXAxis,
   YAxis as RechartsYAxis,
@@ -13,100 +13,140 @@ import {
   Legend as RechartsLegend,
   Area as RechartsArea
 } from "recharts";
-import { Flex, Column, Text, Row } from "../../components";
-import { SpacingToken } from "../../types";
-import { Tooltip, Legend } from "../";
-import { LinearGradient } from "./Gradient";
+import { Column, Row, DateRange } from "../../components";
+import { TShirtSizes } from "../../types";
+import { LinearGradient, ChartHeader, Tooltip, Legend, ChartStatus, ChartProps, SeriesConfig, ChartStyles } from ".";
+import { styles } from "@/app/resources/data.config";
 
-interface DataPoint {
-  [key: string]: string | number | Date;
-}
-
-interface LineBarChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
-  data: DataPoint[];
-  xAxisKey?: string;
-  lineDataKey?: string;
-  barDataKey?: string;
-  lineName?: string;
-  barName?: string;
-  lineColor?: string;
-  barColor?: string;
-  barWidth?: SpacingToken | "fill" | number;
-  showArea?: boolean;
-  labels?: "x" | "y" | "both" | "none";
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  legend?: boolean;
-  dashedLine?: boolean;
+interface LineBarChartProps extends ChartProps {
+  barWidth?: TShirtSizes | "fill" | number;
   curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural";
-  isTimeSeries?: boolean;
-  timeFormat?: string;
-  xAxisTitle?: string;
-  yAxisTitle?: string;
 }
-
-const defaultColors = {
-  line: "blue",
-  bar: "green"
-};
 
 const LineBarChart: React.FC<LineBarChartProps> = ({
   data,
-  xAxisKey = "name",
-  lineDataKey = "lineValue",
-  barDataKey = "barValue",
-  lineName = "Line",
-  barName = "Bar",
-  lineColor = defaultColors.line,
-  barColor = defaultColors.bar,
-  barWidth = "fill",
-  showArea = true,
-  dashedLine = false,
-  labels = "both",
+  series,
   border = "neutral-medium",
   title,
   description,
   legend = false,
+  labels = "both",
+  date,
+  emptyState,
+  variant = styles.variant,
+  loading = false,
+  barWidth = "fill",
   curveType = "monotone",
-  isTimeSeries = false,
-  timeFormat = "YYYY-MM-DD",
-  xAxisTitle,
-  yAxisTitle,
   ...flex
 }) => {
-  const lineGradientId = `colorLine-${React.useId()}`;
-  const barGradientId = `barGradient-${React.useId()}`;
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
+    date?.start && date?.end ? {
+      startDate: date.start,
+      endDate: date.end
+    } : undefined
+  );
 
+  useEffect(() => {
+    if (date?.start && date?.end) {
+      setSelectedDateRange({
+        startDate: date.start,
+        endDate: date.end
+      });
+    }
+  }, [date?.start, date?.end]);
+
+  const allSeriesArray = Array.isArray(series) ? series : (series ? [series] : []);
+  const seriesKeys = allSeriesArray.map((s: SeriesConfig) => s.key);
+  
+  const xAxisKey = Object.keys(data[0] || {}).find(key => 
+    !seriesKeys.includes(key)
+  ) || 'name';
+
+  const filteredData = React.useMemo(() => {
+    if (selectedDateRange?.startDate && selectedDateRange?.endDate && xAxisKey) {
+      const startDate = selectedDateRange.startDate;
+      const endDate = selectedDateRange.endDate;
+      
+      if (startDate instanceof Date && endDate instanceof Date) {
+        return data.filter(item => {
+          try {
+            const itemDateValue = item[xAxisKey];
+            if (!itemDateValue) return false;
+            
+            const itemDate = typeof itemDateValue === 'string' 
+              ? parseISO(itemDateValue) 
+              : itemDateValue as Date;
+            
+            return isWithinInterval(itemDate, {
+              start: startDate,
+              end: endDate
+            });
+          } catch (error) {
+            return false;
+          }
+        });
+      }
+    }
+    return data;
+  }, [data, selectedDateRange, xAxisKey]);
+
+  const handleDateRangeChange = (newRange: DateRange) => {
+    setSelectedDateRange(newRange);
+    if (date?.onChange) {
+      date.onChange(newRange);
+    }
+  };
+
+  // Configure line and bar series
+  const chartSeriesArray = Array.isArray(series) ? series : (series ? [series] : []);
+  if (chartSeriesArray.length < 2) {
+    console.warn('LineBarChart requires at least 2 series (one for line, one for bar)');
+  }
+  
+  // First series is for the line, second is for the bar
+  const lineSeries = chartSeriesArray[0] || { key: 'value1', color: 'blue' };
+  const barSeries = chartSeriesArray[1] || { key: 'value2', color: 'green' };
+  
+  // Get colors from series config
+  const lineColor = lineSeries.color || 'blue';
+  const barColor = barSeries.color || 'green';
+  
+  // Format colors for CSS variables
   const finalLineColor = `var(--data-${lineColor})`;
   const finalBarColor = `var(--data-${barColor})`;
+  
+  // Create gradient IDs using consistent naming convention with other chart components
+  const lineGradientId = `color-${lineSeries.key}`;
+  const barGradientId = `barGradient${barSeries.key}`;
 
   return (
     <Column
       fillWidth
-      height={24}
-      border={border}
       radius="l"
+      border={border}
       data-viz="categorical"
+      height={24}
       {...flex}
     >
-      {(title || description) && (
-        <Column fillWidth borderBottom={border} horizontal="start" paddingX="20" paddingY="12" gap="4">
-          {title && (
-            <Text variant="heading-strong-s">
-              {title}
-            </Text>
-          )}
-          {description && (
-            <Text variant="label-default-s" onBackground="neutral-weak">
-              {description}
-            </Text>
-          )}
-        </Column>
-      )}
+      <ChartHeader
+        title={title}
+        description={description}
+        borderBottom={border}
+        dateRange={selectedDateRange}
+        date={date}
+        onDateRangeChange={handleDateRangeChange}
+        presets={date?.presets}
+      />
       <Row fill>
-        <RechartsResponsiveContainer width="100%" height="100%">
+        <ChartStatus 
+          loading={loading}
+          isEmpty={!filteredData || filteredData.length === 0}
+          emptyState={emptyState}
+        />
+        {!loading && filteredData && filteredData.length > 0 && (
+          <RechartsResponsiveContainer width="100%" height="100%">
           <RechartsComposedChart
-            data={data}
+            data={filteredData}
             margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
             barGap={4}
           >
@@ -114,11 +154,13 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
               <LinearGradient
                 id={barGradientId}
                 color={finalBarColor}
+                variant={variant as ChartStyles}
               />
               
               <LinearGradient
                 id={lineGradientId}
                 color={finalLineColor}
+                variant={variant as ChartStyles}
               />
             </defs>
             <RechartsCartesianGrid
@@ -130,6 +172,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
               <RechartsLegend
                 content={
                   <Legend 
+                    variant={variant as ChartStyles}
                     colors={[finalBarColor, finalLineColor]}
                     labels={labels}
                     position="top" 
@@ -145,45 +188,36 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
             )}
             {(labels === "x" || labels === "both") && (
               <RechartsXAxis
+                height={32}
+                tickMargin={6}
                 dataKey={xAxisKey}
-                axisLine={false}
-                tickLine={false}
-                height={xAxisTitle ? 50 : 0}
-                tick={{
-                  fill: "var(--neutral-on-background-weak)",
-                  fontSize: 11,
+                axisLine={{
+                  stroke: styles.axisLine.stroke,
                 }}
-                label={
-                  xAxisTitle
-                    ? { value: xAxisTitle, fontWeight: "500", position: 'bottom', offset: -23, fill: "var(--neutral-on-background-medium)" }
-                    : undefined
-                }
+                tickLine={styles.tickLine}
+                tick={{
+                  fill: styles.tick.fill,
+                  fontSize: styles.tick.fontSize,
+                }}
+                tickFormatter={(value) => {
+                  const dataPoint = data.find(item => item[xAxisKey] === value);
+                  return dataPoint?.label || value;
+                }}
               />
             )}
             {(labels === "y" || labels === "both") && (
               <RechartsYAxis
-                allowDataOverflow
-                axisLine={{
-                  stroke: "var(--neutral-alpha-medium)",
-                }}
-                tickLine={false}
+                width={64}
                 padding={{ top: 40 }}
+                allowDataOverflow
+                tickLine={styles.tickLine}
                 tick={{
-                  fill: "var(--neutral-on-background-weak)",
-                  fontSize: 11,
+                  fill: styles.tick.fill,
+                  fontSize: styles.tick.fontSize,
                 }}
-                width={yAxisTitle ? 56 : 0}
-                label={
-                  yAxisTitle
-                    ? { 
-                      value: yAxisTitle,
-                      position: 'insideTop',
-                      offset: 10,
-                      fontSize: 12,
-                      fill: "var(--neutral-on-background-medium)" 
-                    }
-                    : undefined
-                }
+                axisLine={{
+                  stroke: styles.axisLine.stroke,
+                }}
               />
             )}
             <RechartsTooltip
@@ -193,16 +227,30 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
               }}
               content={props =>
                 <Tooltip
-                  isTimeSeries={isTimeSeries}
-                  timeFormat={timeFormat}
+                  variant={variant as ChartStyles}
+                  isTimeSeries={selectedDateRange !== undefined}
+                  timeFormat={date?.format}
                   dataKey={xAxisKey}
                   {...props}
                 />
               }
             />
+            <RechartsArea
+              type={curveType}
+              dataKey={lineSeries.key}
+              name={lineSeries.key}
+              stroke={finalLineColor}
+              fill={`url(#color-${lineSeries.key})`}
+              activeDot={{
+                r: 4,
+                fill: finalLineColor,
+                stroke: "var(--background)",
+                strokeWidth: 0
+              }}
+            />
             <RechartsBar
-              dataKey={barDataKey}
-              name={barName}
+              dataKey={barSeries.key}
+              name={barSeries.key}
               fill={`url(#${barGradientId})`}
               stroke={finalBarColor}
               strokeWidth={1}
@@ -223,36 +271,9 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                   : barWidth
                 }
             />
-            
-            {showArea ? (
-              <RechartsArea
-                type={curveType}
-                dataKey={lineDataKey}
-                name={lineName}
-                strokeDasharray={dashedLine ? "5 5" : "0"}
-                stroke={finalLineColor}
-                fill={`url(#${lineGradientId})`}
-                strokeWidth={1}
-                fillOpacity={1}
-                activeDot={{
-                  stroke: "var(--static-transparent)"
-                }}
-              />
-            ) : (
-              <RechartsLine
-                type={curveType}
-                dataKey={lineDataKey}
-                name={lineName}
-                stroke={finalLineColor}
-                strokeDasharray={dashedLine ? "5 5" : "0"}
-                strokeWidth={1}
-                activeDot={{
-                  stroke: "var(--static-transparent)"
-                }}
-              />
-            )}
           </RechartsComposedChart>
         </RechartsResponsiveContainer>
+        )}
       </Row>
     </Column>
   );

@@ -1,6 +1,8 @@
 import { DateRange } from "@/once-ui/components";
 import { Flex } from "../../components";
 
+type ChartStyles = "flat" | "gradient" | "outline";
+
 interface DataPoint {
   [key: string]: string | number | Date | undefined;
   label?: string;
@@ -31,7 +33,8 @@ interface ChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | '
   date?: DateConfig;
   emptyState?: React.ReactNode;
   labels?: "x" | "y" | "both" | "none";
-  variant?: "flat" | "gradient" | "outline";
+  variant?: ChartStyles;
+  loading?: boolean;
 }
 
-export type { DataPoint, SeriesConfig, DateConfig, ChartProps };
+export type { DataPoint, SeriesConfig, DateConfig, ChartProps, ChartStyles };

@@ -135,20 +135,20 @@ export default function Home() {
               <LineBarChart
                   title="Traffic Per Weekday"
                   description="How many users we had per weekday"
-                  showArea
                   legend
                   labels="both"
-                  yAxisTitle="Count"
-                  lineName="Traffic"
-                  barName="Conversions"
+                  series={[
+                    { key: "Traffic", color: "blue" },
+                    { key: "Conversions", color: "indigo" }
+                  ]}
                   data={[
-                    { name: "Mon", lineValue: 4500, barValue: 2190 },
-                    { name: "Tue", lineValue: 5200, barValue: 4230 },
-                    { name: "Wed", lineValue: 4800, barValue: 3250 },
-                    { name: "Thu", lineValue: 5900, barValue: 3280 },
-                    { name: "Fri", lineValue: 6800, barValue: 4320 },
-                    { name: "Sat", lineValue: 4800, barValue: 3190 },
-                    { name: "Sun", lineValue: 3900, barValue: 3170 },
+                    { name: "Mon", Traffic: 4500, Conversions: 2190 },
+                    { name: "Tue", Traffic: 5200, Conversions: 4230 },
+                    { name: "Wed", Traffic: 4800, Conversions: 3250 },
+                    { name: "Thu", Traffic: 5900, Conversions: 3280 },
+                    { name: "Fri", Traffic: 6800, Conversions: 4320 },
+                    { name: "Sat", Traffic: 4800, Conversions: 3190 },
+                    { name: "Sun", Traffic: 3900, Conversions: 3170 },
                   ]}
                 />
             </Row>

@@ -14,8 +14,8 @@ import {
 
 import { schemes, SpacingToken } from "../../types";
 import { Text, Column, Row } from "../../components";
-import { ChartProps, SeriesConfig, LinearGradient, Tooltip, Legend } from ".";
-import { styles } from "./config";
+import { ChartProps, SeriesConfig, LinearGradient, Tooltip, Legend, ChartStyles } from ".";
+import { styles } from "../../../app/resources/data.config";
 
 interface MultiBarDataPoint {
   name: string;
@@ -51,7 +51,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   title,
   description,
   legend = false,
-  variant = "gradient",
+  variant = styles.variant,
   border = "neutral-medium",
   ...flex
 }) => {
@@ -123,6 +123,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   
                   return (
                     <Legend 
+                      variant={variant as ChartStyles}
                       payload={customPayload}
                       labels={labels} 
                       position="top" 
@@ -170,6 +171,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   showColors
                   isTimeSeries={time.series}
                   timeFormat={time.format}
+                  variant={variant as ChartStyles}
                   {...props}
                 />
               }
@@ -180,7 +182,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   key={`gradient-${index}`}
                   id={`barGradient${index}`}
                   color={color}
-                  variant={variant}
+                  variant={variant as ChartStyles}
                 />
               ))}
             </defs>
