@@ -20,7 +20,7 @@ import { styles } from "@/app/resources/data.config";
 
 interface LineBarChartProps extends ChartProps {
   barWidth?: barWidth;
-  curveType?: curveType;
+  curve?: curveType;
 }
 
 const LineBarChart: React.FC<LineBarChartProps> = ({
@@ -36,7 +36,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
   border = "neutral-medium",
   variant = styles.variant,
   barWidth = "fill",
-  curveType = "natural",
+  curve = "natural",
   ...flex
 }) => {
   const legend = {
@@ -236,7 +236,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 }
               />
               <RechartsArea
-                type={curveType}
+                type={curve}
                 dataKey={lineSeries.key}
                 name={lineSeries.key}
                 stroke={finalLineColor}

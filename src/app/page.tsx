@@ -72,7 +72,6 @@ export default function Home() {
           xAxisKey="name"
           series={{
             key: "Sales",
-            color: "blue"
           }}
           data={[
             { name: "Electronics", Sales: 4500, label: "Electronics" },
@@ -83,6 +82,91 @@ export default function Home() {
           ]}
         />
       </Row>
+
+      <LineChart
+        labels="x"
+        curve="step"
+        title="Dachstein Glacier Retreat"
+        description="Surface area of the Dachstein glacier over time"
+        date={{
+          start: new Date("1500-01-01"),
+          end: new Date("2030-01-01"),
+          format: "yyyy"
+        }}
+        series={[{ key: "Area", color: "contrast" }]}
+        data={[
+          { date: "1600-01-01", Area: 5.6 },
+          { date: "1625-01-01", Area: 5.575 },
+          { date: "1650-01-01", Area: 5.55 },
+          { date: "1675-01-01", Area: 5.525 },
+          { date: "1700-01-01", Area: 5.5 },
+          { date: "1725-01-01", Area: 5.475 },
+          { date: "1750-01-01", Area: 5.45 },
+          { date: "1775-01-01", Area: 5.425 },
+          { date: "1800-01-01", Area: 5.4 },
+          { date: "1825-01-01", Area: 5.375 },
+          { date: "1850-01-01", Area: 5.3 },
+          { date: "1875-01-01", Area: 5.1 },
+          { date: "1900-01-01", Area: 4.9 },
+          { date: "1925-01-01", Area: 4.6 },
+          { date: "1950-01-01", Area: 4.2 },
+          { date: "1975-01-01", Area: 3.4 },
+          { date: "2000-01-01", Area: 2.3 },
+          { date: "2025-01-01", Area: 1.44 }
+        ]}
+      />
+
+      <PieChart
+        title="Microplastics Ingested Annually"
+        description="Estimated particles per person per source"
+        legend={{
+          display: true,
+          position: "top-left",
+          direction: "column"
+        }}
+        ring={{ inner: 60, outer: 70 }}
+        series={{
+          key: "value",
+        }}
+        data={[
+          { name: "Bottled Water", value: 94370 },
+          { name: "Beer", value: 32270 },
+          { name: "Salt", value: 11000 },
+          { name: "Air", value: 9800 },
+          { name: "Tap Water", value: 4240 },
+          { name: "Honey", value: 1480 }
+        ]}
+      />
+
+      <BarChart
+        title="Wealth Distribution: Top 1% vs Bottom 99%"
+        description="Share of new global wealth since 2020"
+        labels="x"
+        xAxisKey="group"
+        barWidth="m"
+        series={{
+          key: "wealth",
+        }}
+        data={[
+          { group: "Top 1%", wealth: 63 },
+          { group: "Bottom 99%", wealth: 37 }
+        ]}
+      />
+
+      <BarChart
+        title="Daily Time Spent on Activities"
+        description="Social media vs. reading"
+        labels="x"
+        xAxisKey="activity"
+        series={{
+          key: "minutes",
+          color: "indigo"
+        }}
+        data={[
+          { activity: "Social Media", minutes: 144 },
+          { activity: "Reading", minutes: 16 }
+        ]}
+      />
               
       <LineChart
         title="Page Visits Per Week"

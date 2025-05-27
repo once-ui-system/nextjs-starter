@@ -20,7 +20,7 @@ import { schemes } from "../../types";
 import { getDistributedColor } from "./utils/colorDistribution";
 
 interface LineChartProps extends ChartProps {
-  curveType?: curveType;
+  curve?: curveType;
 }
 
 const LineChart: React.FC<LineChartProps> = ({
@@ -35,7 +35,7 @@ const LineChart: React.FC<LineChartProps> = ({
   labels = "both",
   border = "neutral-medium",
   variant = styles.variant,
-  curveType = "natural",
+  curve = "natural",
   ...flex
 }) => {
   const legend = {
@@ -244,7 +244,7 @@ const LineChart: React.FC<LineChartProps> = ({
               return (
                 <RechartsArea
                   key={key}
-                  type={curveType}
+                  type={curve}
                   dataKey={key}
                   name={key}
                   stroke={lineColor}

@@ -25,6 +25,7 @@ interface DateConfig {
   dual?: boolean;
   format?: string;
   presets?: boolean;
+  selector?: boolean;
   onChange?: (range: DateRange) => void;
 }
 

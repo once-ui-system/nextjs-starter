@@ -142,7 +142,7 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
             </Text>
           )}
         </Column>
-        {dateRange && (
+        {dateRange && date?.selector && (
           <DropdownWrapper
             isOpen={dateRangeOpen}
             onOpenChange={(isOpen) => setDateRangeOpen(isOpen)}
