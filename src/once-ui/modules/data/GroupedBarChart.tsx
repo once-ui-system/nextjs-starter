@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   BarChart as RechartsBarChart,
   Bar as RechartsBar,
@@ -9,26 +9,13 @@ import {
   ResponsiveContainer as RechartsResponsiveContainer,
   CartesianGrid as RechartsCartesianGrid,
   Tooltip as RechartsTooltip,
-  Legend as RechartsLegend
+  Legend as RechartsLegend,
 } from "recharts";
 
-import { schemes, SpacingToken } from "../../types";
-import { Text, Column, Row } from "../../components";
-import { ChartProps, SeriesConfig, LinearGradient, Tooltip, Legend, ChartStyles } from ".";
+import { Column, Row, DateRange } from "../../components";
+import { getDistributedColor } from "./utils/colorDistribution";
+import { ChartProps, LinearGradient, Tooltip, Legend, ChartStyles, ChartStatus, ChartHeader, barWidth } from ".";
 import { styles } from "../../../app/resources/data.config";
-
-interface MultiBarDataPoint {
-  name: string;
-  value1?: number;
-  value2?: number;
-  value3?: number;
-  startDate?: string;
-  endDate?: string;
-}
-
-interface BarProps {
-  width?: SpacingToken | "fill" | number;
-}
 
 interface TimeProps {
   series?: boolean;
@@ -37,183 +24,226 @@ interface TimeProps {
 
 interface GroupedBarChartProps extends ChartProps {
   xAxisKey?: string;
-  bar?: BarProps;
+  barWidth?: barWidth;
   time?: TimeProps;
 }
 
 const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
-  data,
-  labels = "both",
-  xAxisKey = "name",
-  series,
-  bar = { width: "l" },
-  time = { series: false, format: "" },
   title,
   description,
-  legend = false,
-  variant = styles.variant,
+  data,
+  series,
+  date,
+  emptyState,
+  loading = false,
+  legend = { display: true, position: "top-left" },
+  labels = "both",
   border = "neutral-medium",
+  variant = styles.variant,
+  xAxisKey = "name",
+  barWidth = "l",
+  time = { series: false, format: "" },
   ...flex
 }) => {
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
+    date?.start && date?.end ? {
+      startDate: date.start,
+      endDate: date.end
+    } : undefined
+  );
+
+  useEffect(() => {
+    if (date?.start && date?.end) {
+      setSelectedDateRange({
+        startDate: date.start,
+        endDate: date.end
+      });
+    }
+  }, [date?.start, date?.end]);
+
+  const handleDateRangeChange = (newRange: DateRange) => {
+    setSelectedDateRange(newRange);
+    if (date?.onChange) {
+      date.onChange(newRange);
+    }
+  };
+
   const seriesArray = Array.isArray(series) ? series : (series ? [series] : []);
 
   const coloredSeriesArray = seriesArray.map((s, index) => ({
     ...s,
-    color: s.color || schemes[index % schemes.length]
+    color: s.color || getDistributedColor(index, seriesArray.length)
   }));
   
+  const autoKeys = Object.keys(data[0] || {}).filter(key => key !== xAxisKey);
   const autoSeries = seriesArray.length > 0 ? coloredSeriesArray : 
-    Object.keys(data[0] || {})
-      .filter(key => key !== xAxisKey)
-      .map((key, index) => ({
-        key,
-        color: schemes[index % schemes.length]
-      }));
+    autoKeys.map((key, index) => ({
+      key,
+      color: getDistributedColor(index, autoKeys.length)
+    }));
   
   const barColors = autoSeries.map(s => `var(--data-${s.color})`);
 
+  const filteredData = React.useMemo(() => {
+    if (!selectedDateRange || !data || data.length === 0) {
+      return data;
+    }
+
+    return data.filter(item => {
+      try {
+        if (!item[xAxisKey] || !selectedDateRange.startDate || !selectedDateRange.endDate) {
+          return true;
+        }
+        
+        const itemDate = typeof item[xAxisKey] === 'string' ? new Date(item[xAxisKey] as string) : item[xAxisKey] as Date;
+        
+        return itemDate >= selectedDateRange.startDate && 
+               itemDate <= selectedDateRange.endDate;
+      } catch (e) {
+        return true;
+      }
+    });
+  }, [data, selectedDateRange, xAxisKey]);
+  
   return (
     <Column
       fillWidth
-      height={24}
+      height={styles.height}
+      data-viz={styles.mode}
       border={border}
       radius="l"
-      data-viz="categorical"
       {...flex}
     >
-      {(title || description) && (
-        <Column
-          fillWidth
-          borderBottom={border}
-          paddingX="20"
-          paddingY="12"
-          gap="4"
-        >
-          {title && (
-            <Text variant="heading-strong-s">
-              {title}
-            </Text>
-          )}
-          {description && (
-            <Text variant="label-default-s" onBackground="neutral-weak">
-              {description}
-            </Text>
-          )}
-        </Column>
-      )}
+      <ChartHeader
+        title={title}
+        description={description}
+        borderBottom={border}
+        dateRange={selectedDateRange}
+        date={date}
+        onDateRangeChange={handleDateRangeChange}
+        presets={date?.presets}
+      />
       <Row fill>
-        <RechartsResponsiveContainer width="100%" height="100%">
-          <RechartsBarChart
-            data={data}
-            margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
-            barGap={4}
-          >
-            <RechartsCartesianGrid
-              horizontal
-              vertical={false}
-              stroke="var(--neutral-alpha-weak)"
-            />
-            {legend && (
-              <RechartsLegend
-                content={props => {
-                  const customPayload = autoSeries.map((series, index) => ({
-                    value: series.key,
-                    color: barColors[index]
-                  }));
-                  
-                  return (
-                    <Legend 
-                      variant={variant as ChartStyles}
-                      payload={customPayload}
-                      labels={labels} 
-                      position="top" 
-                    />
-                  );
-                }}
-                wrapperStyle={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  margin: 0
-                }}
+        <ChartStatus
+          loading={loading}
+          isEmpty={!filteredData || filteredData.length === 0}
+          emptyState={emptyState}
+        />
+        {!loading && filteredData && filteredData.length > 0 && (
+          <RechartsResponsiveContainer width="100%" height="100%">
+            <RechartsBarChart
+              data={filteredData}
+              margin={{ left: 0, bottom: 0, top: 0, right: 0 }}
+              barGap={4}
+            >
+              <RechartsCartesianGrid
+                horizontal
+                vertical={false}
+                stroke="var(--neutral-alpha-weak)"
               />
-            )}
-            {(labels === "x" || labels === "both") && (
-              <RechartsXAxis
-                dataKey={xAxisKey}
-                axisLine={false}
-                tickLine={false}
-                tick={{
-                  fill: styles.tick.fill,
-                  fontSize: styles.tick.fontSize,
-                }}
-              />
-            )}
-            {(labels === "y" || labels === "both") && (
-              <RechartsYAxis
-                allowDataOverflow
-                axisLine={{
-                  stroke: styles.axisLine.stroke,
-                }}
-                tickLine={false}
-                padding={{ top: 40 }}
-                tick={{
-                  fill: styles.tick.fill,
-                  fontSize: styles.tick.fontSize,
-                }}
-                width={64}
-              />
-            )}
-            <RechartsTooltip
-              cursor={{ fill: "var(--neutral-alpha-weak)" }}
-              content={props => 
-                <Tooltip
-                  showColors
-                  isTimeSeries={time.series}
-                  timeFormat={time.format}
-                  variant={variant as ChartStyles}
-                  {...props}
+              {legend.display && (
+                <RechartsLegend
+                  content={props => {
+                    const customPayload = autoSeries.map((series, index) => ({
+                      value: series.key,
+                      color: barColors[index]
+                    }));
+                    
+                    return (
+                      <Legend 
+                        variant={variant as ChartStyles}
+                        payload={customPayload}
+                        labels={labels} 
+                        position={legend.position} 
+                        direction={legend.direction}
+                      />
+                    );
+                  }}
+                  wrapperStyle={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    margin: 0
+                  }}
                 />
-              }
-            />
-            <defs>
-              {barColors.map((color, index) => (
-                <LinearGradient
-                  key={`gradient-${index}`}
-                  id={`barGradient${index}`}
-                  color={color}
-                  variant={variant as ChartStyles}
+              )}
+              {(labels === "x" || labels === "both") && (
+                <RechartsXAxis
+                  dataKey={xAxisKey}
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{
+                    fill: styles.tick.fill,
+                    fontSize: styles.tick.fontSize,
+                  }}
+                />
+              )}
+              {(labels === "y" || labels === "both") && (
+                <RechartsYAxis
+                  allowDataOverflow
+                  axisLine={{
+                    stroke: styles.axisLine.stroke,
+                  }}
+                  tickLine={false}
+                  padding={{ top: 40 }}
+                  tick={{
+                    fill: styles.tick.fill,
+                    fontSize: styles.tick.fontSize,
+                  }}
+                  width={64}
+                />
+              )}
+              <RechartsTooltip
+                cursor={{ fill: "var(--neutral-alpha-weak)" }}
+                content={props => 
+                  <Tooltip
+                    showColors
+                    isTimeSeries={time.series}
+                    timeFormat={time.format}
+                    variant={variant as ChartStyles}
+                    {...props}
+                  />
+                }
+              />
+              <defs>
+                {barColors.map((color, index) => (
+                  <LinearGradient
+                    key={`gradient-${index}`}
+                    id={`barGradient${index}`}
+                    color={color}
+                    variant={variant as ChartStyles}
+                  />
+                ))}
+              </defs>
+              {autoSeries.map((series, index) => (
+                <RechartsBar
+                  key={series.key}
+                  dataKey={series.key}
+                  name={series.key}
+                  fill={`url(#barGradient${index})`}
+                  stroke={barColors[index]}
+                  strokeWidth={1}
+                  barSize={
+                    typeof barWidth === "string" && barWidth === "fill"
+                      ? "100%"
+                      : typeof barWidth === "string" && barWidth === "xs"
+                      ? 12
+                      : typeof barWidth === "string" && barWidth === "s"
+                      ? 16
+                      : typeof barWidth === "string" && barWidth === "m"
+                      ? 24
+                      : typeof barWidth === "string" && barWidth === "l"
+                      ? 40
+                      : typeof barWidth === "string" && barWidth === "xl"
+                      ? 64
+                      : barWidth
+                  }
+                  radius={(barWidth === "fill" || barWidth === "xl") ? [10, 10, 10, 10] : [6, 6, 6, 6]}
                 />
               ))}
-            </defs>
-            {autoSeries.map((series, index) => (
-              <RechartsBar
-                key={series.key}
-                dataKey={series.key}
-                name={series.key}
-                fill={`url(#barGradient${index})`}
-                stroke={barColors[index]}
-                strokeWidth={1}
-                barSize={
-                  typeof bar.width === "string" && bar.width === "fill"
-                    ? "100%"
-                    : typeof bar.width === "string" && bar.width === "xs"
-                    ? 12
-                    : typeof bar.width === "string" && bar.width === "s"
-                    ? 16
-                    : typeof bar.width === "string" && bar.width === "m"
-                    ? 24
-                    : typeof bar.width === "string" && bar.width === "l"
-                    ? 40
-                    : typeof bar.width === "string" && bar.width === "xl"
-                    ? 64
-                    : bar.width
-                }
-                radius={(bar.width === "fill" || bar.width === "xl") ? [10, 10, 10, 10] : [6, 6, 6, 6]}
-              />
-            ))}
-          </RechartsBarChart>
-        </RechartsResponsiveContainer>
+            </RechartsBarChart>
+          </RechartsResponsiveContainer>
+        )}
       </Row>
     </Column>
   );

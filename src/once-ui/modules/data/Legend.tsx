@@ -10,14 +10,16 @@ interface LegendProps {
   payload?: any[];
   labels?: "x" | "y" | "both" | "none";
   colors?: string[];
-  position?: "top" | "bottom" | "left" | "right";
+  direction?: "row" | "column";
+  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-center" | "bottom-center";
   variant?: ChartStyles;
 }
 
 const Legend: React.FC<LegendProps> = ({
   payload,
   labels = "both",
-  position = "top",
+  position = "top-left",
+  direction,
   colors,
   variant = styles.variant
 }) => {
@@ -27,33 +29,44 @@ const Legend: React.FC<LegendProps> = ({
 
   const getPositionStyle = () => {
     switch (position) {
-      case "top":
+      case "top-left":
         return {
-          left: (labels === "y" || labels === "both") ? "88px" : "12px",
-          top: "12px"
+          paddingLeft: (labels === "y" || labels === "both") ? "var(--static-space-80)" : "var(--static-space-20)",
+          top: "var(--static-space-12)"
         };
-      case "bottom":
+      case "top-right":
+        return {
+          paddingRight: "var(--static-space-20)",
+          top: "var(--static-space-12)",
+          justifyContent: "flex-end"
+        };
+      case "bottom-left":
+        return {
+          paddingLeft: "var(--static-space-20)",
+          bottom: "var(--static-space-12)",
+        };
+      case "bottom-right":
+        return {
+          paddingRight: "var(--static-space-20)",
+          bottom: "var(--static-space-12)",
+          justifyContent: "flex-end"
+        };
+      case "top-center":
         return {
           left: "50%",
-          bottom: "12px",
-          transform: "translateX(-50%)"
+          top: "var(--static-space-12)",
+          transform: "translateX(-50%)",
         };
-      case "left":
+      case "bottom-center":
         return {
-          left: "12px",
-          top: "50%",
-          transform: "translateY(-50%)"
-        };
-      case "right":
-        return {
-          right: "12px",
-          top: "50%",
-          transform: "translateY(-50%)"
+          left: "50%",
+          bottom: "var(--static-space-12)",
+          transform: "translateX(-50%)",
         };
       default:
         return {
-          left: (labels === "y" || labels === "both") ? "88px" : "12px",
-          top: "12px"
+          paddingLeft: (labels === "y" || labels === "both") ? "var(--static-space-80)" : "var(--static-space-20)",
+          top: "0.75rem"
         };
     }
   };
@@ -63,10 +76,13 @@ const Legend: React.FC<LegendProps> = ({
   return (
     <Row
       wrap
-      horizontal={position === "left" || position === "right" ? "center" : "start"}
-      vertical="center" 
+      fillWidth
+      horizontal={(position === "top-left" || position === "top-right" || position === "bottom-left" || position === "bottom-right") ? "start" : "center"}
+      vertical="center"
       position="absolute"
       gap="16"
+      pointerEvents="none"
+      direction={direction}
       style={positionStyle}
     >
       {payload.map((entry: any, index: number) => {

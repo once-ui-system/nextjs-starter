@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   PieChart as RechartsPieChart,
   Pie as RechartsPie,
@@ -9,140 +9,181 @@ import {
   ResponsiveContainer as RechartsResponsiveContainer,
   Legend as RechartsLegend
 } from "recharts";
-import { Column, Flex, Row } from "../../components";
+import { Column, Row, DateRange } from "../../components";
 import { Tooltip, Legend } from "../";
 import { ChartHeader } from "./ChartHeader";
 import { RadialGradient } from "./Gradient";
 import { schemes } from "@/once-ui/types";
 import { styles } from "@/app/resources/data.config";
 import { ChartStatus } from "./ChartStatus";
-import { ChartStyles } from "./interfaces";
+import { ChartProps, ChartStyles } from "./interfaces";
 
-interface DataPoint {
-  name: string;
-  value: number;
-  color?: string;
-}
-
-interface PieChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
-  data: DataPoint[];
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  legend?: boolean;
-  innerRadius?: number | string;
-  outerRadius?: number | string;
+interface PieChartProps extends ChartProps {
+  ring?: { inner: number; outer: number; };
   dataKey?: string;
   nameKey?: string;
-  paddingAngle?: number;
-  useGradients?: boolean;
-  variant?: ChartStyles;
-  loading?: boolean;
-  emptyState?: React.ReactNode;
 }
 
 export const PieChart: React.FC<PieChartProps> = ({
-  data,
-  border = "neutral-medium",
   title,
   description,
-  legend = false,
-  innerRadius = "0",
-  outerRadius = "90%",
+  data,
+  series,
+  date,
+  emptyState,
+  loading = false,
+  legend = { display: true, position: "bottom-center" },
+  border = "neutral-medium",
+  variant = styles.variant,
+  ring = { inner: 0, outer: 80 },
   dataKey = "value",
   nameKey = "name",
-  paddingAngle = 0,
-  useGradients = true,
-  variant = styles.variant,
-  loading = false,
-  emptyState,
   ...flex
 }) => {
-  const colorPalette = schemes.map((c) => `var(--data-${c})`);
-
-  const gradientIds = data.map((_, index) => 
-    `pieGradient-${Math.random().toString(36).substring(2, 9)}-${index}`
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
+    date?.start && date?.end ? {
+      startDate: date.start,
+      endDate: date.end
+    } : undefined
   );
+
+  useEffect(() => {
+    if (date?.start && date?.end) {
+      setSelectedDateRange({
+        startDate: date.start,
+        endDate: date.end
+      });
+    }
+  }, [date?.start, date?.end]);
+
+  const handleDateRangeChange = (newRange: DateRange) => {
+    setSelectedDateRange(newRange);
+    if (date?.onChange) {
+      date.onChange(newRange);
+    }
+  };
+
+  const colorPalette = schemes.map((c) => `var(--data-${c})`);
+  
+  const filteredData = React.useMemo(() => {
+    if (!selectedDateRange || !data || data.length === 0) {
+      return data;
+    }
+
+    return data.filter(item => {
+      try {
+        if (!item.date || !selectedDateRange.startDate || !selectedDateRange.endDate) {
+          return true;
+        }
+        
+        const itemDate = typeof item.date === 'string' ? new Date(item.date) : item.date;
+        
+        return itemDate >= selectedDateRange.startDate && 
+               itemDate <= selectedDateRange.endDate;
+      } catch (e) {
+        return true;
+      }
+    });
+  }, [data, selectedDateRange]);
+
+  const getGradientId = React.useCallback((index: number): string => {
+    return `pieGradient-${index}`;
+  }, []);
 
   return (
     <Column
       fillWidth
-      height={24}
+      height={styles.height}
+      data-viz={styles.mode}
       border={border}
       radius="l"
-      data-viz="categorical"
       {...flex}
     >
       <ChartHeader
         title={title}
         description={description}
         borderBottom={border}
+        dateRange={selectedDateRange}
+        date={date}
+        onDateRangeChange={handleDateRangeChange}
+        presets={date?.presets}
       />
       <Row fill>
         <ChartStatus 
           loading={loading}
-          isEmpty={!data || data.length === 0}
+          isEmpty={!filteredData || filteredData.length === 0}
           emptyState={emptyState}
         />
-        <RechartsResponsiveContainer width="100%" height="100%">
-          <RechartsPieChart>
-            <defs>
-              {data.map((entry, index) => {
-                const baseColor = entry.color || colorPalette[index % colorPalette.length];
-                return (
-                  <RadialGradient
-                    id={gradientIds[index]}
-                    key={`gradient-${index}`}
-                    color={baseColor}
-                  />
-                );
-              })}
-            </defs>
-            <RechartsPie
-              data={data}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              innerRadius={innerRadius}
-              outerRadius={outerRadius}
-              paddingAngle={paddingAngle}
-              dataKey={dataKey}
-              nameKey={nameKey}
-              stroke="none"
-            >
-              {data.map((entry, index) => {
-                const baseColor = entry.color || colorPalette[index % colorPalette.length];
-                return (
-                  <RechartsCell 
-                    key={`cell-${index}`} 
-                    fill={useGradients ? `url(#${gradientIds[index]})` : baseColor} 
-                    strokeWidth={1}
-                    stroke={baseColor}
-                  />
-                );
-              })}
-            </RechartsPie>
-            <RechartsTooltip 
-              content={props => <Tooltip showColors={false} variant={variant as ChartStyles} {...props} />}
-            />
-            {legend && (
-              <RechartsLegend
-                content={(props) => (
-                  <Legend
-                    {...props}
-                    variant={variant as ChartStyles}
-                    labels="both"
-                    position="bottom"
-                    colors={colorPalette}
-                  />
-                )}
-                wrapperStyle={{
-                  position: "relative",
-                  bottom: "12px",
-                }}
+        {!loading && filteredData && filteredData.length > 0 && (
+          <RechartsResponsiveContainer width="100%" height="100%">
+            <RechartsPieChart>
+              <defs>
+                {filteredData.map((entry, index) => {
+                  const colorKey = entry.color || schemes[index % schemes.length];
+                  const baseColor = `var(--data-${colorKey})`;
+                  const gradientId = getGradientId(index);
+                  return (
+                    <RadialGradient
+                      id={gradientId}
+                      key={`gradient-${index}`}
+                      color={baseColor}
+                    />
+                  );
+                })}
+              </defs>
+              {legend.display && (
+                <RechartsLegend
+                  content={(props) => (
+                    <Legend
+                      {...props}
+                      variant={variant as ChartStyles}
+                      position={legend.position}
+                      direction={legend.direction}
+                      labels="none"
+                      colors={colorPalette}
+                    />
+                  )}
+                  wrapperStyle={{
+                    position: 'absolute',
+                    top: (legend.position === "top-center" || legend.position === "top-left" || legend.position === "top-right") ? 0 : undefined,
+                    bottom: (legend.position === "bottom-center" || legend.position === "bottom-left" || legend.position === "bottom-right") ? 0 : undefined,
+                    right: 0,
+                    left: 0,
+                    margin: 0
+                  }}
+                />
+              )}
+              <RechartsPie
+                data={filteredData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                innerRadius={ring.inner + "%"}
+                outerRadius={ring.outer + "%"}
+                dataKey={dataKey}
+                nameKey={nameKey}
+                stroke="none"
+              >
+                {filteredData.map((entry, index) => {
+                  const colorKey = entry.color || schemes[index % schemes.length];
+                  const baseColor = `var(--data-${colorKey})`;
+                  const gradientId = getGradientId(index);
+                  return (
+                    <RechartsCell 
+                      key={`cell-${index}`} 
+                      fill={`url(#${gradientId})`} 
+                      strokeWidth={1}
+                      stroke={baseColor}
+                    />
+                  );
+                })}
+              </RechartsPie>
+              <RechartsTooltip 
+                content={props => <Tooltip showColors={false} variant={variant as ChartStyles} {...props} />}
               />
-            )}
-          </RechartsPieChart>
-        </RechartsResponsiveContainer>
+            </RechartsPieChart>
+          </RechartsResponsiveContainer>
+        )}
       </Row>
     </Column>
   );

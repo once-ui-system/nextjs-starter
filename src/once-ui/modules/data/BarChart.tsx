@@ -12,32 +12,31 @@ import {
   Legend as RechartsLegend
 } from "recharts";
 
-import { TShirtSizes } from "../../types";
-import { Column, Row, DateRange, Text } from "../../components";
-import { ChartHeader, LinearGradient, ChartProps, Tooltip, Legend, ChartStyles } from ".";
-import { styles } from "../../../app/resources/data.config";
+import { Column, Row, DateRange } from "../../components";
+import { ChartHeader, LinearGradient, ChartProps, Tooltip, Legend, ChartStyles, barWidth, ChartStatus } from ".";
+import { styles } from "@/app/resources/data.config";
 
 interface BarChartProps extends ChartProps {
   xAxisKey?: string;
   yAxisKey?: string;
-  barWidth?: TShirtSizes | "fill";
-  emptyState?: React.ReactNode;
+  barWidth?: barWidth;
 }
 
 const BarChart: React.FC<BarChartProps> = ({
+  title,
+  description,
   data,
+  series,
+  date,
+  emptyState,
+  loading = false,
+  legend = { display: true, position: "top-left" },
+  labels = "both",
+  border = "neutral-medium",
   variant = styles.variant,
   xAxisKey = "date",
   yAxisKey,
   barWidth = "fill",
-  border = "neutral-medium",
-  series,
-  legend = false,
-  title,
-  description,
-  labels = "both",
-  date,
-  emptyState,
   ...flex
 }) => {
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
@@ -84,7 +83,6 @@ const BarChart: React.FC<BarChartProps> = ({
         return itemDate >= selectedDateRange.startDate && 
                itemDate <= selectedDateRange.endDate;
       } catch (e) {
-        // If we can't parse the date, include the item
         return true;
       }
     });
@@ -93,10 +91,10 @@ const BarChart: React.FC<BarChartProps> = ({
   return (
     <Column
       fillWidth
-      height={24}
+      height={styles.height}
+      data-viz={styles.mode}
       border={border}
       radius="l"
-      data-viz="categorical"
       {...flex}
     >
       <ChartHeader
@@ -109,15 +107,12 @@ const BarChart: React.FC<BarChartProps> = ({
         presets={date?.presets}
       />
       <Row fill>
-        {!filteredData || filteredData.length === 0 ? (
-          <Column fill center>
-            {emptyState ? emptyState : (
-              <Text variant="label-default-s" onBackground="neutral-weak">
-                No data available for the selected period
-              </Text>
-            )}
-          </Column>
-        ) : (
+        <ChartStatus
+          loading={loading}
+          isEmpty={!filteredData || filteredData.length === 0}
+          emptyState={emptyState}
+        />
+        {!loading && filteredData && filteredData.length > 0 && (
           <RechartsResponsiveContainer width="100%" height="100%">
             <RechartsBarChart
               data={filteredData}
@@ -128,7 +123,7 @@ const BarChart: React.FC<BarChartProps> = ({
               vertical={false}
               stroke="var(--neutral-alpha-weak)"
             />
-            {legend && (
+            {legend.display && (
               <RechartsLegend
                 content={(props) => {
                   const customPayload = [{
@@ -138,10 +133,11 @@ const BarChart: React.FC<BarChartProps> = ({
                   
                   return (
                     <Legend 
-                      position="top" 
+                      position={legend.position} 
                       payload={customPayload}
                       labels={labels} 
                       variant={variant as ChartStyles}
+                      direction={legend.direction}
                     />
                   );
                 }}

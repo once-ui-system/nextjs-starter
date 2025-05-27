@@ -137,6 +137,7 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
           <DropdownWrapper
             isOpen={dateRangeOpen}
             onOpenChange={(isOpen) => setDateRangeOpen(isOpen)}
+            floatingPlacement="bottom-end"
             trigger={
               <IconButton
                 icon="calendar"

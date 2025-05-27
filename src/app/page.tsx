@@ -43,7 +43,6 @@ export default function Home() {
       <Row fillWidth gap="32" mobileDirection="column">
         <BarChart
           title="Company revenue in Q2 2025"
-          legend
           variant="flat"
           description="How much dough we made"
           series={{
@@ -90,7 +89,6 @@ export default function Home() {
         title="Page Visits Per Week"
         description="How many users visited our page"
         labels="both"
-        legend
         date={{
           start: new Date("2024-01-01"),
           end: new Date("2024-01-31"),
@@ -98,10 +96,15 @@ export default function Home() {
           dual: false,
           presets: true
         }}
+        legend={{
+          display: true,
+          position: "top-left",
+          direction: "column"
+        }}
         series={[
-          { key: "Revenue", color: "cyan" },
-          { key: "Profit", color: "blue" },
-          { key: "Loss", color: "indigo" }
+          { key: "Revenue" },
+          { key: "Profit" },
+          { key: "Loss" }
         ]}
         data={[
           { date: "2024-01-01", Revenue: 2100, Profit: 1400, Loss: 5500, label: format(parseISO("2024-01-01"), "MMM d") },
@@ -116,7 +119,6 @@ export default function Home() {
             
           <Row fillWidth gap="32" mobileDirection="column">
             <GroupedBarChart
-              legend
               title="Quarterly revenue"
               description="How much dough we made per quarter in 2023 and 2024"
                 data={[
@@ -135,8 +137,11 @@ export default function Home() {
               <LineBarChart
                   title="Traffic Per Weekday"
                   description="How many users we had per weekday"
-                  legend
                   labels="both"
+                  legend={{
+                    display: true,
+                    position: "top-right"
+                  }}
                   series={[
                     { key: "Traffic", color: "blue" },
                     { key: "Conversions", color: "indigo" }
@@ -158,8 +163,19 @@ export default function Home() {
 
               <PieChart
                 title="Pie chart"
-                legend
-                innerRadius="70%"
+                legend={{
+                  display: true,
+                  position: "top-left",
+                  direction: "column"
+                }}
+                ring={{
+                  inner: 0,
+                  outer: 100
+                }}
+                series={{
+                  key: "value",
+                  color: "moss"
+                }}
                 data = {[
                   { name: 'Category A', value: 400 },
                   { name: 'Category B', value: 300 },
@@ -169,7 +185,10 @@ export default function Home() {
               />
               
               <PieChart
-                legend
+                series={{
+                  key: "value",
+                  color: "green"
+                }}
                 data = {[
                   { name: 'Category A', value: 400 },
                   { name: 'Category B', value: 300 },

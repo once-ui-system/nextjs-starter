@@ -1,7 +1,11 @@
 import { DateRange } from "@/once-ui/components";
 import { Flex } from "../../components";
+import { TShirtSizes } from "@/once-ui/types";
+import { CurveType } from "recharts/types/shape/Curve";
 
 type ChartStyles = "flat" | "gradient" | "outline";
+type barWidth = TShirtSizes | "fill" | number;
+type curveType = CurveType;
 
 interface DataPoint {
   [key: string]: string | number | Date | undefined;
@@ -24,12 +28,18 @@ interface DateConfig {
   onChange?: (range: DateRange) => void;
 }
 
+interface legendConfig {
+  display?: boolean;
+  direction?: "row" | "column";
+  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-center" | "bottom-center";
+}
+
 interface ChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
   title?: React.ReactNode;
   description?: React.ReactNode;
   series: SeriesConfig | SeriesConfig[];
   data: DataPoint[];
-  legend?: boolean;
+  legend?: legendConfig;
   date?: DateConfig;
   emptyState?: React.ReactNode;
   labels?: "x" | "y" | "both" | "none";
@@ -37,4 +47,4 @@ interface ChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | '
   loading?: boolean;
 }
 
-export type { DataPoint, SeriesConfig, DateConfig, ChartProps, ChartStyles };
+export type { DataPoint, SeriesConfig, DateConfig, ChartProps, ChartStyles, barWidth, curveType };

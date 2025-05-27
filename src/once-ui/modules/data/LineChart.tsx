@@ -13,12 +13,13 @@ import {
   ResponsiveContainer as RechartsResponsiveContainer,
   Legend as RechartsLegend
 } from "recharts";
-import { Column, Row, DateRange, Text, Spinner } from "../../components";
-import { LinearGradient, ChartHeader, Tooltip, Legend, SeriesConfig, ChartProps, ChartStatus, ChartStyles } from ".";
-import { schemes } from "@/once-ui/types";
+import { Column, Row, DateRange } from "../../components";
+import { LinearGradient, ChartHeader, Tooltip, Legend, SeriesConfig, ChartProps, ChartStatus, ChartStyles, curveType } from ".";
+import { schemes } from "../../types";
+import { getDistributedColor } from "./utils/colorDistribution";
 
 interface LineChartProps extends ChartProps {
-  curveType?: "linear" | "monotone" | "monotoneX" | "step" | "natural";
+  curveType?: curveType;
 }
 
 const LineChart: React.FC<LineChartProps> = ({
@@ -29,11 +30,11 @@ const LineChart: React.FC<LineChartProps> = ({
   date,
   emptyState,
   loading = false,
-  legend = false,
-  border = "neutral-medium",
+  legend = { display: true, position: "top-left" },
   labels = "both",
-  curveType = "natural",
+  border = "neutral-medium",
   variant = styles.variant,
+  curveType = "natural",
   ...flex
 }) => {
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
@@ -57,16 +58,15 @@ const LineChart: React.FC<LineChartProps> = ({
   
   const coloredSeriesArray = seriesArray.map((s, index) => ({
     ...s,
-    color: s.color || schemes[index % schemes.length]
+    color: s.color || getDistributedColor(index, seriesArray.length)
   }));
   
+  const autoKeys = Object.keys(data[0] || {}).filter(key => !seriesKeys.includes(key));
   const autoSeries = seriesArray.length > 0 ? coloredSeriesArray : 
-    Object.keys(data[0] || {})
-      .filter(key => !seriesKeys.includes(key))
-      .map((key, index) => ({
-        key,
-        color: schemes[index % schemes.length]
-      }));
+    autoKeys.map((key, index) => ({
+      key,
+      color: getDistributedColor(index, autoKeys.length)
+    }));
 
   const xAxisKey = Object.keys(data[0] || {}).find(key => 
     !seriesKeys.includes(key)
@@ -110,10 +110,10 @@ const LineChart: React.FC<LineChartProps> = ({
   return (
     <Column
       fillWidth
-      radius="l"
+      height={styles.height}
+      data-viz={styles.mode}
       border={border}
-      data-viz="categorical"
-      height={24}
+      radius="l"
       {...flex}
     >
       <ChartHeader
@@ -156,7 +156,7 @@ const LineChart: React.FC<LineChartProps> = ({
               horizontal
               stroke="var(--neutral-alpha-weak)"
             />
-            {legend && (
+            {legend.display && (
               <RechartsLegend
                 content={(props) => {
                   const customPayload = autoSeries.map(({ key, color }, index) => ({
@@ -168,7 +168,8 @@ const LineChart: React.FC<LineChartProps> = ({
                     <Legend 
                       payload={customPayload}
                       labels={labels} 
-                      position="top" 
+                      position={legend.position}
+                      direction={legend.direction}
                       variant={variant as ChartStyles}
                     />
                   );
