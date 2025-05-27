@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { formatDate } from "./utils/formatDate";
 import {
   BarChart as RechartsBarChart,
   Bar as RechartsBar,
@@ -164,7 +165,7 @@ const BarChart: React.FC<BarChartProps> = ({
                 }}
                 tickFormatter={(value) => {
                   const dataPoint = data.find(item => item[xAxisKey] === value);
-                  return dataPoint?.label || value;
+                  return formatDate(value, date, dataPoint);
                 }}
               />
             )}
@@ -187,10 +188,10 @@ const BarChart: React.FC<BarChartProps> = ({
               cursor={{ fill: "var(--neutral-alpha-weak)" }}
               content={props => 
                 <Tooltip
+                  {...props}
                   date={date}
                   colors={false}
                   variant={variant as ChartStyles}
-                  {...props}
                 />
               }
             />

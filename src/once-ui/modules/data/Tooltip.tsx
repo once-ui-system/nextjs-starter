@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { format, parseISO } from "date-fns";
+import { formatDate } from "./utils/formatDate";
 import { Column, Text, Row, LetterFx } from "../../components";
 import { Swatch } from "./Swatch";
 import { ChartStyles, DateConfig } from "./interfaces";
@@ -55,7 +55,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   label,
   dataKey = "name",
   tooltip,
-  date = { series: false, format: "MMM d" },
+  date = { format: "MMM d" },
   colors = true,
   variant = "gradient"
 }) => {
@@ -64,20 +64,10 @@ const Tooltip: React.FC<TooltipProps> = ({
   }
 
   const dataPoint = payload[0].payload;
-  const displayLabel = dataPoint?.[dataKey] || label;
+  const displayLabel = label || dataPoint?.[dataKey];
   
-  const formattedLabel = date.series && displayLabel 
-    ? formatDate(displayLabel, date?.format || "MMM d") 
-    : dataPoint?.label || dataPoint?.endDate || displayLabel;
-    
-  function formatDate(dateValue: string | Date, formatString: string) {
-    try {
-      const date = typeof dateValue === 'string' ? parseISO(dateValue) : dateValue;
-      return format(date, formatString);
-    } catch (error) {
-      return dateValue;
-    }
-  }
+  const formattedLabel = formatDate(displayLabel, date, dataPoint) || 
+    displayLabel || dataPoint?.endDate;
 
   return (
     <Column

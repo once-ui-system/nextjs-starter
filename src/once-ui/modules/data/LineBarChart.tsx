@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { isWithinInterval, parseISO } from 'date-fns';
+import { formatDate } from "./utils/formatDate";
 import {
   ComposedChart as RechartsComposedChart,
   Bar as RechartsBar,
@@ -196,7 +197,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                   }}
                   tickFormatter={(value) => {
                     const dataPoint = data.find(item => item[xAxisKey] === value);
-                    return dataPoint?.label || value;
+                    return formatDate(value, date, dataPoint);
                   }}
                 />
               )}
@@ -222,10 +223,10 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 }}
                 content={props =>
                   <Tooltip
+                    {...props}
                     variant={variant as ChartStyles}
                     date={date}
                     dataKey={xAxisKey}
-                    {...props}
                   />
                 }
               />

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { isWithinInterval, parseISO } from 'date-fns';
+import { formatDate } from "./utils/formatDate";
 import { styles } from "../../../app/resources/data.config";
 import {
   AreaChart as RechartsAreaChart,
@@ -199,7 +200,7 @@ const LineChart: React.FC<LineChartProps> = ({
                 }}
                 tickFormatter={(value) => {
                   const dataPoint = data.find(item => item[xAxisKey] === value);
-                  return dataPoint?.label || value;
+                  return formatDate(value, date, dataPoint);
                 }}
               />
             )}
@@ -225,9 +226,9 @@ const LineChart: React.FC<LineChartProps> = ({
               }}
               content={props => 
                 <Tooltip 
+                  {...props}
                   variant={variant as ChartStyles}
                   date={date}
-                  {...props}
                 />
               }
             />

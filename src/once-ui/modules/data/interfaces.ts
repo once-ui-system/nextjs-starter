@@ -23,7 +23,6 @@ interface DateConfig {
   max?: Date;
   min?: Date;
   dual?: boolean;
-  series?: boolean;
   format?: string;
   presets?: boolean;
   onChange?: (range: DateRange) => void;

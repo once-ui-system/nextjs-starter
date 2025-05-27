@@ -219,9 +219,10 @@ export const PieChart: React.FC<PieChartProps> = ({
                   }
                   return (
                     <Tooltip
-                      date={date}
-                      variant={variant as ChartStyles}
                       {...props}
+                      date={date}
+                      label="static"
+                      variant={variant as ChartStyles}
                     />
                   );
                 }}

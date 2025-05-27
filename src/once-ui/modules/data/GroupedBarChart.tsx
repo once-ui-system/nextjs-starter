@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { formatDate } from "./utils/formatDate";
 import {
   BarChart as RechartsBarChart,
   Bar as RechartsBar,
@@ -169,6 +170,10 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                     fill: styles.tick.fill,
                     fontSize: styles.tick.fontSize,
                   }}
+                  tickFormatter={(value) => {
+                    const dataPoint = data.find(item => item[xAxisKey] === value);
+                    return formatDate(value, date, dataPoint);
+                  }}
                 />
               )}
               {(labels === "y" || labels === "both") && (
@@ -190,9 +195,9 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                 cursor={{ fill: "var(--neutral-alpha-weak)" }}
                 content={props => 
                   <Tooltip
+                    {...props}
                     date={date}
                     variant={variant as ChartStyles}
-                    {...props}
                   />
                 }
               />
