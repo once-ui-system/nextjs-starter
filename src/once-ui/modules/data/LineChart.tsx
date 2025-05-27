@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { isWithinInterval, parseISO } from 'date-fns';
 import { formatDate } from "./utils/formatDate";
-import { styles } from "../../../app/resources/data.config";
+import { chart } from "../../../app/resources/data.config";
 import {
   AreaChart as RechartsAreaChart,
   Area as RechartsArea,
@@ -34,7 +34,7 @@ const LineChart: React.FC<LineChartProps> = ({
   legend: legendProp = {},
   labels = "both",
   border = "neutral-medium",
-  variant = styles.variant,
+  variant = chart.variant,
   curve = "natural",
   ...flex
 }) => {
@@ -117,8 +117,7 @@ const LineChart: React.FC<LineChartProps> = ({
   return (
     <Column
       fillWidth
-      height={styles.height}
-      data-viz={styles.mode}
+      height={chart.height}
       border={border}
       radius="l"
       {...flex}
@@ -186,7 +185,8 @@ const LineChart: React.FC<LineChartProps> = ({
                   position: 'absolute',
                   top: 0,
                   right: 0,
-                  left: 0,
+                  left: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "var(--static-space-64)" : 0,
+                  width: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "calc(100% - var(--static-space-64))" : "100%",
                   margin: 0
                 }}
               />
@@ -197,12 +197,12 @@ const LineChart: React.FC<LineChartProps> = ({
                 tickMargin={6}
                 dataKey={xAxisKey}
                 axisLine={{
-                  stroke: styles.axisLine.stroke,
+                  stroke: chart.axisLine.stroke,
                 }}
-                tickLine={styles.tickLine}
+                tickLine={chart.tickLine}
                 tick={{
-                  fill: styles.tick.fill,
-                  fontSize: styles.tick.fontSize,
+                  fill: chart.tick.fill,
+                  fontSize: chart.tick.fontSize,
                 }}
                 tickFormatter={(value) => {
                   const dataPoint = data.find(item => item[xAxisKey] === value);
@@ -215,13 +215,13 @@ const LineChart: React.FC<LineChartProps> = ({
                 width={64}
                 padding={{ top: 40 }}
                 allowDataOverflow
-                tickLine={styles.tickLine}
+                tickLine={chart.tickLine}
                 tick={{
-                  fill: styles.tick.fill,
-                  fontSize: styles.tick.fontSize,
+                  fill: chart.tick.fill,
+                  fontSize: chart.tick.fontSize,
                 }}
                 axisLine={{
-                  stroke: styles.axisLine.stroke,
+                  stroke: chart.axisLine.stroke,
                 }}
               />
             )}

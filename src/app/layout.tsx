@@ -8,6 +8,7 @@ import { Background, Column, Flex, ToastProvider, ThemeProvider } from "@/once-u
 
 import { opacity, SpacingToken } from "@/once-ui/types";
 import { Meta, Schema } from "@/once-ui/modules";
+import { chart } from "./resources/data.config";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -43,6 +44,8 @@ export default function RootLayout({
       data-surface={style.surface}
       data-transition={style.transition}
       data-scaling={style.scaling}
+      data-viz={chart.mode}
+      data-mode={chart.variant}
       className={classNames(
         font.primary.variable,
         font.secondary.variable,

@@ -12,7 +12,7 @@ import {
 import { Column, Row, DateRange } from "../../components";
 import { ChartProps, ChartStyles, ChartStatus, RadialGradient, Tooltip, Legend, ChartHeader } from ".";
 import { getDistributedColor } from "./utils/colorDistribution";
-import { styles } from "@/app/resources/data.config";
+import { chart } from "@/app/resources/data.config";
 import { schemes } from "@/once-ui/types";
 
 interface PieChartProps extends ChartProps {
@@ -33,7 +33,7 @@ export const PieChart: React.FC<PieChartProps> = ({
   loading = false,
   legend: legendProp = {},
   border = "neutral-medium",
-  variant = styles.variant,
+  variant = chart.variant,
   ring = { inner: 0, outer: 80 },
   dataKey = "value",
   nameKey = "name",
@@ -104,8 +104,7 @@ export const PieChart: React.FC<PieChartProps> = ({
   return (
     <Column
       fillWidth
-      height={styles.height}
-      data-viz={styles.mode}
+      height={chart.height}
       border={border}
       radius="l"
       {...flex}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { formatDate } from "./utils/formatDate";
 import {
   BarChart as RechartsBarChart,
@@ -16,11 +16,12 @@ import {
 import { Column, Row, DateRange } from "../../components";
 import { getDistributedColor } from "./utils/colorDistribution";
 import { ChartProps, LinearGradient, Tooltip, Legend, ChartStyles, ChartStatus, ChartHeader, barWidth } from ".";
-import { styles } from "../../../app/resources/data.config";
+import { chart } from "../../../app/resources/data.config";
 
 interface GroupedBarChartProps extends ChartProps {
   xAxisKey?: string;
   barWidth?: barWidth;
+  hover?: boolean;
 }
 
 const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
@@ -34,9 +35,10 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   legend: legendProp = {},
   labels = "both",
   border = "neutral-medium",
-  variant = styles.variant,
+  variant = chart.variant,
   xAxisKey = "name",
   barWidth = "l",
+  hover = false,
   ...flex
 }) => {
   const legend = {
@@ -68,6 +70,9 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   };
 
   const seriesArray = Array.isArray(series) ? series : (series ? [series] : []);
+
+  // Generate a unique ID for this chart instance
+  const chartId = React.useMemo(() => Math.random().toString(36).substring(2, 9), []);
 
   const coloredSeriesArray = seriesArray.map((s, index) => ({
     ...s,
@@ -107,8 +112,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   return (
     <Column
       fillWidth
-      height={styles.height}
-      data-viz={styles.mode}
+      height={chart.height}
       border={border}
       radius="l"
       {...flex}
@@ -161,6 +165,8 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   wrapperStyle={{
                     position: 'absolute',
                     top: 0,
+                    left: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "var(--static-space-64)" : 0,
+                    width: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "calc(100% - var(--static-space-64))" : "100%",
                     right: 0,
                     margin: 0
                   }}
@@ -172,8 +178,8 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   axisLine={false}
                   tickLine={false}
                   tick={{
-                    fill: styles.tick.fill,
-                    fontSize: styles.tick.fontSize,
+                    fill: chart.tick.fill,
+                    fontSize: chart.tick.fontSize,
                   }}
                   tickFormatter={(value) => {
                     const dataPoint = data.find(item => item[xAxisKey] === value);
@@ -188,16 +194,16 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   padding={{ top: 40 }}
                   tickLine={false}
                   tick={{
-                    fill: styles.tick.fill,
-                    fontSize: styles.tick.fontSize,
+                    fill: chart.tick.fill,
+                    fontSize: chart.tick.fontSize,
                   }}
                   axisLine={{
-                    stroke: styles.axisLine.stroke,
+                    stroke: chart.axisLine.stroke,
                   }}
                 />
               )}
               <RechartsTooltip
-                cursor={{ fill: "var(--neutral-alpha-weak)" }}
+                cursor={{ fill: hover ? "var(--neutral-alpha-weak)" : "var(--static-transparent)" }}
                 content={props => 
                   <Tooltip
                     {...props}
@@ -209,8 +215,8 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
               <defs>
                 {barColors.map((color, index) => (
                   <LinearGradient
-                    key={`gradient-${index}`}
-                    id={`barGradient${index}`}
+                    key={`gradient-${chartId}-${index}`}
+                    id={`barGradient${chartId}${index}`}
                     color={color}
                     variant={variant as ChartStyles}
                   />
@@ -221,7 +227,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   key={series.key}
                   dataKey={series.key}
                   name={series.key}
-                  fill={`url(#barGradient${index})`}
+                  fill={`url(#barGradient${chartId}${index})`}
                   stroke={barColors[index]}
                   strokeWidth={1}
                   barSize={

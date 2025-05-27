@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { formatDate } from "./utils/formatDate";
 import {
   BarChart as RechartsBarChart,
@@ -15,12 +15,13 @@ import {
 
 import { Column, Row, DateRange } from "../../components";
 import { ChartHeader, LinearGradient, ChartProps, Tooltip, Legend, ChartStyles, barWidth, ChartStatus } from ".";
-import { styles } from "@/app/resources/data.config";
+import { chart } from "@/app/resources/data.config";
 
 interface BarChartProps extends ChartProps {
   xAxisKey?: string;
   yAxisKey?: string;
   barWidth?: barWidth;
+  hover?: boolean;
 }
 
 const BarChart: React.FC<BarChartProps> = ({
@@ -34,10 +35,11 @@ const BarChart: React.FC<BarChartProps> = ({
   legend: legendProp = {},
   labels = "both",
   border = "neutral-medium",
-  variant = styles.variant,
+  variant = chart.variant,
   xAxisKey = "date",
   yAxisKey,
   barWidth = "fill",
+  hover = false,
   ...flex
 }) => {
   const legend = {
@@ -68,7 +70,12 @@ const BarChart: React.FC<BarChartProps> = ({
     }
   };
 
-  const seriesConfig = series ? (Array.isArray(series) ? series[0] : series) : { key: "Revenue", color: "blue" };
+  const autoSeries = Array.isArray(series) ? series : [series];
+  
+  // Generate a unique ID for this chart instance
+  const chartId = React.useMemo(() => Math.random().toString(36).substring(2, 9), []);
+
+  const seriesConfig = autoSeries[0] ? autoSeries[0] : { key: "Revenue", color: "blue" };
   const seriesKey = seriesConfig.key || "Revenue";
   const seriesColor = seriesConfig.color || "blue";
   const barColor = `var(--data-${seriesColor})`;
@@ -97,8 +104,8 @@ const BarChart: React.FC<BarChartProps> = ({
   return (
     <Column
       fillWidth
-      height={styles.height}
-      data-viz={styles.mode}
+      height={chart.height}
+      data-viz={chart.mode}
       border={border}
       radius="l"
       {...flex}
@@ -151,6 +158,8 @@ const BarChart: React.FC<BarChartProps> = ({
                   position: 'absolute',
                   top: 0,
                   right: 0,
+                  left: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "var(--static-space-64)" : 0,
+                  width: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "calc(100% - var(--static-space-64))" : "100%",
                   margin: 0
                 }}
               />
@@ -161,12 +170,12 @@ const BarChart: React.FC<BarChartProps> = ({
                 tickMargin={6}
                 dataKey={xAxisKey}
                 axisLine={{
-                  stroke: styles.axisLine.stroke,
+                  stroke: chart.axisLine.stroke,
                 }}
-                tickLine={styles.tickLine}
+                tickLine={chart.tickLine}
                 tick={{
-                  fill: styles.tick.fill,
-                  fontSize: styles.tick.fontSize,
+                  fill: chart.tick.fill,
+                  fontSize: chart.tick.fontSize,
                 }}
                 tickFormatter={(value) => {
                   const dataPoint = data.find(item => item[xAxisKey] === value);
@@ -179,18 +188,18 @@ const BarChart: React.FC<BarChartProps> = ({
                 width={64}
                 padding={{ top: 40 }}
                 allowDataOverflow
-                tickLine={styles.tickLine}
+                tickLine={chart.tickLine}
                 tick={{
-                  fill: styles.tick.fill,
-                  fontSize: styles.tick.fontSize,
+                  fill: chart.tick.fill,
+                  fontSize: chart.tick.fontSize,
                 }}
                 axisLine={{
-                  stroke: styles.axisLine.stroke,
+                  stroke: chart.axisLine.stroke,
                 }}
               />
             )}
             <RechartsTooltip
-              cursor={{ fill: "var(--neutral-alpha-weak)" }}
+              cursor={{ fill: hover ? "var(--neutral-alpha-weak)" : "var(--static-transparent)" }}
               content={props => 
                 <Tooltip
                   {...props}
@@ -202,15 +211,15 @@ const BarChart: React.FC<BarChartProps> = ({
             />
             <defs>
               <LinearGradient 
-                key={`gradient-${seriesColor}`}
-                id={`barGradient${seriesColor}`}
+                key={`gradient-${chartId}`}
+                id={`barGradient${chartId}`}
                 variant={variant as "gradient" | "flat" | "outline"}
                 color={barColor}
               />
             </defs>
             <RechartsBar
               dataKey={effectiveYAxisKey}
-              fill={`url(#barGradient${seriesColor})`}
+              fill={`url(#barGradient${chartId})`}
               stroke={barColor}
               strokeWidth={1}
               barSize={

@@ -3,7 +3,7 @@
 import React from "react";
 import { Row, Text } from "../../components";
 import { Swatch } from "./Swatch";
-import { styles } from "../../../app/resources/data.config";
+import { chart } from "../../../app/resources/data.config";
 import { ChartStyles } from "./interfaces";
 
 interface LegendProps {
@@ -21,7 +21,7 @@ const Legend: React.FC<LegendProps> = ({
   position = "top-left",
   direction,
   colors,
-  variant = styles.variant
+  variant = chart.variant
 }) => {
   if (!payload || !payload.length) {
     return null;

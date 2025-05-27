@@ -141,18 +141,25 @@ export default function Home() {
         ]}
       />
 
-      <BarChart
-        title="Wealth Distribution: Top 1% vs Bottom 99%"
-        description="Share of new global wealth since 2020"
-        labels="x"
-        xAxisKey="group"
-        barWidth="m"
-        series={{
-          key: "wealth",
+      <GroupedBarChart
+        data-viz="divergent"
+        title="Wealth distribution"
+        description="Global share of wealth held by Top 1% vs Bottom 99%, 2000–2025"
+        barWidth="s"
+        legend={{
+          position: "top-center",
         }}
+        series={[
+          { key: "Top 1%" },
+          { key: "Bottom 99%" }
+        ]}
         data={[
-          { group: "Top 1%", wealth: 63 },
-          { group: "Bottom 99%", wealth: 37 }
+          { name: "2000", "Top 1%": 32.0, "Bottom 99%": 68.0 },
+          { name: "2005", "Top 1%": 33.0, "Bottom 99%": 67.0 },
+          { name: "2010", "Top 1%": 35.4, "Bottom 99%": 64.6 },
+          { name: "2015", "Top 1%": 45.0, "Bottom 99%": 55.0 },
+          { name: "2020", "Top 1%": 50.0, "Bottom 99%": 50.0 },
+          { name: "2025 (est.)", "Top 1%": 52.5, "Bottom 99%": 47.5 }
         ]}
       />
 

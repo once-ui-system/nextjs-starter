@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { styles } from "../../../app/resources/data.config";
+import { chart } from "../../../app/resources/data.config";
 import { ChartStyles } from "./interfaces";
 
 interface GradientStop {
@@ -62,7 +62,7 @@ export const LinearGradient: React.FC<LinearGradientProps> = ({
   x2 = "0",
   y2 = "1",
   stops,
-  variant = styles.variant
+  variant = chart.variant
 }) => {
   const gradientStops = stops || getStopsByVariant(variant as ChartStyles);
   return (
@@ -88,7 +88,7 @@ export const RadialGradient: React.FC<RadialGradientProps> = ({
   fx = "50%",
   fy = "50%",
   stops,
-  variant = styles.variant
+  variant = chart.variant
 }) => {
   const gradientStops = stops || getStopsByVariant(variant as ChartStyles);
   return (

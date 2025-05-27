@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { isWithinInterval, parseISO } from 'date-fns';
 import { formatDate } from "./utils/formatDate";
 import {
@@ -16,7 +16,7 @@ import {
 } from "recharts";
 import { Column, Row, DateRange } from "../../components";
 import { LinearGradient, ChartHeader, Tooltip, Legend, ChartStatus, ChartProps, SeriesConfig, ChartStyles, barWidth, curveType } from ".";
-import { styles } from "@/app/resources/data.config";
+import { chart } from "@/app/resources/data.config";
 
 interface LineBarChartProps extends ChartProps {
   barWidth?: barWidth;
@@ -34,7 +34,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
   legend: legendProp = {},
   labels = "both",
   border = "neutral-medium",
-  variant = styles.variant,
+  variant = chart.variant,
   barWidth = "fill",
   curve = "natural",
   ...flex
@@ -116,14 +116,12 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
   const finalLineColor = `var(--data-${lineColor})`;
   const finalBarColor = `var(--data-${barColor})`;
   
-  const lineGradientId = `color-${lineSeries.key}`;
-  const barGradientId = `barGradient${barSeries.key}`;
+  const chartId = React.useMemo(() => Math.random().toString(36).substring(2, 9), []);
 
   return (
     <Column
       fillWidth
-      height={styles.height}
-      data-viz={styles.mode}
+      height={chart.height}
       border={border}
       radius="l"
       {...flex}
@@ -152,13 +150,13 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
             >
               <defs>
                 <LinearGradient
-                  id={barGradientId}
+                  id={`barGradient${chartId}`}
                   color={finalBarColor}
                   variant={variant as ChartStyles}
                 />
                 
                 <LinearGradient
-                  id={lineGradientId}
+                  id={`lineGradient${chartId}`}
                   color={finalLineColor}
                   variant={variant as ChartStyles}
                 />
@@ -193,12 +191,12 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                   tickMargin={6}
                   dataKey={xAxisKey}
                   axisLine={{
-                    stroke: styles.axisLine.stroke,
+                    stroke: chart.axisLine.stroke,
                   }}
-                  tickLine={styles.tickLine}
+                  tickLine={chart.tickLine}
                   tick={{
-                    fill: styles.tick.fill,
-                    fontSize: styles.tick.fontSize,
+                    fill: chart.tick.fill,
+                    fontSize: chart.tick.fontSize,
                   }}
                   tickFormatter={(value) => {
                     const dataPoint = data.find(item => item[xAxisKey] === value);
@@ -211,13 +209,13 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                   width={64}
                   padding={{ top: 40 }}
                   allowDataOverflow
-                  tickLine={styles.tickLine}
+                  tickLine={chart.tickLine}
                   tick={{
-                    fill: styles.tick.fill,
-                    fontSize: styles.tick.fontSize,
+                    fill: chart.tick.fill,
+                    fontSize: chart.tick.fontSize,
                   }}
                   axisLine={{
-                    stroke: styles.axisLine.stroke,
+                    stroke: chart.axisLine.stroke,
                   }}
                 />
               )}
@@ -240,7 +238,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 dataKey={lineSeries.key}
                 name={lineSeries.key}
                 stroke={finalLineColor}
-                fill={`url(#color-${lineSeries.key})`}
+                fill={`url(#lineGradient${chartId})`}
                 activeDot={{
                   r: 4,
                   fill: finalLineColor,
@@ -251,7 +249,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
               <RechartsBar
                 dataKey={barSeries.key}
                 name={barSeries.key}
-                fill={`url(#${barGradientId})`}
+                fill={`url(#barGradient${chartId})`}
                 stroke={finalBarColor}
                 strokeWidth={1}
                 radius={[4, 4, 4, 4]}

@@ -3,7 +3,7 @@
 import React from "react";
 import { Row } from "../../components";
 import { RadiusSize, SpacingToken } from "../../types";
-import { styles } from "../../../app/resources/data.config";
+import { chart } from "../../../app/resources/data.config";
 import { ChartStyles } from "./interfaces";
 
 export interface SwatchProps {
@@ -15,7 +15,7 @@ export interface SwatchProps {
 export const Swatch: React.FC<SwatchProps> = ({
   color,
   size = "m",
-  variant = styles.variant
+  variant = chart.variant
 }) => {
   const sizeMap: Record<string, { minWidth: SpacingToken, minHeight: SpacingToken, radius: RadiusSize }> = {
     s: {
