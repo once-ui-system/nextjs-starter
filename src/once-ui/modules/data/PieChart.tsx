@@ -16,6 +16,7 @@ import { chart } from "@/app/resources/data.config";
 import { schemes } from "@/once-ui/types";
 
 interface PieChartProps extends ChartProps {
+  "data-viz"?: string;
   ring?: { inner: number; outer: number; };
   dataKey?: string;
   nameKey?: string;
@@ -37,6 +38,7 @@ export const PieChart: React.FC<PieChartProps> = ({
   ring = { inner: 0, outer: 80 },
   dataKey = "value",
   nameKey = "name",
+  "data-viz": dataViz,
   ...flex
 }) => {
   const legend = {
@@ -105,6 +107,7 @@ export const PieChart: React.FC<PieChartProps> = ({
     <Column
       fillWidth
       height={chart.height}
+      data-viz={dataViz || chart.mode}
       border={border}
       radius="l"
       {...flex}
@@ -137,10 +140,7 @@ export const PieChart: React.FC<PieChartProps> = ({
                     r="50%"
                     fx="50%"
                     fy="50%"
-                    stops={[
-                      { offset: "0%", opacity: 0 },
-                      { offset: "100%", opacity: 1 }
-                    ]}
+                    variant={variant as ChartStyles}
                   />
                   <rect x="0" y="0" width="100%" height="100%" fill="url(#pieChartMasterGradient)" />
                 </pattern>
@@ -158,8 +158,12 @@ export const PieChart: React.FC<PieChartProps> = ({
                       width="100%" 
                       height="100%"
                     >
-                      <rect x="0" y="0" width="100%" height="100%" fill={baseColor} />
-                      <rect x="0" y="0" width="100%" height="100%" fill="url(#pieChartMasterPattern)" />
+                      {variant !== "outline" && (
+                        <rect x="0" y="0" width="100%" height="100%" fill={baseColor} />
+                      )}
+                      {variant === "gradient" && (
+                        <rect x="0" y="0" width="100%" height="100%" fill="url(#pieChartMasterPattern)" />
+                      )}
                     </pattern>
                   );
                 })}
@@ -195,7 +199,7 @@ export const PieChart: React.FC<PieChartProps> = ({
                 outerRadius={ring.outer + "%"}
                 dataKey={dataKey}
                 nameKey={nameKey}
-                stroke="none"
+                stroke={variant === "outline" ? undefined : "none"}
               >
                 {filteredData.map((entry, index) => {
                   const colorKey = entry.color || getDistributedColor(index, filteredData.length);
@@ -204,8 +208,8 @@ export const PieChart: React.FC<PieChartProps> = ({
                   return (
                     <RechartsCell 
                       key={`cell-${index}`} 
-                      fill={`url(#${gradientId})`} 
-                      strokeWidth={1}
+                      fill={variant === "outline" ? "transparent" : `url(#${gradientId})`} 
+                      strokeWidth={variant === "outline" ? 2 : 1}
                       stroke={baseColor}
                     />
                   );

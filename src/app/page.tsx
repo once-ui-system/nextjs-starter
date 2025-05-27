@@ -50,10 +50,11 @@ export default function Home() {
           }}
           date={{
             start: new Date("2024-01-01"),
-            end: new Date("2024-01-31"),
+            end: new Date("2024-12-31"),
             max: new Date(),
             dual: false,
-            presets: true
+            presets: true,
+            selector: true
           }}
           data={[
             { date: "2024-01-01", Revenue: 4500, label: "January" },
@@ -84,6 +85,7 @@ export default function Home() {
       </Row>
 
       <LineChart
+        variant="outline"
         labels="x"
         curve="step"
         title="Dachstein glacier retreat"

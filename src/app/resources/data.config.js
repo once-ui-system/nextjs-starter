@@ -1,6 +1,6 @@
 const chart = {
-  variant: "flat", // flat | gradient | outline
-  mode: "sequential", // categorical | divergent | sequential
+  variant: "gradient", // flat | gradient | outline
+  mode: "categorical", // categorical | divergent | sequential
   height: 24, // default chart height
   axisLine: {
     stroke: "var(--neutral-alpha-weak)",
