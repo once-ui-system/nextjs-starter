@@ -226,8 +226,7 @@ const LineChart: React.FC<LineChartProps> = ({
               content={props => 
                 <Tooltip 
                   variant={variant as ChartStyles}
-                  isTimeSeries={selectedDateRange !== undefined}
-                  timeFormat={date?.format}
+                  date={date}
                   {...props}
                 />
               }

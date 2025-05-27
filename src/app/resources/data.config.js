@@ -1,5 +1,5 @@
 const styles = {
-  variant: "flat", // flat | gradient | outline
+  variant: "gradient", // flat | gradient | outline
   mode: "categorical", // categorical | divergent | sequential
   height: 24, // default chart height
   axisLine: {

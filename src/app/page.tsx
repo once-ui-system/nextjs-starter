@@ -163,14 +163,15 @@ export default function Home() {
 
               <PieChart
                 title="Pie chart"
+                origo={{ x: 40, y: 50 }}
                 legend={{
                   display: true,
                   position: "top-left",
                   direction: "column"
                 }}
                 ring={{
-                  inner: 0,
-                  outer: 100
+                  inner: 60,
+                  outer: 70
                 }}
                 series={{
                   key: "value",

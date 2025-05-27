@@ -223,8 +223,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 content={props =>
                   <Tooltip
                     variant={variant as ChartStyles}
-                    isTimeSeries={selectedDateRange !== undefined}
-                    timeFormat={date?.format}
+                    date={date}
                     dataKey={xAxisKey}
                     {...props}
                   />

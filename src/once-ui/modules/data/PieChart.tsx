@@ -10,18 +10,16 @@ import {
   Legend as RechartsLegend
 } from "recharts";
 import { Column, Row, DateRange } from "../../components";
-import { Tooltip, Legend } from "../";
-import { ChartHeader } from "./ChartHeader";
-import { RadialGradient } from "./Gradient";
-import { schemes } from "@/once-ui/types";
+import { ChartProps, ChartStyles, ChartStatus, RadialGradient, Tooltip, Legend, ChartHeader } from ".";
+import { getDistributedColor } from "./utils/colorDistribution";
 import { styles } from "@/app/resources/data.config";
-import { ChartStatus } from "./ChartStatus";
-import { ChartProps, ChartStyles } from "./interfaces";
+import { schemes } from "@/once-ui/types";
 
 interface PieChartProps extends ChartProps {
   ring?: { inner: number; outer: number; };
   dataKey?: string;
   nameKey?: string;
+  origo?: { x: number; y: number; };
 }
 
 export const PieChart: React.FC<PieChartProps> = ({
@@ -31,6 +29,7 @@ export const PieChart: React.FC<PieChartProps> = ({
   series,
   date,
   emptyState,
+  origo = { x: 50, y: 50 },
   loading = false,
   legend = { display: true, position: "bottom-center" },
   border = "neutral-medium",
@@ -63,7 +62,14 @@ export const PieChart: React.FC<PieChartProps> = ({
     }
   };
 
-  const colorPalette = schemes.map((c) => `var(--data-${c})`);
+  const colorPalette = React.useMemo(() => {
+    if (!data || data.length === 0) return schemes.map((c) => `var(--data-${c})`);
+    
+    return Array.from({ length: data.length }, (_, index) => {
+      const colorKey = getDistributedColor(index, data.length);
+      return `var(--data-${colorKey})`;
+    });
+  }, [data]);
   
   const filteredData = React.useMemo(() => {
     if (!selectedDateRange || !data || data.length === 0) {
@@ -86,8 +92,8 @@ export const PieChart: React.FC<PieChartProps> = ({
     });
   }, [data, selectedDateRange]);
 
-  const getGradientId = React.useCallback((index: number): string => {
-    return `pieGradient-${index}`;
+  const getGradientId = React.useCallback((colorKey: string | number | Date): string => {
+    return `pieGradient-${String(colorKey)}`;
   }, []);
 
   return (
@@ -118,16 +124,39 @@ export const PieChart: React.FC<PieChartProps> = ({
           <RechartsResponsiveContainer width="100%" height="100%">
             <RechartsPieChart>
               <defs>
-                {filteredData.map((entry, index) => {
-                  const colorKey = entry.color || schemes[index % schemes.length];
+                <pattern id="pieChartMasterPattern" patternUnits="userSpaceOnUse" width="100%" height="100%">
+                  <RadialGradient
+                    id="pieChartMasterGradient"
+                    color="var(--page-background)"
+                    cx="50%"
+                    cy="50%"
+                    r="50%"
+                    fx="50%"
+                    fy="50%"
+                    stops={[
+                      { offset: "0%", opacity: 0 },
+                      { offset: "100%", opacity: 1 }
+                    ]}
+                  />
+                  <rect x="0" y="0" width="100%" height="100%" fill="url(#pieChartMasterGradient)" />
+                </pattern>
+                
+                {Array.from(new Set(filteredData.map((entry, index) => {
+                  return entry.color || getDistributedColor(index, filteredData.length);
+                }))).map((colorKey) => {
                   const baseColor = `var(--data-${colorKey})`;
-                  const gradientId = getGradientId(index);
+                  const patternId = getGradientId(colorKey as string);
                   return (
-                    <RadialGradient
-                      id={gradientId}
-                      key={`gradient-${index}`}
-                      color={baseColor}
-                    />
+                    <pattern 
+                      id={patternId} 
+                      key={`pattern-${colorKey}`}
+                      patternUnits="userSpaceOnUse" 
+                      width="100%" 
+                      height="100%"
+                    >
+                      <rect x="0" y="0" width="100%" height="100%" fill={baseColor} />
+                      <rect x="0" y="0" width="100%" height="100%" fill="url(#pieChartMasterPattern)" />
+                    </pattern>
                   );
                 })}
               </defs>
@@ -155,8 +184,8 @@ export const PieChart: React.FC<PieChartProps> = ({
               )}
               <RechartsPie
                 data={filteredData}
-                cx="50%"
-                cy="50%"
+                cx={origo.x + "%"}
+                cy={origo.y + "%"}
                 labelLine={false}
                 innerRadius={ring.inner + "%"}
                 outerRadius={ring.outer + "%"}
@@ -165,9 +194,9 @@ export const PieChart: React.FC<PieChartProps> = ({
                 stroke="none"
               >
                 {filteredData.map((entry, index) => {
-                  const colorKey = entry.color || schemes[index % schemes.length];
+                  const colorKey = entry.color || getDistributedColor(index, filteredData.length);
                   const baseColor = `var(--data-${colorKey})`;
-                  const gradientId = getGradientId(index);
+                  const gradientId = getGradientId(String(colorKey));
                   return (
                     <RechartsCell 
                       key={`cell-${index}`} 
@@ -179,7 +208,23 @@ export const PieChart: React.FC<PieChartProps> = ({
                 })}
               </RechartsPie>
               <RechartsTooltip 
-                content={props => <Tooltip showColors={false} variant={variant as ChartStyles} {...props} />}
+                content={(props) => {
+                  if (props.payload && props.payload.length > 0) {
+                    const entry = props.payload[0];
+                    const index = filteredData.findIndex(item => item[nameKey] === entry.name);
+                    const colorKey = filteredData[index]?.color || getDistributedColor(index, filteredData.length);
+                    const color = `var(--data-${colorKey})`;
+                    
+                    props.payload[0].color = color;
+                  }
+                  return (
+                    <Tooltip
+                      date={date}
+                      variant={variant as ChartStyles}
+                      {...props}
+                    />
+                  );
+                }}
               />
             </RechartsPieChart>
           </RechartsResponsiveContainer>

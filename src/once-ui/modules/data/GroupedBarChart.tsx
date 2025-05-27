@@ -17,15 +17,9 @@ import { getDistributedColor } from "./utils/colorDistribution";
 import { ChartProps, LinearGradient, Tooltip, Legend, ChartStyles, ChartStatus, ChartHeader, barWidth } from ".";
 import { styles } from "../../../app/resources/data.config";
 
-interface TimeProps {
-  series?: boolean;
-  format?: string;
-}
-
 interface GroupedBarChartProps extends ChartProps {
   xAxisKey?: string;
   barWidth?: barWidth;
-  time?: TimeProps;
 }
 
 const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
@@ -42,7 +36,6 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   variant = styles.variant,
   xAxisKey = "name",
   barWidth = "l",
-  time = { series: false, format: "" },
   ...flex
 }) => {
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
@@ -181,25 +174,23 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
               {(labels === "y" || labels === "both") && (
                 <RechartsYAxis
                   allowDataOverflow
-                  axisLine={{
-                    stroke: styles.axisLine.stroke,
-                  }}
-                  tickLine={false}
+                  width={64}
                   padding={{ top: 40 }}
+                  tickLine={false}
                   tick={{
                     fill: styles.tick.fill,
                     fontSize: styles.tick.fontSize,
                   }}
-                  width={64}
+                  axisLine={{
+                    stroke: styles.axisLine.stroke,
+                  }}
                 />
               )}
               <RechartsTooltip
                 cursor={{ fill: "var(--neutral-alpha-weak)" }}
                 content={props => 
                   <Tooltip
-                    showColors
-                    isTimeSeries={time.series}
-                    timeFormat={time.format}
+                    date={date}
                     variant={variant as ChartStyles}
                     {...props}
                   />

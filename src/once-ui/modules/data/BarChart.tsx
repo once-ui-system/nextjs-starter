@@ -119,7 +119,7 @@ const BarChart: React.FC<BarChartProps> = ({
               margin={{ left: 0, right: 0, bottom: 0 }}
             >
             <RechartsCartesianGrid
-              horizontal={true}
+              horizontal
               vertical={false}
               stroke="var(--neutral-alpha-weak)"
             />
@@ -187,9 +187,8 @@ const BarChart: React.FC<BarChartProps> = ({
               cursor={{ fill: "var(--neutral-alpha-weak)" }}
               content={props => 
                 <Tooltip
-                  isTimeSeries={selectedDateRange !== undefined}
-                  timeFormat={date?.format}
-                  showColors={false}
+                  date={date}
+                  colors={false}
                   variant={variant as ChartStyles}
                   {...props}
                 />

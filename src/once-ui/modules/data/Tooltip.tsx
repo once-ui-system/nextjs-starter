@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import { Column, Text, Row, LetterFx } from "../../components";
 import { Swatch } from "./Swatch";
-import { ChartStyles } from "./interfaces";
+import { ChartStyles, DateConfig } from "./interfaces";
 
 const ValueWithAnimation: React.FC<{ value: number }> = ({ value }) => {
   const prevValueRef = useRef<number | null>(null);
@@ -44,9 +44,8 @@ interface TooltipProps {
   label?: string;
   dataKey?: string;
   tooltip?: React.ReactNode;
-  isTimeSeries?: boolean;
-  timeFormat?: string;
-  showColors?: boolean;
+  date?: DateConfig;
+  colors?: boolean;
   variant?: ChartStyles;
 }
 
@@ -56,9 +55,8 @@ const Tooltip: React.FC<TooltipProps> = ({
   label,
   dataKey = "name",
   tooltip,
-  isTimeSeries = false,
-  timeFormat = "MMM d",
-  showColors = true,
+  date = { series: false, format: "MMM d" },
+  colors = true,
   variant = "gradient"
 }) => {
   if (!active || !payload || !payload.length) {
@@ -68,14 +66,14 @@ const Tooltip: React.FC<TooltipProps> = ({
   const dataPoint = payload[0].payload;
   const displayLabel = dataPoint?.[dataKey] || label;
   
-  const formattedLabel = isTimeSeries && displayLabel 
-    ? formatDate(displayLabel, timeFormat) 
+  const formattedLabel = date.series && displayLabel 
+    ? formatDate(displayLabel, date?.format || "MMM d") 
     : dataPoint?.label || dataPoint?.endDate || displayLabel;
     
   function formatDate(dateValue: string | Date, formatString: string) {
     try {
       const date = typeof dateValue === 'string' ? parseISO(dateValue) : dateValue;
-      return format(date, formatString || 'MMM d');
+      return format(date, formatString);
     } catch (error) {
       return dateValue;
     }
@@ -109,7 +107,7 @@ const Tooltip: React.FC<TooltipProps> = ({
         {payload.map((entry: any, index: number) => (
           <Row key={index} horizontal="space-between" fillWidth gap="16">
             <Row vertical="center" gap="8">
-              {showColors && (
+              {colors && (
                 <Swatch 
                   color={entry.stroke || entry.color} 
                   size="s"

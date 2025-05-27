@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import moment from 'moment';
-import { Column, Text, Row, DateRange, DateRangePicker, DropdownWrapper, IconButton, Button, ToggleButton } from "../../components";
+import { startOfYear, endOfYear, startOfMonth, endOfMonth, startOfWeek, endOfWeek, subYears, subMonths, subWeeks, isSameDay } from 'date-fns';
+import { Column, Text, Row, DateRange, DateRangePicker, DropdownWrapper, IconButton, ToggleButton } from "../../components";
 import { DateConfig } from "./interfaces";
 
 interface ChartHeaderProps extends Omit<React.ComponentProps<typeof Column>, 'title' | 'description'> {
@@ -38,39 +38,48 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
   const dateRangePresets: Record<PresetName, DateRangePreset> = {
     'This year': {
       getRange: () => ({
-        startDate: moment().startOf('year').toDate(),
-        endDate: moment().endOf('year').toDate()
+        startDate: startOfYear(new Date()),
+        endDate: endOfYear(new Date())
       })
     },
     'This month': {
       getRange: () => ({
-        startDate: moment().startOf('month').toDate(),
-        endDate: moment().endOf('month').toDate()
+        startDate: startOfMonth(new Date()),
+        endDate: endOfMonth(new Date())
       })
     },
     'This week': {
       getRange: () => ({
-        startDate: moment().startOf('week').toDate(),
-        endDate: moment().endOf('week').toDate()
+        startDate: startOfWeek(new Date()),
+        endDate: endOfWeek(new Date())
       })
     },
     'Last year': {
-      getRange: () => ({
-        startDate: moment().subtract(1, 'year').startOf('year').toDate(),
-        endDate: moment().subtract(1, 'year').endOf('year').toDate()
-      })
+      getRange: () => {
+        const lastYear = subYears(new Date(), 1);
+        return {
+          startDate: startOfYear(lastYear),
+          endDate: endOfYear(lastYear)
+        };
+      }
     },
     'Last month': {
-      getRange: () => ({
-        startDate: moment().subtract(1, 'month').startOf('month').toDate(),
-        endDate: moment().subtract(1, 'month').endOf('month').toDate()
-      })
+      getRange: () => {
+        const lastMonth = subMonths(new Date(), 1);
+        return {
+          startDate: startOfMonth(lastMonth),
+          endDate: endOfMonth(lastMonth)
+        };
+      }
     },
     'Last week': {
-      getRange: () => ({
-        startDate: moment().subtract(1, 'week').startOf('week').toDate(),
-        endDate: moment().subtract(1, 'week').endOf('week').toDate()
-      })
+      getRange: () => {
+        const lastWeek = subWeeks(new Date(), 1);
+        return {
+          startDate: startOfWeek(lastWeek),
+          endDate: endOfWeek(lastWeek)
+        };
+      }
     }
   };
 
@@ -79,8 +88,8 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
       const matchingPreset = Object.entries(dateRangePresets).find(([name, preset]) => {
         const presetRange = preset.getRange();
         return (
-          moment(dateRange.startDate).isSame(moment(presetRange.startDate), 'day') &&
-          moment(dateRange.endDate).isSame(moment(presetRange.endDate), 'day')
+          dateRange.startDate && presetRange.startDate && isSameDay(dateRange.startDate, presetRange.startDate) &&
+          dateRange.endDate && presetRange.endDate && isSameDay(dateRange.endDate, presetRange.endDate)
         );
       });
       
