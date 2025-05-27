@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { formatDate } from "./utils/formatDate";
 import {
   BarChart as RechartsBarChart,
@@ -71,8 +71,6 @@ const BarChart: React.FC<BarChartProps> = ({
   };
 
   const autoSeries = Array.isArray(series) ? series : [series];
-  
-  // Generate a unique ID for this chart instance
   const chartId = React.useMemo(() => Math.random().toString(36).substring(2, 9), []);
 
   const seriesConfig = autoSeries[0] ? autoSeries[0] : { key: "Revenue", color: "blue" };
@@ -156,10 +154,12 @@ const BarChart: React.FC<BarChartProps> = ({
                 }}
                 wrapperStyle={{
                   position: 'absolute',
-                  top: 0,
-                  right: 0,
+                  top: (legend.position === "top-center" || legend.position === "top-left" || legend.position === "top-right") ? 0 : undefined,
+                  bottom: (legend.position === "bottom-center" || legend.position === "bottom-left" || legend.position === "bottom-right") ? 0 : undefined,
+                  paddingBottom: (legend.position === "bottom-center" || legend.position === "bottom-left" || legend.position === "bottom-right") ? "var(--static-space-40)" : undefined,
                   left: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "var(--static-space-64)" : 0,
                   width: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "calc(100% - var(--static-space-64))" : "100%",
+                  right: 0,
                   margin: 0
                 }}
               />

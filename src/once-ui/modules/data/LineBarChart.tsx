@@ -179,7 +179,11 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                   }
                   wrapperStyle={{
                     position: 'absolute',
-                    top: 0,
+                    top: (legend.position === "top-center" || legend.position === "top-left" || legend.position === "top-right") ? 0 : undefined,
+                    bottom: (legend.position === "bottom-center" || legend.position === "bottom-left" || legend.position === "bottom-right") ? 0 : undefined,
+                    paddingBottom: (legend.position === "bottom-center" || legend.position === "bottom-left" || legend.position === "bottom-right") ? "var(--static-space-40)" : undefined,
+                    left: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "var(--static-space-64)" : 0,
+                    width: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "calc(100% - var(--static-space-64))" : "100%",
                     right: 0,
                     margin: 0
                   }}

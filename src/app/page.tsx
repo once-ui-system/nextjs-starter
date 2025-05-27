@@ -39,11 +39,13 @@ export default function Home() {
         </Button>
       </Column>
 
+      <Column fillWidth gap="32" marginTop="64">
       <Row fillWidth gap="32" mobileDirection="column">
         <BarChart
           title="Company revenue in Q2 2025"
           variant="flat"
           description="How much dough we made"
+          barWidth="xl"
           series={{
             key: "Revenue",
             color: "contrast"
@@ -66,30 +68,36 @@ export default function Home() {
           ]}
         />
         
-        <BarChart
-          title="Product Sales by Category"
-          description="Non-date based example"
-          labels="x"
-          xAxisKey="name"
-          series={{
-            key: "Sales",
-          }}
-          data={[
-            { name: "Electronics", Sales: 4500, label: "Electronics" },
-            { name: "Clothing", Sales: 3200, label: "Clothing" },
-            { name: "Food", Sales: 2900, label: "Food" },
-            { name: "Books", Sales: 1800, label: "Books" },
-            { name: "Toys", Sales: 2200, label: "Toys" },
-          ]}
-        />
+        
+      <GroupedBarChart
+        data-viz="divergent"
+        title="Wealth distribution"
+        description="Global share of wealth held by Top 1% vs Bottom 99%, 2000–2025"
+        barWidth="s"
+        legend={{
+          position: "top-center",
+        }}
+        series={[
+          { key: "Top 1%" },
+          { key: "Bottom 99%" }
+        ]}
+        data={[
+          { name: "2000", "Top 1%": 32.0, "Bottom 99%": 68.0 },
+          { name: "2005", "Top 1%": 33.0, "Bottom 99%": 67.0 },
+          { name: "2010", "Top 1%": 35.4, "Bottom 99%": 64.6 },
+          { name: "2015", "Top 1%": 45.0, "Bottom 99%": 55.0 },
+          { name: "2020", "Top 1%": 50.0, "Bottom 99%": 50.0 },
+          { name: "2025 (est.)", "Top 1%": 52.5, "Bottom 99%": 47.5 }
+        ]}
+      />
       </Row>
 
       <LineChart
         variant="outline"
         labels="x"
         curve="step"
-        title="Dachstein glacier retreat"
-        description="Surface area of the Dachstein glacier over time"
+        title="Dachstein Glacier Retreat vs. Global Warming"
+  description="Surface area of the Dachstein glacier and global temperature anomaly over time"
         legend={{
           display: false,
         }}
@@ -98,29 +106,33 @@ export default function Home() {
           end: new Date("2030-01-01"),
           format: "yyyy"
         }}
-        series={[{ key: "Area", color: "contrast" }]}
+        series={[
+          { key: "Area (km²)", color: "contrast" },
+          { key: "Temp Anomaly (°C)", color: "red" }
+        ]}
         data={[
-          { date: "1600-01-01", Area: 5.6 },
-          { date: "1625-01-01", Area: 5.575 },
-          { date: "1650-01-01", Area: 5.55 },
-          { date: "1675-01-01", Area: 5.525 },
-          { date: "1700-01-01", Area: 5.5 },
-          { date: "1725-01-01", Area: 5.475 },
-          { date: "1750-01-01", Area: 5.45 },
-          { date: "1775-01-01", Area: 5.425 },
-          { date: "1800-01-01", Area: 5.4 },
-          { date: "1825-01-01", Area: 5.375 },
-          { date: "1850-01-01", Area: 5.3 },
-          { date: "1875-01-01", Area: 5.1 },
-          { date: "1900-01-01", Area: 4.9 },
-          { date: "1925-01-01", Area: 4.6 },
-          { date: "1950-01-01", Area: 4.2 },
-          { date: "1975-01-01", Area: 3.4 },
-          { date: "2000-01-01", Area: 2.3 },
-          { date: "2025-01-01", Area: 1.2 }
+          { date: "1600-01-01", "Area (km²)": 5.6, "Temp Anomaly (°C)": -0.3 },
+          { date: "1625-01-01", "Area (km²)": 5.575, "Temp Anomaly (°C)": -0.4 },
+          { date: "1650-01-01", "Area (km²)": 5.55, "Temp Anomaly (°C)": -0.3 },
+          { date: "1675-01-01", "Area (km²)": 5.525, "Temp Anomaly (°C)": -0.2 },
+          { date: "1700-01-01", "Area (km²)": 5.5, "Temp Anomaly (°C)": -0.4 },
+          { date: "1725-01-01", "Area (km²)": 5.475, "Temp Anomaly (°C)": -0.3 },
+          { date: "1750-01-01", "Area (km²)": 5.45, "Temp Anomaly (°C)": -0.2 },
+          { date: "1775-01-01", "Area (km²)": 5.425, "Temp Anomaly (°C)": -0.1 },
+          { date: "1800-01-01", "Area (km²)": 5.4, "Temp Anomaly (°C)": 0.0 },
+          { date: "1825-01-01", "Area (km²)": 5.375, "Temp Anomaly (°C)": 0.1 },
+          { date: "1850-01-01", "Area (km²)": 5.3, "Temp Anomaly (°C)": 0.2 },
+          { date: "1875-01-01", "Area (km²)": 5.1, "Temp Anomaly (°C)": 0.3 },
+          { date: "1900-01-01", "Area (km²)": 4.9, "Temp Anomaly (°C)": 0.4 },
+          { date: "1925-01-01", "Area (km²)": 4.6, "Temp Anomaly (°C)": 0.5 },
+          { date: "1950-01-01", "Area (km²)": 4.2, "Temp Anomaly (°C)": 0.6 },
+          { date: "1975-01-01", "Area (km²)": 3.4, "Temp Anomaly (°C)": 0.9 },
+          { date: "2000-01-01", "Area (km²)": 2.3, "Temp Anomaly (°C)": 1.1 },
+          { date: "2025-01-01", "Area (km²)": 1.2, "Temp Anomaly (°C)": 1.4 }
         ]}
       />
 
+      <Row fillWidth gap="32" mobileDirection="column">
       <PieChart
         title="Microplastics Ingested Annually"
         description="Estimated particles per person per source"
@@ -143,40 +155,36 @@ export default function Home() {
         ]}
       />
 
-      <GroupedBarChart
-        data-viz="divergent"
-        title="Wealth distribution"
-        description="Global share of wealth held by Top 1% vs Bottom 99%, 2000–2025"
-        barWidth="s"
-        legend={{
-          position: "top-center",
-        }}
-        series={[
-          { key: "Top 1%" },
-          { key: "Bottom 99%" }
-        ]}
-        data={[
-          { name: "2000", "Top 1%": 32.0, "Bottom 99%": 68.0 },
-          { name: "2005", "Top 1%": 33.0, "Bottom 99%": 67.0 },
-          { name: "2010", "Top 1%": 35.4, "Bottom 99%": 64.6 },
-          { name: "2015", "Top 1%": 45.0, "Bottom 99%": 55.0 },
-          { name: "2020", "Top 1%": 50.0, "Bottom 99%": 50.0 },
-          { name: "2025 (est.)", "Top 1%": 52.5, "Bottom 99%": 47.5 }
-        ]}
-      />
+      
+<PieChart
+                series={{
+                  key: "value",
+                  color: "green"
+                }}
+                data = {[
+                  { name: 'Category A', value: 400 },
+                  { name: 'Category B', value: 300 },
+                  { name: 'Category C', value: 300 },
+                  { name: 'Category D', value: 200 }
+                ]}
+              />
+            </Row>
 
+
+<Row fillWidth gap="32" mobileDirection="column">
       <BarChart
         title="Daily Time Spent on Activities"
         description="Social media vs. reading"
         labels="x"
         xAxisKey="activity"
+        barWidth="xl"
         series={{
-          key: "minutes",
+          key: "Minutes",
           color: "indigo"
         }}
         data={[
-          { activity: "Social Media", minutes: 144 },
-          { activity: "Reading", minutes: 16 }
+          { activity: "Reading", Minutes: 16 },
+          { activity: "Social Media", Minutes: 144 },
         ]}
       />
               
@@ -198,8 +206,8 @@ export default function Home() {
         }}
         series={[
           { key: "Revenue" },
-          { key: "Profit" },
-          { key: "Loss" }
+          { key: "Profit", color: "green" },
+          { key: "Loss", color: "red" }
         ]}
         data={[
           { date: "2024-01-01", Revenue: 2100, Profit: 1400, Loss: 5500 },
@@ -210,9 +218,10 @@ export default function Home() {
           { date: "2024-02-05", Revenue: 4000, Profit: 2400, Loss: 3000 },
           { date: "2024-02-12", Revenue: 5000, Profit: 3000, Loss: 4000 },
         ]}
-      />
+      />  
+      </Row>
             
-          <Row fillWidth gap="32" mobileDirection="column">
+      <Row fillWidth gap="32" mobileDirection="column">
             <GroupedBarChart
               title="Quarterly revenue"
               description="How much dough we made per quarter in 2023 and 2024"
@@ -251,46 +260,7 @@ export default function Home() {
                   ]}
                 />
             </Row>
-
-            <Row fillWidth gap="32" mobileDirection="column">
-              {/* Pie Chart */}
-
-              <PieChart
-                title="Pie chart"
-                origo={{ x: 40, y: 50 }}
-                legend={{
-                  position: "top-left",
-                  direction: "column"
-                }}
-                ring={{
-                  inner: 60,
-                  outer: 70
-                }}
-                series={{
-                  key: "value",
-                  color: "moss"
-                }}
-                data = {[
-                  { name: 'Category A', value: 400 },
-                  { name: 'Category B', value: 300 },
-                  { name: 'Category C', value: 300 },
-                  { name: 'Category D', value: 200 }
-                ]}
-              />
-              
-              <PieChart
-                series={{
-                  key: "value",
-                  color: "green"
-                }}
-                data = {[
-                  { name: 'Category A', value: 400 },
-                  { name: 'Category B', value: 300 },
-                  { name: 'Category C', value: 300 },
-                  { name: 'Category D', value: 200 }
-                ]}
-              />
-            </Row>
+          </Column>
           </Column>
   );
 }
