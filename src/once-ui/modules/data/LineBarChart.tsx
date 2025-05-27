@@ -31,7 +31,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
   date,
   emptyState,
   loading = false,
-  legend = { display: true, position: "top-left" },
+  legend: legendProp = {},
   labels = "both",
   border = "neutral-medium",
   variant = styles.variant,
@@ -39,6 +39,11 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
   curveType = "natural",
   ...flex
 }) => {
+  const legend = {
+    display: legendProp.display !== undefined ? legendProp.display : true,
+    position: legendProp.position || "top-left",
+    direction: legendProp.direction
+  };
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
     date?.start && date?.end ? {
       startDate: date.start,

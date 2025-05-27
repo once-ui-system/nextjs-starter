@@ -9,7 +9,6 @@ import {
   LetterFx,
   Row,
 } from "@/once-ui/components";
-import { format, parseISO } from "date-fns";
 import { GroupedBarChart } from "@/once-ui/modules/data/GroupedBarChart";
 import { LineBarChart } from "@/once-ui/modules/data/LineBarChart";
 import { PieChart } from "@/once-ui/modules/data/PieChart";
@@ -98,7 +97,6 @@ export default function Home() {
           presets: true
         }}
         legend={{
-          display: true,
           position: "top-left",
           direction: "column"
         }}
@@ -140,7 +138,6 @@ export default function Home() {
                   description="How many users we had per weekday"
                   labels="both"
                   legend={{
-                    display: true,
                     position: "top-right"
                   }}
                   series={[
@@ -166,7 +163,6 @@ export default function Home() {
                 title="Pie chart"
                 origo={{ x: 40, y: 50 }}
                 legend={{
-                  display: true,
                   position: "top-left",
                   direction: "column"
                 }}

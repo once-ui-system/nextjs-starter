@@ -31,7 +31,7 @@ export const PieChart: React.FC<PieChartProps> = ({
   emptyState,
   origo = { x: 50, y: 50 },
   loading = false,
-  legend = { display: true, position: "bottom-center" },
+  legend: legendProp = {},
   border = "neutral-medium",
   variant = styles.variant,
   ring = { inner: 0, outer: 80 },
@@ -39,6 +39,11 @@ export const PieChart: React.FC<PieChartProps> = ({
   nameKey = "name",
   ...flex
 }) => {
+  const legend = {
+    display: legendProp.display !== undefined ? legendProp.display : true,
+    position: legendProp.position || "bottom-center",
+    direction: legendProp.direction
+  };
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
     date?.start && date?.end ? {
       startDate: date.start,
@@ -221,7 +226,6 @@ export const PieChart: React.FC<PieChartProps> = ({
                     <Tooltip
                       {...props}
                       date={date}
-                      label="static"
                       variant={variant as ChartStyles}
                     />
                   );

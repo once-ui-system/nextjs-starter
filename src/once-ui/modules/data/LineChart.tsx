@@ -31,13 +31,19 @@ const LineChart: React.FC<LineChartProps> = ({
   date,
   emptyState,
   loading = false,
-  legend = { display: true, position: "top-left" },
+  legend: legendProp = {},
   labels = "both",
   border = "neutral-medium",
   variant = styles.variant,
   curveType = "natural",
   ...flex
 }) => {
+  const legend = {
+    display: legendProp.display !== undefined ? legendProp.display : true,
+    position: legendProp.position || "top-left",
+    direction: legendProp.direction
+  };
+
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
     date?.start && date?.end ? {
       startDate: date.start,
