@@ -86,8 +86,11 @@ export default function Home() {
       <LineChart
         labels="x"
         curve="step"
-        title="Dachstein Glacier Retreat"
+        title="Dachstein glacier retreat"
         description="Surface area of the Dachstein glacier over time"
+        legend={{
+          display: false,
+        }}
         date={{
           start: new Date("1500-01-01"),
           end: new Date("2030-01-01"),
@@ -112,7 +115,7 @@ export default function Home() {
           { date: "1950-01-01", Area: 4.2 },
           { date: "1975-01-01", Area: 3.4 },
           { date: "2000-01-01", Area: 2.3 },
-          { date: "2025-01-01", Area: 1.44 }
+          { date: "2025-01-01", Area: 1.2 }
         ]}
       />
 

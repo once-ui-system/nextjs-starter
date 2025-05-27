@@ -73,25 +73,26 @@ const Tooltip: React.FC<TooltipProps> = ({
     <Column
       minWidth={8}
       gap="8"
+      paddingY="8"
       background="surface"
       radius="m"
       border="neutral-alpha-medium">
-      <Row
-        fillWidth
-        paddingTop="8"
-        paddingX="12"
-      >
-        <Text
-          variant="label-default-s"
-          onBackground="neutral-strong"
+      {label && (
+        <Row
+          fillWidth
+          paddingX="12"
         >
-          {formattedLabel}
-        </Text>
-      </Row>
+          <Text
+            variant="label-default-s"
+            onBackground="neutral-strong"
+          >
+            {formattedLabel}
+          </Text>
+        </Row>
+      )}
       <Column
         fillWidth
         horizontal="space-between"
-        paddingBottom="8"
         paddingX="12"
         gap="4">
         {payload.map((entry: any, index: number) => (

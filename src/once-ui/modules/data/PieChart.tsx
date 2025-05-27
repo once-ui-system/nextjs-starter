@@ -225,6 +225,7 @@ export const PieChart: React.FC<PieChartProps> = ({
                   return (
                     <Tooltip
                       {...props}
+                      label={undefined}
                       date={date}
                       variant={variant as ChartStyles}
                     />
