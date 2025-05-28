@@ -32,7 +32,7 @@ const LineChart: React.FC<LineChartProps> = ({
   emptyState,
   loading = false,
   legend: legendProp = {},
-  labels = "both",
+  axis = "both",
   border = "neutral-medium",
   variant = chart.variant,
   curve = "natural",
@@ -176,7 +176,7 @@ const LineChart: React.FC<LineChartProps> = ({
                   return (
                     <Legend 
                       payload={customPayload}
-                      labels={labels} 
+                      labels={axis} 
                       position={legend.position}
                       direction={legend.direction}
                       variant={variant as ChartStyles}
@@ -189,33 +189,32 @@ const LineChart: React.FC<LineChartProps> = ({
                   top: (legend.position === "top-center" || legend.position === "top-left" || legend.position === "top-right") ? 0 : undefined,
                   bottom: (legend.position === "bottom-center" || legend.position === "bottom-left" || legend.position === "bottom-right") ? 0 : undefined,
                   paddingBottom: (legend.position === "bottom-center" || legend.position === "bottom-left" || legend.position === "bottom-right") ? "var(--static-space-40)" : undefined,
-                  left: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "var(--static-space-64)" : 0,
-                  width: (labels === "x" || labels === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "calc(100% - var(--static-space-64))" : "100%",
+                  left: (axis === "y" || axis === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "var(--static-space-64)" : 0,
+                  width: (axis === "y" || axis === "both") && (legend.position === "top-center" || legend.position === "bottom-center") ? "calc(100% - var(--static-space-64))" : "100%",
                   right: 0,
                   margin: 0
                 }}
               />
             )}
-            {(labels === "x" || labels === "both") && (
-              <RechartsXAxis
-                height={32}
-                tickMargin={6}
-                dataKey={xAxisKey}
-                axisLine={{
-                  stroke: chart.axisLine.stroke,
-                }}
-                tickLine={chart.tickLine}
-                tick={{
-                  fill: chart.tick.fill,
-                  fontSize: chart.tick.fontSize,
-                }}
-                tickFormatter={(value) => {
-                  const dataPoint = data.find(item => item[xAxisKey] === value);
-                  return formatDate(value, date, dataPoint);
-                }}
-              />
-            )}
-            {(labels === "y" || labels === "both") && (
+            <RechartsXAxis
+              height={32}
+              tickMargin={6}
+              dataKey={xAxisKey}
+              hide={!(axis === "x" || axis === "both")}
+              axisLine={{
+                stroke: chart.axisLine.stroke,
+              }}
+              tickLine={chart.tickLine}
+              tick={{
+                fill: chart.tick.fill,
+                fontSize: chart.tick.fontSize,
+              }}
+              tickFormatter={(value) => {
+                const dataPoint = data.find(item => item[xAxisKey] === value);
+                return formatDate(value, date, dataPoint);
+              }}
+            />
+            {(axis === "y" || axis === "both") && (
               <RechartsYAxis
                 width={64}
                 padding={{ top: 40 }}

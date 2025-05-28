@@ -48,7 +48,7 @@ interface ChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | '
   legend?: legendConfig;
   date?: DateConfig;
   emptyState?: React.ReactNode;
-  labels?: "x" | "y" | "both" | "none";
+  axis?: "x" | "y" | "both" | "none";
   variant?: ChartStyles;
   loading?: boolean;
 }
