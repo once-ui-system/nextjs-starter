@@ -70,10 +70,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
   };
 
   const seriesArray = Array.isArray(series) ? series : (series ? [series] : []);
-
-  // Generate a unique ID for this chart instance
   const chartId = React.useMemo(() => Math.random().toString(36).substring(2, 9), []);
-
   const coloredSeriesArray = seriesArray.map((s, index) => ({
     ...s,
     color: s.color || getDistributedColor(index, seriesArray.length)

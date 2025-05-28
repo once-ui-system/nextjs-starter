@@ -17,6 +17,11 @@ interface SeriesConfig {
   color?: string;
 }
 
+interface PresetsConfig {
+  display: boolean;
+  granularity: "year" | "month" | "week";
+}
+
 interface DateConfig {
   start?: Date;
   end?: Date;
@@ -24,7 +29,7 @@ interface DateConfig {
   min?: Date;
   dual?: boolean;
   format?: string;
-  presets?: boolean;
+  presets?: PresetsConfig;
   selector?: boolean;
   onChange?: (range: DateRange) => void;
 }
@@ -48,4 +53,4 @@ interface ChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | '
   loading?: boolean;
 }
 
-export type { DataPoint, SeriesConfig, DateConfig, ChartProps, ChartStyles, barWidth, curveType };
+export type { DataPoint, SeriesConfig, DateConfig, PresetsConfig, ChartProps, ChartStyles, barWidth, curveType };

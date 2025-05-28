@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { startOfYear, endOfYear, startOfMonth, endOfMonth, startOfWeek, endOfWeek, subYears, subMonths, subWeeks, isSameDay } from 'date-fns';
 import { Column, Text, Row, DateRange, DateRangePicker, DropdownWrapper, IconButton, ToggleButton } from "../../components";
-import { DateConfig } from "./interfaces";
+import { DateConfig, PresetsConfig } from "./interfaces";
 
 interface ChartHeaderProps extends Omit<React.ComponentProps<typeof Column>, 'title' | 'description'> {
   title?: React.ReactNode;
@@ -11,7 +11,7 @@ interface ChartHeaderProps extends Omit<React.ComponentProps<typeof Column>, 'ti
   dateRange?: DateRange;
   date?: DateConfig;
   onDateRangeChange?: (range: DateRange) => void;
-  presets?: boolean;
+  presets?: PresetsConfig;
 }
 
 export const ChartHeader: React.FC<ChartHeaderProps> = ({
@@ -20,7 +20,7 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
   dateRange,
   date,
   onDateRangeChange,
-  presets = true,
+  presets = { display: true, granularity: "week" },
   ...flex
 }) => {
   if (!title && !description && !dateRange && !date) {
@@ -157,20 +157,30 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
             }
             dropdown={
               <Row padding="4" mobileDirection="column">
-                {presets && (
+                {presets.display && (
                   <Column mobileDirection="row" padding="4" gap="2" minWidth={8} border="neutral-alpha-weak" radius="m" overflowX="scroll">
-                    {(Object.keys(dateRangePresets) as PresetName[]).map((presetName) => (
-                      <ToggleButton 
-                        key={presetName}
-                        style={{ paddingLeft: "0.25rem" }} 
-                        fillWidth 
-                        horizontal="start"
-                        selected={selectedPreset === presetName}
-                        onClick={() => handlePresetClick(presetName)}
-                      >
-                        {presetName}
-                      </ToggleButton>
-                    ))}
+                    {(Object.keys(dateRangePresets) as PresetName[])
+                      .filter(presetName => {
+                        if (presets.granularity === "year") {
+                          return presetName.includes("year");
+                        } else if (presets.granularity === "month") {
+                          return presetName.includes("year") || presetName.includes("month");
+                        } else {
+                          return true;
+                        }
+                      })
+                      .map((presetName) => (
+                        <ToggleButton 
+                          key={presetName}
+                          style={{ paddingLeft: "0.25rem" }} 
+                          fillWidth 
+                          horizontal="start"
+                          selected={selectedPreset === presetName}
+                          onClick={() => handlePresetClick(presetName)}
+                        >
+                          {presetName}
+                        </ToggleButton>
+                      ))}
                   </Column>
                 )}
                 <DateRangePicker
