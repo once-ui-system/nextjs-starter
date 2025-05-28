@@ -219,9 +219,11 @@ const BarChart: React.FC<BarChartProps> = ({
             </defs>
             <RechartsBar
               dataKey={effectiveYAxisKey}
+              name={chartId}
               fill={`url(#barGradient${chartId})`}
               stroke={barColor}
               strokeWidth={1}
+              transform="translate(0, -1)"
               barSize={
                 typeof barWidth === "string" && barWidth === "fill"
                   ? "100%"

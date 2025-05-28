@@ -242,6 +242,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 dataKey={lineSeries.key}
                 name={lineSeries.key}
                 stroke={finalLineColor}
+                transform="translate(0, -1)"
                 fill={`url(#lineGradient${chartId})`}
                 activeDot={{
                   r: 4,
@@ -256,6 +257,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                 fill={`url(#barGradient${chartId})`}
                 stroke={finalBarColor}
                 strokeWidth={1}
+                transform="translate(0, -1)"
                 radius={[4, 4, 4, 4]}
                 barSize={
                   barWidth === "fill"

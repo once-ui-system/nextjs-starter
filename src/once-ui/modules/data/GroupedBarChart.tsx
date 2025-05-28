@@ -232,6 +232,7 @@ const GroupedBarChart: React.FC<GroupedBarChartProps> = ({
                   fill={`url(#barGradient${chartId}${index})`}
                   stroke={barColors[index]}
                   strokeWidth={1}
+                  transform="translate(0, -1)"
                   barSize={
                     typeof barWidth === "string" && barWidth === "fill"
                       ? "100%"

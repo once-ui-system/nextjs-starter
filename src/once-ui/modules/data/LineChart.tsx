@@ -63,6 +63,9 @@ const LineChart: React.FC<LineChartProps> = ({
   const seriesArray = Array.isArray(series) ? series : (series ? [series] : []);
   const seriesKeys = seriesArray.map((s: SeriesConfig) => s.key);
   
+  // Generate a unique ID for this chart instance
+  const chartId = React.useMemo(() => Math.random().toString(36).substring(2, 9), []);
+  
   const coloredSeriesArray = seriesArray.map((s, index) => ({
     ...s,
     color: s.color || getDistributedColor(index, seriesArray.length)
@@ -149,8 +152,8 @@ const LineChart: React.FC<LineChartProps> = ({
                 const lineColor = `var(--data-${colorValue})`;
                 return (
                   <LinearGradient
-                    key={key}
-                    id={`color-${key}`}
+                    key={`gradient-${chartId}-${index}`}
+                    id={`barGradient${chartId}${index}`}
                     variant={variant as ChartStyles}
                     color={lineColor}
                   />
@@ -250,7 +253,8 @@ const LineChart: React.FC<LineChartProps> = ({
                   dataKey={key}
                   name={key}
                   stroke={lineColor}
-                  fill={variant === "outline" ? "transparent" : `url(#color-${key})`}
+                  transform="translate(0, -1)"
+                  fill={variant === "outline" ? "transparent" : `url(#barGradient${chartId}${index})`}
                   activeDot={{
                     r: 4,
                     fill: lineColor,
