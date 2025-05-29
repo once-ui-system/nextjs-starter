@@ -127,6 +127,10 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
     handleDateRangeChange(newRange);
   };
 
+  if (!title && !description && !date.selector) {
+    return null;
+  }
+
   return (
     <Column fillWidth paddingX="20" paddingY="12" gap="4" {...flex}>
       <Row fillWidth vertical="center">
