@@ -98,7 +98,7 @@ function Table({ data, onRowClick, ...flex }: TableProps) {
   return (
     <Row
       fillWidth
-      radius="m"
+      radius="l"
       overflowY="hidden"
       border="neutral-alpha-medium"
       overflowX="auto"
