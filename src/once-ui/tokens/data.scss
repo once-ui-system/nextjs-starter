@@ -71,14 +71,14 @@
 }
 
 [data-theme="light"] [data-viz="divergent"] {
-  --data-blue:     var(--scheme-red-400);
-  --data-aqua:     var(--scheme-red-500);
-  --data-magenta:  var(--scheme-orange-500);
-  --data-pink:     var(--scheme-orange-600);
-  --data-yellow:   var(--scheme-yellow-700);
-  --data-orange:   var(--scheme-yellow-800);
-  --data-red:      var(--scheme-yellow-900);
-  --data-moss:     var(--scheme-moss-1000);
+  --data-blue:     var(--scheme-red-300);
+  --data-aqua:     var(--scheme-red-400);
+  --data-magenta:  var(--scheme-orange-400);
+  --data-pink:     var(--scheme-orange-500);
+  --data-yellow:   var(--scheme-yellow-500);
+  --data-orange:   var(--scheme-yellow-600);
+  --data-red:      var(--scheme-yellow-700);
+  --data-moss:     var(--scheme-moss-800);
   --data-green:    var(--scheme-moss-900);
   --data-emerald:  var(--scheme-green-800);
   --data-cyan:     var(--scheme-aqua-700);
@@ -90,18 +90,18 @@
 
 [data-theme="light"] [data-viz="sequential"] {
   --data-blue:     var(--function-brand-200);
-  --data-aqua:     var(--function-brand-300);
-  --data-magenta:  var(--function-brand-400);
-  --data-pink:     var(--function-brand-500);
-  --data-yellow:   var(--function-brand-600);
-  --data-orange:   var(--function-brand-700);
-  --data-red:      var(--function-brand-800);
-  --data-moss:     var(--function-brand-900);
-  --data-green:    var(--function-brand-1000);
-  --data-emerald:  var(--function-brand-1100);
-  --data-cyan:     var(--function-brand-1200);
-  --data-violet:   var(--function-brand-1200);
-  --data-indigo:   var(--function-brand-1200);
+  --data-aqua:     var(--function-brand-200);
+  --data-magenta:  var(--function-brand-200);
+  --data-pink:     var(--function-brand-300);
+  --data-yellow:   var(--function-brand-400);
+  --data-orange:   var(--function-brand-500);
+  --data-red:      var(--function-brand-600);
+  --data-moss:     var(--function-brand-700);
+  --data-green:    var(--function-brand-800);
+  --data-emerald:  var(--function-brand-900);
+  --data-cyan:     var(--function-brand-1000);
+  --data-violet:   var(--function-brand-1100);
+  --data-indigo:   var(--function-brand-1100);
   --data-gray:     var(--scheme-gray-400);
   --data-contrast: var(--static-black);
 }
