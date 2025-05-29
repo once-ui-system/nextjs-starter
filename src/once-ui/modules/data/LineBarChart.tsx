@@ -171,7 +171,7 @@ const LineBarChart: React.FC<LineBarChartProps> = ({
                   content={
                     <Legend 
                       variant={variant as ChartStyles}
-                      colors={[finalBarColor, finalLineColor]}
+                      colors={[finalLineColor, finalBarColor]}
                       labels={axis}
                       position={legend.position} 
                       direction={legend.direction}
