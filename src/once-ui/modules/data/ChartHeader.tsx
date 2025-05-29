@@ -127,7 +127,7 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
     handleDateRangeChange(newRange);
   };
 
-  if (!title && !description && !date.selector) {
+  if (!title && !description && !date?.selector) {
     return null;
   }
 
