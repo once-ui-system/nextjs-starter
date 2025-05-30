@@ -1,0 +1,66 @@
+.menuLink {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-l);
+  padding: var(--responsive-space-m);
+
+  &:hover, &:focus-visible {
+    background: var(--surface-background);
+    color: var(--accent-alpha-weak);
+  }
+}
+
+.linkLabels {
+
+  .linkDesc {
+    font-size: 0.93rem;
+    color: #8792a2;
+    font-weight: 400;
+    margin-top: 1.5px;
+    max-width: 73vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.closeButton {
+  display: flex;
+  position: fixed;
+  top: 18px;
+  right: 16px;
+  background: #1a263b;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  z-index: 2020;
+  font-size: 1.22rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+
+  &:hover, &:focus {
+    background: #357ae8;
+    color: #f7fafc;
+  }
+}
+
+@media (max-width: 600px) {
+  .mobileNavRoot {
+    padding: 0;
+    font-size: 0.98rem;
+    box-shadow: none;
+  }
+  .closeButton {
+    top: 11px;
+    right: 6px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.08rem;
+  }
+  .linksWrapper .linkLabel {
+    font-size: 0.98rem;
+  }
+}
