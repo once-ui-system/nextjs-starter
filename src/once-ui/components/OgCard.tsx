@@ -12,10 +12,19 @@ export interface OgData {
   url: string;
 }
 
+export interface OgDisplayOptions {
+  favicon?: boolean;
+  domain?: boolean;
+  title?: boolean;
+  description?: boolean;
+  image?: boolean;
+}
+
 interface OgCardProps extends React.ComponentProps<typeof Card> {
   url?: string;
   ogData?: Partial<OgData> | null;
   direction?: "column" | "row" | "column-reverse" | "row-reverse";
+  display?: OgDisplayOptions;
 }
 
 const getProxiedImageUrl = (imageUrl: string | undefined): string => {
@@ -64,7 +73,22 @@ const getFaviconUrl = (url: string | undefined): string => {
   }
 };
 
-const OgCard = ({ url, ogData: providedOgData, direction = "column", ...card }: OgCardProps) => {
+const OgCard = ({ 
+  url, 
+  ogData: providedOgData, 
+  direction = "column", 
+  display,
+  ...card 
+}: OgCardProps) => {
+  // Merge with defaults
+  const displayOptions = {
+    favicon: true,
+    domain: true,
+    title: true,
+    description: true,
+    image: true,
+    ...display
+  };
   const { ogData: fetchedOgData, loading } = useOgData(url || null);
   const data = providedOgData || fetchedOgData;
   
@@ -82,7 +106,7 @@ const OgCard = ({ url, ogData: providedOgData, direction = "column", ...card }: 
   
   return (
     <Card href={data.url} direction={direction} fillWidth vertical={direction === "row" || direction === "row-reverse" ? "center" : undefined} gap="4" radius="l" background="surface" border="neutral-alpha-medium" {...card}>
-      {(proxiedImageUrl || loading) && (
+      {displayOptions.image && (proxiedImageUrl || loading) && (
         <Media 
           minWidth={(direction === "row" || direction === "row-reverse") ? 16 : undefined}
           maxWidth={(direction === "row" || direction === "row-reverse") ? 24 : undefined}
@@ -94,25 +118,33 @@ const OgCard = ({ url, ogData: providedOgData, direction = "column", ...card }: 
           src={proxiedImageUrl}
         />
       )}
-      <Column fillWidth paddingX="12" paddingY="12" gap="12">
-        <Row fillWidth gap="8" vertical="center">
-          {(faviconUrl || loading) && (
-            <Media 
-              aspectRatio="1/1" 
-              src={faviconUrl} 
-              loading={loading}
-              minWidth="16"
-              maxWidth="16"
-              radius="xs"
-              border="neutral-alpha-weak"
-              unoptimized={true}
-            />
+      <Column fillWidth paddingX="12" paddingY="12" gap="8">
+        {(displayOptions.favicon || displayOptions.domain) && (
+          <Row fillWidth gap="8" vertical="center">
+            {displayOptions.favicon && (faviconUrl || loading) && (
+              <Media 
+                aspectRatio="1/1" 
+                src={faviconUrl} 
+                loading={loading}
+                minWidth="16"
+                maxWidth="16"
+                radius="xs"
+                border="neutral-alpha-weak"
+                unoptimized={true}
+              />
+            )}
+            {displayOptions.domain && data.url && (
+              <Text variant="label-default-s" onBackground="neutral-weak">{formatDisplayUrl(data.url)}</Text>
+            )}
+          </Row>
+        )}
+        <Column fillWidth gap="2">
+          {displayOptions.title && data.title && (
+            <Text variant="label-default-s">{data.title}</Text>
           )}
-          {data.url && <Text variant="label-default-s" onBackground="neutral-weak">{formatDisplayUrl(data.url)}</Text>}
-        </Row>
-        <Column fillWidth gap="2" paddingX="4">
-          {data.title && <Text variant="label-strong-m">{data.title}</Text>}
-          {data.description && <Text variant="label-default-s" onBackground="neutral-weak">{data.description}</Text>}
+          {displayOptions.description && data.description && (
+            <Text variant="label-default-s" onBackground="neutral-weak">{data.description}</Text>
+          )}
         </Column>
       </Column>
     </Card>
