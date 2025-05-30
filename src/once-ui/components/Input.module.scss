@@ -93,6 +93,7 @@
 
     &.textarea.placeholder {
         padding-top: var(--static-space-12);
+        padding-bottom: var(--static-space-12);
     }
 
     &:not(.placeholder) {
