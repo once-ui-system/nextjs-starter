@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface OgData {
   title: string;
@@ -17,14 +17,14 @@ export function useOgData(url: string | null) {
       try {
         const response = await fetch(`/api/og/fetch?url=${encodeURIComponent(url!)}`);
         const data = await response.json();
-        
+
         if (data.error) {
           throw new Error(data.message || data.error);
         }
-        
+
         setOgData(data);
       } catch (error) {
-        console.error('Error fetching og data:', error);
+        console.error("Error fetching og data:", error);
         setOgData(null);
       } finally {
         setLoading(false);

@@ -13,13 +13,27 @@ export interface AccordionGroupProps extends React.ComponentProps<typeof Flex> {
   style?: React.CSSProperties;
 }
 
-const AccordionGroup: React.FC<AccordionGroupProps> = ({ items, size = "m", style, className, ...rest }) => {
+const AccordionGroup: React.FC<AccordionGroupProps> = ({
+  items,
+  size = "m",
+  style,
+  className,
+  ...rest
+}) => {
   if (!items || items.length === 0) {
     return null;
   }
 
   return (
-    <Column fillWidth radius="m" border="neutral-alpha-medium" overflow="hidden" style={style} className={className || ""} {...rest}>
+    <Column
+      fillWidth
+      radius="m"
+      border="neutral-alpha-medium"
+      overflow="hidden"
+      style={style}
+      className={className || ""}
+      {...rest}
+    >
       {items.map((item, index) => (
         <React.Fragment key={index}>
           <Accordion title={item.title} size={size}>

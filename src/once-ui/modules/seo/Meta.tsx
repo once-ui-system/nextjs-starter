@@ -53,9 +53,10 @@ export function generateMetadata({
     robotsContent = `${noindex ? "noindex" : "index"},${nofollow ? "nofollow" : "follow"}`;
   }
 
-
   return {
-    metadataBase: new URL(normalizedBaseURL.startsWith('https://') ? normalizedBaseURL : `https://${normalizedBaseURL}`),
+    metadataBase: new URL(
+      normalizedBaseURL.startsWith("https://") ? normalizedBaseURL : `https://${normalizedBaseURL}`,
+    ),
     title,
     description,
     openGraph: {
@@ -83,9 +84,7 @@ export function generateMetadata({
       ? {
           alternates: {
             canonical: url,
-            languages: Object.fromEntries(
-              alternates.map((alt) => [alt.hrefLang, alt.href])
-            ),
+            languages: Object.fromEntries(alternates.map((alt) => [alt.hrefLang, alt.href])),
           },
         }
       : {}),

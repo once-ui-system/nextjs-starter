@@ -7,20 +7,28 @@ import {
   Cell as RechartsCell,
   Tooltip as RechartsTooltip,
   ResponsiveContainer as RechartsResponsiveContainer,
-  Legend as RechartsLegend
+  Legend as RechartsLegend,
 } from "recharts";
 import { Column, Row, DateRange } from "../../components";
-import { ChartProps, ChartStyles, ChartStatus, RadialGradient, Tooltip, Legend, ChartHeader } from ".";
+import {
+  ChartProps,
+  ChartStyles,
+  ChartStatus,
+  RadialGradient,
+  Tooltip,
+  Legend,
+  ChartHeader,
+} from ".";
 import { getDistributedColor } from "./utils/colorDistribution";
 import { chart } from "@/app/resources/data.config";
 import { schemes } from "@/once-ui/types";
 
 interface PieChartProps extends ChartProps {
   "data-viz"?: string;
-  ring?: { inner: number; outer: number; };
+  ring?: { inner: number; outer: number };
   dataKey?: string;
   nameKey?: string;
-  origo?: { x: number; y: number; };
+  origo?: { x: number; y: number };
 }
 
 export const PieChart: React.FC<PieChartProps> = ({
@@ -44,20 +52,22 @@ export const PieChart: React.FC<PieChartProps> = ({
   const legend = {
     display: legendProp.display !== undefined ? legendProp.display : true,
     position: legendProp.position || "bottom-center",
-    direction: legendProp.direction
+    direction: legendProp.direction,
   };
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(
-    date?.start && date?.end ? {
-      startDate: date.start,
-      endDate: date.end
-    } : undefined
+    date?.start && date?.end
+      ? {
+          startDate: date.start,
+          endDate: date.end,
+        }
+      : undefined,
   );
 
   useEffect(() => {
     if (date?.start && date?.end) {
       setSelectedDateRange({
         startDate: date.start,
-        endDate: date.end
+        endDate: date.end,
       });
     }
   }, [date?.start, date?.end]);
@@ -71,28 +81,27 @@ export const PieChart: React.FC<PieChartProps> = ({
 
   const colorPalette = React.useMemo(() => {
     if (!data || data.length === 0) return schemes.map((c) => `var(--data-${c})`);
-    
+
     return Array.from({ length: data.length }, (_, index) => {
       const colorKey = getDistributedColor(index, data.length);
       return `var(--data-${colorKey})`;
     });
   }, [data]);
-  
+
   const filteredData = React.useMemo(() => {
     if (!selectedDateRange || !data || data.length === 0) {
       return data;
     }
 
-    return data.filter(item => {
+    return data.filter((item) => {
       try {
         if (!item.date || !selectedDateRange.startDate || !selectedDateRange.endDate) {
           return true;
         }
-        
-        const itemDate = typeof item.date === 'string' ? new Date(item.date) : item.date;
-        
-        return itemDate >= selectedDateRange.startDate && 
-               itemDate <= selectedDateRange.endDate;
+
+        const itemDate = typeof item.date === "string" ? new Date(item.date) : item.date;
+
+        return itemDate >= selectedDateRange.startDate && itemDate <= selectedDateRange.endDate;
       } catch (e) {
         return true;
       }
@@ -122,7 +131,7 @@ export const PieChart: React.FC<PieChartProps> = ({
         presets={date?.presets}
       />
       <Row fill>
-        <ChartStatus 
+        <ChartStatus
           loading={loading}
           isEmpty={!filteredData || filteredData.length === 0}
           emptyState={emptyState}
@@ -131,7 +140,12 @@ export const PieChart: React.FC<PieChartProps> = ({
           <RechartsResponsiveContainer width="100%" height="100%">
             <RechartsPieChart>
               <defs>
-                <pattern id="pieChartMasterPattern" patternUnits="userSpaceOnUse" width="100%" height="100%">
+                <pattern
+                  id="pieChartMasterPattern"
+                  patternUnits="userSpaceOnUse"
+                  width="100%"
+                  height="100%"
+                >
                   <RadialGradient
                     id="pieChartMasterGradient"
                     color="var(--page-background)"
@@ -142,27 +156,43 @@ export const PieChart: React.FC<PieChartProps> = ({
                     fy="50%"
                     variant={variant as ChartStyles}
                   />
-                  <rect x="0" y="0" width="100%" height="100%" fill="url(#pieChartMasterGradient)" />
+                  <rect
+                    x="0"
+                    y="0"
+                    width="100%"
+                    height="100%"
+                    fill="url(#pieChartMasterGradient)"
+                  />
                 </pattern>
-                
-                {Array.from(new Set(filteredData.map((entry, index) => {
-                  return entry.color || getDistributedColor(index, filteredData.length);
-                }))).map((colorKey) => {
+
+                {Array.from(
+                  new Set(
+                    filteredData.map((entry, index) => {
+                      return entry.color || getDistributedColor(index, filteredData.length);
+                    }),
+                  ),
+                ).map((colorKey) => {
                   const baseColor = `var(--data-${colorKey})`;
                   const patternId = getGradientId(colorKey as string);
                   return (
-                    <pattern 
-                      id={patternId} 
+                    <pattern
+                      id={patternId}
                       key={`pattern-${colorKey}`}
-                      patternUnits="userSpaceOnUse" 
-                      width="100%" 
+                      patternUnits="userSpaceOnUse"
+                      width="100%"
                       height="100%"
                     >
                       {variant !== "outline" && (
                         <rect x="0" y="0" width="100%" height="100%" fill={baseColor} />
                       )}
                       {variant === "gradient" && (
-                        <rect x="0" y="0" width="100%" height="100%" fill="url(#pieChartMasterPattern)" />
+                        <rect
+                          x="0"
+                          y="0"
+                          width="100%"
+                          height="100%"
+                          fill="url(#pieChartMasterPattern)"
+                        />
                       )}
                     </pattern>
                   );
@@ -181,12 +211,22 @@ export const PieChart: React.FC<PieChartProps> = ({
                     />
                   )}
                   wrapperStyle={{
-                    position: 'absolute',
-                    top: (legend.position === "top-center" || legend.position === "top-left" || legend.position === "top-right") ? 0 : undefined,
-                    bottom: (legend.position === "bottom-center" || legend.position === "bottom-left" || legend.position === "bottom-right") ? 0 : undefined,
+                    position: "absolute",
+                    top:
+                      legend.position === "top-center" ||
+                      legend.position === "top-left" ||
+                      legend.position === "top-right"
+                        ? 0
+                        : undefined,
+                    bottom:
+                      legend.position === "bottom-center" ||
+                      legend.position === "bottom-left" ||
+                      legend.position === "bottom-right"
+                        ? 0
+                        : undefined,
                     right: 0,
                     left: 0,
-                    margin: 0
+                    margin: 0,
                   }}
                 />
               )}
@@ -206,23 +246,24 @@ export const PieChart: React.FC<PieChartProps> = ({
                   const baseColor = `var(--data-${colorKey})`;
                   const gradientId = getGradientId(String(colorKey));
                   return (
-                    <RechartsCell 
-                      key={`cell-${index}`} 
-                      fill={variant === "outline" ? "transparent" : `url(#${gradientId})`} 
+                    <RechartsCell
+                      key={`cell-${index}`}
+                      fill={variant === "outline" ? "transparent" : `url(#${gradientId})`}
                       strokeWidth={variant === "outline" ? 2 : 1}
                       stroke={baseColor}
                     />
                   );
                 })}
               </RechartsPie>
-              <RechartsTooltip 
+              <RechartsTooltip
                 content={(props) => {
                   if (props.payload && props.payload.length > 0) {
                     const entry = props.payload[0];
-                    const index = filteredData.findIndex(item => item[nameKey] === entry.name);
-                    const colorKey = filteredData[index]?.color || getDistributedColor(index, filteredData.length);
+                    const index = filteredData.findIndex((item) => item[nameKey] === entry.name);
+                    const colorKey =
+                      filteredData[index]?.color || getDistributedColor(index, filteredData.length);
                     const color = `var(--data-${colorKey})`;
-                    
+
                     props.payload[0].color = color;
                   }
                   return (

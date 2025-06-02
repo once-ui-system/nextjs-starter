@@ -20,7 +20,21 @@ interface BadgeProps extends React.ComponentProps<typeof Flex> {
 }
 
 const Badge = forwardRef<HTMLDivElement | HTMLAnchorElement, BadgeProps>(
-  ({ title, icon, href, arrow = href ? true : false, children, effect = true, className, style, id, ...rest }, ref) => {
+  (
+    {
+      title,
+      icon,
+      href,
+      arrow = href ? true : false,
+      children,
+      effect = true,
+      className,
+      style,
+      id,
+      ...rest
+    },
+    ref,
+  ) => {
     const content = (
       <Flex
         id={id || "badge"}
@@ -52,7 +66,7 @@ const Badge = forwardRef<HTMLDivElement | HTMLAnchorElement, BadgeProps>(
           className={className}
           style={{
             borderRadius: "var(--radius-full)",
-            ...style
+            ...style,
           }}
           href={href}
           ref={ref as React.Ref<HTMLAnchorElement>}

@@ -19,11 +19,7 @@ const StyleOverlay = forwardRef<HTMLDivElement, StyleOverlayProps>(
 
     return (
       <Flex ref={ref} position="static">
-        {!isOpen && (
-          <Flex onClick={togglePanel}>
-            {children}
-          </Flex>
-        )}
+        {!isOpen && <Flex onClick={togglePanel}>{children}</Flex>}
         <Flex
           as="aside"
           zIndex={3}

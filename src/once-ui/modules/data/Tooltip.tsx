@@ -10,23 +10,23 @@ const ValueWithAnimation: React.FC<{ value: number }> = ({ value }) => {
   const prevValueRef = useRef<number | null>(null);
   const triggerRef = useRef<(() => void) | null>(null);
   const initialRenderRef = useRef<boolean>(true);
-  
+
   useEffect(() => {
     if (initialRenderRef.current) {
       initialRenderRef.current = false;
       prevValueRef.current = value;
       return;
     }
-    
+
     if (prevValueRef.current !== value && triggerRef.current) {
       triggerRef.current();
     }
-    
+
     prevValueRef.current = value;
   }, [value]);
-  
+
   return (
-    <LetterFx 
+    <LetterFx
       trigger="custom"
       charset={["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]}
       onTrigger={(triggerFn) => {
@@ -57,7 +57,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   tooltip,
   date = { format: "MMM d" },
   colors = true,
-  variant = "gradient"
+  variant = "gradient",
 }) => {
   if (!active || !payload || !payload.length) {
     return null;
@@ -65,9 +65,9 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   const dataPoint = payload[0].payload;
   const displayLabel = label || dataPoint?.[dataKey];
-  
-  const formattedLabel = formatDate(displayLabel, date, dataPoint) || 
-    displayLabel || dataPoint?.endDate;
+
+  const formattedLabel =
+    formatDate(displayLabel, date, dataPoint) || displayLabel || dataPoint?.endDate;
 
   return (
     <Column
@@ -76,43 +76,30 @@ const Tooltip: React.FC<TooltipProps> = ({
       paddingY="8"
       background="surface"
       radius="m"
-      border="neutral-alpha-medium">
+      border="neutral-alpha-medium"
+    >
       {label && (
-        <Row
-          fillWidth
-          paddingX="12"
-        >
-          <Text
-            variant="label-default-s"
-            onBackground="neutral-strong"
-          >
+        <Row fillWidth paddingX="12">
+          <Text variant="label-default-s" onBackground="neutral-strong">
             {formattedLabel}
           </Text>
         </Row>
       )}
-      <Column
-        fillWidth
-        horizontal="space-between"
-        paddingX="12"
-        gap="4">
+      <Column fillWidth horizontal="space-between" paddingX="12" gap="4">
         {payload.map((entry: any, index: number) => (
           <Row key={index} horizontal="space-between" fillWidth gap="16">
             <Row vertical="center" gap="8">
-              {colors && (
-                <Swatch 
-                  color={entry.stroke || entry.color} 
-                  size="s"
-                  variant={variant}
-                />
-              )}
+              {colors && <Swatch color={entry.stroke || entry.color} size="s" variant={variant} />}
               <Text onBackground="neutral-weak" variant="label-default-s">
                 {tooltip && index === 0 ? tooltip : entry.name}
               </Text>
             </Row>
             <Text onBackground="neutral-strong" variant="label-default-s">
-              {typeof entry.value === 'number' 
-                ? <ValueWithAnimation value={entry.value} /> 
-                : entry.value}
+              {typeof entry.value === "number" ? (
+                <ValueWithAnimation value={entry.value} />
+              ) : (
+                entry.value
+              )}
             </Text>
           </Row>
         ))}

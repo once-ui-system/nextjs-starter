@@ -123,7 +123,7 @@ const Scroller: React.FC<ScrollerProps> = ({
   return (
     <Flex fillWidth className={classNames(styles.container, className)} style={style} {...rest}>
       {showPrevButton && (
-        <Fade 
+        <Fade
           base={fadeColor}
           position="absolute"
           padding="4"

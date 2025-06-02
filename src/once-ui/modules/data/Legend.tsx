@@ -11,7 +11,13 @@ interface LegendProps {
   labels?: "x" | "y" | "both" | "none";
   colors?: string[];
   direction?: "row" | "column";
-  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-center" | "bottom-center";
+  position?:
+    | "top-left"
+    | "top-right"
+    | "bottom-left"
+    | "bottom-right"
+    | "top-center"
+    | "bottom-center";
   variant?: ChartStyles;
 }
 
@@ -21,7 +27,7 @@ const Legend: React.FC<LegendProps> = ({
   position = "top-left",
   direction,
   colors,
-  variant = chart.variant
+  variant = chart.variant,
 }) => {
   if (!payload || !payload.length) {
     return null;
@@ -31,14 +37,17 @@ const Legend: React.FC<LegendProps> = ({
     switch (position) {
       case "top-left":
         return {
-          paddingLeft: (labels === "y" || labels === "both") ? "var(--static-space-80)" : "var(--static-space-20)",
-          top: "var(--static-space-12)"
+          paddingLeft:
+            labels === "y" || labels === "both"
+              ? "var(--static-space-80)"
+              : "var(--static-space-20)",
+          top: "var(--static-space-12)",
         };
       case "top-right":
         return {
           paddingRight: "var(--static-space-20)",
           top: "var(--static-space-12)",
-          justifyContent: "flex-end"
+          justifyContent: "flex-end",
         };
       case "bottom-left":
         return {
@@ -49,7 +58,7 @@ const Legend: React.FC<LegendProps> = ({
         return {
           paddingRight: "var(--static-space-20)",
           bottom: "var(--static-space-12)",
-          justifyContent: "flex-end"
+          justifyContent: "flex-end",
         };
       case "top-center":
         return {
@@ -65,8 +74,11 @@ const Legend: React.FC<LegendProps> = ({
         };
       default:
         return {
-          paddingLeft: (labels === "y" || labels === "both") ? "var(--static-space-80)" : "var(--static-space-20)",
-          top: "0.75rem"
+          paddingLeft:
+            labels === "y" || labels === "both"
+              ? "var(--static-space-80)"
+              : "var(--static-space-20)",
+          top: "0.75rem",
         };
     }
   };
@@ -77,7 +89,14 @@ const Legend: React.FC<LegendProps> = ({
     <Row
       wrap
       fillWidth
-      horizontal={(position === "top-left" || position === "top-right" || position === "bottom-left" || position === "bottom-right") ? "start" : "center"}
+      horizontal={
+        position === "top-left" ||
+        position === "top-right" ||
+        position === "bottom-left" ||
+        position === "bottom-right"
+          ? "start"
+          : "center"
+      }
       vertical="center"
       position="absolute"
       gap="16"
@@ -86,14 +105,10 @@ const Legend: React.FC<LegendProps> = ({
       style={positionStyle}
     >
       {payload.map((entry: any, index: number) => {
-        const color = colors && colors[index] ? colors[index] : (entry.stroke || entry.color);
+        const color = colors && colors[index] ? colors[index] : entry.stroke || entry.color;
         return (
           <Row key={index} vertical="center" gap="8">
-            <Swatch 
-              color={color} 
-              size="m"
-              variant={variant as ChartStyles}
-            />
+            <Swatch color={color} size="m" variant={variant as ChartStyles} />
             <Text variant="label-default-s" wrap="nowrap">
               {entry.value}
             </Text>

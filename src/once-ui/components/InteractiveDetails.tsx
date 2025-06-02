@@ -18,9 +18,19 @@ const InteractiveDetails: React.FC<InteractiveDetailsProps> = forwardRef<
   InteractiveDetailsProps
 >(({ label, description, iconButtonProps, onClick, className, id, disabled }, ref) => {
   return (
-    <Column ref={ref} cursor={disabled ? "not-allowed" : undefined} className={className} onClick={onClick} id={id}>
+    <Column
+      ref={ref}
+      cursor={disabled ? "not-allowed" : undefined}
+      className={className}
+      onClick={onClick}
+      id={id}
+    >
       <Row gap="4" vertical="center">
-        <Text as="span" variant="label-default-m" onBackground={disabled ? "neutral-weak" : "neutral-strong"}>
+        <Text
+          as="span"
+          variant="label-default-m"
+          onBackground={disabled ? "neutral-weak" : "neutral-strong"}
+        >
           {label}
         </Text>
         {iconButtonProps?.tooltip && (

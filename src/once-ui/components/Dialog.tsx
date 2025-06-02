@@ -188,12 +188,12 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
     }, [isOpen]);
 
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-          // Only handle left clicks (button 0), ignore right clicks
+      const handleClickOutside = (event: MouseEvent) => {
+        // Only handle left clicks (button 0), ignore right clicks
         if (event.button !== 0) return;
-        
+
         event.stopPropagation();
-        
+
         if (!dialogRef.current?.contains(event.target as Node)) {
           if (stack || !base) {
             // Prevent default to avoid triggering any links behind the dialog

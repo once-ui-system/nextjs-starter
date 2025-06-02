@@ -100,7 +100,9 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLInputElement, Rad
             />
           )}
         </Flex>
-        {props.label && <InteractiveDetails disabled={disabled} id={radioId} {...props} onClick={toggleItem} />}
+        {props.label && (
+          <InteractiveDetails disabled={disabled} id={radioId} {...props} onClick={toggleItem} />
+        )}
       </Flex>
     );
   },

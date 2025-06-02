@@ -1,11 +1,32 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { startOfYear, endOfYear, startOfMonth, endOfMonth, startOfWeek, endOfWeek, subYears, subMonths, subWeeks, isSameDay } from 'date-fns';
-import { Column, Text, Row, DateRange, DateRangePicker, DropdownWrapper, IconButton, ToggleButton } from "../../components";
+import {
+  startOfYear,
+  endOfYear,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  subYears,
+  subMonths,
+  subWeeks,
+  isSameDay,
+} from "date-fns";
+import {
+  Column,
+  Text,
+  Row,
+  DateRange,
+  DateRangePicker,
+  DropdownWrapper,
+  IconButton,
+  ToggleButton,
+} from "../../components";
 import { DateConfig, PresetsConfig } from "./interfaces";
 
-interface ChartHeaderProps extends Omit<React.ComponentProps<typeof Column>, 'title' | 'description'> {
+interface ChartHeaderProps
+  extends Omit<React.ComponentProps<typeof Column>, "title" | "description"> {
   title?: React.ReactNode;
   description?: React.ReactNode;
   dateRange?: DateRange;
@@ -33,54 +54,60 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
     getRange: () => DateRange;
   };
 
-  type PresetName = 'This year' | 'This month' | 'This week' | 'Last year' | 'Last month' | 'Last week';
+  type PresetName =
+    | "This year"
+    | "This month"
+    | "This week"
+    | "Last year"
+    | "Last month"
+    | "Last week";
 
   const dateRangePresets: Record<PresetName, DateRangePreset> = {
-    'This year': {
+    "This year": {
       getRange: () => ({
         startDate: startOfYear(new Date()),
-        endDate: endOfYear(new Date())
-      })
+        endDate: endOfYear(new Date()),
+      }),
     },
-    'This month': {
+    "This month": {
       getRange: () => ({
         startDate: startOfMonth(new Date()),
-        endDate: endOfMonth(new Date())
-      })
+        endDate: endOfMonth(new Date()),
+      }),
     },
-    'This week': {
+    "This week": {
       getRange: () => ({
         startDate: startOfWeek(new Date()),
-        endDate: endOfWeek(new Date())
-      })
+        endDate: endOfWeek(new Date()),
+      }),
     },
-    'Last year': {
+    "Last year": {
       getRange: () => {
         const lastYear = subYears(new Date(), 1);
         return {
           startDate: startOfYear(lastYear),
-          endDate: endOfYear(lastYear)
+          endDate: endOfYear(lastYear),
         };
-      }
+      },
     },
-    'Last month': {
+    "Last month": {
       getRange: () => {
         const lastMonth = subMonths(new Date(), 1);
         return {
           startDate: startOfMonth(lastMonth),
-          endDate: endOfMonth(lastMonth)
+          endDate: endOfMonth(lastMonth),
         };
-      }
+      },
     },
-    'Last week': {
+    "Last week": {
       getRange: () => {
         const lastWeek = subWeeks(new Date(), 1);
         return {
           startDate: startOfWeek(lastWeek),
-          endDate: endOfWeek(lastWeek)
+          endDate: endOfWeek(lastWeek),
         };
-      }
-    }
+      },
+    },
   };
 
   useEffect(() => {
@@ -88,11 +115,15 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
       const matchingPreset = Object.entries(dateRangePresets).find(([name, preset]) => {
         const presetRange = preset.getRange();
         return (
-          dateRange.startDate && presetRange.startDate && isSameDay(dateRange.startDate, presetRange.startDate) &&
-          dateRange.endDate && presetRange.endDate && isSameDay(dateRange.endDate, presetRange.endDate)
+          dateRange.startDate &&
+          presetRange.startDate &&
+          isSameDay(dateRange.startDate, presetRange.startDate) &&
+          dateRange.endDate &&
+          presetRange.endDate &&
+          isSameDay(dateRange.endDate, presetRange.endDate)
         );
       });
-      
+
       setSelectedPreset(matchingPreset ? matchingPreset[0] : null);
     } else {
       setSelectedPreset(null);
@@ -101,17 +132,17 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
 
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && dateRangeOpen) {
+      if (event.key === "Escape" && dateRangeOpen) {
         setDateRangeOpen(false);
       }
     };
 
     if (dateRangeOpen) {
-      document.addEventListener('keydown', handleEscapeKey);
+      document.addEventListener("keydown", handleEscapeKey);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscapeKey);
+      document.removeEventListener("keydown", handleEscapeKey);
     };
   }, [dateRangeOpen]);
 
@@ -135,11 +166,7 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
     <Column fillWidth paddingX="20" paddingY="12" gap="4" {...flex}>
       <Row fillWidth vertical="center">
         <Column fillWidth gap="4">
-          {title && (
-            <Text variant="heading-strong-xs">
-              {title}
-            </Text>
-          )}
+          {title && <Text variant="heading-strong-xs">{title}</Text>}
           {description && (
             <Text variant="label-default-s" onBackground="neutral-weak">
               {description}
@@ -162,9 +189,17 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
             dropdown={
               <Row padding="4" mobileDirection="column">
                 {presets.display && (
-                  <Column mobileDirection="row" padding="4" gap="2" minWidth={8} border="neutral-alpha-weak" radius="m" overflowX="scroll">
+                  <Column
+                    mobileDirection="row"
+                    padding="4"
+                    gap="2"
+                    minWidth={8}
+                    border="neutral-alpha-weak"
+                    radius="m"
+                    overflowX="scroll"
+                  >
                     {(Object.keys(dateRangePresets) as PresetName[])
-                      .filter(presetName => {
+                      .filter((presetName) => {
                         if (presets.granularity === "year") {
                           return presetName.includes("year");
                         } else if (presets.granularity === "month") {
@@ -174,10 +209,10 @@ export const ChartHeader: React.FC<ChartHeaderProps> = ({
                         }
                       })
                       .map((presetName) => (
-                        <ToggleButton 
+                        <ToggleButton
                           key={presetName}
-                          style={{ paddingLeft: "0.25rem" }} 
-                          fillWidth 
+                          style={{ paddingLeft: "0.25rem" }}
+                          fillWidth
                           horizontal="start"
                           selected={selectedPreset === presetName}
                           onClick={() => handlePresetClick(presetName)}

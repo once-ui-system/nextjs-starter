@@ -12,7 +12,7 @@ interface TooltipProps extends React.ComponentProps<typeof Flex> {
   suffixIcon?: IconName;
   className?: string;
   style?: React.CSSProperties;
-};
+}
 
 const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
   ({ label, prefixIcon, suffixIcon, className, style, ...flex }, ref) => {

@@ -61,7 +61,7 @@ export const iconLibrary: Record<string, IconType> = {
   search: HiOutlineMagnifyingGlass,
   security: HiOutlineShieldCheck,
   sparkle: HiOutlineSparkles,
-  computer: HiOutlineComputerDesktop
+  computer: HiOutlineComputerDesktop,
 };
 
 export type IconLibrary = typeof iconLibrary;

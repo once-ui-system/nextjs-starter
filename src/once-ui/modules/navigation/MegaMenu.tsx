@@ -205,7 +205,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ menuGroups, className, ...re
                           <ToggleButton
                             key={`link-${linkIndex}`}
                             className="fit-height p-4 pr-12"
-                            style={{height: "auto"}}
+                            style={{ height: "auto" }}
                             fillWidth
                             horizontal="start"
                             href={link.href}

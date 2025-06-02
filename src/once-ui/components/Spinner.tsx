@@ -15,16 +15,22 @@ const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
   ({ size = "m", ariaLabel = "Loading", className, style, ...rest }, ref) => {
     return (
       <Flex center style={style} className={className} {...rest}>
-        <Flex
-          ref={ref}
-          center
-          className={styles[size]}
-          role="status"
-          aria-label={ariaLabel}
-        >
+        <Flex ref={ref} center className={styles[size]} role="status" aria-label={ariaLabel}>
           <Flex fill>
-            <Flex className={classNames(styles.size)} borderStyle="solid" fill radius="full" border="neutral-alpha-medium" position="absolute"/>
-            <Flex className={classNames(styles.spinner, styles.size)} borderStyle="solid" fill radius="full"/>
+            <Flex
+              className={classNames(styles.size)}
+              borderStyle="solid"
+              fill
+              radius="full"
+              border="neutral-alpha-medium"
+              position="absolute"
+            />
+            <Flex
+              className={classNames(styles.spinner, styles.size)}
+              borderStyle="solid"
+              fill
+              radius="full"
+            />
           </Flex>
         </Flex>
       </Flex>

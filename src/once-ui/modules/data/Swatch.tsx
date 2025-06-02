@@ -12,46 +12,45 @@ export interface SwatchProps {
   variant?: ChartStyles;
 }
 
-export const Swatch: React.FC<SwatchProps> = ({
-  color,
-  size = "m",
-  variant = chart.variant
-}) => {
-  const sizeMap: Record<string, { minWidth: SpacingToken, minHeight: SpacingToken, radius: RadiusSize }> = {
+export const Swatch: React.FC<SwatchProps> = ({ color, size = "m", variant = chart.variant }) => {
+  const sizeMap: Record<
+    string,
+    { minWidth: SpacingToken; minHeight: SpacingToken; radius: RadiusSize }
+  > = {
     s: {
       minWidth: "12",
       minHeight: "12",
-      radius: "xs"
+      radius: "xs",
     },
     m: {
       minWidth: "16",
       minHeight: "16",
-      radius: "s"
-    }
+      radius: "s",
+    },
   };
 
   const getStyleByVariant = () => {
     const baseStyle = {
       backgroundClip: "padding-box",
-      border: `1px solid ${color}`
+      border: `1px solid ${color}`,
     };
 
     switch (variant) {
       case "flat":
         return {
           ...baseStyle,
-          background: color
+          background: color,
         };
       case "outline":
         return {
           ...baseStyle,
-          background: "transparent"
+          background: "transparent",
         };
       case "gradient":
       default:
         return {
           ...baseStyle,
-          background: `linear-gradient(to bottom, ${color} 0%, transparent 100%)`
+          background: `linear-gradient(to bottom, ${color} 0%, transparent 100%)`,
         };
     }
   };

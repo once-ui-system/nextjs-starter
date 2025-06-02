@@ -80,15 +80,15 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   useEffect(() => {
     if (isFullscreen) {
       document.body.style.overflow = "hidden";
-      
+
       const handleEscKey = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
           setIsFullscreen(false);
         }
       };
-      
+
       document.addEventListener("keydown", handleEscKey);
-      
+
       return () => {
         document.body.style.overflow = "";
         document.removeEventListener("keydown", handleEscKey);
@@ -96,7 +96,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
     } else {
       document.body.style.overflow = "";
     }
-    
+
     return () => {
       document.body.style.overflow = "";
     };

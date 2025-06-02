@@ -4,7 +4,7 @@ import styles from "./Option.module.scss";
 import React, { forwardRef } from "react";
 
 export interface OptionProps {
-  label: React.ReactNode;
+  label?: React.ReactNode;
   href?: string;
   value: string;
   hasPrefix?: React.ReactNode;
@@ -14,6 +14,7 @@ export interface OptionProps {
   selected?: boolean;
   highlighted?: boolean;
   tabIndex?: number;
+  children?: React.ReactNode;
   onClick?: (value: string) => void;
   onLinkClick?: () => void;
 }
@@ -33,6 +34,7 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(
       tabIndex,
       onClick,
       onLinkClick,
+      children,
       ...props
     },
     ref,
@@ -73,6 +75,7 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(
           data-value={value}
         >
           {hasPrefix && <Flex className={styles.prefix}>{hasPrefix}</Flex>}
+          {children}
           <Flex
             horizontal="start"
             style={{

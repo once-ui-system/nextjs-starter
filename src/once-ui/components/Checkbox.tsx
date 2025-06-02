@@ -119,7 +119,9 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLInputElement, CheckboxP
             </Flex>
           )}
         </Flex>
-        {props.label && <InteractiveDetails disabled={disabled} id={checkboxId} {...props} onClick={toggleItem} />}
+        {props.label && (
+          <InteractiveDetails disabled={disabled} id={checkboxId} {...props} onClick={toggleItem} />
+        )}
       </Flex>
     );
   },

@@ -22,10 +22,12 @@ export const ChartStatus: React.FC<ChartStatusProps> = ({
     <Column fill center>
       {loading ? (
         <Spinner size="m" />
-      ) : isEmpty && (
-        <Text variant="label-default-s" onBackground="neutral-weak">
-          {emptyState}
-        </Text>
+      ) : (
+        isEmpty && (
+          <Text variant="label-default-s" onBackground="neutral-weak">
+            {emptyState}
+          </Text>
+        )
       )}
     </Column>
   );

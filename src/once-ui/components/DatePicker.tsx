@@ -210,7 +210,14 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             height={size === "s" ? "32" : size === "m" ? "40" : "48"}
             key={`prev-${currentYear}-${currentMonth}-${i}`}
           >
-            <Button fillWidth weight="default" variant="tertiary" size={size} type="button" disabled>
+            <Button
+              fillWidth
+              weight="default"
+              variant="tertiary"
+              size={size}
+              type="button"
+              disabled
+            >
               {prevMonthDay}
             </Button>
           </Flex>,
@@ -281,7 +288,14 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             height={size === "s" ? "32" : size === "m" ? "40" : "48"}
             key={`next-${currentYear}-${currentMonth}-${i}`}
           >
-            <Button fillWidth weight="default" variant="tertiary" size={size} type="button" disabled>
+            <Button
+              fillWidth
+              weight="default"
+              variant="tertiary"
+              size={size}
+              type="button"
+              disabled
+            >
               {i}
             </Button>
           </Flex>,

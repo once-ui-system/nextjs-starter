@@ -4,7 +4,7 @@
  * Logger utility that only logs in development mode
  * Use this instead of console.log for debugging messages that
  * should not appear in production
-*/
+ */
 export const dev = {
   log: (...args: any[]) => {
     if (process.env.NODE_ENV === "development") {

@@ -37,10 +37,16 @@ interface DateConfig {
 interface legendConfig {
   display?: boolean;
   direction?: "row" | "column";
-  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-center" | "bottom-center";
+  position?:
+    | "top-left"
+    | "top-right"
+    | "bottom-left"
+    | "bottom-right"
+    | "top-center"
+    | "bottom-center";
 }
 
-interface ChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | 'description'> {
+interface ChartProps extends Omit<React.ComponentProps<typeof Flex>, "title" | "description"> {
   title?: React.ReactNode;
   description?: React.ReactNode;
   series: SeriesConfig | SeriesConfig[];
@@ -53,4 +59,13 @@ interface ChartProps extends Omit<React.ComponentProps<typeof Flex>, 'title' | '
   loading?: boolean;
 }
 
-export type { DataPoint, SeriesConfig, DateConfig, PresetsConfig, ChartProps, ChartStyles, barWidth, curveType };
+export type {
+  DataPoint,
+  SeriesConfig,
+  DateConfig,
+  PresetsConfig,
+  ChartProps,
+  ChartStyles,
+  barWidth,
+  curveType,
+};

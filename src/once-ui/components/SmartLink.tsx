@@ -62,7 +62,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
               textDecoration: "underline",
               textUnderlineOffset: "0.3em",
               textUnderlineThickness: "var(--static-space-1)",
-              color: "var(--neutral-on-background-strong)"
+              color: "var(--neutral-on-background-strong)",
             }),
             ...style,
           }

@@ -12,7 +12,13 @@ interface HeadingLinkProps extends React.ComponentProps<typeof Heading> {
   style?: React.CSSProperties;
 }
 
-export const HeadingLink: React.FC<HeadingLinkProps> = ({ id, as, children, style, ...heading }) => {
+export const HeadingLink: React.FC<HeadingLinkProps> = ({
+  id,
+  as,
+  children,
+  style,
+  ...heading
+}) => {
   const { addToast } = useToast();
 
   const copyURL = (id: string): void => {
