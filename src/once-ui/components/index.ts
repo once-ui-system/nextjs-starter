@@ -26,6 +26,7 @@ export * from "./ElementType";
 export * from "./Fade";
 export * from "./Feedback";
 export * from "./Flex";
+export * from "./FlipFx";
 export * from "./GlitchFx";
 export * from "./Grid";
 export * from "./Heading";
