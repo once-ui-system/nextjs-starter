@@ -3,25 +3,6 @@ import { Heading, Text, Button, Column, Badge, Logo, Line, LetterFx, Background,
 export default function Home() {
   return (
     <Column fill center padding="l">
-      <Background fill position="fixed" />
-      <Particle 
-        position="fixed" 
-        fill
-        display={true}
-        density={10}
-        color="brand-solid-strong"
-        size="8"
-        speed={1}
-        interactive={false}
-        interactionRadius={10}
-        opacity={80}
-      />
-      <Mask 
-        position="fixed" 
-        fill 
-        useCursor={true} 
-        maskRadius={50}
-      />
       <Column maxWidth="s" horizontal="center" gap="l" align="center">
         <Badge
           textVariant="code-default-s"
