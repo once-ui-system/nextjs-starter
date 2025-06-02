@@ -55,6 +55,7 @@ export interface TextProps<T extends ElementType = "span"> extends HTMLAttribute
   wrap?: CSSProperties["textWrap"];
   size?: TextSize;
   weight?: TextWeight;
+  truncate?: boolean;
 }
 
 export interface SizeProps extends HTMLAttributes<HTMLDivElement> {
