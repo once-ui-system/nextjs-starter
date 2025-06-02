@@ -64,17 +64,7 @@ interface BackgroundProps extends React.ComponentProps<typeof Flex> {
 
 const Background = forwardRef<HTMLDivElement, BackgroundProps>(
   (
-    {
-      gradient = {},
-      dots = {},
-      grid = {},
-      lines = {},
-      mask,
-      children,
-      className,
-      style,
-      ...rest
-    },
+    { gradient = {}, dots = {}, grid = {}, lines = {}, mask, children, className, style, ...rest },
     forwardedRef,
   ) => {
     const dotsColor = dots.color ?? "brand-on-background-weak";
@@ -133,10 +123,12 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             pointerEvents="none"
             className={styles.dots}
             opacity={dots.opacity}
-            style={{
-              "--dots-color": `var(--${dotsColor})`,
-              "--dots-size": dotsSize,
-            } as React.CSSProperties}
+            style={
+              {
+                "--dots-color": `var(--${dotsColor})`,
+                "--dots-size": dotsSize,
+              } as React.CSSProperties
+            }
           />
         )}
         {lines.display && (
@@ -148,10 +140,12 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             pointerEvents="none"
             className={styles.lines}
             opacity={lines.opacity}
-            style={{
-              "--lines-size": `var(--static-space-${lines.size ?? "80"})`,
-              backgroundImage: `repeating-linear-gradient(${lines.angle ?? 90}deg, var(--${lines.color ?? "brand-on-background-weak"}) 0px, var(--${lines.color ?? "brand-on-background-weak"}) ${lines.thickness ?? 1}px, var(--static-transparent) ${lines.thickness ?? 1}px, var(--static-transparent) ${lines.size ?? "80"}px)`,
-            } as React.CSSProperties}
+            style={
+              {
+                "--lines-size": `var(--static-space-${lines.size ?? "80"})`,
+                backgroundImage: `repeating-linear-gradient(${lines.angle ?? 90}deg, var(--${lines.color ?? "brand-on-background-weak"}) 0px, var(--${lines.color ?? "brand-on-background-weak"}) ${lines.thickness ?? 1}px, var(--static-transparent) ${lines.thickness ?? 1}px, var(--static-transparent) ${lines.size ?? "80"}px)`,
+              } as React.CSSProperties
+            }
           />
         )}
         {grid.display && (
@@ -200,7 +194,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         )}
       </Flex>
     );
-  }
+  },
 );
 
 Background.displayName = "Background";

@@ -1,7 +1,7 @@
-import { Row, Flex } from ".";
 import { forwardRef } from "react";
+import { Row } from "./Row";
 
-interface BannerProps extends React.ComponentProps<typeof Flex> {}
+interface BannerProps extends React.ComponentProps<typeof Row> {}
 
 const Banner = forwardRef<HTMLDivElement, BannerProps>(({ children, ...flex }, ref) => (
   <Row

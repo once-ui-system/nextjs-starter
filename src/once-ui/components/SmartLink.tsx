@@ -53,6 +53,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
         {
           "fill-width": fillWidth,
           "fit-width": !fillWidth,
+          "min-width-0": fillWidth,
           "px-2 mx-2": !unstyled,
         },
       ),

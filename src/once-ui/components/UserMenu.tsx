@@ -32,7 +32,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
       minWidth={minWidth}
       maxWidth={maxWidth}
       minHeight={minHeight}
-      floatingPlacement={placement}
+      placement={placement}
       style={{
         borderRadius: "var(--radius-full)",
       }}

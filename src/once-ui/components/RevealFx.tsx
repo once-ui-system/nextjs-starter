@@ -56,7 +56,7 @@ const RevealFx = forwardRef<HTMLDivElement, RevealFxProps>(
     useEffect(() => {
       const timer = setTimeout(() => {
         setIsRevealed(true);
-        
+
         // Always set a timeout to remove the mask after transition completes
         transitionTimeoutRef.current = setTimeout(() => {
           setMaskRemoved(true);
@@ -74,16 +74,16 @@ const RevealFx = forwardRef<HTMLDivElement, RevealFxProps>(
     useEffect(() => {
       if (trigger !== undefined) {
         setIsRevealed(trigger);
-        
+
         // Reset mask removal state when trigger changes
         setMaskRemoved(false);
-        
+
         // If trigger is true, set timeout to remove mask after transition
         if (trigger) {
           if (transitionTimeoutRef.current) {
             clearTimeout(transitionTimeoutRef.current);
           }
-          
+
           transitionTimeoutRef.current = setTimeout(() => {
             setMaskRemoved(true);
           }, getSpeedDurationMs());

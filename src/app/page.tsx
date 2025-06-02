@@ -1,4 +1,16 @@
-import { Heading, Text, Button, Column, Badge, Logo, Line, LetterFx, Background, Particle, Mask } from "@/once-ui/components";
+import {
+  Heading,
+  Text,
+  Button,
+  Column,
+  Badge,
+  Logo,
+  Line,
+  LetterFx,
+  Background,
+  Particle,
+  Mask,
+} from "@/once-ui/components";
 
 export default function Home() {
   return (

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { Flex, Text, ElementType } from ".";
 import styles from "./Option.module.scss";
-import React, { forwardRef } from "react";
+import React, { forwardRef, KeyboardEvent } from "react";
 
 export interface OptionProps {
   label?: React.ReactNode;
@@ -50,6 +50,12 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(
         href={href}
         className="reset-button-styles fill-width"
         onLinkClick={onLinkClick}
+        onKeyDown={(e: KeyboardEvent<HTMLElement>) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onClick?.(value);
+          }
+        }}
       >
         <Flex
           {...props}

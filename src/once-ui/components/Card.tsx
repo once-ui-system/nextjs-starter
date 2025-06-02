@@ -21,6 +21,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           "reset-button-styles",
           "display-flex",
           "fill-width",
+          "min-width-0",
           (onClick || href) && "focus-ring",
           (onClick || href) && "radius-l",
         )}

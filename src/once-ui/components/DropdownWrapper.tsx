@@ -8,6 +8,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useCallback,
+  KeyboardEvent,
 } from "react";
 import {
   useFloating,
@@ -26,7 +27,7 @@ export interface DropdownWrapperProps {
   minWidth?: number;
   maxWidth?: number;
   minHeight?: number;
-  floatingPlacement?: Placement;
+  placement?: Placement;
   trigger: ReactNode;
   dropdown: ReactNode;
   selectedOption?: string;
@@ -52,7 +53,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       minWidth,
       maxWidth,
       fillWidth = false,
-      floatingPlacement = "bottom-start",
+      placement = "bottom-start",
       className,
       style,
     },
@@ -62,6 +63,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [mounted, setMounted] = useState(false);
     const [internalIsOpen, setInternalIsOpen] = useState(false);
+    const [focusedIndex, setFocusedIndex] = useState(-1);
 
     const isControlled = controlledIsOpen !== undefined;
     const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
@@ -77,7 +79,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
     );
 
     const { x, y, strategy, refs, update } = useFloating({
-      placement: floatingPlacement,
+      placement: placement,
       open: isOpen,
       middleware: [
         offset(4),
@@ -118,6 +120,27 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
           if (dropdownRef.current) {
             refs.setFloating(dropdownRef.current);
             update();
+            // Reset focus index when opening
+            setFocusedIndex(-1);
+
+            // Set up initial keyboard navigation
+            const optionElements = dropdownRef.current
+              ? Array.from(
+                  dropdownRef.current.querySelectorAll('.option, [role="option"], [data-value]'),
+                )
+              : [];
+
+            // If we have options, highlight the first one
+            if (optionElements.length > 0) {
+              setFocusedIndex(0);
+              optionElements.forEach((el, i) => {
+                if (i === 0) {
+                  (el as HTMLElement).classList.add("highlighted");
+                } else {
+                  (el as HTMLElement).classList.remove("highlighted");
+                }
+              });
+            }
           }
         });
       }
@@ -127,6 +150,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       (event: MouseEvent) => {
         if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
           handleOpenChange(false);
+          setFocusedIndex(-1);
         }
       },
       [handleOpenChange, wrapperRef],
@@ -136,6 +160,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       (event: FocusEvent) => {
         if (wrapperRef.current && !wrapperRef.current.contains(event.relatedTarget as Node)) {
           handleOpenChange(false);
+          setFocusedIndex(-1);
         }
       },
       [handleOpenChange, wrapperRef],
@@ -152,6 +177,81 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         currentWrapperRef?.removeEventListener("focusout", handleFocusOut);
       };
     }, [handleClickOutside, handleFocusOut]);
+
+    // Handle keyboard navigation
+    const handleKeyDown = useCallback(
+      (e: KeyboardEvent<HTMLDivElement>) => {
+        if (!isOpen) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleOpenChange(true);
+          }
+          return;
+        }
+
+        if (e.key === "Escape") {
+          e.preventDefault();
+          handleOpenChange(false);
+          setFocusedIndex(-1);
+          return;
+        }
+
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          e.preventDefault();
+
+          // Find all Option components in the dropdown
+          // We need to look for the actual clickable elements inside the dropdown
+          const optionElements = dropdownRef.current
+            ? Array.from(
+                dropdownRef.current.querySelectorAll('.option, [role="option"], [data-value]'),
+              )
+            : [];
+
+          if (optionElements.length === 0) return;
+
+          let newIndex = focusedIndex;
+
+          if (e.key === "ArrowDown") {
+            newIndex = focusedIndex < optionElements.length - 1 ? focusedIndex + 1 : 0;
+          } else {
+            newIndex = focusedIndex > 0 ? focusedIndex - 1 : optionElements.length - 1;
+          }
+
+          setFocusedIndex(newIndex);
+
+          // Highlight the element visually
+          optionElements.forEach((el, i) => {
+            if (i === newIndex) {
+              (el as HTMLElement).classList.add("highlighted");
+              // Scroll into view if needed
+              (el as HTMLElement).scrollIntoView({ block: "nearest" });
+            } else {
+              (el as HTMLElement).classList.remove("highlighted");
+            }
+          });
+        } else if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+
+          // Find all Option components
+          const optionElements = dropdownRef.current
+            ? Array.from(
+                dropdownRef.current.querySelectorAll('.option, [role="option"], [data-value]'),
+              )
+            : [];
+
+          // Click the focused option
+          if (focusedIndex >= 0 && focusedIndex < optionElements.length) {
+            (optionElements[focusedIndex] as HTMLElement).click();
+
+            if (closeAfterClick) {
+              handleOpenChange(false);
+              setFocusedIndex(-1);
+            }
+          }
+        }
+      },
+      [isOpen, focusedIndex, handleOpenChange, closeAfterClick],
+    );
 
     return (
       <Flex
@@ -180,14 +280,10 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
             !dropdownRef.current.contains(e.target as Node)
           ) {
             handleOpenChange(false);
+            setFocusedIndex(-1);
           }
         }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            handleOpenChange(!isOpen);
-          }
-        }}
+        onKeyDown={handleKeyDown}
         tabIndex={-1}
         role="button"
         aria-haspopup="listbox"

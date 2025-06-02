@@ -36,6 +36,7 @@ const Heading = <T extends ElementType = "h1">({
   marginY,
   children,
   style,
+  truncate,
   className,
   ...props
 }: HeadingProps<T>) => {
@@ -92,6 +93,7 @@ const Heading = <T extends ElementType = "h1">({
     generateClassName("mb", marginBottom),
     generateClassName("mx", marginX),
     generateClassName("my", marginY),
+    truncate && "truncate",
   );
 
   return (

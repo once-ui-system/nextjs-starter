@@ -33,6 +33,7 @@ export * from "./Heading";
 export * from "./HoloFx";
 export * from "./Icon";
 export * from "./IconButton";
+export * from "./InfiniteScroll";
 export * from "./InlineCode";
 export * from "./Input";
 export * from "./InteractiveDetails";

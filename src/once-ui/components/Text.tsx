@@ -37,6 +37,7 @@ const Text = <T extends ElementType = "span">({
   children,
   style,
   className,
+  truncate,
   ...props
 }: TypeProps<T>) => {
   const Component = as || "span";
@@ -92,6 +93,7 @@ const Text = <T extends ElementType = "span">({
     generateClassName("mb", marginBottom),
     generateClassName("mx", marginX),
     generateClassName("my", marginY),
+    truncate && "truncate",
   );
 
   return (

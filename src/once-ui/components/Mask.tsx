@@ -5,7 +5,7 @@ import { Flex } from ".";
 import styles from "./Mask.module.scss";
 import classNames from "classnames";
 
-export interface MaskProps extends Omit<React.ComponentProps<typeof Flex>, 'radius' | 'cursor'> {
+export interface MaskProps extends Omit<React.ComponentProps<typeof Flex>, "radius" | "cursor"> {
   cursor?: boolean;
   x?: number;
   y?: number;
@@ -16,19 +16,7 @@ export interface MaskProps extends Omit<React.ComponentProps<typeof Flex>, 'radi
 }
 
 const Mask = forwardRef<HTMLDivElement, MaskProps>(
-  (
-    {
-      cursor = false,
-      x,
-      y,
-      radius = 50,
-      children,
-      className,
-      style,
-      ...rest
-    },
-    forwardedRef,
-  ) => {
+  ({ cursor = false, x, y, radius = 50, children, className, style, ...rest }, forwardedRef) => {
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
     const maskRef = useRef<HTMLDivElement>(null);
@@ -45,7 +33,7 @@ const Mask = forwardRef<HTMLDivElement, MaskProps>(
 
     useEffect(() => {
       if (!cursor) return;
-      
+
       const handleMouseMove = (event: MouseEvent) => {
         if (maskRef.current) {
           const rect = maskRef.current.getBoundingClientRect();
@@ -65,7 +53,7 @@ const Mask = forwardRef<HTMLDivElement, MaskProps>(
 
     useEffect(() => {
       if (!cursor) return;
-      
+
       let animationFrameId: number;
 
       const updateSmoothPosition = () => {

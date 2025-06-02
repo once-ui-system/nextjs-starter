@@ -226,10 +226,8 @@ const HeadingNav = forwardRef<HTMLDivElement, props>(({ className, style, ...res
               >
                 <Text
                   variant={isActive ? "body-strong-s" : "body-default-s"}
+                  truncate
                   style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
                     transition: "font-weight 0.2s ease",
                   }}
                 >
