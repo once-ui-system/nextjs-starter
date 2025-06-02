@@ -1,0 +1,8 @@
+.mask {
+  mask-size: 100% 100%;
+  mask-image: radial-gradient(
+    var(--mask-radius) at var(--mask-position-x) var(--mask-position-y),
+    black 0%,
+    transparent 100%
+  );
+}

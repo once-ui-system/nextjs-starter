@@ -1,25 +1,18 @@
 "use client";
 
-import React, { CSSProperties, forwardRef, useEffect, useRef, useState } from "react";
-import { SpacingToken } from "../types";
-import { Flex } from ".";
-import { DisplayProps } from "../interfaces";
+import React, { forwardRef, useEffect, useRef } from "react";
+import { Flex, Mask, MaskProps } from ".";
 import styles from "./Background.module.scss";
 import classNames from "classnames";
+import { DisplayProps } from "../interfaces";
+import { SpacingToken } from "../types";
 
 function setRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
   if (typeof ref === "function") {
     ref(value);
   } else if (ref && "current" in ref) {
-    (ref as React.MutableRefObject<T | null>).current = value;
+    (ref as React.RefObject<T | null>).current = value;
   }
-}
-
-interface MaskProps {
-  cursor?: boolean;
-  x?: number;
-  y?: number;
-  radius?: number;
 }
 
 interface GradientProps {
@@ -76,7 +69,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       dots = {},
       grid = {},
       lines = {},
-      mask = {},
+      mask,
       children,
       className,
       style,
@@ -87,79 +80,11 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
     const dotsColor = dots.color ?? "brand-on-background-weak";
     const dotsSize = "var(--static-space-" + (dots.size ?? "24") + ")";
 
-    const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-    const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
     const backgroundRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       setRef(forwardedRef, backgroundRef.current);
     }, [forwardedRef]);
-
-    useEffect(() => {
-      const handleMouseMove = (event: MouseEvent) => {
-        if (backgroundRef.current) {
-          const rect = backgroundRef.current.getBoundingClientRect();
-          setCursorPosition({
-            x: event.clientX - rect.left,
-            y: event.clientY - rect.top,
-          });
-        }
-      };
-
-      document.addEventListener("mousemove", handleMouseMove);
-
-      return () => {
-        document.removeEventListener("mousemove", handleMouseMove);
-      };
-    }, []);
-
-    useEffect(() => {
-      let animationFrameId: number;
-
-      const updateSmoothPosition = () => {
-        setSmoothPosition((prev) => {
-          const dx = cursorPosition.x - prev.x;
-          const dy = cursorPosition.y - prev.y;
-          const easingFactor = 0.05;
-
-          return {
-            x: Math.round(prev.x + dx * easingFactor),
-            y: Math.round(prev.y + dy * easingFactor),
-          };
-        });
-        animationFrameId = requestAnimationFrame(updateSmoothPosition);
-      };
-
-      if (mask.cursor) {
-        animationFrameId = requestAnimationFrame(updateSmoothPosition);
-      }
-
-      return () => {
-        cancelAnimationFrame(animationFrameId);
-      };
-    }, [cursorPosition, mask]);
-
-    const maskStyle = (): CSSProperties => {
-      if (!mask) return {};
-
-      if (mask.cursor) {
-        return {
-          "--mask-position-x": `${smoothPosition.x}px`,
-          "--mask-position-y": `${smoothPosition.y}px`,
-          "--mask-radius": `${mask.radius || 50}vh`,
-        } as CSSProperties;
-      }
-
-      if (mask.x != null && mask.y != null) {
-        return {
-          "--mask-position-x": `${mask.x}%`,
-          "--mask-position-y": `${mask.y}%`,
-          "--mask-radius": `${mask.radius || 50}vh`,
-        } as CSSProperties;
-      }
-
-      return {};
-    };
 
     const remap = (
       value: number,
@@ -174,21 +99,8 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
     const adjustedX = gradient.x != null ? remap(gradient.x, 0, 100, 37.5, 62.5) : 50;
     const adjustedY = gradient.y != null ? remap(gradient.y, 0, 100, 37.5, 62.5) : 50;
 
-    return (
-      <Flex
-        ref={backgroundRef}
-        fill
-        className={classNames(mask && styles.mask, className)}
-        top="0"
-        left="0"
-        zIndex={0}
-        overflow="hidden"
-        style={{
-          ...maskStyle(),
-          ...style,
-        }}
-        {...rest}
-      >
+    const renderContent = () => (
+      <>
         {gradient.display && (
           <Flex
             position="absolute"
@@ -221,12 +133,10 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             pointerEvents="none"
             className={styles.dots}
             opacity={dots.opacity}
-            style={
-              {
-                "--dots-color": `var(--${dotsColor})`,
-                "--dots-size": dotsSize,
-              } as React.CSSProperties
-            }
+            style={{
+              "--dots-color": `var(--${dotsColor})`,
+              "--dots-size": dotsSize,
+            } as React.CSSProperties}
           />
         )}
         {lines.display && (
@@ -238,23 +148,10 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             pointerEvents="none"
             className={styles.lines}
             opacity={lines.opacity}
-            style={
-              {
-                "--lines-angle": `${lines.angle ?? -45}deg`,
-                "--lines-color": `var(--${lines.color ?? "brand-on-background-weak"})`,
-                "--lines-thickness": `${lines.thickness ?? 1}px`,
-                "--lines-spacing": `var(--static-space-${lines.size ?? "8"})`,
-                background: `
-                repeating-linear-gradient(
-                  var(--lines-angle),
-                  var(--static-transparent),
-                  var(--static-transparent) calc(var(--lines-spacing) - var(--lines-thickness)),
-                  var(--lines-color) calc(var(--lines-spacing) - var(--lines-thickness)),
-                  var(--lines-color) var(--lines-spacing)
-                )
-              `,
-              } as React.CSSProperties
-            }
+            style={{
+              "--lines-size": `var(--static-space-${lines.size ?? "80"})`,
+              backgroundImage: `repeating-linear-gradient(${lines.angle ?? 90}deg, var(--${lines.color ?? "brand-on-background-weak"}) 0px, var(--${lines.color ?? "brand-on-background-weak"}) ${lines.thickness ?? 1}px, var(--static-transparent) ${lines.thickness ?? 1}px, var(--static-transparent) ${lines.size ?? "80"}px)`,
+            } as React.CSSProperties}
           />
         )}
         {grid.display && (
@@ -264,38 +161,47 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             left="0"
             fill
             pointerEvents="none"
-            className={styles.grid}
             opacity={grid.opacity}
             style={{
-              backgroundSize: `
-                ${grid.width || "var(--static-space-32)"}
-                ${grid.height || "var(--static-space-32)"}`,
-              backgroundPosition: "0 0",
-              backgroundImage: `
-                linear-gradient(
-                  90deg,
-                  var(--${grid.color || "brand-on-background-weak"}) 0,
-                  var(--${grid.color || "brand-on-background-weak"}) 1px,
-                  var(--static-transparent) 1px,
-                  var(--static-transparent) ${grid.width || "var(--static-space-32)"}
-                ),
-                linear-gradient(
-                  0deg,
-                  var(--${grid.color || "brand-on-background-weak"}) 0,
-                  var(--${grid.color || "brand-on-background-weak"}) 1px,
-                  var(--static-transparent) 1px,
-                  var(--static-transparent) ${grid.height || "var(--static-space-32)"}
-                )
-              `,
+              backgroundImage: `linear-gradient(to right, var(--${grid.color ?? "brand-on-background-weak"}) 1px, transparent 1px), linear-gradient(to bottom, var(--${grid.color ?? "brand-on-background-weak"}) 1px, transparent 1px)`,
+              backgroundSize: `${grid.width ?? "80px"} ${grid.height ?? "80px"}`,
             }}
           />
         )}
         {children}
+      </>
+    );
+
+    return (
+      <Flex
+        ref={backgroundRef}
+        fill
+        className={classNames(className)}
+        top="0"
+        left="0"
+        zIndex={0}
+        overflow="hidden"
+        style={style}
+        {...rest}
+      >
+        {mask ? (
+          <Mask
+            fill
+            position="absolute"
+            cursor={mask.cursor}
+            radius={mask.radius}
+            x={mask.x}
+            y={mask.y}
+          >
+            {renderContent()}
+          </Mask>
+        ) : (
+          renderContent()
+        )}
       </Flex>
     );
-  },
+  }
 );
 
 Background.displayName = "Background";
-
 export { Background };
