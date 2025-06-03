@@ -142,8 +142,19 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
             opacity={lines.opacity}
             style={
               {
-                "--lines-size": `var(--static-space-${lines.size ?? "80"})`,
-                backgroundImage: `repeating-linear-gradient(${lines.angle ?? 90}deg, var(--${lines.color ?? "brand-on-background-weak"}) 0px, var(--${lines.color ?? "brand-on-background-weak"}) ${lines.thickness ?? 1}px, var(--static-transparent) ${lines.thickness ?? 1}px, var(--static-transparent) ${lines.size ?? "80"}px)`,
+                "--lines-angle": `${lines.angle ?? -45}deg`,
+                "--lines-color": `var(--${lines.color ?? "brand-on-background-weak"})`,
+                "--lines-thickness": `${lines.thickness ?? 1}px`,
+                "--lines-spacing": `var(--static-space-${lines.size ?? "8"})`,
+                background: `
+                repeating-linear-gradient(
+                  var(--lines-angle),
+                  var(--static-transparent),
+                  var(--static-transparent) calc(var(--lines-spacing) - var(--lines-thickness)),
+                  var(--lines-color) calc(var(--lines-spacing) - var(--lines-thickness)),
+                  var(--lines-color) var(--lines-spacing)
+                )
+              `,
               } as React.CSSProperties
             }
           />
@@ -171,8 +182,6 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         ref={backgroundRef}
         fill
         className={classNames(className)}
-        top="0"
-        left="0"
         zIndex={0}
         overflow="hidden"
         style={style}
