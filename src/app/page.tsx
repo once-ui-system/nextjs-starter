@@ -7,9 +7,6 @@ import {
   Logo,
   Line,
   LetterFx,
-  Background,
-  Particle,
-  Mask,
 } from "@/once-ui/components";
 
 export default function Home() {

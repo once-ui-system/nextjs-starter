@@ -45,7 +45,6 @@ export default function RootLayout({
       data-transition={style.transition}
       data-scaling={style.scaling}
       data-viz={chart.mode}
-      data-mode={chart.variant}
       className={classNames(
         font.primary.variable,
         font.secondary.variable,
