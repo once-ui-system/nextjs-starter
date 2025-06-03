@@ -235,6 +235,9 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       )}
       {preview && (
         <Flex
+          style={{
+            isolation: "isolate",
+          }}
           key={refreshKey}
           padding={previewPadding}
           fillHeight
