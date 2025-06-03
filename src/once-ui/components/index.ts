@@ -1,6 +1,7 @@
 export * from "./Accordion";
 export * from "./AccordionGroup";
 export * from "./Arrow";
+export * from "./AutoScroll";
 export * from "./Avatar";
 export * from "./AvatarGroup";
 export * from "./Badge";
