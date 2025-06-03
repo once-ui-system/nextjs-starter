@@ -35,7 +35,7 @@ const FlipFx = forwardRef<HTMLDivElement, FlipFxProps>((props, ref) => {
     back,
     className,
     style,
-    ...rest
+    ...flex
   } = props;
 
   const [internalFlipped, setInternalFlipped] = useState(false);
@@ -80,6 +80,13 @@ const FlipFx = forwardRef<HTMLDivElement, FlipFxProps>((props, ref) => {
     onFlip?.(!flippedState);
   }, [disableClickFlip, autoFlipInterval, flippedState, onFlip]);
 
+  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleFlip();
+    }
+  }, [handleFlip]);
+
   return (
     <Flex
       ref={(node) => {
@@ -100,10 +107,11 @@ const FlipFx = forwardRef<HTMLDivElement, FlipFxProps>((props, ref) => {
         ...style,
       }}
       onClick={handleFlip}
+      onKeyDown={handleKeyDown}
       role="button"
       aria-pressed={flippedState}
       tabIndex={0}
-      {...rest}
+      {...flex}
     >
       <Flex
         ref={frontRef}
@@ -132,7 +140,7 @@ const FlipFx = forwardRef<HTMLDivElement, FlipFxProps>((props, ref) => {
         <Flex
           fill
           style={{
-            transform: "rotateY(-180deg) rotateX(180deg)",
+            transform: flipDirection === "vertical" ? "rotateY(-180deg) rotateX(180deg)" : undefined,
           }}
         >
           {back}
