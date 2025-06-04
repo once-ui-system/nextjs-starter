@@ -61,7 +61,7 @@ Connect with us!
 
 ## Become a Oncer
 
-![Design Engineers Club](https://docs.once-ui.com/images/quasar-coding.jpg)
+![Design Engineers Club](https://docs.once-ui.com/images/docs/vibe-coding-dark.jpg)
 
 Join the [Design Engineers Club](https://discord.com/invite/5EyAQ4eNdS) on Discord to connect with us and share your projects.
 
