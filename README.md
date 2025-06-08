@@ -1,19 +1,18 @@
 # Once UI for Next.js
 
-A design system for indie builders who move fast and break limits without neglecting quality. Once UI combines the simplicity of low-code with the power of code: write 70% less compared to shadcn + tailwind.
-
+A design system for indie builders, startups and freelancers. Once UI combines the simplicity of low-code with the power of code: write 70% less compared to shadcn + tailwind.
 
 ![Once UI](public/images/og/home.jpg)
 
 ## Features
 
-Start building your Next.js app in minutes.
+A lightweight starter template with the [Once UI Core](https://github.com/once-ui-system/core) package and our recommended setup to move fast and break limits without neglecting quality.
 
 * **Customization**: Manage design config in a single file.
 * **Components**: Access advanced components with simple APIs.
 * **Data-viz**: Add responsive charts with a few lines of code.
 * **SEO**: Use our SEO components to simplify meta and schema setup.
-* **PRO**: Launch ready-made apps without minimal coding with Once UI Pro.
+* **PRO**: Launch ready-made apps with minimal coding with Once UI Pro.
 
 [Get Once UI Pro](https://once-ui.com/pricing)
 
