@@ -66,6 +66,8 @@ Join the [Design Engineers Club](https://discord.com/invite/5EyAQ4eNdS) on Disco
 
 Found a bug? Report it [here](https://github.com/once-ui-system/nextjs-starter/issues/new?labels=bug&template=bug_report.md). Got a feature request? Submit it [here](https://github.com/once-ui-system/nextjs-starter/issues/new?labels=feature%20request&template=feature_request.md).
 
+Please use the Once UI Core [GitHub repository](https://github.com/once-ui-system/core) for design system contributions.
+
 ## Sponsors
 
 Once UI is an indie project. [Sponsor us](https://github.com/sponsors/once-ui-system) and get featured on our site!
