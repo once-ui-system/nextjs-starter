@@ -3,7 +3,7 @@ import '@once-ui-system/core/css/tokens.css';
 
 import classNames from "classnames";
 
-import { baseURL, meta, font, effects } from "@/resources/once-ui.config";
+import { baseURL, meta, fonts, effects } from "@/resources/once-ui.config";
 import { Meta, Schema,  Column, Flex, opacity, SpacingToken, Background} from "@once-ui-system/core";
 import { Providers } from '../../components/Providers';
 
@@ -32,10 +32,10 @@ export default function RootLayout({
       lang="en"
       fillWidth
       className={classNames(
-        font.primary.variable,
-        font.secondary.variable,
-        font.tertiary.variable,
-        font.code.variable,
+        fonts.heading.variable,
+        fonts.body.variable,
+        fonts.label.variable,
+        fonts.code.variable,
       )}
     >
       <Schema
