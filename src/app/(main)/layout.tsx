@@ -1,11 +1,12 @@
 import '@once-ui-system/core/css/styles.css';
 import '@once-ui-system/core/css/tokens.css';
+import '@/resources/custom.css'
 
 import classNames from "classnames";
 
-import { baseURL, meta, fonts, effects } from "@/resources/once-ui.config";
+import { baseURL, meta, fonts, effects, style, dataStyle } from "@/resources/once-ui.config";
 import { Meta, Schema,  Column, Flex, opacity, SpacingToken, Background} from "@once-ui-system/core";
-import { Providers } from '../../components/Providers';
+import { Providers } from '@/components/Providers';
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -47,25 +48,34 @@ export default function RootLayout({
       />
       <head>
         <script
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: <It's not dynamic nor a security issue.>
+          id="theme-init"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
                   const root = document.documentElement;
-                  
                   const defaultTheme = 'system';
-                  root.setAttribute('data-neutral', 'gray');
-                  root.setAttribute('data-brand', 'blue');
-                  root.setAttribute('data-accent', 'indigo');
-                  root.setAttribute('data-solid', 'contrast');
-                  root.setAttribute('data-solid-style', 'flat');
-                  root.setAttribute('data-border', 'playful');
-                  root.setAttribute('data-surface', 'filled');
-                  root.setAttribute('data-transition', 'all');
-                  root.setAttribute('data-scaling', '100');
-                  root.setAttribute('data-viz-style', 'categorical');
                   
+                  // Set defaults from config
+                  const config = ${JSON.stringify({
+                    brand: style.brand,
+                    accent: style.accent,
+                    neutral: style.neutral,
+                    solid: style.solid,
+                    'solid-style': style.solidStyle,
+                    border: style.border,
+                    surface: style.surface,
+                    transition: style.transition,
+                    scaling: style.scaling,
+                    'viz-style': dataStyle.variant,
+                  })};
+                  
+                  // Apply default values
+                  Object.entries(config).forEach(([key, value]) => {
+                    root.setAttribute('data-' + key, value);
+                  });
+                  
+                  // Resolve theme
                   const resolveTheme = (themeValue) => {
                     if (!themeValue || themeValue === 'system') {
                       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -73,11 +83,13 @@ export default function RootLayout({
                     return themeValue;
                   };
                   
-                  const theme = localStorage.getItem('data-theme');
-                  const resolvedTheme = resolveTheme(theme);
+                  // Apply saved theme
+                  const savedTheme = localStorage.getItem('data-theme');
+                  const resolvedTheme = resolveTheme(savedTheme);
                   root.setAttribute('data-theme', resolvedTheme);
                   
-                  const styleKeys = ['neutral', 'brand', 'accent', 'solid', 'solid-style', 'viz-style', 'border', 'surface', 'transition', 'scaling'];
+                  // Apply any saved style overrides
+                  const styleKeys = Object.keys(config);
                   styleKeys.forEach(key => {
                     const value = localStorage.getItem('data-' + key);
                     if (value) {
@@ -85,6 +97,7 @@ export default function RootLayout({
                     }
                   });
                 } catch (e) {
+                  console.error('Failed to initialize theme:', e);
                   document.documentElement.setAttribute('data-theme', 'dark');
                 }
               })();
