@@ -11,7 +11,7 @@
     "biome-write": "npx @biomejs/biome format --write ."
   },
   "dependencies": {
-    "@once-ui-system/core": "latest",
+    "@once-ui-system/core": "*",
     "classnames": "^2.5.1",
     "next": "15.3.2",
     "react": "19.0.0",
