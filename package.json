@@ -18,13 +18,15 @@
     "react-dom": "19.0.0",
     "react-icons": "^5.2.1",
     "sass": "^1.77.6",
-    "sharp": "^0.33.4"
+    "sharp": "^0.33.4",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/node": "20.17.23",
     "@types/react": "19.0.1",
     "@types/react-dom": "19.0.2",
+    "@types/uuid": "^10.0.0",
     "typescript": "5.8.2"
   },
   "overrides": {

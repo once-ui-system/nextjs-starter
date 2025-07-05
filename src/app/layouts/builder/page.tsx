@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Simple block types for demo
 const BLOCKS = [
@@ -8,9 +8,31 @@ const BLOCKS = [
   { type: "image", label: "Image" },
 ];
 
+type Layout = {
+  id?: string;
+  name: string;
+  layout: any[];
+};
+
 export default function LayoutBuilder() {
+  const [layouts, setLayouts] = useState<Layout[]>([]);
   const [layout, setLayout] = useState<any[]>([]);
   const [name, setName] = useState("");
+  const [editId, setEditId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Load all layouts
+  const fetchLayouts = async () => {
+    setLoading(true);
+    const res = await fetch("/api/layouts");
+    const data = await res.json();
+    setLayouts(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchLayouts();
+  }, []);
 
   const addBlock = (type: string) => {
     setLayout([...layout, { type, content: "" }]);
@@ -21,42 +43,121 @@ export default function LayoutBuilder() {
   };
 
   const saveLayout = async () => {
+    if (editId) {
+      await fetch("/api/layouts", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: editId, name, layout }),
+      });
+    } else {
+      await fetch("/api/layouts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, layout }),
+      });
+    }
+    setName("");
+    setLayout([]);
+    setEditId(null);
+    fetchLayouts();
+  };
+
+  const editLayout = (l: Layout) => {
+    setName(l.name);
+    setLayout(l.layout);
+    setEditId(l.id!);
+  };
+
+  const deleteLayout = async (id: string) => {
     await fetch("/api/layouts", {
-      method: "POST",
+      method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, layout }),
+      body: JSON.stringify({ id }),
     });
-    alert("Layout saved!");
+    if (editId === id) {
+      setName("");
+      setLayout([]);
+      setEditId(null);
+    }
+    fetchLayouts();
+  };
+
+  const cancelEdit = () => {
+    setName("");
+    setLayout([]);
+    setEditId(null);
   };
 
   return (
     <div style={{ padding: 32 }}>
       <h1>Dynamic Layout Builder</h1>
+      <div style={{ marginBottom: 32 }}>
+        <h2>Saved Layouts</h2>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <ul>
+            {layouts.map((l) => (
+              <li key={l.id} style={{ marginBottom: 8 }}>
+                <b>{l.name}</b>
+                <button
+                  onClick={() => editLayout(l)}
+                  style={{ marginLeft: 8 }}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => deleteLayout(l.id!)}
+                  style={{ marginLeft: 8, color: "red" }}
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <input
         placeholder="Layout Name"
         value={name}
-        onChange={e => setName(e.target.value)}
+        onChange={(e) => setName(e.target.value)}
         style={{ marginBottom: 16 }}
       />
       <div style={{ marginBottom: 16 }}>
-        {BLOCKS.map(b => (
-          <button key={b.type} onClick={() => addBlock(b.type)} style={{ marginRight: 8 }}>{b.label}</button>
+        {BLOCKS.map((b) => (
+          <button
+            key={b.type}
+            onClick={() => addBlock(b.type)}
+            style={{ marginRight: 8 }}
+          >
+            {b.label}
+          </button>
         ))}
       </div>
       <div>
         {layout.map((block, idx) => (
-          <div key={idx} style={{ border: "1px solid #ccc", margin: 8, padding: 8 }}>
+          <div
+            key={idx}
+            style={{ border: "1px solid #ccc", margin: 8, padding: 8 }}
+          >
             <strong>{block.type}</strong>
             <input
               placeholder="Content"
               value={block.content}
-              onChange={e => updateBlock(idx, e.target.value)}
+              onChange={(e) => updateBlock(idx, e.target.value)}
               style={{ marginLeft: 8 }}
             />
           </div>
         ))}
       </div>
-      <button onClick={saveLayout} style={{ marginTop: 16 }}>Save Layout</button>
+      <button onClick={saveLayout} style={{ marginTop: 16 }}>
+        {editId ? "Update Layout" : "Save Layout"}
+      </button>
+      {editId && (
+        <button onClick={cancelEdit} style={{ marginLeft: 8 }}>
+          Cancel
+        </button>
+      )}
     </div>
   );
 }
