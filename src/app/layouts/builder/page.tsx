@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 
 // Simple block types for demo
 const BLOCKS = [
@@ -88,6 +89,15 @@ export default function LayoutBuilder() {
     setEditId(null);
   };
 
+  // Drag handler
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const items = Array.from(layout);
+    const [reordered] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reordered);
+    setLayout(items);
+  };
+
   return (
     <div style={{ padding: 32 }}>
       <h1>Dynamic Layout Builder</h1>
@@ -134,22 +144,41 @@ export default function LayoutBuilder() {
           </button>
         ))}
       </div>
-      <div>
-        {layout.map((block, idx) => (
-          <div
-            key={idx}
-            style={{ border: "1px solid #ccc", margin: 8, padding: 8 }}
-          >
-            <strong>{block.type}</strong>
-            <input
-              placeholder="Content"
-              value={block.content}
-              onChange={(e) => updateBlock(idx, e.target.value)}
-              style={{ marginLeft: 8 }}
-            />
-          </div>
-        ))}
-      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="layoutBlocks">
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {layout.map((block, idx) => (
+                <Draggable key={idx} draggableId={String(idx)} index={idx}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={{
+                        border: "1px solid #ccc",
+                        margin: 8,
+                        padding: 8,
+                        background: "#fafafa",
+                        ...provided.draggableProps.style,
+                      }}
+                    >
+                      <strong>{block.type}</strong>
+                      <input
+                        placeholder="Content"
+                        value={block.content}
+                        onChange={(e) => updateBlock(idx, e.target.value)}
+                        style={{ marginLeft: 8 }}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <button onClick={saveLayout} style={{ marginTop: 16 }}>
         {editId ? "Update Layout" : "Save Layout"}
       </button>
