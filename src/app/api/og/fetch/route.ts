@@ -2,30 +2,7 @@ import { NextResponse } from "next/server";
 
 export const runtime = "edge";
 
-function decodeHTMLEntities(text: string): string {
-  return text.replace(/&(#?[a-zA-Z0-9]+);/g, (match, entity) => {
-    const entities: { [key: string]: string } = {
-      amp: "&",
-      lt: "<",
-      gt: ">",
-      quot: '"',
-      apos: "'",
-      "#x27": "'",
-      "#39": "'",
-      "#x26": "&",
-      "#38": "&",
-    };
-
-    if (entity.startsWith("#")) {
-      const code = entity.startsWith("#x")
-        ? parseInt(entity.slice(2), 16)
-        : parseInt(entity.slice(1), 10);
-      return String.fromCharCode(code);
-    }
-
-    return entities[entity] || match;
-  });
-}
+import he from "he";
 
 async function fetchWithTimeout(url: string, timeout = 5000) {
   const controller = new AbortController();
@@ -61,8 +38,8 @@ async function extractMetadata(html: string) {
   const image = imageMatch?.[1]?.trim() || "";
 
   return {
-    title: decodeHTMLEntities(title),
-    description: decodeHTMLEntities(description),
+    title: he.decode(title),
+    description: he.decode(description),
     image: image,
   };
 }
@@ -98,7 +75,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error: "Failed to fetch metadata",
-        message: error instanceof Error ? error.message : "Unknown error occurred",
+        message: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },
     );
