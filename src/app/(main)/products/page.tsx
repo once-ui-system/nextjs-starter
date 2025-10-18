@@ -10,7 +10,6 @@ import {
   Text,
   Media,
   Line,
-  Icon,
   Heading,
   Grid,
   Tag,
@@ -260,10 +259,9 @@ export default function ProductsPage() {
                 textVariant="label-default-s"
                 onBackground="neutral-medium"
               >
-                <Icon name="like" size="s" onBackground="neutral-strong" />
-                {availableVariants}
-                <Icon name="chat" size="s" onBackground="neutral-strong" marginLeft="24" />
-                {totalVariants}
+                <Text variant="label-default-s" onBackground="neutral-medium">
+                  {availableVariants} disponibles · {totalVariants} variantes
+                </Text>
               </Row>
             </Card>
           );
