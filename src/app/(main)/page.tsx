@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Heading,
   Text,
@@ -10,10 +8,19 @@ import {
   Line,
   LetterFx,
 } from "@once-ui-system/core";
+import { Schema } from "@once-ui-system/core";
+import { baseURL, meta } from "@/resources/seo";
 
 export default function Home() {
   return (
-    <Column fillWidth center padding="l" style={{ minHeight: "100vh" }}>
+    <Column fillWidth minHeight="100vh" center padding="l">
+      <Schema
+        as="webPage"
+        baseURL={baseURL}
+        title={meta.home.title}
+        description={meta.home.description}
+        path={meta.home.path}
+      />
       <Column maxWidth="s" horizontal="center" gap="l" align="center">
         <Badge
           textVariant="code-default-s"
@@ -44,8 +51,6 @@ export default function Home() {
           id="docs"
           href="https://docs.once-ui.com/once-ui/quick-start"
           data-border="rounded"
-          weight="default"
-          prefixIcon="copy"
           arrowIcon
         >
           Explore docs

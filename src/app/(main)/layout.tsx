@@ -4,8 +4,9 @@ import '@/resources/custom.css'
 
 import classNames from "classnames";
 
-import { baseURL, meta, fonts, style, dataStyle } from "@/resources/once-ui.config";
-import { Meta, Schema,  Column, Flex, Mask, MatrixFx} from "@once-ui-system/core";
+import { baseURL, meta } from "@/resources/seo";
+import { fonts, style, dataStyle } from "@/resources/once-ui.config";
+import { Meta, Schema,  Column, Flex, Mask, MatrixFx, ThemeInit} from "@once-ui-system/core";
 import { Providers } from '@/components/Providers';
 
 export async function generateMetadata() {
@@ -47,68 +48,25 @@ export default function RootLayout({
         path={meta.home.path}
       />
       <head>
-        <script
-          id="theme-init"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const root = document.documentElement;
-                  
-                  // Set defaults from config
-                  const config = ${JSON.stringify({
-                    theme: style.theme,
-                    brand: style.brand,
-                    accent: style.accent,
-                    neutral: style.neutral,
-                    solid: style.solid,
-                    'solid-style': style.solidStyle,
-                    border: style.border,
-                    surface: style.surface,
-                    transition: style.transition,
-                    scaling: style.scaling,
-                    'viz-style': dataStyle.variant,
-                  })};
-                  
-                  // Apply default values
-                  Object.entries(config).forEach(([key, value]) => {
-                    root.setAttribute('data-' + key, value);
-                  });
-                  
-                  // Resolve theme
-                  const resolveTheme = (themeValue) => {
-                    if (!themeValue || themeValue === 'system') {
-                      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                    }
-                    return themeValue;
-                  };
-                  
-                  // Apply saved theme or use config default
-                  const savedTheme = localStorage.getItem('data-theme');
-                  // Only override with system preference if explicitly set to 'system'
-                  const resolvedTheme = savedTheme ? resolveTheme(savedTheme) : config.theme === 'system' ? resolveTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : config.theme;
-                  root.setAttribute('data-theme', resolvedTheme);
-                  
-                  // Apply any saved style overrides
-                  const styleKeys = Object.keys(config);
-                  styleKeys.forEach(key => {
-                    const value = localStorage.getItem('data-' + key);
-                    if (value) {
-                      root.setAttribute('data-' + key, value);
-                    }
-                  });
-                } catch (e) {
-                  console.error('Failed to initialize theme:', e);
-                  document.documentElement.setAttribute('data-theme', 'dark');
-                }
-              })();
-            `,
+        <ThemeInit
+          config={{
+            theme: style.theme,
+            brand: style.brand,
+            accent: style.accent,
+            neutral: style.neutral,
+            solid: style.solid,
+            'solid-style': style.solidStyle,
+            border: style.border,
+            surface: style.surface,
+            transition: style.transition,
+            scaling: style.scaling,
+            'viz-style': dataStyle.variant,
           }}
         />
       </head>
       <Providers>
         <Column as="body" background="page" fillWidth margin="0" padding="0">
-          <Column style={{maxHeight: "100dvh"}} fillWidth aspectRatio="1" horizontal="center" position="absolute" top="0" left="0">
+          <Column fillWidth maxHeight="100dvh" aspectRatio="1" horizontal="center" position="absolute" top="0" left="0">
             <Mask maxWidth="m" x={50} y={0} radius={50}>
               <MatrixFx
                 size={1.5}
