@@ -8,6 +8,10 @@ const plusJakarta = localFont({
   variable: '--font-plus-jakarta',
   display: 'swap',
 });
+import { baseURL, meta } from "@/resources/seo";
+import { fonts, style, dataStyle } from "@/resources/once-ui.config";
+import { Meta, Schema,  Column, Flex, Mask, MatrixFx, ThemeInit} from "@once-ui-system/core";
+import { Providers } from '@/components/Providers';
 
 const poppins = localFont({
   src: [
