@@ -2,33 +2,43 @@
   "name": "@once-ui-system/nextjs-starter",
   "version": "1.1.3",
   "private": true,
+  "packageManager": "pnpm@10.14.0",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "export": "next export",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "biome-write": "npx @biomejs/biome format --write ."
+    "lint": "biome lint .",
+    "biome-write": "biome format --write ."
   },
   "dependencies": {
-    "@once-ui-system/core": "^1.7.6",
-    "classnames": "^2.5.1",
-    "next": "^16.2.3",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "react-icons": "^5.2.1",
-    "sass": "^1.77.6",
-    "sharp": "^0.33.4"
+    "@once-ui-system/core": "^1.8.1",
+    "next": "^16.2.12",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-icons": "^5.7.0",
+    "sass": "^1.102.0",
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/node": "20.17.23",
-    "@types/react": "19.0.1",
-    "@types/react-dom": "19.0.2",
-    "typescript": "5.8.2"
+    "@biomejs/biome": "2.5.6",
+    "@types/node": "26.1.2",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "typescript": "6.0.3"
   },
   "overrides": {
-    "@types/react": "19.0.1",
-    "@types/react-dom": "19.0.2"
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "@parcel/watcher",
+      "sharp"
+    ]
   }
 }
