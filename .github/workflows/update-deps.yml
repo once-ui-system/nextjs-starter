@@ -1,0 +1,59 @@
+name: Auto-Update Dependencies
+
+on:
+  schedule:
+    - cron: '0 0 1 * *' # monthly, 1st of month 00:00 UTC
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Update target: latest | minor | patch'
+        required: false
+        default: 'latest'
+        type: choice
+        options:
+          - latest
+          - minor
+          - patch
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-update-deps
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TARGET: ${{ github.event.inputs.target || 'latest' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Update dependencies
+        run: npx --yes npm-check-updates@latest -u --target "$TARGET" && pnpm install
+
+      - name: Lint & build (gate)
+        run: |
+          pnpm lint
+          pnpm build
+
+      - name: Commit & push if changed
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "chore: auto-update dependencies"
+            git push
+          else
+            echo "No changes"
+          fi
