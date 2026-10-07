@@ -1,0 +1,26 @@
+<calcite-modal
+  aria-labelledby="modal-title"
+  resize="vertical"
+  open
+  {{on "calciteModalClose" @onHide}}
+>
+  <div slot="header" id="modal-title">
+    {{t "save_modal.title"}}
+  </div>
+  <div slot="content">
+    <p>
+      {{t "save_modal.info" currentUrl=@currentUrl htmlSafe=true}}
+    </p>
+
+    <calcite-text-area
+      label={{t "save_modal.title"}}
+      {{on "click" this.selectAll}}
+      value={{@currentUrl}}
+      rows="10"
+      read-only
+    />
+  </div>
+  <calcite-button {{on "click" @onHide}} slot="primary" width="full">
+    {{t "save_modal.close"}}
+  </calcite-button>
+</calcite-modal>

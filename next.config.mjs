@@ -4,6 +4,7 @@ const nextConfig = {
     compiler: "modern",
     silenceDeprecations: ["legacy-js-api"],
   },
+  allowedDevOrigins: ['toolstest.prgsn.dev'],
 };
 
 export default nextConfig;

@@ -13,6 +13,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <LayoutProvider>
       <ThemeProvider
         theme={style.theme as Theme}
+        persistence="local"
         brand={style.brand as Schemes}
         accent={style.accent as Schemes}
         neutral={style.neutral as NeutralColor}

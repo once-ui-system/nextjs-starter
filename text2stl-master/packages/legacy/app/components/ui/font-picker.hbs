@@ -1,0 +1,82 @@
+<calcite-label>
+  {{t 'font_picker.category'}}
+  <calcite-combobox
+    selection-mode="single-persist"
+    clear-disabled
+    {{on "calciteComboboxChange" this.onFontCategoryChange}}
+  >
+    {{#each this.fontManager.availableFontCategories as |category|}}
+      <calcite-combobox-item selected={{eq this.fontCategory category}} value={{category}} text-label={{category}} />
+    {{/each}}
+  </calcite-combobox>
+</calcite-label>
+
+<calcite-label>
+  {{t 'font_picker.script_filter.label'}}
+  <calcite-combobox
+    selection-mode="single"
+    placeholder={{t 'font_picker.script_filter.placeholder'}}
+    {{on "calciteComboboxChange" this.onScriptChange}}
+  >
+    {{#each this.fontManager.availableFontScript as |script|}}
+      <calcite-combobox-item selected={{eq this.fontScript script}} value={{script}} text-label={{script}} />
+    {{/each}}
+  </calcite-combobox>
+</calcite-label>
+
+<calcite-label>
+  {{t 'font_picker.sort.label'}}
+  <calcite-radio-button-group
+    name="font_sort"
+    layout="horizontal"
+    {{on "calciteRadioButtonGroupChange" this.onSortChange}}
+  >
+    {{#each (array 'alphabet' 'popularity') as |sort|}}
+      <calcite-label layout="inline">
+        <calcite-radio-button value={{sort}} checked={{eq this.sort sort}} />
+        {{t (concat "font_picker.sort.options." sort)}}
+      </calcite-label>
+    {{/each}}
+  </calcite-radio-button-group>
+</calcite-label>
+
+<hr />
+
+<calcite-label>
+  {{t 'font_picker.name'}}
+  <calcite-combobox
+    scale="l"
+    max-items="10"
+    selection-mode="single-persist"
+    clear-disabled
+    {{on "calciteComboboxChange" this.onFontNameChange}}
+  >
+    {{#each this.fontList as |font|}}
+      <calcite-combobox-item
+        value={{font.family}}
+        text-label={{font.family}}
+        {{!-- template-lint-disable no-inline-styles --}}
+        style={{this.fontStyle font.family}}
+        selected={{eq @fontName font.family}}
+      />
+    {{/each}}
+  </calcite-combobox>
+</calcite-label>
+
+<calcite-label>
+  {{t 'font_picker.variant'}}
+  <calcite-combobox
+    max-items="10"
+    selection-mode="single-persist"
+    clear-disabled
+    {{on "calciteComboboxChange" this.onVariantNameChange}}
+  >
+    {{#each this.fontVariants as |variant|}}
+      <calcite-combobox-item
+        value={{variant}}
+        text-label={{variant}}
+        selected={{eq @variantName variant}}
+      />
+    {{/each}}
+  </calcite-combobox>
+</calcite-label>

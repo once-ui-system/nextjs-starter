@@ -1,17 +1,17 @@
 // IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
-const baseURL = "https://demo.once-ui.com";
+const baseURL = "https://tools.prgsn.dev";
 
 // metadata for pages
 const meta = {
   home: {
     path: "/",
-    title: "Once UI for Next.js",
+    title: "ProgressionTools • Creating useful development tools for Roblox creators",
     description:
-      "An open-source design system and component library for Next.js that emphasizes easy styling and accessibility in UI development.",
+      "We create useful development tools that Roblox creators can use for completely free to help productivity flourish.",
     image: "/images/og/home.jpg",
-    canonical: "https://once-ui.com",
+    canonical: "https://tools.prgsn.dev",
     robots: "index,follow",
-    alternates: [{ href: "https://once-ui.com", hrefLang: "en" }],
+    alternates: [{ href: "https://tools.prgsn.dev", hrefLang: "en" }],
   },
   // add more routes and reference them in page.tsx
 };

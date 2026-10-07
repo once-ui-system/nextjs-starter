@@ -1,0 +1,95 @@
+<calcite-shell-panel slot='panel-start' collapsed={{this.mainPanelClosed}}>
+  <calcite-action-bar slot='action-bar'>
+
+    <calcite-action-group>
+      <calcite-action
+        text={{t 'settings_form.label'}}
+        icon='sliders'
+        {{on 'click' (if this.mainPanelClosed this.openMainPanel this.closeMainPanel)}}
+      />
+    </calcite-action-group>
+
+    <calcite-action-group>
+      <calcite-action icon='save' text={{t 'save'}} {{on 'click' this.showSaveModal}} />
+      <calcite-action icon='reset' text={{t 'reset'}} {{on 'click' this.showResetModal}} />
+    </calcite-action-group>
+
+    <calcite-action-group slot='actions-end'>
+      <calcite-action
+        icon='download'
+        text={{this.exportFileLabel}}
+        disabled={{this.exportDisabled}}
+        {{on 'click' this.exportFile}}
+      />
+    </calcite-action-group>
+
+  </calcite-action-bar>
+
+  <calcite-panel
+    heading={{t 'settings_form.label'}}
+    closable
+    closed={{this.mainPanelClosed}}
+    {{on 'calcitePanelClose' this.closeMainPanel}}
+  >
+
+    <div slot='footer'>
+      {{!-- <calcite-button
+        width='full'
+        scale='l'
+        disabled={{this.exportDisabled}}
+        loading={{this.meshGenerating}}
+        icon-start='download'
+        {{on 'click' (fn this.exportFile 'stl')}}
+        data-test-export-stl
+      >
+        {{t 'export_stl'}}
+      </calcite-button> --}}
+
+      <calcite-split-button
+        primary-text={{this.exportFileLabel}}
+        width='full'
+        scale='l'
+        disabled={{this.exportDisabled}}
+        loading={{this.meshGenerating}}
+        primary-icon-start='download'
+        dropdown-icon-type='ellipsis'
+        data-test-export-stl
+        {{on 'calciteSplitButtonPrimaryClick' this.exportFile}}
+      >
+        <calcite-dropdown-group selection-mode='single'>
+          {{#each this.fileTypes as |type|}}
+            <calcite-dropdown-item
+              selected={{eq type this.fileType}}
+              {{on 'calciteDropdownItemSelect' (fn this.changeFileType type)}}
+            >
+              {{t 'export_file_type' type=type}}
+            </calcite-dropdown-item>
+          {{/each}}
+        </calcite-dropdown-group>
+      </calcite-split-button>
+
+    </div>
+
+    <SettingsForm @model={{this.model}} />
+  </calcite-panel>
+</calcite-shell-panel>
+
+<calcite-panel>
+  <ThreePreview @mesh={{this.mesh.value}} @nearCamera={{true}} as |preview|>
+
+    <div id='three-preview-container'>
+      <preview.renderer />
+    </div>
+    <div slot='footer'>
+      <preview.size />
+    </div>
+  </ThreePreview>
+
+</calcite-panel>
+
+{{#if this.saveModalVisible}}
+  <SaveModal @onHide={{this.hideSaveModal}} @currentUrl={{this.currentUrl}} />
+{{/if}}
+{{#if this.resetModalVisible}}
+  <ResetModal @onHide={{this.hideResetModal}} @onReset={{this.resetModel}} />
+{{/if}}

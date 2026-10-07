@@ -1,0 +1,152 @@
+app_name: Text2STL
+app_title: Free 3D printable text generator
+app_subtitle: Generate 3D printable text in one click
+index_page:
+  title: Generate 3D printable text has never been so easy !
+  list:
+    font:
+      dt: Custom font
+      dd: Pick a font from more than 1000 Google fonts or use your own.
+    shape:
+      dt: Custom shape
+      dd: Choose from multiple shape type (with or without support, negative text).
+    text:
+      dt: Custom text
+      dd: You choose the text you want to print.
+    settings:
+      dt: Custom settings
+      dd: Adjust the settings, choose the font size, the support and/or text height...
+    stl:
+      dt: Export STL
+      dd: Export your STL file in one click !
+  image_alt: Printable 3D text
+  button: Let's start ...
+languages:
+  fr-fr: Français
+  en-us: English
+language: Language
+mm_unit: mm
+settings_form:
+  label: Settings
+  tabs:
+    shape:
+      heading: Type of shape
+      description: Vertical, negative, text only
+    text:
+      heading: Text settings
+      description: Text size, height, alignment
+    font:
+      heading: Font
+      description: Choose google font or custom font file
+    support:
+      heading: Support
+      description: Support padding, border radius
+    handle:
+      heading: Fixation
+      description: Handle or hole settings
+export_file: Export {type}
+export_file_type: Export as .{type} file
+stl_counter: '{count} STL files have been generated'
+info:
+  label: About Text2STL
+  made_by: Made with ♥ By {author} with {ember} & {three}
+  github: Contribute or fork me on GitHub
+issue:
+  label: Found a bug ?
+  info: "Before submitting a bug, please consider the following :"
+  know_bug:
+    free: <b>This is a free tool built on my free time</b>. Be kind & try to give as much detail as possible.
+    font: <b>Some fonts are not correctly rendered</b>. This is a know issue due to 3rd party library used by this tool.
+    font1: Please don't open issue about some characters of a font not rendering correctly (unless you're sure this is not a "normal" issue), just try to find an alternative font.
+    emoji: <b>Not all emojis are correctly rendered</b>. this is a know issue due to 3rd party library used by this tool.
+    emoji1: You can try to use another version of the same emoji, for example, use 🤍 instead of ❤️.
+    emoji2: Please don't open issue about a single emoji not rendering as expected.
+    three_js: If you have knowledge about Three.js and/or How SVG works, please take a look at <a href="https://github.com/mrdoob/three.js/issues/26613" target="_blank">this Three.js issue</a>.
+    gh_account: You'll need a <a href="https://github.com/" target="_blank">Github</a> account to create issue
+    submit: Please submit issue on Github
+font_picker:
+  category: Font category
+  name: Current font
+  variant: Font variant
+  size: Font size
+  script_filter:
+    label: Script
+    placeholder: All scripts
+  sort:
+    label: Font sort by
+    options:
+      alphabet: Alphabet
+      popularity: Popularity
+text_settings:
+  text: Text
+  text_placeholder: Enter your text...
+  size: Text size
+  height: Text height
+  kerning: Text kerning
+  vkerning: Line kerning
+  supportHeight: Support height
+  supportPadding: Support spacing
+  advancedSupportPadding: Advanced support spacing
+  alignment: Text alignment
+  valignment: Text vertical alignement
+  supportBorderRadius: Border radius
+  handleSettings:
+    label: Fixation type
+    type:
+      label: Type
+      none: None
+      hole: Hole
+      handle: Handle
+    position: Position
+    size: Size
+    size2: Width
+    offsetX: Horizontal offset
+    offsetY: Vertical offset
+alignment:
+  left: Left
+  center: Center
+  right: Right
+valignment:
+  default: Default
+  top: Top
+  bottom: Bottom
+directions:
+  top: Top
+  bottom: Bottom
+  left: Left
+  right: Right
+three_preview:
+  size: 'Print size : {x} x {y} x {z} mm'
+text_type:
+  1: Text only
+  2: Text with support
+  3: Negative text on support
+  4: Vertical text with support
+  5: Text with handle
+custom_font:
+  ck_label: Use custom font
+  current_label: Current file
+  no_font: None
+  upload:
+    title: Select file
+    drop_zone: Use custom font file by dropping font file (woff, otf, ttf) here or
+    input_label: browse your computer for a font file
+    bad_file_type: Unsupported font file type, please use .woff, .otf or .ttf file
+errors:
+  font_load_generic: "Selected font can't be load"
+  unknown_font: The font is not in font list
+seo:
+  description: Generate 3D printable text in one click ! Choose a font from more than 1000 fonts or use your own, different shape and settings & download an STL file to print.
+save: save settings
+reset: reset settings
+save_modal:
+  title: Save your current settings
+  info: Bookmark the <a href="{currentUrl}">current URL</a> or save the URL bellow to easily retrieve the current settings.
+  close: Close
+switch_theme_tooltip: Switch to {current, select, light {dark} dark {light} other {light}} theme
+reset_modal:
+  title: Reset all settings
+  info: All your settings will be lost, are you sure you want to reset all settings to their default values ?
+  cancel: Cancel
+  reset: Reset Settings
+font_loading: Loading Google font, please wait...

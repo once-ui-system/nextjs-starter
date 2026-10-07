@@ -1,0 +1,28 @@
+<calcite-block open heading={{t 'settings_form.tabs.shape.heading'}} description={{t 'settings_form.tabs.shape.description'}}>
+  <calcite-icon scale="s" slot="icon" icon="multidimensional-raster"></calcite-icon>
+  <SettingsForm::TypeSelect ypeSelect @model={{@model}} />
+</calcite-block>
+
+<calcite-block collapsible open heading={{t 'settings_form.tabs.text.heading'}} description={{t 'settings_form.tabs.text.description'}}>
+  <calcite-icon scale="s" slot="icon" icon="heading"></calcite-icon>
+  <SettingsForm::Text @model={{@model}} />
+</calcite-block>
+
+<calcite-block collapsible heading={{t 'settings_form.tabs.font.heading'}} description={{t 'settings_form.tabs.font.description'}}>
+  <calcite-icon scale="s" slot="icon" icon="description"></calcite-icon>
+  <SettingsForm::Font @model={{@model}} />
+</calcite-block>
+
+{{#if this.showSupportSettings}}
+  <calcite-block collapsible heading={{t 'settings_form.tabs.support.heading'}} description={{t 'settings_form.tabs.support.description'}}>
+    <calcite-icon scale="s" slot="icon" icon="layer-settings"></calcite-icon>
+    <SettingsForm::Support @model={{@model}} />
+  </calcite-block>
+{{/if}}
+
+{{#if this.showHandleSettings}}
+  <calcite-block collapsible heading={{t 'settings_form.tabs.handle.heading'}} description={{t 'settings_form.tabs.handle.description'}}>
+    <calcite-icon scale="s" slot="icon" icon="plus"></calcite-icon>
+    <SettingsForm::Handle @model={{@model}} />
+  </calcite-block>
+{{/if}}

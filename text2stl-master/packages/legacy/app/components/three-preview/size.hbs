@@ -1,0 +1,7 @@
+{{#if this.meshSize}}
+  {{t "three_preview.size"
+    x=(float-to-fixed this.meshSize.x 1)
+    y=(float-to-fixed this.meshSize.y 1)
+    z=(float-to-fixed this.meshSize.z 1)
+  }}
+{{/if}}

@@ -1,0 +1,80 @@
+<calcite-label>
+  {{t 'text_settings.supportHeight'}}
+  <calcite-input-number
+    placeholder={{t 'text_settings.supportHeight'}}
+    suffix-text={{t 'mm_unit'}}
+    value={{@model.supportHeight}}
+    {{on 'calciteInputNumberChange' (fn this.setNumber 'supportHeight')}}
+    {{scrollable-input-number}}
+    step='1'
+    number-button-type='horizontal'
+    icon='antenna-height'
+    data-test-settings-supportHeight
+  />
+</calcite-label>
+
+<calcite-label>
+  {{t 'text_settings.supportBorderRadius'}}
+  <calcite-input-number
+    placeholder={{t 'text_settings.supportBorderRadius'}}
+    suffix-text={{t 'mm_unit'}}
+    value={{@model.supportBorderRadius}}
+    {{on 'calciteInputNumberChange' (fn this.setNumber 'supportBorderRadius')}}
+    {{scrollable-input-number}}
+    step='1'
+    number-button-type='horizontal'
+    icon='border-radius-rounded'
+    data-test-settings-supportBorderRadius
+  />
+</calcite-label>
+
+{{#if this.advancedSupportPadding}}
+  <calcite-label>
+    {{t 'text_settings.supportPadding'}}
+  </calcite-label>
+
+  {{#each this.supportPosition as |pos|}}
+    <calcite-label layout='inline-space-between'>
+      {{t (concat 'directions.' pos)}}
+      <calcite-input-number
+        class='w-70p'
+        placeholder={{concat
+          (t 'text_settings.supportPadding')
+          ' - '
+          (t (concat 'directions.' pos))
+        }}
+        suffix-text={{t 'mm_unit'}}
+        value={{get @model.supportPadding pos}}
+        {{on 'calciteInputNumberChange' (fn this.setSupportPaddingDir pos)}}
+        {{scrollable-input-number}}
+        step='1'
+        icon={{get this.supportPositionIcon pos}}
+        data-test-settings-supportPadding={{pos}}
+      />
+    </calcite-label>
+  {{/each}}
+{{else}}
+  <calcite-label>
+    {{t 'text_settings.supportPadding'}}
+    <calcite-input-number
+      placeholder={{t 'text_settings.supportPadding'}}
+      suffix-text={{t 'mm_unit'}}
+      value={{this.supportPadding}}
+      {{on 'calciteInputNumberChange' this.setSupportPadding}}
+      {{scrollable-input-number}}
+      step='1'
+      number-button-type='horizontal'
+      icon='dimensions-unit'
+      data-test-settings-supportPadding='basic'
+    />
+  </calcite-label>
+{{/if}}
+
+<calcite-label layout='inline'>
+  {{t 'text_settings.advancedSupportPadding'}}
+  <calcite-switch
+    checked={{this.advancedSupportPadding}}
+    data-test-advanced-support-padding
+    {{on 'calciteSwitchChange' this.toggleAdvancedSupportPadding}}
+  />
+</calcite-label>

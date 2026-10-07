@@ -43,6 +43,12 @@ Clone the starter template from GitHub:
 git clone https://github.com/once-ui-system/nextjs-starter.git
 ```
 
+## Textify ads
+
+Textify uses Google AdSense publisher `ca-pub-7461216674792341`, banner slot `4222442269` (728x90), and skyscraper slot `8002080184` (120x600). The banner slot appears twice around the preview; the skyscraper appears in the settings sidebar. These fixed-size placements load only at viewport widths of 1200px or more.
+
+AdSense must approve the site and domain before ads can serve. Development on localhost may show an empty placement; verify delivery on the approved production domain and ensure any required consent configuration is in place.
+
 ## Creators
 
 Connect with us!
