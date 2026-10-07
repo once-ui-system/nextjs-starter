@@ -1,0 +1,12 @@
+<calcite-segmented-control
+  {{this.changeAppearance}}
+  data-test-language-switcher
+  ...attributes
+  {{on "calciteSegmentedControlChange" this.changeLanguage}}
+>
+  {{#each this.availableLanguages as |language|}}
+    <calcite-segmented-control-item value={{language}} data-test-lang={{language}} checked={{eq language this.intl.primaryLocale}}>
+      {{t (concat "languages." language)}}
+    </calcite-segmented-control-item>
+  {{/each}}
+</calcite-segmented-control>

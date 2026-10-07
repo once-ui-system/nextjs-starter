@@ -1,0 +1,32 @@
+{
+  "name": "text2stl",
+  "version": "2.0.0",
+  "private": true,
+  "description": "3D text generator for 3D printing",
+  "homepage": "https://text2stl.mestres.fr/",
+  "repository": "https://github.com/romgere/text2stl",
+  "license": "MIT",
+  "author": {
+    "name": "Jérôme Mestres",
+    "url": "https://github.com/romgere"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "generate:type_img": "misc/text_type/generate_logo.sh",
+    "start": "yarn workspace legacy start",
+    "build": "yarn workspace legacy build && rm -rf dist && mv packages/legacy/dist dist",
+    "lint": "yarn workspaces run lint",
+    "lint:fix": "yarn workspace legacy lint:fix",
+    "test": "yarn workspaces run test",
+    "test:ember": "yarn workspace legacy test:ember",
+    "test:ember:visual": "yarn workspace legacy test:ember:visual"
+  },
+  "engines": {
+    "node": ">= 22"
+  },
+  "volta": {
+    "node": "22.14.0"
+  }
+}

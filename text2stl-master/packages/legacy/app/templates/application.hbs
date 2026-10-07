@@ -1,0 +1,20 @@
+{{page-title (concat (t 'app_name') ' - ' (t 'app_title'))}}
+
+<calcite-shell>
+  <div slot='header' id='header'>
+    <h2 id='header-title'>
+      <LinkTo @route='app.index'>{{t 'app_name'}}</LinkTo>
+    </h2>
+
+    <h3 id='header-sub-title'>{{t 'app_subtitle'}}</h3>
+
+    <div id='header-controls'>
+      <LangSwitcher class='mr-2' @appearance='outline-fill' />
+      <ThemeSwitcher class='mr-2' />
+      <Issue class='mr-2' />
+      <About />
+    </div>
+  </div>
+
+  {{outlet}}
+</calcite-shell>

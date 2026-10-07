@@ -1,0 +1,50 @@
+<calcite-button
+  appearance='transparent'
+  kind='neutral'
+  scale='m'
+  id='issue-button'
+  icon-start='debug'
+  ...attributes
+/>
+
+<calcite-tooltip reference-element='issue-button' placement='bottom'>
+  <span>{{t 'issue.label'}}</span>
+</calcite-tooltip>
+
+<calcite-popover
+  label={{t 'issue.label'}}
+  heading={{t 'issue.label'}}
+  reference-element='issue-button'
+  closable
+  auto-close
+>
+  <div class='m-2 w-40'>
+    <h2 class='center'>{{t 'issue.info'}}</h2>
+
+    <p class='center'>{{t 'issue.know_bug.free' htmlSafe=true}}</p>
+    <hr class='w-30p' />
+
+    <p class='center'>{{t 'issue.know_bug.font' htmlSafe=true}}</p>
+    <p class='center'>{{t 'issue.know_bug.font1'}}</p>
+    <hr class='w-30p' />
+
+    <p class='center'>{{t 'issue.know_bug.emoji' htmlSafe=true}}</p>
+    <p class='center'>{{t 'issue.know_bug.emoji1'}}</p>
+    <p class='center'>{{t 'issue.know_bug.emoji2'}}</p>
+    <hr class='w-30p' />
+
+    <p class='center'>{{t 'issue.know_bug.three_js' htmlSafe=true}}</p>
+
+    <p class='center mt-5'>
+
+      <calcite-button
+        icon-start='debug'
+        target='_blank'
+        rel='noopener noreferrer'
+        href='https://github.com/romgere/text2stl/issues/new'
+      >{{t 'issue.know_bug.submit'}}</calcite-button>
+      <br />
+      <small>{{t 'issue.know_bug.gh_account' htmlSafe=true}}</small>
+    </p>
+  </div>
+</calcite-popover>

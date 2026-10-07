@@ -1,0 +1,107 @@
+<calcite-label>
+  {{t 'text_settings.handleSettings.label'}}
+  <calcite-radio-button-group
+    name='handle-type'
+    layout='horizontal'
+    data-test-handle-type-item
+    {{on 'calciteRadioButtonGroupChange' this.updateHandleType}}
+  >
+    {{#each this.handleTypes as |type|}}
+      <calcite-label layout='inline'>
+        <calcite-radio-button
+          value={{type}}
+          data-test-value={{type}}
+          checked={{eq @model.handleSettings.type type}}
+        />
+        {{t (concat 'text_settings.handleSettings.type.' type)}}
+      </calcite-label>
+    {{/each}}
+  </calcite-radio-button-group>
+</calcite-label>
+
+{{#if this.showHandleSettings}}
+
+  <calcite-label>
+    {{t 'text_settings.handleSettings.position'}}
+    <calcite-radio-button-group
+      name='handle-position'
+      layout='horizontal'
+      data-test-handle-position
+      {{on 'calciteRadioButtonGroupChange' this.updateHandlePosition}}
+    >
+      {{#each this.handlePosition as |pos|}}
+        <calcite-label layout='inline'>
+          <calcite-radio-button
+            value={{pos}}
+            data-test-value={{pos}}
+            checked={{eq @model.handleSettings.position pos}}
+          />
+          {{t (concat 'directions.' pos)}}
+        </calcite-label>
+      {{/each}}
+    </calcite-radio-button-group>
+  </calcite-label>
+
+  <calcite-label>
+    {{t 'text_settings.handleSettings.size'}}
+    <calcite-input-number
+      placeholder={{t 'text_settings.handleSettings.size'}}
+      suffix-text={{t 'mm_unit'}}
+      value={{@model.handleSettings.size}}
+      {{on 'calciteInputNumberChange' (fn this.setHandleSettingsValue 'size')}}
+      {{scrollable-input-number}}
+      step='1'
+      number-button-type='horizontal'
+      icon='measure'
+      data-test-settings-handle-size
+    />
+  </calcite-label>
+
+  {{#if this.showHandleSize2}}
+    <calcite-label>
+      {{t 'text_settings.handleSettings.size2'}}
+      <calcite-input-number
+        placeholder={{t 'text_settings.handleSettings.size2'}}
+        suffix-text={{t 'mm_unit'}}
+        value={{@model.handleSettings.size2}}
+        {{on 'calciteInputNumberChange' (fn this.setHandleSettingsValue 'size2')}}
+        {{scrollable-input-number}}
+        step='1'
+        number-button-type='horizontal'
+        icon='dimensions'
+        data-test-settings-handle-size2
+      />
+    </calcite-label>
+  {{/if}}
+
+  <calcite-label>
+    {{t 'text_settings.handleSettings.offsetX'}}
+    <calcite-input-number
+      placeholder={{t 'text_settings.handleSettings.offsetX'}}
+      suffix-text={{t 'mm_unit'}}
+      value={{@model.handleSettings.offsetX}}
+      {{on 'calciteInputNumberChange' (fn this.setHandleSettingsValue 'offsetX')}}
+      {{scrollable-input-number}}
+      step='1'
+      number-button-type='horizontal'
+      icon='center-horizontal'
+      data-test-settings-handle-offsetX
+    />
+  </calcite-label>
+  {{#if this.showHandleOffsetY}}
+    <calcite-label>
+      {{t 'text_settings.handleSettings.offsetY'}}
+      <calcite-input-number
+        placeholder={{t 'text_settings.handleSettings.offsetY'}}
+        suffix-text={{t 'mm_unit'}}
+        value={{@model.handleSettings.offsetY}}
+        {{on 'calciteInputNumberChange' (fn this.setHandleSettingsValue 'offsetY')}}
+        {{scrollable-input-number}}
+        step='1'
+        number-button-type='horizontal'
+        icon='center-vertical'
+        data-test-settings-handle-offsetY
+      />
+    </calcite-label>
+  {{/if}}
+{{/if}}

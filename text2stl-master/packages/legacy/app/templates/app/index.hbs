@@ -1,0 +1,41 @@
+<calcite-modal
+  aria-labelledby="modal-title"
+  resize="vertical"
+  open
+  close-button-disabled
+  {{on "calciteModalBeforeClose" this.gotoGenerator}}
+>
+  <div slot="header" id="modal-title">
+    {{t "index_page.title"}}
+  </div>
+  <div slot="content">
+
+    <calcite-notice open icon="description">
+      <div slot="title">{{t "index_page.list.font.dt"}}</div>
+      <div slot="message">{{t "index_page.list.font.dd"}}</div>
+    </calcite-notice>
+    <calcite-notice open icon="auto-layout">
+      <div slot="title">{{t "index_page.list.shape.dt"}}</div>
+      <div slot="message">{{t "index_page.list.shape.dd"}}</div>
+    </calcite-notice>
+    <calcite-notice open icon="text-paragraph-large">
+      <div slot="title">{{t "index_page.list.text.dt"}}</div>
+      <div slot="message">{{t "index_page.list.text.dd"}}</div>
+    </calcite-notice>
+    <calcite-notice open icon="sliders">
+      <div slot="title">{{t "index_page.list.settings.dt"}}</div>
+      <div slot="message">{{t "index_page.list.settings.dd"}}</div>
+    </calcite-notice>
+    <calcite-notice open icon="download">
+      <div slot="title">{{t "index_page.list.stl.dt"}}</div>
+      <div slot="message">{{t "index_page.list.stl.dd"}}</div>
+    </calcite-notice>
+
+  </div>
+
+  <LangSwitcher slot="back" width="full" @appearance="outline-fill" />
+
+  <calcite-button {{on "click" this.gotoGenerator}} slot="primary" width="full" data-test-generator>
+    {{t "index_page.button"}}
+  </calcite-button>
+</calcite-modal>

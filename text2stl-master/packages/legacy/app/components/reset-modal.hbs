@@ -1,0 +1,21 @@
+<calcite-modal
+  aria-labelledby="modal-title"
+  resize="vertical"
+  open
+  {{on "calciteModalClose" @onHide}}
+>
+  <div slot="header" id="modal-title">
+    {{t "reset_modal.title"}}
+  </div>
+  <div slot="content">
+    <p>
+      {{t "reset_modal.info"}}
+    </p>
+  </div>
+  <calcite-button {{on "click" @onReset}} slot="primary" width="full">
+    {{t "reset_modal.reset"}}
+  </calcite-button>
+  <calcite-button slot="secondary" {{on "click" @onHide}} width="full" appearance="outline">
+      {{t "reset_modal.cancel"}}
+  </calcite-button>
+</calcite-modal>

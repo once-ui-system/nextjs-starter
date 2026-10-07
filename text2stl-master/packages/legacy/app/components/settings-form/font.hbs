@@ -1,0 +1,45 @@
+<calcite-label layout="inline">
+  {{t 'custom_font.ck_label'}}
+  <calcite-switch
+    checked={{this.useCustomFont}}
+    data-test-custom-checkbox
+    {{on "calciteSwitchChange" (fn this.toggleCustomFont (not this.useCustomFont))}}
+  />
+</calcite-label>
+
+<hr />
+
+{{#if this.useCustomFont}}
+
+  <calcite-label>
+    {{t 'custom_font.upload.title'}}
+    <Ui::FileUpload
+      @onFileChange={{this.setCustomFontFile}}
+      @mimeTypes={{this.acceptedMimeTypes}}
+      @title={{t 'custom_font.upload.title'}}
+      @dropZoneLabel={{t 'custom_font.upload.drop_zone'}}
+      @inputZoneLabel={{t 'custom_font.upload.input_label'}}
+      @mimeTypeError={{t 'custom_font.upload.bad_file_type'}}
+      data-test-custom-font-upload
+    />
+  </calcite-label>
+
+  <calcite-label>
+    {{t 'custom_font.current_label'}}
+    <calcite-input-text
+      value={{if
+        @model.customFont
+        @model.customFont.name
+        (t 'custom_font.no_font')
+      }}
+      disabled
+      data-test-custom-font-name
+    />
+  </calcite-label>
+{{else}}
+  <Ui::FontPicker
+    @fontName={{@model.fontName}}
+    @variantName={{@model.variantName}}
+    @onFontSettingsChange={{this.onFontSettingsChange}}
+  />
+{{/if}}

@@ -1,0 +1,30 @@
+<calcite-card
+  selected={{this.dropActive}}
+  ...attributes
+  {{on "drop" this.onDropFile}}
+  {{on "dragover" this.onDragOver}}
+  {{on "dragleave" (fn (mut this.dropActive) false)}}
+>
+  <span slot="subtitle">
+    <p class="center">
+      <calcite-icon icon="upload" scale="l" />
+    </p>
+    <p class="center m-0">
+      <span data-test-drop-zone-label>
+        {{@dropZoneLabel}}
+      </span>
+
+      <label for={{this.id}} class="link-color" data-test-input-label>
+        {{@inputZoneLabel}}
+      </label>
+
+      <input
+        type="file"
+        id={{this.id}}
+        accept={{this.accept}}
+        class="visualy-hidden"
+        {{on "change" this.fileChange}}
+      >
+    </p>
+  </span>
+</calcite-card>

@@ -6,7 +6,7 @@ import classNames from "classnames";
 
 import { baseURL, meta } from "@/resources/seo";
 import { fonts, style, dataStyle } from "@/resources/once-ui.config";
-import { Meta, Schema,  Column, Flex, Mask, MatrixFx, ThemeInit} from "@once-ui-system/core";
+import { Meta, Column, ThemeInit } from "@once-ui-system/core";
 import { Providers } from '@/components/Providers';
 
 export async function generateMetadata() {
@@ -28,11 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Flex
+    <html
       suppressHydrationWarning
-      as="html"
       lang="en"
-      fillWidth
       className={classNames(
         fonts.heading.variable,
         fonts.body.variable,
@@ -40,13 +38,6 @@ export default function RootLayout({
         fonts.code.variable,
       )}
     >
-      <Schema
-        as="webPage"
-        baseURL={baseURL}
-        title={meta.home.title}
-        description={meta.home.description}
-        path={meta.home.path}
-      />
       <head>
         <ThemeInit
           config={{
@@ -64,22 +55,13 @@ export default function RootLayout({
           }}
         />
       </head>
-      <Providers>
-        <Column as="body" background="page" fillWidth margin="0" padding="0">
-          <Column fillWidth maxHeight="100dvh" aspectRatio="1" horizontal="center" position="absolute" top="0" left="0">
-            <Mask maxWidth="m" x={50} y={0} radius={50}>
-              <MatrixFx
-                size={1.5}
-                spacing={5}
-                fps={24}
-                colors={["brand-solid-strong"]}
-                flicker
-              />
-            </Mask>
+      <body>
+        <Providers>
+          <Column as="div" background="page" fillWidth margin="0" padding="0">
+            {children}
           </Column>
-          {children}
-        </Column>
-      </Providers>
-    </Flex>
+        </Providers>
+      </body>
+    </html>
   );
 }

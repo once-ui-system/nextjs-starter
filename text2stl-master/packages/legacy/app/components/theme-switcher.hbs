@@ -1,0 +1,12 @@
+<calcite-button
+  appearance='transparent'
+  kind='neutral'
+  scale='m'
+  id='theme-switcher'
+  icon-start={{if this.isLightTheme 'brightness' 'moon'}}
+  ...attributes
+  {{on 'click' this.switchTheme}}
+/>
+<calcite-tooltip reference-element='theme-switcher' placement='bottom'>
+  <span>{{t 'switch_theme_tooltip' current=this.theme}}</span>
+</calcite-tooltip>
