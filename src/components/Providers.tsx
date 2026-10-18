@@ -26,7 +26,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <DataThemeProvider
           variant={dataStyle.variant as ChartVariant}
           mode={dataStyle.mode as ChartMode}
-          height={dataStyle.height}
+          height={dataStyle.height as `${number}rem`}
           axis={{
             stroke: dataStyle.axis.stroke
           }}
