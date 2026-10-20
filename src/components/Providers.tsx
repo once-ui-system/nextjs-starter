@@ -1,7 +1,7 @@
 "use client";
 
-import { BorderStyle, DataThemeProvider, IconProvider, NeutralColor, ScalingSize, Schemes, SolidStyle, SolidType, SurfaceStyle, Theme, ThemeProvider, ToastProvider, TransitionStyle } from "@once-ui-system/core";
-import { ChartMode, ChartVariant } from "@once-ui-system/core/data";
+import { type BorderStyle, DataThemeProvider, IconProvider, type NeutralColor, type ScalingSize, type Schemes, type SolidStyle, type SolidType, type SurfaceStyle, type Theme, ThemeProvider, ToastProvider, type TransitionStyle } from "@once-ui-system/core";
+import type { ChartMode, ChartVariant } from "@once-ui-system/core/data";
 // Core's LayoutProvider with the Next adapters installed: next/link for
 // internal links and next/image for images.
 import { LayoutProvider } from "@once-ui-system/core/next";
